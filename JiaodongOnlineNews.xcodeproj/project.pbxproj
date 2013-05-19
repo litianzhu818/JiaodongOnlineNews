@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D01E6711748C38C00B81568 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC23174898BA0071A601 /* Default.png */; };
+		2D01E6781748C81200B81568 /* JDOViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC2B1748AAE90071A601 /* JDOViewController.xib */; };
+		2D01E6791748C81900B81568 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC301748AC470071A601 /* InfoPlist.strings */; };
+		2D01E67D1748D82E00B81568 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D01E67C1748D82E00B81568 /* Reachability.m */; };
+		2D01E67F1748D84E00B81568 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D01E67E1748D84E00B81568 /* SystemConfiguration.framework */; };
+		2D01E6811748DB2F00B81568 /* default_adv.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2D01E6801748DB2F00B81568 /* default_adv.jpg */; };
 		2D080CD6173CE4D9005653A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D080CD5173CE4D9005653A7 /* UIKit.framework */; };
 		2D080CD8173CE4D9005653A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D080CD7173CE4D9005653A7 /* Foundation.framework */; };
 		2D080CDA173CE4D9005653A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D080CD9173CE4D9005653A7 /* CoreGraphics.framework */; };
@@ -14,13 +20,14 @@
 		2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */; };
 		2D080CEF173CE4D9005653A7 /* JDOViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CEE173CE4D9005653A7 /* JDOViewController.m */; };
 		2D8FAC20174896220071A601 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC1F174896220071A601 /* icon.png */; };
-		2D8FAC2517489A310071A601 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC23174898BA0071A601 /* Default.png */; };
-		2D8FAC291748AAE90071A601 /* JDOViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC2B1748AAE90071A601 /* JDOViewController.xib */; };
-		2D8FAC2E1748AC470071A601 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC301748AC470071A601 /* InfoPlist.strings */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D01E67B1748D82E00B81568 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		2D01E67C1748D82E00B81568 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		2D01E67E1748D84E00B81568 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		2D01E6801748DB2F00B81568 /* default_adv.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = default_adv.jpg; sourceTree = "<group>"; };
 		2D080CD2173CE4D9005653A7 /* JiaodongOnlineNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JiaodongOnlineNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D080CD5173CE4D9005653A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2D080CD7173CE4D9005653A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -34,8 +41,8 @@
 		2D080CEE173CE4D9005653A7 /* JDOViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDOViewController.m; sourceTree = "<group>"; };
 		2D8FAC1F174896220071A601 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		2D8FAC23174898BA0071A601 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		2D8FAC2A1748AAE90071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hans"; path = "zh-Hans.lproj/JDOViewController.xib"; sourceTree = "<group>"; };
-		2D8FAC2F1748AC470071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2D8FAC2A1748AAE90071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/JDOViewController.xib"; sourceTree = "<group>"; };
+		2D8FAC2F1748AC470071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		5F222CF8F96D417D992D04DB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -45,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D01E67F1748D84E00B81568 /* SystemConfiguration.framework in Frameworks */,
 				2D080CD6173CE4D9005653A7 /* UIKit.framework in Frameworks */,
 				2D080CD8173CE4D9005653A7 /* Foundation.framework in Frameworks */,
 				2D080CDA173CE4D9005653A7 /* CoreGraphics.framework in Frameworks */,
@@ -55,6 +63,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D01E67A1748D78300B81568 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2D01E67B1748D82E00B81568 /* Reachability.h */,
+				2D01E67C1748D82E00B81568 /* Reachability.m */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		2D080CC9173CE4D9005653A7 = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +95,7 @@
 		2D080CD4173CE4D9005653A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2D01E67E1748D84E00B81568 /* SystemConfiguration.framework */,
 				2D080CD5173CE4D9005653A7 /* UIKit.framework */,
 				2D080CD7173CE4D9005653A7 /* Foundation.framework */,
 				2D080CD9173CE4D9005653A7 /* CoreGraphics.framework */,
@@ -94,6 +112,7 @@
 				2D080CED173CE4D9005653A7 /* JDOViewController.h */,
 				2D080CEE173CE4D9005653A7 /* JDOViewController.m */,
 				2D8FAC2B1748AAE90071A601 /* JDOViewController.xib */,
+				2D01E67A1748D78300B81568 /* Utils */,
 			);
 			name = Classes;
 			path = JiaodongOnlineNews/Classes;
@@ -103,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				2D8FAC1F174896220071A601 /* icon.png */,
+				2D01E6801748DB2F00B81568 /* default_adv.jpg */,
 				2D8FAC23174898BA0071A601 /* Default.png */,
 			);
 			name = Resources;
@@ -176,10 +196,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D01E6791748C81900B81568 /* InfoPlist.strings in Resources */,
+				2D01E6781748C81200B81568 /* JDOViewController.xib in Resources */,
 				2D8FAC20174896220071A601 /* icon.png in Resources */,
-				2D8FAC2517489A310071A601 /* Default.png in Resources */,
-				2D8FAC291748AAE90071A601 /* JDOViewController.xib in Resources */,
-				2D8FAC2E1748AC470071A601 /* InfoPlist.strings in Resources */,
+				2D01E6711748C38C00B81568 /* Default.png in Resources */,
+				2D01E6811748DB2F00B81568 /* default_adv.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +245,7 @@
 				2D080CE2173CE4D9005653A7 /* main.m in Sources */,
 				2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */,
 				2D080CEF173CE4D9005653A7 /* JDOViewController.m in Sources */,
+				2D01E67D1748D82E00B81568 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,7 +296,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -298,7 +321,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -310,8 +334,9 @@
 			baseConfigurationReference = 5F222CF8F96D417D992D04DB /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JiaodongOnlineNews/JiaodongOnlineNews-Prefix.pch";
-				INFOPLIST_FILE = "JiaodongOnlineNews/JiaodongOnlineNews-Info.plist";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -322,8 +347,9 @@
 			baseConfigurationReference = 5F222CF8F96D417D992D04DB /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JiaodongOnlineNews/JiaodongOnlineNews-Prefix.pch";
-				INFOPLIST_FILE = "JiaodongOnlineNews/JiaodongOnlineNews-Info.plist";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

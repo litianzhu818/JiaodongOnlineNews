@@ -83,6 +83,12 @@ typedef enum {
 //WWAN may be available, but not active until a connection has been established.
 //WiFi may require a connection for VPN on Demand.
 - (BOOL) connectionRequired;
+
+// 测试网络类型
++ (BOOL) isEnableWIFI;
++ (BOOL) isEnable3G;
++ (BOOL) isEnableNetwork;
+
 @end
 
 

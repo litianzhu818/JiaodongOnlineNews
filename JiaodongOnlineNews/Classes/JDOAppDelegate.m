@@ -9,43 +9,159 @@
 #import "JDOAppDelegate.h"
 
 #import "JDOViewController.h"
+#import "Reachability.h"
+#import "SDURLCache.h"
+
+#define splash_stay_time 1.0
+#define advertise_stay_time 2.0
+#define max_memory_cache 10
+#define max_disk_cache 50
+#define advertise_file_name @"advertise"
 
 @implementation JDOAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    Reachability  *hostReach;
+    UIImage *advImage;
+    UIImageView *splashView;
+    UIImageView *advView; 
+
+- (void)asyncLoadAdvertise{   // 异步加载广告页
     
-    // 异步加载广告页
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, nil), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *advUrl = [SERVER_URL stringByAppendingString:ADV_SERVICE];
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:advUrl]];
         NSError *error ;
-        NSData *jsonResult = [NSData dataWithContentsOfFile:advUrl options:NSDataReadingUncached error:&error];
+        
+        #warning 需要确认dataWithContentsOfURL不使用缓存
+        NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advUrl] options:NSDataReadingUncached error:&error];
         if(error != nil){
             NSLog(@"获取广告页json出错:%@",error);
             return;
         }
+        NSDictionary *jsonObject = [jsonData objectFromJSONData];
+        
+        NSString *advServerVersion = [jsonObject valueForKey:@"hash"];
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSString *advLocalVersion = [userDefault objectForKey:@"adv_version"];
+        
+        // 第一次加载或者NSUserDefault被清空，以及服务器版本号与本地不一致时，从网络加载图片。
+        // PS:如果每次广告图更新后的URL会变动，则URL缓存就能够区分出是从本地获取还是从网络获取，没有必要使用版本号机制。
+        
+        if(advLocalVersion ==nil || ![advLocalVersion isEqualToString:advServerVersion]){
+            NSString *advImgUrl = [SERVER_URL stringByAppendingString:[jsonObject valueForKey:@"path"]];
+            // 同步方法不使用URLCache，若使用AFNetworking则无法禁用缓存
+            NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advImgUrl] options:NSDataReadingUncached error:&error];
+            if(error != nil){
+                NSLog(@"获取广告页图片出错:%@",error);
+                return;
+            }
+            advImage = [UIImage imageWithData:imgData];
+            // 图片加载成功后才保存服务器版本号
+            [userDefault setObject:advServerVersion forKey:@"adv_version"];
+            [userDefault synchronize];
+            // 图片缓存到磁盘
+            
+            [imgData writeToFile:[self getAdvertiseFilePath] options:NSDataWritingAtomic error:&error];
+            if(error != nil){
+                NSLog(@"磁盘缓存广告页图片出错:%@",error);
+                return;
+            }
+        }else{
+            // 从磁盘读取，也可以使用[NSData dataWithContentsOfFile];
+            NSFileManager * fm = [NSFileManager defaultManager];
+            NSData *imgData = [fm contentsAtPath:[self getAdvertiseFilePath]];
+            if(imgData){
+                advImage = [UIImage imageWithData:imgData];
+            }else{
+                // 从本地路径加载缓存广告图失败,使用默认广告图
+                advImage = [UIImage imageNamed:@"default_adv.jpg"];
+            }
+        }
         
     });
+}
+
+- (NSString *)getAdvertiseFilePath{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:advertise_file_name];
+}
+
+- (void)showAdvertiseView{
+    // 若广告加载完成则显示
+    if(advImage != nil){
+        advView = [[UIImageView alloc] initWithImage:advImage];
+    }else{  
+        // 2秒之后仍未加载完成,则显示已缓存的广告图
+        NSFileManager * fm = [NSFileManager defaultManager];
+        NSData *imgData = [fm contentsAtPath:[self getAdvertiseFilePath]];
+        if(imgData){
+            advImage = [UIImage imageWithData:imgData];
+        }else{
+            // 本地缓存尚不存在,加载默认广告图
+            advImage = [UIImage imageNamed:@"default_adv.jpg"];
+        }
+        advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
+        advView.image = advImage;
+    }
+    advView.alpha = 0;
+    [self.window addSubview:advView];
     
-    // 停止splash，同时加载广告页
-    [NSThread sleepForTimeInterval:3.0];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, nil), ^{
-        NSError *error;
-        [NSData dataWithContentsOfURL:@"" options:NSDataReadingUncached error:&error];
-    });
-    
-    
-    
-    // Override point for customization after application launch.
+    [UIView animateWithDuration:1.0 animations:^{
+        splashView.alpha = 0;
+        splashView.frame = CGRectMake(-60, -85, 440, 635);
+        advView.alpha = 1.0;
+    }
+    completion:^(BOOL finished){
+        [splashView removeFromSuperview];
+        [self performSelector:@selector(navigateToMainView) withObject:nil afterDelay:advertise_stay_time];
+    }];
+}
+
+- (void)navigateToMainView{
     self.viewController = [[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
+    [advView removeFromSuperview];
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{    
+    // 监测网络情况
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
+    hostReach = [Reachability reachabilityWithHostName:SERVER_URL];
+    [hostReach startNotifier];
     
+    // 开启内存与磁盘缓存
+    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
+    [NSURLCache setSharedURLCache:urlCache];
+    
+    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
+        advImage = [UIImage imageNamed:@"default_adv.jpg"];
+    }else{  // 网络可用
+        [self asyncLoadAdvertise];
+    }
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
+    
+    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
+    splashView.image = [UIImage imageNamed:@"Default.png"];
+    [self.window addSubview:splashView];
+    
+    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
+    
     return YES;
 }
+
+- (void)reachabilityChanged:(NSNotification *)note {
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
+    NetworkStatus status = [curReach currentReachabilityStatus];
+    
+    if (status == NotReachable) {
+        NSLog(@"无法连接到%@",SERVER_URL);
+    }
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
