@@ -101,9 +101,9 @@
     advView.alpha = 0;
     [self.window addSubview:advView];
     
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.8 animations:^{
         splashView.alpha = 0;
-        splashView.frame = CGRectMake(-60, -85, 440, 635);
+//        splashView.frame = CGRectMake(-60, -85, 440, 635);
         advView.alpha = 1.0;
     }
     completion:^(BOOL finished){

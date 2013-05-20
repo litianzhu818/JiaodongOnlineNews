@@ -1,0 +1,24 @@
+PODS:
+  - AFNetworking (0.10.1)
+  - JSONKit (1.5pre)
+  - Nimbus/Core (0.9.3)
+  - Nimbus/NetworkControllers (0.9.3):
+    - Nimbus/Core
+  - Nimbus/NetworkImage (0.9.3):
+    - Nimbus/Core
+  - SDURLCache (1.2)
+
+DEPENDENCIES:
+  - AFNetworking (= 0.10.1)
+  - JSONKit
+  - Nimbus/NetworkControllers (= 0.9.3)
+  - Nimbus/NetworkImage (= 0.9.3)
+  - SDURLCache
+
+SPEC CHECKSUMS:
+  AFNetworking: df1042246c17373b96f12f04bf5c6e1c25992cd4
+  JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
+  Nimbus: 6a35688977607cda01be9027699a9e64bd08fb99
+  SDURLCache: cf4dcdd0d01473c334e9338e82a8733de156ef15
+
+COCOAPODS: 0.19.1
