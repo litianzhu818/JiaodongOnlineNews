@@ -11,6 +11,7 @@
 #import "JDOViewController.h"
 #import "Reachability.h"
 #import "SDURLCache.h"
+#import "JDOPathUtil.h"
 
 #define splash_stay_time 1.0
 #define advertise_stay_time 2.0
@@ -60,7 +61,7 @@
             [userDefault synchronize];
             // 图片缓存到磁盘
             
-            [imgData writeToFile:[self getAdvertiseFilePath] options:NSDataWritingAtomic error:&error];
+            [imgData writeToFile:[JDOPathUtil getDocumentsFilePath:advertise_file_name] options:NSDataWritingAtomic error:&error];
             if(error != nil){
                 NSLog(@"磁盘缓存广告页图片出错:%@",error);
                 return;
@@ -68,7 +69,7 @@
         }else{
             // 从磁盘读取，也可以使用[NSData dataWithContentsOfFile];
             NSFileManager * fm = [NSFileManager defaultManager];
-            NSData *imgData = [fm contentsAtPath:[self getAdvertiseFilePath]];
+            NSData *imgData = [fm contentsAtPath:[JDOPathUtil getDocumentsFilePath:advertise_file_name]];
             if(imgData){
                 advImage = [UIImage imageWithData:imgData];
             }else{
@@ -80,12 +81,6 @@
     });
 }
 
-- (NSString *)getAdvertiseFilePath{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:advertise_file_name];
-}
-
 - (void)showAdvertiseView{
     // 若广告加载完成则显示
     if(advImage != nil){
@@ -93,7 +88,7 @@
     }else{  
         // 2秒之后仍未加载完成,则显示已缓存的广告图
         NSFileManager * fm = [NSFileManager defaultManager];
-        NSData *imgData = [fm contentsAtPath:[self getAdvertiseFilePath]];
+        NSData *imgData = [fm contentsAtPath:[JDOPathUtil getDocumentsFilePath:advertise_file_name]];
         if(imgData){
             advImage = [UIImage imageWithData:imgData];
         }else{

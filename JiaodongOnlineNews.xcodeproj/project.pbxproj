@@ -19,6 +19,7 @@
 		2D080CE2173CE4D9005653A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE1173CE4D9005653A7 /* main.m */; };
 		2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */; };
 		2D080CEF173CE4D9005653A7 /* JDOViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CEE173CE4D9005653A7 /* JDOViewController.m */; };
+		2D19CFE117499F3800BDAE39 /* JDOPathUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE017499F3800BDAE39 /* JDOPathUtil.m */; };
 		2D8FAC20174896220071A601 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC1F174896220071A601 /* icon.png */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -39,6 +40,8 @@
 		2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDOAppDelegate.m; sourceTree = "<group>"; };
 		2D080CED173CE4D9005653A7 /* JDOViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JDOViewController.h; sourceTree = "<group>"; };
 		2D080CEE173CE4D9005653A7 /* JDOViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDOViewController.m; sourceTree = "<group>"; };
+		2D19CFDF17499F3800BDAE39 /* JDOPathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPathUtil.h; sourceTree = "<group>"; };
+		2D19CFE017499F3800BDAE39 /* JDOPathUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPathUtil.m; sourceTree = "<group>"; };
 		2D8FAC1F174896220071A601 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		2D8FAC23174898BA0071A601 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		2D8FAC2A1748AAE90071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/JDOViewController.xib"; sourceTree = "<group>"; };
@@ -68,6 +71,8 @@
 			children = (
 				2D01E67B1748D82E00B81568 /* Reachability.h */,
 				2D01E67C1748D82E00B81568 /* Reachability.m */,
+				2D19CFDF17499F3800BDAE39 /* JDOPathUtil.h */,
+				2D19CFE017499F3800BDAE39 /* JDOPathUtil.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -246,6 +251,7 @@
 				2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */,
 				2D080CEF173CE4D9005653A7 /* JDOViewController.m in Sources */,
 				2D01E67D1748D82E00B81568 /* Reachability.m in Sources */,
+				2D19CFE117499F3800BDAE39 /* JDOPathUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
