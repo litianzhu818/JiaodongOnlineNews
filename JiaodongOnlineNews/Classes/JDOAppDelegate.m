@@ -62,7 +62,7 @@
                 return;
             }
             UIImage *downloadImage = [UIImage imageWithData:imgData];
-            
+            // 同比缩放
 //            advImage=[JDOImageUtil adjustImage:downloadImage toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
             advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320, 460)];
             
@@ -70,7 +70,6 @@
             [userDefault setObject:advServerVersion forKey:@"adv_version"];
             [userDefault synchronize];
             // 图片缓存到磁盘
-            
             [imgData writeToFile:[JDOPathUtil getDocumentsFilePath:advertise_file_name] options:NSDataWritingAtomic error:&error];
             if(error != nil){
                 NSLog(@"磁盘缓存广告页图片出错:%@",error);
@@ -81,6 +80,7 @@
             NSFileManager * fm = [NSFileManager defaultManager];
             NSData *imgData = [fm contentsAtPath:[JDOPathUtil getDocumentsFilePath:advertise_file_name]];
             if(imgData){
+                // 同比缩放
 //                advImage = [JDOImageUtil adjustImage:[UIImage imageWithData:imgData] toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
                 advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320, 460)];
             }else{
