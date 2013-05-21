@@ -12,12 +12,18 @@
 #import "Reachability.h"
 #import "SDURLCache.h"
 #import "JDOPathUtil.h"
+#import "JDOImageUtil.h"
+#import "IIViewDeckController.h"
+#import "LeftViewController.h"
+#import "RightViewController.h"
 
 #define splash_stay_time 1.0
 #define advertise_stay_time 2.0
 #define max_memory_cache 10
 #define max_disk_cache 50
 #define advertise_file_name @"advertise"
+#define advertise_img_width 320
+#define advertise_img_height 460
 
 @implementation JDOAppDelegate
 
@@ -55,7 +61,11 @@
                 NSLog(@"获取广告页图片出错:%@",error);
                 return;
             }
-            advImage = [UIImage imageWithData:imgData];
+            UIImage *downloadImage = [UIImage imageWithData:imgData];
+            
+//            advImage=[JDOImageUtil adjustImage:downloadImage toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
+            advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320, 460)];
+            
             // 图片加载成功后才保存服务器版本号
             [userDefault setObject:advServerVersion forKey:@"adv_version"];
             [userDefault synchronize];
@@ -71,7 +81,8 @@
             NSFileManager * fm = [NSFileManager defaultManager];
             NSData *imgData = [fm contentsAtPath:[JDOPathUtil getDocumentsFilePath:advertise_file_name]];
             if(imgData){
-                advImage = [UIImage imageWithData:imgData];
+//                advImage = [JDOImageUtil adjustImage:[UIImage imageWithData:imgData] toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
+                advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320, 460)];
             }else{
                 // 从本地路径加载缓存广告图失败,使用默认广告图
                 advImage = [UIImage imageNamed:@"default_adv.jpg"];
@@ -82,11 +93,10 @@
 }
 
 - (void)showAdvertiseView{
-    // 若广告加载完成则显示
-    if(advImage != nil){
-        advView = [[UIImageView alloc] initWithImage:advImage];
-    }else{  
-        // 2秒之后仍未加载完成,则显示已缓存的广告图
+    
+    advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
+    // 2秒之后仍未加载完成,则显示已缓存的广告图
+    if(advImage == nil){
         NSFileManager * fm = [NSFileManager defaultManager];
         NSData *imgData = [fm contentsAtPath:[JDOPathUtil getDocumentsFilePath:advertise_file_name]];
         if(imgData){
@@ -95,9 +105,8 @@
             // 本地缓存尚不存在,加载默认广告图
             advImage = [UIImage imageNamed:@"default_adv.jpg"];
         }
-        advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
-        advView.image = advImage;
     }
+    advView.image = advImage;
     advView.alpha = 0;
     [self.window addSubview:advView];
     
@@ -113,9 +122,27 @@
 }
 
 - (void)navigateToMainView{
-    self.viewController = [[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
+//    self.viewController = [[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil];
+    IIViewDeckController* deckController = [self generateControllerStack];
+    self.leftController = deckController.leftController;
+    self.centerController = deckController.centerController;
+    self.window.rootViewController = deckController;
     [advView removeFromSuperview];
+}
+
+- (IIViewDeckController*)generateControllerStack {
+    LeftViewController *leftController = [[LeftViewController alloc] initWithNibName:@"LeftViewController" bundle:nil];
+    RightViewController *rightController = [[RightViewController alloc] initWithNibName:@"RightViewController" bundle:nil];
+    
+    UIViewController *centerController = [[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil];
+    centerController = [[UINavigationController alloc] initWithRootViewController:centerController];
+    IIViewDeckController* deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
+                                                                                    leftViewController:leftController
+                                                                                   rightViewController:rightController];
+    deckController.rightSize = 100;
+    
+//    [deckController disablePanOverViewsOfClass:NSClassFromString(@"_UITableViewHeaderFooterContentView")];
+    return deckController;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

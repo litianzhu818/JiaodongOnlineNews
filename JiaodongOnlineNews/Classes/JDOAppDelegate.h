@@ -16,4 +16,7 @@
 
 @property (strong, nonatomic) JDOViewController *viewController;
 
+@property (retain, nonatomic) UIViewController *centerController;
+@property (retain, nonatomic) UIViewController *leftController;
+
 @end
