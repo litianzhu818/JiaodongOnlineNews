@@ -11,10 +11,12 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
-#endif
+    #import <AFNetworking.h>
+    #import <JSONKit.h>
+    #import "JDOAppDelegate.h"
 
-#import <AFNetworking.h>
-#import <JSONKit.h>
+    #define SharedAppDelegate ((JDOAppDelegate* )[[UIApplication sharedApplication] delegate])
+#endif
 
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys"
 #define ADV_SERVICE @"/Data/getAdv"
