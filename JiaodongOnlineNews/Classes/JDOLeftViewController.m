@@ -4,7 +4,7 @@
 //
 
 
-#import "LeftViewController.h"
+#import "JDOLeftViewController.h"
 #import "IIViewDeckController.h"
 
 typedef enum {
@@ -16,7 +16,7 @@ typedef enum {
     LeftMenuItemCount
 } LeftMenuItem;
 
-@implementation LeftViewController
+@implementation JDOLeftViewController
 
 NSArray *iconNames;
 NSArray *iconTitles;

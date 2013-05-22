@@ -4,6 +4,6 @@
 //
 
 
-@interface LeftViewController : UITableViewController
+@interface JDOLeftViewController : UITableViewController
 
 @end

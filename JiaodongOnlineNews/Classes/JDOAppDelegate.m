@@ -14,8 +14,8 @@
 #import "JDOPathUtil.h"
 #import "JDOImageUtil.h"
 #import "IIViewDeckController.h"
-#import "LeftViewController.h"
-#import "RightViewController.h"
+#import "JDOLeftViewController.h"
+#import "JDORightViewController.h"
 
 #define splash_stay_time 1.0
 #define advertise_stay_time 2.0
@@ -131,8 +131,8 @@
 }
 
 - (IIViewDeckController*)generateControllerStack {
-    LeftViewController *leftController = [[LeftViewController alloc] initWithNibName:@"LeftViewController" bundle:nil];
-    RightViewController *rightController = [[RightViewController alloc] initWithNibName:@"RightViewController" bundle:nil];
+    JDOLeftViewController *leftController = [[JDOLeftViewController alloc] initWithNibName:@"LeftViewController" bundle:nil];
+    JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"RightViewController" bundle:nil];
     
     
     UINavigationController* centerController = [[UINavigationController alloc] initWithRootViewController:[[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil]];

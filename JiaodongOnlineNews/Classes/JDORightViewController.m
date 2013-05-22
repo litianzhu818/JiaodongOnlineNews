@@ -4,20 +4,20 @@
 //
 
 
-#import "RightViewController.h"
-#import "LeftViewController.h"
+#import "JDORightViewController.h"
+#import "JDOLeftViewController.h"
 #import "JDOViewController.h"
 #import "IIViewDeckController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface RightViewController () <IIViewDeckControllerDelegate>
+@interface JDORightViewController () <IIViewDeckControllerDelegate>
 
 @property (nonatomic, retain) NSMutableArray* logs;
 
 @end
 
 
-@implementation RightViewController
+@implementation JDORightViewController
 
 @synthesize tableView = _tableView;
 @synthesize logs = _logs;

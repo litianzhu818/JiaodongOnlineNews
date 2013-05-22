@@ -3,7 +3,7 @@
 //  ViewDeckExample
 //
 
-@interface RightViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface JDORightViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UITableView* tableView;
 
