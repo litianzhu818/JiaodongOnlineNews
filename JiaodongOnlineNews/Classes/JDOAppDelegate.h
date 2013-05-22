@@ -10,7 +10,7 @@
 
 @class JDOViewController;
 
-@interface JDOAppDelegate : UIResponder <UIApplicationDelegate>
+@interface JDOAppDelegate : UIResponder <UIApplicationDelegate,UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

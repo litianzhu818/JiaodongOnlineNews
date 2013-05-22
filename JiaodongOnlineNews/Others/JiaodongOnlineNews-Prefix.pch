@@ -15,7 +15,7 @@
     #import <JSONKit.h>
     #import "JDOAppDelegate.h"
 
-    #define SharedAppDelegate ((JDOAppDelegate* )[[UIApplication sharedApplication] delegate])
+    #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #endif
 
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys"

@@ -134,11 +134,11 @@
     LeftViewController *leftController = [[LeftViewController alloc] initWithNibName:@"LeftViewController" bundle:nil];
     RightViewController *rightController = [[RightViewController alloc] initWithNibName:@"RightViewController" bundle:nil];
     
-    UIViewController *centerController = [[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil];
-    centerController = [[UINavigationController alloc] initWithRootViewController:centerController];
+    
+    UINavigationController* centerController = [[UINavigationController alloc] initWithRootViewController:[[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil]];
+    
     IIViewDeckController* deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
-                                                                                    leftViewController:leftController
-                                                                                   rightViewController:rightController];
+                                                                                    leftViewController:leftController rightViewController:rightController];
     deckController.rightSize = 100;
     
 //    [deckController disablePanOverViewsOfClass:NSClassFromString(@"_UITableViewHeaderFooterContentView")];

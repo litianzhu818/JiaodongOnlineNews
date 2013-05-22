@@ -8,8 +8,6 @@
 #import "LeftViewController.h"
 #import "JDOViewController.h"
 #import "IIViewDeckController.h"
-//#import "NestViewController.h"
-//#import "PushedViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface RightViewController () <IIViewDeckControllerDelegate>
@@ -23,7 +21,6 @@
 
 @synthesize tableView = _tableView;
 @synthesize logs = _logs;
-@synthesize pushButton = _pushButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,65 +39,15 @@
     
     self.viewDeckController.delegate = self;
     self.tableView.scrollsToTop = NO;
-    self.pushButton.enabled = NO;
-    self.pushButton.layer.opacity = 0.2;
-}
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self addLog:@"view will appear"];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self addLog:@"view will disappear"];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self addLog:@"view did appear"];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [self addLog:@"view did disappear"];
-}
-
-
-#pragma mark - View lifecycle
-
-- (IBAction)defaultCenterPressed:(id)sender {
-    self.viewDeckController.centerController = SharedAppDelegate.centerController;
-    self.viewDeckController.leftController = SharedAppDelegate.leftController;
-    self.pushButton.enabled = NO;
-    self.pushButton.layer.opacity = 0.2;
-}
-
-- (IBAction)swapLeftAndCenterPressed:(id)sender {
-    self.viewDeckController.centerController = SharedAppDelegate.leftController;
-    self.viewDeckController.leftController = SharedAppDelegate.centerController;
-    self.pushButton.enabled = NO;
-    self.pushButton.layer.opacity = 0.2;
-}
-
-- (IBAction)centerNavController:(id)sender {
-    self.viewDeckController.leftController = SharedAppDelegate.leftController;
-    
-//    NestViewController* nestController = [[NestViewController alloc] initWithNibName:@"NestViewController" bundle:nil];
-//    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:nestController];
-//    self.viewDeckController.centerController = navController;
-//
-//    self.pushButton.enabled = YES;
-//    self.pushButton.layer.opacity = 1;
-}
-
-- (void)pushOverCenter:(id)sender {
-//    PushedViewController* controller = [[PushedViewController alloc] initWithNibName:@"PushedViewController" bundle:nil];
-//    [self.viewDeckController rightViewPushViewControllerOverCenterController:controller];
 }
 
 - (IBAction)moveToLeft:(id)sender {
     [self.viewDeckController toggleOpenView];
+}
+
+- (IBAction)onSettingClicked:(id)sender {
+#warning 显示设置视图
 }
 
 - (IBAction)presentModal:(id)sender {

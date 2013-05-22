@@ -24,14 +24,16 @@ NSArray *iconTitles;
 - (id)initWithStyle:(UITableViewStyle)style{
     self = [super initWithStyle:style];
     if (self) {
-        iconNames = @[@"left_menu",@"left_menu",@"left_menu",@"left_menu",@"left_menu"];
-        iconTitles = @[@"新闻",@"话题",@"图片",@"便民",@"民声"];
+        
     }
     return self;
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+
+    iconNames = @[@"left_menu",@"left_menu",@"left_menu",@"left_menu",@"left_menu"];
+    iconTitles = @[@"新闻",@"话题",@"图片",@"便民",@"民声"];
     
     self.tableView.scrollsToTop = NO;
     // Uncomment the following line to preserve selection between presentations.
@@ -80,6 +82,10 @@ NSArray *iconTitles;
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60.0;
+}
+
 
 #pragma mark - Table view delegate
 
@@ -87,13 +93,14 @@ NSArray *iconTitles;
     
     [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
         if ([controller.centerController isKindOfClass:[UINavigationController class]]) {
-            UITableViewController* cc = (UITableViewController*)((UINavigationController*)controller.centerController).topViewController;
+            UITableViewController *cc = (UITableViewController *)((UINavigationController *)controller.centerController).topViewController;
             cc.navigationItem.title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
             if ([cc respondsToSelector:@selector(tableView)]) {
                 [cc.tableView deselectRowAtIndexPath:[cc.tableView indexPathForSelectedRow] animated:NO];
             }
         }
-        [NSThread sleepForTimeInterval:(300+arc4random()%700)/1000000.0]; // mimic delay... not really necessary
+    } completion:^(IIViewDeckController *controller, BOOL success) {
+        
     }];
 }
 
