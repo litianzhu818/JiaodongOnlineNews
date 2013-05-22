@@ -24,6 +24,7 @@
 		2D19CFEA174A3F8700BDAE39 /* LeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D19CFE5174A3F8700BDAE39 /* LeftViewController.xib */; };
 		2D19CFEB174A3F8700BDAE39 /* RightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE7174A3F8700BDAE39 /* RightViewController.m */; };
 		2D19CFEC174A3F8700BDAE39 /* RightViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D19CFE8174A3F8700BDAE39 /* RightViewController.xib */; };
+		2D5DEE69174C9BAB00F21FC2 /* left_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */; };
 		2D8FAC20174896220071A601 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC1F174896220071A601 /* icon.png */; };
 		2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9678BA174AF78A008AC097 /* JDOImageUtil.m */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
@@ -53,6 +54,7 @@
 		2D19CFE6174A3F8700BDAE39 /* RightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightViewController.h; sourceTree = "<group>"; };
 		2D19CFE7174A3F8700BDAE39 /* RightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightViewController.m; sourceTree = "<group>"; };
 		2D19CFE8174A3F8700BDAE39 /* RightViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RightViewController.xib; sourceTree = "<group>"; };
+		2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left_menu@2x.png"; sourceTree = "<group>"; };
 		2D8FAC1F174896220071A601 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		2D8FAC23174898BA0071A601 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		2D8FAC2A1748AAE90071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/JDOViewController.xib"; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */,
 				2D8FAC1F174896220071A601 /* icon.png */,
 				2D01E6801748DB2F00B81568 /* default_adv.jpg */,
 				2D8FAC23174898BA0071A601 /* Default.png */,
@@ -229,6 +232,7 @@
 				2D01E6811748DB2F00B81568 /* default_adv.jpg in Resources */,
 				2D19CFEA174A3F8700BDAE39 /* LeftViewController.xib in Resources */,
 				2D19CFEC174A3F8700BDAE39 /* RightViewController.xib in Resources */,
+				2D5DEE69174C9BAB00F21FC2 /* left_menu@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
