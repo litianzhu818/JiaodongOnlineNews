@@ -8,7 +8,7 @@
 #import "JDOLeftViewController.h"
 #import "JDOViewController.h"
 #import "IIViewDeckController.h"
-#import <QuartzCore/QuartzCore.h>
+#import "JDOSettingViewController.h"
 
 @interface JDORightViewController () <IIViewDeckControllerDelegate>
 
@@ -19,8 +19,8 @@
 
 @implementation JDORightViewController
 
-@synthesize tableView = _tableView;
-@synthesize logs = _logs;
+JDOSettingViewController *settingContrller;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,7 +47,24 @@
 }
 
 - (IBAction)onSettingClicked:(id)sender {
-#warning 显示设置视图
+    settingContrller = [[JDOSettingViewController alloc] init];
+    
+    CATransition *animation = [CATransition animation];
+    animation.duration = 0.5;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    // kCATransitionFade 淡化 kCATransitionPush 推挤 kCATransitionReveal 揭开 kCATransitionMoveIn 覆盖
+    animation.type = kCATransitionMoveIn;
+    // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
+    animation.subtype = kCATransitionFromRight;
+    
+    settingContrller.view.frame = CGRectMake(0, 20, 320, 460);
+    [SharedAppDelegate.window insertSubview:settingContrller.view aboveSubview:SharedAppDelegate.deckController.view];
+//    SharedAppDelegate.window.rootViewController = settingContrller;
+    [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
+    
+//    [self.viewDeckController presentViewController:[[JDOSettingViewController alloc] init] animated:true completion:^{
+//        
+//    }];
 }
 
 - (IBAction)presentModal:(id)sender {

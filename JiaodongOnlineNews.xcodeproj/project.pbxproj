@@ -25,6 +25,9 @@
 		2D19CFEB174A3F8700BDAE39 /* JDORightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */; };
 		2D19CFEC174A3F8700BDAE39 /* JDORightViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D19CFE8174A3F8700BDAE39 /* JDORightViewController.xib */; };
 		2D5DEE69174C9BAB00F21FC2 /* left_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */; };
+		2D8D44ED174DA7B500786545 /* top_navigation_back_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */; };
+		2D8D44EE174DA7B500786545 /* top_navigation_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */; };
+		2D8D44F1174DAB2800786545 /* JDONavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D44F0174DAB2800786545 /* JDONavigationView.m */; };
 		2D8FAC20174896220071A601 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC1F174896220071A601 /* icon.png */; };
 		2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9678BA174AF78A008AC097 /* JDOImageUtil.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
@@ -58,6 +61,10 @@
 		2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDORightViewController.m; sourceTree = "<group>"; };
 		2D19CFE8174A3F8700BDAE39 /* JDORightViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDORightViewController.xib; sourceTree = "<group>"; };
 		2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left_menu@2x.png"; sourceTree = "<group>"; };
+		2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_navigation_back_highlighted@2x.png"; sourceTree = "<group>"; };
+		2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_navigation_back@2x.png"; sourceTree = "<group>"; };
+		2D8D44EF174DAB2800786545 /* JDONavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONavigationView.h; sourceTree = "<group>"; };
+		2D8D44F0174DAB2800786545 /* JDONavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONavigationView.m; sourceTree = "<group>"; };
 		2D8FAC1F174896220071A601 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		2D8FAC23174898BA0071A601 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		2D8FAC2A1748AAE90071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/JDOViewController.xib"; sourceTree = "<group>"; };
@@ -150,6 +157,8 @@
 				2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */,
 				2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */,
 				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
+				2D8D44EF174DAB2800786545 /* JDONavigationView.h */,
+				2D8D44F0174DAB2800786545 /* JDONavigationView.m */,
 				2D01E67A1748D78300B81568 /* Utils */,
 			);
 			name = Classes;
@@ -159,6 +168,8 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */,
+				2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */,
 				2DF21F52174CA93B000DEB70 /* right_menu@2x.png */,
 				2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */,
 				2D8FAC1F174896220071A601 /* icon.png */,
@@ -246,6 +257,8 @@
 				2D5DEE69174C9BAB00F21FC2 /* left_menu@2x.png in Resources */,
 				2DF21F53174CA93B000DEB70 /* right_menu@2x.png in Resources */,
 				2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */,
+				2D8D44ED174DA7B500786545 /* top_navigation_back_highlighted@2x.png in Resources */,
+				2D8D44EE174DA7B500786545 /* top_navigation_back@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +309,7 @@
 				2D19CFEB174A3F8700BDAE39 /* JDORightViewController.m in Sources */,
 				2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */,
 				2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */,
+				2D8D44F1174DAB2800786545 /* JDONavigationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

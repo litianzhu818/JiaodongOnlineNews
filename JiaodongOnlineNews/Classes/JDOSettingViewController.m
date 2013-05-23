@@ -7,6 +7,7 @@
 //
 
 #import "JDOSettingViewController.h"
+#import "JDONavigationView.h"
 
 @interface JDOSettingViewController ()
 
@@ -26,7 +27,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    JDONavigationView *navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    [self.view addSubview:navigationView];
+    UIButton *backButton = [navigationView addBackButton];
+    [backButton addTarget:self action:@selector(onBackBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [navigationView setTitle:@"设置"];
+    [navigationView addCustomButton];
+}
+
+- (void) onBackBtnClick{
+    
+    CATransition *animation = [CATransition animation];
+    animation.duration = 0.5;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    // kCATransitionFade 淡化 kCATransitionPush 推挤 kCATransitionReveal 揭开 kCATransitionMoveIn 覆盖
+    animation.type = kCATransitionMoveIn;
+    // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
+    animation.subtype = kCATransitionFromLeft;
+    
+    [self.view removeFromSuperview];
+//    SharedAppDelegate.window.rootViewController = SharedAppDelegate.deckController;
+    [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
+    
 }
 
 - (void)didReceiveMemoryWarning

@@ -123,21 +123,19 @@
 
 - (void)navigateToMainView{
 //    self.viewController = [[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil];
-    IIViewDeckController* deckController = [self generateControllerStack];
-    self.leftController = deckController.leftController;
-    self.centerController = deckController.centerController;
-    self.window.rootViewController = deckController;
+    self.deckController = [self generateControllerStack];
+    self.window.rootViewController = self.deckController;
     [advView removeFromSuperview];
 }
 
-- (IIViewDeckController*)generateControllerStack {
+- (IIViewDeckController *)generateControllerStack {
     JDOLeftViewController *leftController = [[JDOLeftViewController alloc] initWithNibName:@"LeftViewController" bundle:nil];
     JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"RightViewController" bundle:nil];
     
     
-    UINavigationController* centerController = [[UINavigationController alloc] initWithRootViewController:[[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil]];
+    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:[[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil]];
     
-    IIViewDeckController* deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
+    IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
                                                                                     leftViewController:leftController rightViewController:rightController];
     deckController.rightSize = 100;
     

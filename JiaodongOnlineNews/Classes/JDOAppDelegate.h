@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class JDOViewController;
+@class IIViewDeckController;
 
 @interface JDOAppDelegate : UIResponder <UIApplicationDelegate,UINavigationControllerDelegate>
 
@@ -16,7 +17,6 @@
 
 @property (strong, nonatomic) JDOViewController *viewController;
 
-@property (retain, nonatomic) UIViewController *centerController;
-@property (retain, nonatomic) UIViewController *leftController;
+@property (retain, nonatomic) IIViewDeckController *deckController;
 
 @end
