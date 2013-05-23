@@ -3,10 +3,10 @@
 //  ViewDeckExample
 //
 
-#import "JDOViewController.h"
+#import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
 
-@implementation JDOViewController
+@implementation JDONewsViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {

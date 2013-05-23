@@ -41,7 +41,7 @@
     animation.duration = 0.5;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     // kCATransitionFade 淡化 kCATransitionPush 推挤 kCATransitionReveal 揭开 kCATransitionMoveIn 覆盖
-    animation.type = kCATransitionMoveIn;
+    animation.type = kCATransitionReveal;
     // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
     animation.subtype = kCATransitionFromLeft;
     

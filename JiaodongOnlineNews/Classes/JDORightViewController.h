@@ -7,7 +7,6 @@
 
 @property (nonatomic, retain) IBOutlet UITableView* tableView;
 
-- (IBAction)moveToLeft:(id)sender;
-- (IBAction)onSettingClicked:(id)sender;
+- (IBAction)onSettingClick:(id)sender;
 
 @end

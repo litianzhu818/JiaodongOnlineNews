@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface JDONewsViewController : UITableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @end

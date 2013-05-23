@@ -15,6 +15,7 @@
     #import <AFNetworking.h>
     #import <JSONKit.h>
     #import "JDOAppDelegate.h"
+    #import "IIViewDeckController.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #endif

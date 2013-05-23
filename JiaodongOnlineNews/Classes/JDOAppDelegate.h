@@ -19,4 +19,6 @@
 
 @property (retain, nonatomic) IIViewDeckController *deckController;
 
+- (IIViewDeckController *)generateControllerStack;
+
 @end

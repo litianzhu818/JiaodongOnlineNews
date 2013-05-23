@@ -8,7 +8,7 @@
 
 #import "JDOAppDelegate.h"
 
-#import "JDOViewController.h"
+#import "JDONewsViewController.h"
 #import "Reachability.h"
 #import "SDURLCache.h"
 #import "JDOPathUtil.h"
@@ -133,7 +133,7 @@
     JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"RightViewController" bundle:nil];
     
     
-    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:[[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil]];
+    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:[[JDONewsViewController alloc] initWithNibName:@"JDONewsViewController" bundle:nil]];
     
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
                                                                                     leftViewController:leftController rightViewController:rightController];

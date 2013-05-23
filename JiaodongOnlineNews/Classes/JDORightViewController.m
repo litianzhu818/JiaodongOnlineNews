@@ -6,7 +6,7 @@
 
 #import "JDORightViewController.h"
 #import "JDOLeftViewController.h"
-#import "JDOViewController.h"
+#import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOSettingViewController.h"
 
@@ -42,12 +42,10 @@ JDOSettingViewController *settingContrller;
 
 }
 
-- (IBAction)moveToLeft:(id)sender {
-    [self.viewDeckController toggleOpenView];
-}
-
-- (IBAction)onSettingClicked:(id)sender {
-    settingContrller = [[JDOSettingViewController alloc] init];
+- (IBAction)onSettingClick:(id)sender {
+    if(settingContrller == nil){
+        settingContrller = [[JDOSettingViewController alloc] init];
+    }
     
     CATransition *animation = [CATransition animation];
     animation.duration = 0.5;
@@ -61,15 +59,7 @@ JDOSettingViewController *settingContrller;
     [SharedAppDelegate.window insertSubview:settingContrller.view aboveSubview:SharedAppDelegate.deckController.view];
 //    SharedAppDelegate.window.rootViewController = settingContrller;
     [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
-    
-//    [self.viewDeckController presentViewController:[[JDOSettingViewController alloc] init] animated:true completion:^{
-//        
-//    }];
-}
 
-- (IBAction)presentModal:(id)sender {
-//    IIViewDeckController* controller = [SharedAppDelegate generateControllerStack];
-//    [self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - view deck delegate
