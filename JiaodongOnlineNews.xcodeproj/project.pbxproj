@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2D01E6711748C38C00B81568 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC23174898BA0071A601 /* Default.png */; };
-		2D01E6781748C81200B81568 /* JDONewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC2B1748AAE90071A601 /* JDONewsViewController.xib */; };
 		2D01E6791748C81900B81568 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC301748AC470071A601 /* InfoPlist.strings */; };
 		2D01E67D1748D82E00B81568 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D01E67C1748D82E00B81568 /* Reachability.m */; };
 		2D01E67F1748D84E00B81568 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D01E67E1748D84E00B81568 /* SystemConfiguration.framework */; };
@@ -19,6 +17,9 @@
 		2D080CE2173CE4D9005653A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE1173CE4D9005653A7 /* main.m */; };
 		2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */; };
 		2D080CEF173CE4D9005653A7 /* JDONewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */; };
+		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
+		2D13EF95174E1374007FF1CC /* navbar_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF93174E1374007FF1CC /* navbar_background@2x.png */; };
+		2D13EF96174E1374007FF1CC /* navbar_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */; };
 		2D19CFE117499F3800BDAE39 /* JDOPathUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE017499F3800BDAE39 /* JDOPathUtil.m */; };
 		2D19CFE9174A3F8700BDAE39 /* JDOLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */; };
 		2D19CFEA174A3F8700BDAE39 /* JDOLeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D19CFE5174A3F8700BDAE39 /* JDOLeftViewController.xib */; };
@@ -28,6 +29,7 @@
 		2D8D44ED174DA7B500786545 /* top_navigation_back_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */; };
 		2D8D44EE174DA7B500786545 /* top_navigation_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */; };
 		2D8D44F1174DAB2800786545 /* JDONavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D44F0174DAB2800786545 /* JDONavigationView.m */; };
+		2D8D44F8174DEB9900786545 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC23174898BA0071A601 /* Default.png */; };
 		2D8FAC20174896220071A601 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC1F174896220071A601 /* icon.png */; };
 		2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9678BA174AF78A008AC097 /* JDOImageUtil.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
@@ -52,6 +54,10 @@
 		2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDOAppDelegate.m; sourceTree = "<group>"; };
 		2D080CED173CE4D9005653A7 /* JDONewsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JDONewsViewController.h; sourceTree = "<group>"; };
 		2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDONewsViewController.m; sourceTree = "<group>"; };
+		2D13EF90174E11D5007FF1CC /* JDOPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPageControl.h; sourceTree = "<group>"; };
+		2D13EF91174E11D5007FF1CC /* JDOPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPageControl.m; sourceTree = "<group>"; };
+		2D13EF93174E1374007FF1CC /* navbar_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_background@2x.png"; sourceTree = "<group>"; };
+		2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_selected@2x.png"; sourceTree = "<group>"; };
 		2D19CFDF17499F3800BDAE39 /* JDOPathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPathUtil.h; sourceTree = "<group>"; };
 		2D19CFE017499F3800BDAE39 /* JDOPathUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPathUtil.m; sourceTree = "<group>"; };
 		2D19CFE3174A3F8700BDAE39 /* JDOLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLeftViewController.h; sourceTree = "<group>"; };
@@ -67,7 +73,6 @@
 		2D8D44F0174DAB2800786545 /* JDONavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONavigationView.m; sourceTree = "<group>"; };
 		2D8FAC1F174896220071A601 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		2D8FAC23174898BA0071A601 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		2D8FAC2A1748AAE90071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/JDONewsViewController.xib"; sourceTree = "<group>"; };
 		2D8FAC2F1748AC470071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2D9678B9174AF78A008AC097 /* JDOImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageUtil.h; sourceTree = "<group>"; };
 		2D9678BA174AF78A008AC097 /* JDOImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageUtil.m; sourceTree = "<group>"; };
@@ -147,7 +152,6 @@
 				2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */,
 				2D080CED173CE4D9005653A7 /* JDONewsViewController.h */,
 				2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */,
-				2D8FAC2B1748AAE90071A601 /* JDONewsViewController.xib */,
 				2D19CFE3174A3F8700BDAE39 /* JDOLeftViewController.h */,
 				2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */,
 				2D19CFE5174A3F8700BDAE39 /* JDOLeftViewController.xib */,
@@ -157,17 +161,29 @@
 				2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */,
 				2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */,
 				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
-				2D8D44EF174DAB2800786545 /* JDONavigationView.h */,
-				2D8D44F0174DAB2800786545 /* JDONavigationView.m */,
+				2D8D44F9174DF21800786545 /* Views */,
 				2D01E67A1748D78300B81568 /* Utils */,
 			);
 			name = Classes;
 			path = JiaodongOnlineNews/Classes;
 			sourceTree = "<group>";
 		};
+		2D8D44F9174DF21800786545 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2D8D44EF174DAB2800786545 /* JDONavigationView.h */,
+				2D8D44F0174DAB2800786545 /* JDONavigationView.m */,
+				2D13EF90174E11D5007FF1CC /* JDOPageControl.h */,
+				2D13EF91174E11D5007FF1CC /* JDOPageControl.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2D13EF93174E1374007FF1CC /* navbar_background@2x.png */,
+				2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */,
 				2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */,
 				2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */,
 				2DF21F52174CA93B000DEB70 /* right_menu@2x.png */,
@@ -248,9 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D01E6791748C81900B81568 /* InfoPlist.strings in Resources */,
-				2D01E6781748C81200B81568 /* JDONewsViewController.xib in Resources */,
 				2D8FAC20174896220071A601 /* icon.png in Resources */,
-				2D01E6711748C38C00B81568 /* Default.png in Resources */,
 				2D01E6811748DB2F00B81568 /* default_adv.jpg in Resources */,
 				2D19CFEA174A3F8700BDAE39 /* JDOLeftViewController.xib in Resources */,
 				2D19CFEC174A3F8700BDAE39 /* JDORightViewController.xib in Resources */,
@@ -259,6 +273,9 @@
 				2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */,
 				2D8D44ED174DA7B500786545 /* top_navigation_back_highlighted@2x.png in Resources */,
 				2D8D44EE174DA7B500786545 /* top_navigation_back@2x.png in Resources */,
+				2D8D44F8174DEB9900786545 /* Default.png in Resources */,
+				2D13EF95174E1374007FF1CC /* navbar_background@2x.png in Resources */,
+				2D13EF96174E1374007FF1CC /* navbar_selected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,20 +327,13 @@
 				2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */,
 				2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */,
 				2D8D44F1174DAB2800786545 /* JDONavigationView.m in Sources */,
+				2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		2D8FAC2B1748AAE90071A601 /* JDONewsViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2D8FAC2A1748AAE90071A601 /* zh-Hans */,
-			);
-			name = JDONewsViewController.xib;
-			sourceTree = "<group>";
-		};
 		2D8FAC301748AC470071A601 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

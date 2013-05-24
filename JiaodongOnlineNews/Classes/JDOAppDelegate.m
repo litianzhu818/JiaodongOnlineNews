@@ -122,18 +122,18 @@
 }
 
 - (void)navigateToMainView{
-//    self.viewController = [[JDOViewController alloc] initWithNibName:@"JDOViewController" bundle:nil];
     self.deckController = [self generateControllerStack];
-    self.window.rootViewController = self.deckController;
+//    self.window.rootViewController = self.deckController;
+    self.window.rootViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
     [advView removeFromSuperview];
 }
 
 - (IIViewDeckController *)generateControllerStack {
-    JDOLeftViewController *leftController = [[JDOLeftViewController alloc] initWithNibName:@"LeftViewController" bundle:nil];
-    JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"RightViewController" bundle:nil];
+    JDOLeftViewController *leftController = [[JDOLeftViewController alloc] initWithNibName:@"JDOLeftViewController" bundle:nil];
+    JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"JDORightViewController" bundle:nil];
     
     
-    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:[[JDONewsViewController alloc] initWithNibName:@"JDONewsViewController" bundle:nil]];
+    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:[[JDONewsViewController alloc] initWithNibName:nil bundle:nil]];
     
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
                                                                                     leftViewController:leftController rightViewController:rightController];
@@ -163,11 +163,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
     
-    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
-    splashView.image = [UIImage imageNamed:@"Default.png"];
-    [self.window addSubview:splashView];
+//    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
+//    splashView.image = [UIImage imageNamed:@"Default.png"];
+//    [self.window addSubview:splashView];
+//    
+//    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
     
-    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
+    [self navigateToMainView];
     
     return YES;
 }

@@ -5,17 +5,16 @@
 
 #import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
+#import "JDOPageControl.h"
+#import "Math.h"
 
 @implementation JDONewsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+UIScrollView *scrollView;
+JDOPageControl *pageControl;
+BOOL pageControlUsed;
+NSMutableArray *_demoContent;
+int lastPageIndex;
 
 - (void)didReceiveMemoryWarning
 {
@@ -26,6 +25,84 @@
 }
 
 #pragma mark - View lifecycle
+- (void)loadView{
+    [super loadView];
+//    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    
+    _demoContent = [NSMutableArray array];
+    [_demoContent addObject:@{@"color":[UIColor redColor],@"title":@"烟台"}];
+    [_demoContent addObject:@{@"color":[UIColor orangeColor],@"title":@"要闻"}];
+    [_demoContent addObject:@{@"color":[UIColor yellowColor],@"title":@"社会"}];
+    [_demoContent addObject:@{@"color":[UIColor greenColor],@"title":@"娱乐"}];
+    [_demoContent addObject:@{@"color":[UIColor blueColor],@"title":@"体育"}];
+
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,[self.view bounds].size.width,[self.view bounds].size.height - 44)];
+    // 默认背景色是黑色，可能是IIViewDeckController造成的
+    scrollView.backgroundColor = [UIColor whiteColor];
+    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * _demoContent.count, scrollView.frame.size.height-44);
+    scrollView.showsHorizontalScrollIndicator = false;
+    scrollView.delegate = self;
+    scrollView.pagingEnabled = true;
+    
+    for (int i=0; i<[_demoContent count]; i++){
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i*scrollView.frame.size.width,0,scrollView.frame.size.width,scrollView.frame.size.height)];
+        [view setBackgroundColor:[[_demoContent objectAtIndex:i] objectForKey:@"color"] ];
+        [scrollView addSubview:view];
+    }
+    
+    
+    pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 40) background:@"navbar_background" slider:@"navbar_selected"];
+    [pageControl setPages:_demoContent];
+    [pageControl addTarget:self action:@selector(onPageChanged:) forControlEvents:UIControlEventValueChanged];
+    
+    [self changeToPage:0 animated:false];
+    
+    [self.view addSubview:scrollView];
+    [self.view addSubview:pageControl];
+
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+	pageControlUsed = NO;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (pageControlUsed || pageControl.isAnimating){
+        return;
+    }
+    CGFloat pageWidth = scrollView.frame.size.width;
+    int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+	[pageControl setCurrentPage:page animated:YES];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView_{
+	pageControlUsed = NO;
+}
+
+- (void)onPageChanged:(id)sender{
+	pageControlUsed = YES;
+    // 若切换的页面不是连续的页面，则不启用动画，避免连续滚动过多个页面
+    if( abs(pageControl.currentPage - lastPageIndex) > 1){
+        [self slideToCurrentPage:false];
+    }else{
+        [self slideToCurrentPage:true];
+    }
+    lastPageIndex = pageControl.currentPage;
+}
+
+- (void)slideToCurrentPage:(bool)animated{
+	int page = pageControl.currentPage;
+	
+    CGRect frame = scrollView.frame;
+    frame.origin.x = frame.size.width * page;
+    frame.origin.y = 0;
+    [scrollView scrollRectToVisible:frame animated:animated];
+}
+
+- (void)changeToPage:(int)page animated:(BOOL)animated{
+	[pageControl setCurrentPage:page animated:animated];
+	[self slideToCurrentPage:animated];
+}
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -33,6 +110,13 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"left" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleLeftView)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"right" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleRightView)];
+    
+    
+//    [self setIsLoading:true];
+//    [self performSelector:@selector(finishLoading) withObject:nil afterDelay:2];
+}
+- (void)finishLoading{
+//    [self setIsLoading:false];
 }
 
 - (void)viewDidUnload{
