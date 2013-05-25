@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSArray *pages;
 @property (nonatomic, assign,getter = isAnimating) BOOL animating;
 
-- (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage;
+- (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage pages:(NSArray *)pages;
 - (void)setCurrentPage:(int)_currentPage animated:(BOOL)animated;
 
 @end

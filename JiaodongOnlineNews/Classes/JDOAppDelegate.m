@@ -123,8 +123,9 @@
 
 - (void)navigateToMainView{
     self.deckController = [self generateControllerStack];
-//    self.window.rootViewController = self.deckController;
-    self.window.rootViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
+    self.window.rootViewController = self.deckController;
+    // 测试单独的JDONewsViewController
+//    self.window.rootViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
     [advView removeFromSuperview];
 }
 

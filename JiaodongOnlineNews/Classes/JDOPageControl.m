@@ -14,80 +14,89 @@
 #define slider_top_margin 5
 #define slider_left_margin 5
 #define title_label_tag 100
+#define title_normal_color [UIColor blackColor]
+#define title_highlight_color [UIColor whiteColor]
 
 @implementation JDOPageControl
 
-int touchDownIndex;
-
-- (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage {
+- (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage pages:(NSArray *)pages{
     if (self = [super initWithFrame:frame]) {
-        // Initialization code
-		[self setBackgroundColor:[UIColor clearColor]];
+        // 背景色
 		_backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height)];
-		[_backgroundView setBackgroundColor:[UIColor clearColor]];
-		[self addSubview:_backgroundView];
-		
+        [_backgroundView setImage:[UIImage imageNamed:backgroundImage]];
+        [self addSubview:_backgroundView];
+        [self sendSubviewToBack:_backgroundView];
+		// 滑动背景
 		_slider = [[UIImageView alloc] initWithFrame:CGRectZero];
-		[_slider setBackgroundColor:[UIColor clearColor]];
-		[_slider setAlpha:0.8];
-		[self addSubview:_slider];
-		
-		[_backgroundView setImage:[UIImage imageNamed:backgroundImage]];
-		[_slider setImage:[[UIImage imageNamed:sliderImage] stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
-        _animating = false;
-        _currentPage = -1;
+        [_slider setImage:[[UIImage imageNamed:sliderImage] stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
+        [self insertSubview:_slider aboveSubview:_backgroundView];
+        
+        [self setPages:pages];
     }
     return self;
 }
 
 -(void) setPages:(NSArray *)pages{
+    _animating = false;
+    _currentPage = -1;
     _pages = pages;
+    _numberOfPages = pages.count;
     int width = self.frame.size.width/pages.count;
     for (int i=0; i<pages.count; i++) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*width, 0, width,self.frame.size.height)];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.text = [[pages objectAtIndex:i] objectForKey:@"title"];
-        label.tag = title_label_tag+i;
-        label.backgroundColor = [UIColor clearColor];
-        [_backgroundView addSubview:label];
+        UIButton *titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(i*width, 0, width,self.frame.size.height)];
+        [titleBtn setTitle:[[pages objectAtIndex:i] objectForKey:@"title"] forState:UIControlStateNormal];
+        [titleBtn setTitleColor:title_normal_color forState:UIControlStateNormal];
+        titleBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleBtn.tag = title_label_tag+i;
+        titleBtn.backgroundColor = [UIColor clearColor];
+        [titleBtn addTarget:self action:@selector(onTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:titleBtn];
     }
-    UILabel *sliderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width-slider_left_margin*2,self.frame.size.height-slider_top_margin*2)];
-    sliderLabel.backgroundColor = [UIColor clearColor];
-    sliderLabel.tag = title_label_tag;
-    sliderLabel.textAlignment = NSTextAlignmentCenter;
-    sliderLabel.textColor = [UIColor whiteColor];
-    [_slider addSubview:sliderLabel];
+}
+
+- (void)onTitleClicked:(UIButton *)titleBtn{
+    int toPageIndex = titleBtn.tag - title_label_tag;
+    if(_currentPage == toPageIndex) return;
+    if(_animating == false) {
+        _animating = true;
+        [self setCurrentPage:toPageIndex animated:true];
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
+    }
     
-    [self setNumberOfPages:pages.count];
 }
 
-- (void)setCurrentPage:(int)currentPage{
-    [self setCurrentPage:currentPage animated:NO];
+- (void)setCurrentPage:(int)toPage{
+    [self setCurrentPage:toPage animated:NO];
 }
 
-- (void)setCurrentPage:(int)currentPage animated:(BOOL)animated{
-    if(_currentPage == currentPage){
+- (void)setCurrentPage:(int)toPage animated:(BOOL)animated{
+    // 在scrollView中滑动时会持续触发该函数，增加currentPage的判断可优化执行
+    if(_currentPage == toPage){
         _animating = false;
         return;
     }
+    [self setTitleOfIndex:_currentPage toColor:title_normal_color];
+    _currentPage = toPage;
 	if (animated){
-        [self hideSliderLabel];
-        _currentPage = currentPage;
 		[UIView beginAnimations:@"moveSlider" context:nil];
         [UIView setAnimationDelegate:self];
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	}else{
-        _currentPage = currentPage;
-        [self showSliderLabel];
-    }
-    
+	}
 	
 	int width = self.frame.size.width/self.numberOfPages;
-	int x = width*currentPage;
+	int x = width*_currentPage;
 	[self.slider setFrame:CGRectMake(x+slider_left_margin,slider_top_margin,width-slider_left_margin*2,self.frame.size.height-slider_top_margin*2)];
 	if (animated){
         [UIView commitAnimations];
+    }else{
+        [self setTitleOfIndex:toPage toColor:title_highlight_color];
     }
+}
+
+- (void)setTitleOfIndex:(int)index toColor:(UIColor *)color{
+    if(index<0) return;
+    UIButton *titleButton = (UIButton *)[self viewWithTag:title_label_tag+index];
+    [titleButton setTitleColor:color forState:UIControlStateNormal];
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -111,61 +120,13 @@ int touchDownIndex;
 	}
 }
 
-#pragma mark touch delegate
-
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    touchDownIndex = [self labelIndexOfPoint:[[touches anyObject] locationInView:self]];
-	
-	[super touchesBegan:touches withEvent:event];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-	int touchUpIndex = [self labelIndexOfPoint:[[touches anyObject] locationInView:self]];
-    if(touchDownIndex == touchUpIndex && _animating == false) {
-        _animating = true;
-        [self setCurrentPage:touchDownIndex animated:true];
-        [self sendActionsForControlEvents:UIControlEventValueChanged];
-    }
-    
-	[super touchesEnded:touches withEvent:event];
-}
-
--(int)labelIndexOfPoint:(CGPoint) point{
-    for (int i=0; i<self.numberOfPages; i++){
-        float max_x = (i+1)*(self.frame.size.width/self.numberOfPages);
-        if (point.x<=max_x){
-            if( point.y>UPPER_TOUCH_LIMIT && point.y<self.frame.size.height+LOWER_TOUCH_LIMIT){
-                return i;
-            }else{
-                return -1;
-            }
-        }
-    }
-    return -1;
-}
 
 -(void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context{
     if([animationID isEqualToString:@"moveSlider"] && [finished boolValue]){
-        [self showSliderLabel];
+        [self setTitleOfIndex:_currentPage toColor:title_highlight_color];
         _animating = false;
     }
     
-}
-
--(void)showSliderLabel{
-    [_backgroundView viewWithTag:title_label_tag+_currentPage].hidden = true;
-    UILabel *sliderLabel = (UILabel *)[_slider viewWithTag:title_label_tag];
-    [sliderLabel setHidden:false];
-    [sliderLabel setText:[[_pages objectAtIndex:_currentPage] objectForKey:@"title"]];
-}
-
--(void)hideSliderLabel{
-    [_backgroundView viewWithTag:title_label_tag+_currentPage].hidden = false;
-    UILabel *sliderLabel = (UILabel *)[_slider viewWithTag:title_label_tag];
-    [sliderLabel setHidden:true];
 }
 
 @end

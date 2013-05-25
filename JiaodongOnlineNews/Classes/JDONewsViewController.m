@@ -36,13 +36,14 @@ int lastPageIndex;
     [_demoContent addObject:@{@"color":[UIColor greenColor],@"title":@"娱乐"}];
     [_demoContent addObject:@{@"color":[UIColor blueColor],@"title":@"体育"}];
 
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,[self.view bounds].size.width,[self.view bounds].size.height - 44)];
-    // 默认背景色是黑色，可能是IIViewDeckController造成的
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,37,[self.view bounds].size.width,[self.view bounds].size.height - 44)];
+    // 默认背景色是黑色，可能是[super loadView]造成的
     scrollView.backgroundColor = [UIColor whiteColor];
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * _demoContent.count, scrollView.frame.size.height-44);
     scrollView.showsHorizontalScrollIndicator = false;
     scrollView.delegate = self;
     scrollView.pagingEnabled = true;
+    scrollView.bounces = false;
     
     for (int i=0; i<[_demoContent count]; i++){
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i*scrollView.frame.size.width,0,scrollView.frame.size.width,scrollView.frame.size.height)];
@@ -51,8 +52,7 @@ int lastPageIndex;
     }
     
     
-    pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 40) background:@"navbar_background" slider:@"navbar_selected"];
-    [pageControl setPages:_demoContent];
+    pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_demoContent];
     [pageControl addTarget:self action:@selector(onPageChanged:) forControlEvents:UIControlEventValueChanged];
     
     [self changeToPage:0 animated:false];
