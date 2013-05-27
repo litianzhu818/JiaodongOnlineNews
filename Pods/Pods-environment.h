@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 10
 #define COCOAPODS_VERSION_PATCH_AFNetworking 1
 
+// CocoaLumberjack
+#define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
+#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack 6
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 2
+
 // JSONKit
 #define COCOAPODS_POD_AVAILABLE_JSONKit
 // This library does not follow semantic-versioning,
@@ -36,6 +42,12 @@
 #define COCOAPODS_VERSION_MAJOR_Nimbus_NetworkImage 0
 #define COCOAPODS_VERSION_MINOR_Nimbus_NetworkImage 9
 #define COCOAPODS_VERSION_PATCH_Nimbus_NetworkImage 3
+
+// Nimbus/PagingScrollView
+#define COCOAPODS_POD_AVAILABLE_Nimbus_PagingScrollView
+#define COCOAPODS_VERSION_MAJOR_Nimbus_PagingScrollView 0
+#define COCOAPODS_VERSION_MINOR_Nimbus_PagingScrollView 9
+#define COCOAPODS_VERSION_PATCH_Nimbus_PagingScrollView 3
 
 // SDURLCache
 #define COCOAPODS_POD_AVAILABLE_SDURLCache
