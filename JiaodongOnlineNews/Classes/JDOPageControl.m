@@ -85,6 +85,7 @@
 	
 	int width = self.frame.size.width/self.numberOfPages;
 	int x = width*_currentPage;
+    // 也可以只修改center,设置为对应labelButton的center
 	[self.slider setFrame:CGRectMake(x+slider_left_margin,slider_top_margin,width-slider_left_margin*2,self.frame.size.height-slider_top_margin*2)];
 	if (animated){
         [UIView commitAnimations];

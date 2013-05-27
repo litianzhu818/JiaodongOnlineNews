@@ -133,12 +133,15 @@
     JDOLeftViewController *leftController = [[JDOLeftViewController alloc] initWithNibName:@"JDOLeftViewController" bundle:nil];
     JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"JDORightViewController" bundle:nil];
     
-    
-    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:[[JDONewsViewController alloc] initWithNibName:nil bundle:nil]];
-    
+    JDONewsViewController *newsViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
+    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:newsViewController];
+
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
                                                                                     leftViewController:leftController rightViewController:rightController];
+    deckController.leftSize = 100;
     deckController.rightSize = 100;
+    deckController.panningGestureDelegate = newsViewController;
+    deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
     
 //    [deckController disablePanOverViewsOfClass:NSClassFromString(@"_UITableViewHeaderFooterContentView")];
     return deckController;

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDONewsViewController : UIViewController <UIScrollViewDelegate>
+@interface JDONewsViewController : UIViewController <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
 @end
