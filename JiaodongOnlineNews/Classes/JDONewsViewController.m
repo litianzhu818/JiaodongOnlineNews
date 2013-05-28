@@ -7,11 +7,10 @@
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
 #import "Math.h"
+#import "NIPagingScrollView.h"
 
 @implementation JDONewsViewController
 
-UIScrollView *scrollView;
-JDOPageControl *pageControl;
 BOOL pageControlUsed;
 NSMutableArray *_demoContent;
 int lastPageIndex;
@@ -40,58 +39,52 @@ int lastPageIndex;
     [_demoContent addObject:@{@"color":[UIColor greenColor],@"title":@"娱乐"}];
     [_demoContent addObject:@{@"color":[UIColor blueColor],@"title":@"体育"}];
     
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,37,[self.view bounds].size.width,[self.view bounds].size.height - 44)];
-    scrollView.backgroundColor = [UIColor whiteColor];
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * _demoContent.count, scrollView.frame.size.height-44);
-    scrollView.showsHorizontalScrollIndicator = false;
-    scrollView.delegate = self;
-    scrollView.pagingEnabled = true;
-    scrollView.delaysContentTouches = true;
-    scrollView.bounces = false;
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,37,[self.view bounds].size.width,[self.view bounds].size.height - 44)];
+    _scrollView.backgroundColor = [UIColor whiteColor];
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _demoContent.count, _scrollView.frame.size.height-44);
+    _scrollView.showsHorizontalScrollIndicator = false;
+    _scrollView.delegate = self;
+    _scrollView.pagingEnabled = true;
+    _scrollView.delaysContentTouches = false;
+    _scrollView.bounces = false;
     
     for (int i=0; i<[_demoContent count]; i++){
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i*scrollView.frame.size.width,0,scrollView.frame.size.width,scrollView.frame.size.height)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i*_scrollView.frame.size.width,0,_scrollView.frame.size.width,_scrollView.frame.size.height)];
         [view setBackgroundColor:[[_demoContent objectAtIndex:i] objectForKey:@"color"] ];
-        [scrollView addSubview:view];
+        [_scrollView addSubview:view];
     }
     
     
-    pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_demoContent];
-    [pageControl addTarget:self action:@selector(onPageChanged:) forControlEvents:UIControlEventValueChanged];
+    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_demoContent];
+    [_pageControl addTarget:self action:@selector(onPageChanged:) forControlEvents:UIControlEventValueChanged];
     
     [self changeToPage:0 animated:false];
     
-    [self.view addSubview:scrollView];
-    [self.view addSubview:pageControl];
+    [self.view addSubview:_scrollView];
+    [self.view addSubview:_pageControl];
 }
 
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-//    NSLog(@"==============gesture in deckView================");
-//    if( gestureRecognizer!=nil ){
-//        NSLog(@"gesture:%@",[gestureRecognizer class]);
-//        NSLog(@"delegate:%@",[gestureRecognizer.delegate class]);
-//    }
-//    if(otherGestureRecognizer!=nil){
-//        NSLog(@"gesture:%@",[otherGestureRecognizer class]);
-//        NSLog(@"delegate:%@",[otherGestureRecognizer.delegate class]);
-//    }
+//    NSLog(@"=======%@======",NSStringFromSelector(_cmd));
+//    NSLog(@"gesture:%@",gestureRecognizer);
+//    NSLog(@"other gesture:%@",otherGestureRecognizer);
     
-    // otherGestureRecognizer的可能类型是UIScrollViewPanGestureRecognizer(UIPanGestureRecognizer)
-    // 或者UIScrollViewPagingSwipeGestureRecognizer(UISwipeGestureRecognizer)
-    // 因为ScrollView对应的子类在private header中，只能用其public的父类进行判断
+    // possible状态下xVelocity==0，只有继续识别才有可能进入began状态，进入began状态后，也必须继续返回true才能执行gesture的回调
+    if(gestureRecognizer.state == UIGestureRecognizerStatePossible ){
+        return true;
+    }
+    // otherGestureRecognizer的可能类型是UIScrollViewPanGestureRecognizer或者UIScrollViewPagingSwipeGestureRecognizer
     
-    if([otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]){
-        // 快速连续滑动时，该判断条件有可能失效，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x=0 contentOffset.x>0，所以不会滑出左菜单
-        float xVelocity = [(UIPanGestureRecognizer *)otherGestureRecognizer velocityInView:otherGestureRecognizer.view].x;
-        if(DEBUG){
-            NSLog(@"UIScrollViewPan velocity:%g offset:%g.",xVelocity,scrollView.contentOffset.x);
-        }
-        if(xVelocity > 0.0f && scrollView.contentOffset.x == 0.0f){   
-            return true;
-        }
-        if(xVelocity < 0.0f && scrollView.contentOffset.x == scrollView.contentSize.width-scrollView.frame.size.width){
-            return true;
-        }
+    float xVelocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].x;
+//    NSLog(@"ViewDeckPanGesture velocity:%g offset:%g.",xVelocity,scrollView.contentOffset.x);
+    // 快速连续滑动时，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x>0 && 320>contentOffset.x>0，
+    // 动画执行完成时，velocity.x>0 && contentOffset.x=0
+    if(xVelocity > 0.0f && _scrollView.contentOffset.x < _scrollView.frame.size.width){
+        return true;
+    }
+    if(xVelocity < 0.0f && _scrollView.contentOffset.x > _scrollView.contentSize.width-2*_scrollView.frame.size.width){
+        return true;
     }
 
     return false;
@@ -112,12 +105,12 @@ int lastPageIndex;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (pageControlUsed || pageControl.isAnimating){
+    if (pageControlUsed || _pageControl.isAnimating){
         return;
     }
     CGFloat pageWidth = scrollView.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-	[pageControl setCurrentPage:page animated:YES];
+	[_pageControl setCurrentPage:page animated:YES];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView_{
@@ -125,27 +118,27 @@ int lastPageIndex;
 }
 
 - (void)onPageChanged:(id)sender{
-	pageControlUsed = YES;
     // 若切换的页面不是连续的页面，则不启用动画，避免连续滚动过多个页面
-    if( abs(pageControl.currentPage - lastPageIndex) > 1){
+    if( abs(_pageControl.currentPage - lastPageIndex) > 1){
         [self slideToCurrentPage:false];
     }else{
+        pageControlUsed = YES;
         [self slideToCurrentPage:true];
     }
-    lastPageIndex = pageControl.currentPage;
+    lastPageIndex = _pageControl.currentPage;
 }
 
 - (void)slideToCurrentPage:(bool)animated{
-	int page = pageControl.currentPage;
+	int page = _pageControl.currentPage;
 	
-    CGRect frame = scrollView.frame;
+    CGRect frame = _scrollView.frame;
     frame.origin.x = frame.size.width * page;
     frame.origin.y = 0;
-    [scrollView scrollRectToVisible:frame animated:animated];
+    [_scrollView scrollRectToVisible:frame animated:animated];
 }
 
 - (void)changeToPage:(int)page animated:(BOOL)animated{
-	[pageControl setCurrentPage:page animated:animated];
+	[_pageControl setCurrentPage:page animated:animated];
 	[self slideToCurrentPage:animated];
 }
 

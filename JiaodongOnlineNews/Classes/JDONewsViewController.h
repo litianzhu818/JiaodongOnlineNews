@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class JDOPageControl;
+@class NIPagingScrollView;
+
 @interface JDONewsViewController : UIViewController <UIScrollViewDelegate,UIGestureRecognizerDelegate>
+
+
+@property (nonatomic,strong) UIScrollView *scrollView;
+@property (nonatomic,strong) JDOPageControl *pageControl;
 
 @end
