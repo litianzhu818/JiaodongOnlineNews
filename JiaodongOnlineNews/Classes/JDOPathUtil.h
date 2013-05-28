@@ -11,5 +11,5 @@
 @interface JDOPathUtil : NSObject
 
 + (NSString *)getDocumentsFilePath:(NSString *)fileName;
-
++ (NSURL *)getDocumentsDirectoryURL;
 @end

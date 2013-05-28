@@ -8,12 +8,18 @@
 #import "JDOPageControl.h"
 #import "Math.h"
 #import "NIPagingScrollView.h"
-#import "SamplePageView.h"
+#import "JDONewsCategoryView.h"
+
+@interface JDONewsViewController()
+
+@property (nonatomic,strong) NSMutableDictionary *pageCache;    // 保存新闻页面的引用，在切换页面状态时使用
+@property (nonatomic,strong) NSMutableArray *pageInfos; // 新闻页面基本信息
+
+@end
 
 @implementation JDONewsViewController
 
 BOOL pageControlUsed;
-NSMutableArray *_demoContent;
 
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
@@ -23,35 +29,18 @@ NSMutableArray *_demoContent;
     [super viewDidLoad];
 //    self.view.userInteractionEnabled = false; // 所有子视图都会忽略手势事件
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"left" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleLeftView)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"导航" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleLeftView)];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"right" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleRightView)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"菜单" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleRightView)];
     
-//    [self setIsLoading:true];
-//    [self performSelector:@selector(finishLoading) withObject:nil afterDelay:2];
+    _pageInfos = [[NSMutableArray alloc] initWithCapacity:5];
+    [_pageInfos addObject:@{@"reuseId":@"Local",@"title":@"烟台"}];
+    [_pageInfos addObject:@{@"reuseId":@"Important",@"title":@"要闻"}];
+    [_pageInfos addObject:@{@"reuseId":@"Social",@"title":@"社会"}];
+    [_pageInfos addObject:@{@"reuseId":@"Entertainment",@"title":@"娱乐"}];
+    [_pageInfos addObject:@{@"reuseId":@"Sport",@"title":@"体育"}];
     
-    
-    _demoContent = [NSMutableArray array];
-    [_demoContent addObject:@{@"color":[UIColor redColor],@"title":@"烟台"}];
-    [_demoContent addObject:@{@"color":[UIColor orangeColor],@"title":@"要闻"}];
-    [_demoContent addObject:@{@"color":[UIColor yellowColor],@"title":@"社会"}];
-    [_demoContent addObject:@{@"color":[UIColor greenColor],@"title":@"娱乐"}];
-    [_demoContent addObject:@{@"color":[UIColor blueColor],@"title":@"体育"}];
-    
-//    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,37,[self.view bounds].size.width,[self.view bounds].size.height - 44)];
-//    _scrollView.backgroundColor = [UIColor whiteColor];
-//    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _demoContent.count, _scrollView.frame.size.height-44);
-//    _scrollView.showsHorizontalScrollIndicator = false;
-//    _scrollView.delegate = self;
-//    _scrollView.pagingEnabled = true;
-//    _scrollView.delaysContentTouches = false;
-//    _scrollView.bounces = false;
-//    
-//    for (int i=0; i<[_demoContent count]; i++){
-//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i*_scrollView.frame.size.width,0,_scrollView.frame.size.width,_scrollView.frame.size.height)];
-//        [view setBackgroundColor:[[_demoContent objectAtIndex:i] objectForKey:@"color"] ];
-//        [_scrollView addSubview:view];
-//    }
+    _pageCache = [[NSMutableDictionary alloc] initWithCapacity:5];
     
     _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,37,[self.view bounds].size.width,[self.view bounds].size.height - 37)];
     _scrollView.backgroundColor = [UIColor whiteColor];
@@ -63,11 +52,12 @@ NSMutableArray *_demoContent;
     [_scrollView reloadData];
     
     
-    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_demoContent];
-    [_pageControl addTarget:self action:@selector(onPageChanged:) forControlEvents:UIControlEventValueChanged];
+    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_pageInfos];
+    [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     
     [_pageControl setCurrentPage:0 animated:false];
     [_scrollView moveToPageAtIndex:0 animated:false];
+    [self changeNewPageStatus:0];
     
     [self.view addSubview:_scrollView];
     [self.view addSubview:_pageControl];
@@ -101,18 +91,21 @@ NSMutableArray *_demoContent;
 }
 
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {
-    return _demoContent.count;
+    return _pageInfos.count;
 }
 
 - (UIView<NIPagingScrollViewPage> *)pagingScrollView:(NIPagingScrollView *)pagingScrollView
                                     pageViewForIndex:(NSInteger)pageIndex {
-    static NSString *kPageReuseIdentifier = @"kPageReuseIdentifier";
     
-    SamplePageView *page = (SamplePageView *)[pagingScrollView dequeueReusablePageWithIdentifier:kPageReuseIdentifier];
+    NSString *reuseIdentifier = [[_pageInfos objectAtIndex:pageIndex] objectForKey:@"reuseId"];
+    
+    JDONewsCategoryView *page = (JDONewsCategoryView *)[pagingScrollView dequeueReusablePageWithIdentifier:reuseIdentifier];
     
     if (nil == page) {
-        page = [[SamplePageView alloc] initWithReuseIdentifier:kPageReuseIdentifier];
+        page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds reuseIdentifier:reuseIdentifier category:pageIndex];
     }
+    [_pageCache setObject:page forKey:reuseIdentifier];
+    
     return page;
 }
 
@@ -126,6 +119,7 @@ NSMutableArray *_demoContent;
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
 	pageControlUsed = NO;
+    [self changeNewPageStatus:-1];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -135,13 +129,15 @@ NSMutableArray *_demoContent;
     CGFloat pageWidth = scrollView.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
 	[_pageControl setCurrentPage:page animated:YES];
+    
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView_{
 	pageControlUsed = NO;
 }
 
-- (void)onPageChanged:(id)sender{
+- (void)onPageChangedByPageControl:(id)sender{
+    pageControlUsed = YES;
     // 若切换的页面不是连续的页面，则先非动画移动到目标页面-1，在动画滚动到目标页
     if( abs(_pageControl.currentPage - _pageControl.lastPageIndex) > 1){
         if(_pageControl.currentPage > _pageControl.lastPageIndex){
@@ -153,25 +149,57 @@ NSMutableArray *_demoContent;
         }
 //        [self slideToCurrentPage:true];
     }else{
-        pageControlUsed = YES;
         [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
 //        [self slideToCurrentPage:true];
     }
     _pageControl.lastPageIndex = _pageControl.currentPage;
+    [self changeNewPageStatus:_pageControl.currentPage];
 }
 
 // 使用moveToPageAtIndex:animated:替换该方法，避免scrollViewDidScroll:被反复调用带来的性能问题
 //- (void)slideToCurrentPage:(bool)animated{
 //	int page = _pageControl.currentPage;
-//	
+//
 //    CGRect frame = _scrollView.frame;
 //    frame.origin.x = frame.size.width * page;
 //    frame.origin.y = 0;
 //    [_scrollView.pagingScrollView scrollRectToVisible:frame animated:animated];
 //}
 
-- (void)finishLoading{
-    //    [self setIsLoading:false];
+
+- (void) changeNewPageStatus:(int)pageIndex{
+    // pageControl切换时，centerPageIndex的设置有延迟，故直接从_pageControl.currentPage取值
+    int tmpPageIndex = pageIndex == -1 ? _scrollView.centerPageIndex:pageIndex;
+
+    NSString *reuseIdentifier=[[_pageInfos objectAtIndex:tmpPageIndex] objectForKey:@"reuseId"];
+    JDONewsCategoryView *page = (JDONewsCategoryView *)[_pageCache objectForKey:reuseIdentifier];
+
+    if(page == nil){
+        // 使用延迟递归是因为如果通过pageControl切换时，page的创建有延迟。
+        [self performSelector:@selector(changeNewPageStatus) withObject:nil afterDelay:0.2];
+        return;
+    }
+    NSLog(@"page index:%d category:%d,status:%d",tmpPageIndex,page.category,page.status);
+    if(page.status == NewsViewStatusNormal){
+//        if(){   // 上次加载时间离现在超过5分钟 或者是从本地数据库加载，则重新加载
+//            
+//        }
+    }else if(page.status == NewsViewStatusLoading){
+        return;
+    }else{
+        if(![Reachability isEnableNetwork]){   // 若无网络，显示无网络界面，应监听网络通知，若有网络则自动加载
+            [page setStatus:NewsViewStatusNoNetwork];
+        }else{  // 从网络加载数据，切换到loading状态
+            [page setStatus:NewsViewStatusLoading];
+            [page loadDataFromNetwork:^(BOOL finished) {
+                if(finished){
+                    [page setStatus:NewsViewStatusNormal];
+                }else{
+                    [page setStatus:NewsViewStatusRetry];
+                }
+            }];
+        }
+    }
 }
 
 - (void)viewDidUnload{

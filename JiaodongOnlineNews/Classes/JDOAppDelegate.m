@@ -135,9 +135,9 @@
     
     JDONewsViewController *newsViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
     UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:newsViewController];
+    centerController.navigationBar.topItem.title = @"胶东在线";
 
-    IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController
-                                                                                    leftViewController:leftController rightViewController:rightController];
+    IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
     deckController.leftSize = 100;
     deckController.rightSize = 100;
     deckController.panningGestureDelegate = newsViewController;

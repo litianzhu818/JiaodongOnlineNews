@@ -17,4 +17,8 @@
     return [documentsDirectory stringByAppendingPathComponent:fileName];
 }
 
++ (NSURL *)getDocumentsDirectoryURL{
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
 @end

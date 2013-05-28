@@ -16,6 +16,7 @@
     #import <JSONKit.h>
     #import "JDOAppDelegate.h"
     #import "IIViewDeckController.h"
+    #import "Reachability.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #endif
