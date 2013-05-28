@@ -7,14 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NimbusPagingScrollView.h"
 
 @class JDOPageControl;
 @class NIPagingScrollView;
 
-@interface JDONewsViewController : UIViewController <UIScrollViewDelegate,UIGestureRecognizerDelegate>
+@interface JDONewsViewController : UIViewController <UIScrollViewDelegate,UIGestureRecognizerDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource>
 
 
-@property (nonatomic,strong) UIScrollView *scrollView;
+@property (nonatomic,strong) NIPagingScrollView *scrollView;
 @property (nonatomic,strong) JDOPageControl *pageControl;
 
 @end
