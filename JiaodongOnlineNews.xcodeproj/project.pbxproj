@@ -43,6 +43,8 @@
 		2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */; };
 		2DF21F53174CA93B000DEB70 /* right_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DF21F52174CA93B000DEB70 /* right_menu@2x.png */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
+		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
+		FFD8B6871756E779007B878C /* aboutus.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD8B6861756E779007B878C /* aboutus.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -180,6 +182,8 @@
 				2D19CFE8174A3F8700BDAE39 /* JDORightViewController.xib */,
 				2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */,
 				2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */,
+				FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */,
+				FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */,
 				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
 				D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */,
 				D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */,
@@ -209,6 +213,7 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FFD8B6861756E779007B878C /* aboutus.png */,
 				2D8ED7731754FD910093A574 /* retry.png */,
 				2D8ED7711754F43A0093A574 /* bad_net.png */,
 				2D8ED76F1754F4270093A574 /* default_icon.png */,

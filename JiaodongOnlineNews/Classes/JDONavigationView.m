@@ -28,7 +28,7 @@
 }
 
 - (void) setTitle:(NSString *)title{
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(130, 0, 60, 44)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, 320-44*2, 44)];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.text = title;
