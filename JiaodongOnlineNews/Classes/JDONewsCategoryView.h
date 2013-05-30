@@ -9,19 +9,19 @@
 #import "NimbusPagingScrollView.h"
 
 typedef enum {
-    NewsCategoryLocal = 0,
-    NewsCategoryImportant,
-    NewsCategorySocial,
-    NewsCategoryEntertainment,
-    NewsCategorySport
+    NewsCategoryLocal = 0,      //本地
+    NewsCategoryImportant,      //要闻
+    NewsCategorySocial,         //社会
+    NewsCategoryEntertainment,  //娱乐
+    NewsCategorySport           //体育
 } NewsCategory;
 
 typedef enum {
-    NewsViewStatusNormal = 0,
-    NewsViewStatusNoNetwork,
-    NewsViewStatusLogo,
-    NewsViewStatusLoading,
-    NewsViewStatusRetry,
+    NewsViewStatusNormal = 0,   //显示新闻列表
+    NewsViewStatusNoNetwork,    //网络可不用
+    NewsViewStatusLogo,         //初始化页面
+    NewsViewStatusLoading,      //新闻列表加载中
+    NewsViewStatusRetry,        //服务器错误,点击重试
 } NewsViewStatus;   //新闻页面的几种状态变化
 
 

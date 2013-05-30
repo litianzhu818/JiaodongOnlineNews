@@ -166,13 +166,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
     
-//    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
-//    splashView.image = [UIImage imageNamed:@"Default.png"];
-//    [self.window addSubview:splashView];
-//    
-//    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
+    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
+    splashView.image = [UIImage imageNamed:@"Default.png"];
+    [self.window addSubview:splashView];
     
-    [self navigateToMainView];
+    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
+    
+//    [self navigateToMainView];
     
     return YES;
 }
