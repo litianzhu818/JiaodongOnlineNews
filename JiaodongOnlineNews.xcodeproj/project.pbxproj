@@ -43,6 +43,7 @@
 		2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */; };
 		2DF21F53174CA93B000DEB70 /* right_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DF21F52174CA93B000DEB70 /* right_menu@2x.png */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
+		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 		FFD8B6871756E779007B878C /* aboutus.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD8B6861756E779007B878C /* aboutus.png */; };
 /* End PBXBuildFile section */
@@ -100,6 +101,9 @@
 		2DF21F52174CA93B000DEB70 /* right_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right_menu@2x.png"; sourceTree = "<group>"; };
 		5F222CF8F96D417D992D04DB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
+		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
+		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
 		FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAboutUsViewController.m; sourceTree = "<group>"; };
 		FFD8B6861756E779007B878C /* aboutus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aboutus.png; sourceTree = "<group>"; };
@@ -185,6 +189,9 @@
 				FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */,
 				FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */,
 				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
+				D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */,
+				D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */,
+				D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */,
 				2D8D44F9174DF21800786545 /* Views */,
 				2D01E67A1748D78300B81568 /* Utils */,
 			);
@@ -370,6 +377,7 @@
 				2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */,
 				2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */,
 				FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */,
+				D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
