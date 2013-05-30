@@ -38,6 +38,7 @@
 		2D8ED7721754F43A0093A574 /* bad_net.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8ED7711754F43A0093A574 /* bad_net.png */; };
 		2D8ED7741754FD910093A574 /* retry.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8ED7731754FD910093A574 /* retry.png */; };
 		2D8FAC20174896220071A601 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC1F174896220071A601 /* icon.png */; };
+		2D91FBD7175707A9002C1B5C /* JDOFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */; };
 		2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9678BA174AF78A008AC097 /* JDOImageUtil.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
 		2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */; };
@@ -186,9 +187,9 @@
 				2D19CFE8174A3F8700BDAE39 /* JDORightViewController.xib */,
 				2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */,
 				2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */,
+				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
 				FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */,
 				FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */,
-				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
 				D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */,
 				D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */,
 				D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */,
@@ -322,6 +323,7 @@
 				2D8ED7721754F43A0093A574 /* bad_net.png in Resources */,
 				2D8ED7741754FD910093A574 /* retry.png in Resources */,
 				FFD8B6871756E779007B878C /* aboutus.png in Resources */,
+				2D91FBD7175707A9002C1B5C /* JDOFeedbackViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -179,7 +179,7 @@ BOOL pageControlUsed;
         [self performSelector:@selector(changeNewPageStatus) withObject:nil afterDelay:0.2];
         return;
     }
-    NSLog(@"page index:%d category:%d,status:%d",tmpPageIndex,page.category,page.status);
+//    NSLog(@"page index:%d category:%d,status:%d",tmpPageIndex,page.category,page.status);
     if(page.status == NewsViewStatusNormal){
 //        if(){   // 上次加载时间离现在超过5分钟 或者是从本地数据库加载，则重新加载
 //            
