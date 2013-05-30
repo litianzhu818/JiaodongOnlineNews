@@ -98,6 +98,9 @@
 		2DF21F52174CA93B000DEB70 /* right_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right_menu@2x.png"; sourceTree = "<group>"; };
 		5F222CF8F96D417D992D04DB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
+		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
+		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +181,9 @@
 				2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */,
 				2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */,
 				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
+				D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */,
+				D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */,
+				D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */,
 				2D8D44F9174DF21800786545 /* Views */,
 				2D01E67A1748D78300B81568 /* Utils */,
 			);
@@ -306,6 +312,7 @@
 				2D8ED7701754F4270093A574 /* default_icon.png in Resources */,
 				2D8ED7721754F43A0093A574 /* bad_net.png in Resources */,
 				2D8ED7741754FD910093A574 /* retry.png in Resources */,
+				D83DAB751756DD6D0019B316 /* JDOFeedbackViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +367,7 @@
 				2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */,
 				2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */,
 				2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */,
+				D83DAB741756DD6D0019B316 /* JDOFeedbackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
