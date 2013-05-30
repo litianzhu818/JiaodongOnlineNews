@@ -103,6 +103,9 @@
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
+		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
+		FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAboutUsViewController.m; sourceTree = "<group>"; };
+		FFD8B6861756E779007B878C /* aboutus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aboutus.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,6 +321,7 @@
 				2D8ED7721754F43A0093A574 /* bad_net.png in Resources */,
 				2D8ED7741754FD910093A574 /* retry.png in Resources */,
 				D83DAB751756DD6D0019B316 /* JDOFeedbackViewController.xib in Resources */,
+				FFD8B6871756E779007B878C /* aboutus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +377,7 @@
 				2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */,
 				2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */,
 				D83DAB741756DD6D0019B316 /* JDOFeedbackViewController.m in Sources */,
+				FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,7 @@
 #import "JDOSettingViewController.h"
 #import "JDOFeedbackViewController.h"
 
+#import "JDOAboutUsViewController.h"
 @interface JDORightViewController () <IIViewDeckControllerDelegate>
 
 @property (nonatomic, retain) NSMutableArray* logs;
@@ -22,7 +23,7 @@
 
 JDOSettingViewController *settingContrller;
 JDOFeedbackViewController *feedbackController;
-
+JDOAboutUsViewController *aboutUsController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
