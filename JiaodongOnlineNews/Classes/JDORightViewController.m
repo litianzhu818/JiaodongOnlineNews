@@ -9,7 +9,7 @@
 #import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOSettingViewController.h"
-
+#import "JDOAboutUsViewController.h"
 @interface JDORightViewController () <IIViewDeckControllerDelegate>
 
 @property (nonatomic, retain) NSMutableArray* logs;
@@ -20,7 +20,7 @@
 @implementation JDORightViewController
 
 JDOSettingViewController *settingContrller;
-
+JDOAboutUsViewController *aboutUsController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,6 +40,25 @@ JDOSettingViewController *settingContrller;
     self.viewDeckController.delegate = self;
     self.tableView.scrollsToTop = NO;
 
+}
+
+- (IBAction)onAboutClick:(id)sender {
+    if(aboutUsController == nil){
+        aboutUsController = [[JDOAboutUsViewController alloc] init];
+    }
+    
+    CATransition *animation = [CATransition animation];
+    animation.duration = 0.5;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    // kCATransitionFade 淡化 kCATransitionPush 推挤 kCATransitionReveal 揭开 kCATransitionMoveIn 覆盖
+    animation.type = kCATransitionMoveIn;
+    // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
+    animation.subtype = kCATransitionFromRight;
+    
+    aboutUsController.view.frame = CGRectMake(0, 20, 320, 460);
+    [SharedAppDelegate.window insertSubview:aboutUsController.view aboveSubview:SharedAppDelegate.deckController.view];
+    //    SharedAppDelegate.window.rootViewController = settingContrller;
+    [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
 }
 
 - (IBAction)onSettingClick:(id)sender {
