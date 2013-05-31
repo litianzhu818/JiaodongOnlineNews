@@ -10,6 +10,9 @@ PODS:
   - Nimbus/PagingScrollView (0.9.3):
     - Nimbus/Core
   - SDURLCache (1.2)
+  - SDWebImage (2.7.4):
+    - SDWebImage/Main
+  - SDWebImage/Main (2.7.4)
   - ViewDeck (2.2.11)
 
 DEPENDENCIES:
@@ -20,6 +23,7 @@ DEPENDENCIES:
   - Nimbus/NetworkImage (= 0.9.3)
   - Nimbus/PagingScrollView (= 0.9.3)
   - SDURLCache
+  - SDWebImage (= 2.7.4)
   - ViewDeck
 
 SPEC CHECKSUMS:
@@ -28,6 +32,7 @@ SPEC CHECKSUMS:
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
   Nimbus: ae656df29167efecb120d46bfaadce32c90c19ac
   SDURLCache: cf4dcdd0d01473c334e9338e82a8733de156ef15
+  SDWebImage: 06f076026fe7867ab0100fce95d943f7bff981eb
   ViewDeck: b5eddc8559b0e47259ab7addbf2de6768061f139
 
 COCOAPODS: 0.19.1
