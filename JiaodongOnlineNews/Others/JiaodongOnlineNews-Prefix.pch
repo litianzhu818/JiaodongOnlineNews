@@ -17,9 +17,11 @@
     #import "JDOAppDelegate.h"
     #import "IIViewDeckController.h"
     #import "Reachability.h"
+    #import "NSArray+Model.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #endif
 
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys"
 #define ADV_SERVICE @"/Data/getAdv"
+#define NEWS_SERVICE @"/Data/getArticles"

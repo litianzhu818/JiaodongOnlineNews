@@ -7,6 +7,7 @@
 //
 
 #import "NimbusPagingScrollView.h"
+#import "JDONewsCategoryInfo.h"
 
 typedef enum {
     NewsCategoryLocal = 0,      //本地
@@ -27,15 +28,17 @@ typedef enum {
 
 @interface JDONewsCategoryView : NIPageView <UITableViewDelegate, UITableViewDataSource>
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier category:(NewsCategory)category;
+- (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info;
 
-@property (nonatomic,assign) NewsCategory category;
+@property (nonatomic,assign) JDONewsCategoryInfo *info;
 @property (nonatomic,assign) NewsViewStatus status;
 @property (nonatomic, readwrite, retain) UITableView *tableView;
 @property (nonatomic, readwrite, retain) UIImageView *noNetWorkView;
 @property (nonatomic, readwrite, retain) UIImageView *logoView;
 @property (nonatomic, readwrite, retain) UIImageView *retryView;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
+
+@property (nonatomic, strong) NSArray *modelArray;
 
 - (void) loadDataFromNetwork:(void (^)(BOOL finished))completion;
 

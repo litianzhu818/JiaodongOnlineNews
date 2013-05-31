@@ -16,6 +16,7 @@
 #import "IIViewDeckController.h"
 #import "JDOLeftViewController.h"
 #import "JDORightViewController.h"
+#import "JDOCenterViewController.h"
 
 #define splash_stay_time 1.0
 #define advertise_stay_time 2.0
@@ -134,7 +135,7 @@
     JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"JDORightViewController" bundle:nil];
     
     JDONewsViewController *newsViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
-    UINavigationController *centerController = [[UINavigationController alloc] initWithRootViewController:newsViewController];
+    JDOCenterViewController *centerController = [[JDOCenterViewController alloc] initWithRootViewController:newsViewController];
     centerController.navigationBar.topItem.title = @"胶东在线";
 
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];

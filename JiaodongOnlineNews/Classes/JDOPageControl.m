@@ -7,6 +7,7 @@
 //
 
 #import "JDOPageControl.h"
+#import "JDONewsCategoryInfo.h"
 
 #define MASK_VISIBLE_ALPHA 0.5
 #define UPPER_TOUCH_LIMIT -10
@@ -44,7 +45,7 @@
     int width = self.frame.size.width/pages.count;
     for (int i=0; i<pages.count; i++) {
         UIButton *titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(i*width, 0, width,self.frame.size.height)];
-        [titleBtn setTitle:[[pages objectAtIndex:i] objectForKey:@"title"] forState:UIControlStateNormal];
+        [titleBtn setTitle:[(JDONewsCategoryInfo *)[pages objectAtIndex:i] title] forState:UIControlStateNormal];
         [titleBtn setTitleColor:title_normal_color forState:UIControlStateNormal];
         titleBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
         titleBtn.tag = title_label_tag+i;

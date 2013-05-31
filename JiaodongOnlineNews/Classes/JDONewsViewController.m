@@ -9,11 +9,12 @@
 #import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDONewsCategoryView.h"
+#import "JDONewsCategoryInfo.h"
 
 @interface JDONewsViewController()
 
 @property (nonatomic,strong) NSMutableDictionary *pageCache;    // 保存新闻页面的引用，在切换页面状态时使用
-@property (nonatomic,strong) NSMutableArray *pageInfos; // 新闻页面基本信息
+@property (nonatomic,strong) NSArray *pageInfos; // 新闻页面基本信息
 
 @end
 
@@ -33,12 +34,13 @@ BOOL pageControlUsed;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"菜单" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleRightView)];
     
-    _pageInfos = [[NSMutableArray alloc] initWithCapacity:5];
-    [_pageInfos addObject:@{@"reuseId":@"Local",@"title":@"烟台"}];
-    [_pageInfos addObject:@{@"reuseId":@"Important",@"title":@"要闻"}];
-    [_pageInfos addObject:@{@"reuseId":@"Social",@"title":@"社会"}];
-    [_pageInfos addObject:@{@"reuseId":@"Entertainment",@"title":@"娱乐"}];
-    [_pageInfos addObject:@{@"reuseId":@"Sport",@"title":@"体育"}];
+    _pageInfos = @[
+        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
+        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
+        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
+        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
+        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"],
+    ];
     
     _pageCache = [[NSMutableDictionary alloc] initWithCapacity:5];
     
@@ -97,14 +99,14 @@ BOOL pageControlUsed;
 - (UIView<NIPagingScrollViewPage> *)pagingScrollView:(NIPagingScrollView *)pagingScrollView
                                     pageViewForIndex:(NSInteger)pageIndex {
     
-    NSString *reuseIdentifier = [[_pageInfos objectAtIndex:pageIndex] objectForKey:@"reuseId"];
+    JDONewsCategoryInfo *newsCategoryInfo = [_pageInfos objectAtIndex:pageIndex];
     
-    JDONewsCategoryView *page = (JDONewsCategoryView *)[pagingScrollView dequeueReusablePageWithIdentifier:reuseIdentifier];
+    JDONewsCategoryView *page = (JDONewsCategoryView *)[pagingScrollView dequeueReusablePageWithIdentifier:newsCategoryInfo.reuseId];
     
     if (nil == page) {
-        page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds reuseIdentifier:reuseIdentifier category:pageIndex];
+        page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds info:newsCategoryInfo];
     }
-    [_pageCache setObject:page forKey:reuseIdentifier];
+    [_pageCache setObject:page forKey:newsCategoryInfo.reuseId];
     
     return page;
 }
@@ -171,7 +173,7 @@ BOOL pageControlUsed;
     // pageControl切换时，centerPageIndex的设置有延迟，故直接从_pageControl.currentPage取值
     int tmpPageIndex = pageIndex == -1 ? _scrollView.centerPageIndex:pageIndex;
 
-    NSString *reuseIdentifier=[[_pageInfos objectAtIndex:tmpPageIndex] objectForKey:@"reuseId"];
+    NSString *reuseIdentifier=[(JDONewsCategoryInfo *)[_pageInfos objectAtIndex:tmpPageIndex] reuseId];
     JDONewsCategoryView *page = (JDONewsCategoryView *)[_pageCache objectForKey:reuseIdentifier];
 
     if(page == nil){
@@ -191,13 +193,7 @@ BOOL pageControlUsed;
             [page setStatus:NewsViewStatusNoNetwork];
         }else{  // 从网络加载数据，切换到loading状态
             [page setStatus:NewsViewStatusLoading];
-            [page loadDataFromNetwork:^(BOOL finished) {
-                if(finished){
-                    [page setStatus:NewsViewStatusNormal];
-                }else{
-                    [page setStatus:NewsViewStatusRetry];
-                }
-            }];
+            [page loadDataFromNetwork:nil];
         }
     }
 }
