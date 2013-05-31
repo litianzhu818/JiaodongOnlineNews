@@ -143,6 +143,7 @@
     deckController.rightSize = 100;
     deckController.panningGestureDelegate = newsViewController;
     deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
+    deckController.delegate = centerController;
     
     return deckController;
 }

@@ -38,7 +38,8 @@ typedef enum {
 @property (nonatomic, readwrite, retain) UIImageView *retryView;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
 
-@property (nonatomic, strong) NSArray *modelArray;
+@property (nonatomic, strong) NSArray *headArray;
+@property (nonatomic, strong) NSArray *listArray;
 
 - (void) loadDataFromNetwork:(void (^)(BOOL finished))completion;
 

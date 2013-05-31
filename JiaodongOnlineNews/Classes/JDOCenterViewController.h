@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOCenterViewController : UINavigationController
+@interface JDOCenterViewController : UINavigationController <IIViewDeckControllerDelegate>
 
 @end
