@@ -179,6 +179,8 @@
             cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
             cell.detailTextLabel.numberOfLines = 2;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.imageView.layer.cornerRadius = 5;
+            cell.imageView.layer.masksToBounds = true;
         }
         JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
         

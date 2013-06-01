@@ -7,6 +7,7 @@
  */
 
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation UIImageView (WebCache)
 
@@ -78,6 +79,11 @@
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
 {
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionFade;
+    [self.layer addAnimation:transition forKey:nil];
     self.image = image;
     [self setNeedsLayout];
 }

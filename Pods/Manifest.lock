@@ -3,12 +3,6 @@ PODS:
   - CocoaLumberjack (1.6.2)
   - JSONKit (1.5pre)
   - Nimbus/Core (0.9.3)
-  - Nimbus/NetworkControllers (0.9.3):
-    - Nimbus/Core
-  - Nimbus/NetworkImage (0.9.3):
-    - Nimbus/Core
-  - Nimbus/PagingScrollView (0.9.3):
-    - Nimbus/Core
   - SDURLCache (1.2)
   - SDWebImage (2.7.4):
     - SDWebImage/Main
@@ -19,9 +13,7 @@ DEPENDENCIES:
   - AFNetworking (= 0.10.1)
   - CocoaLumberjack
   - JSONKit
-  - Nimbus/NetworkControllers (= 0.9.3)
-  - Nimbus/NetworkImage (= 0.9.3)
-  - Nimbus/PagingScrollView (= 0.9.3)
+  - Nimbus/Core (= 0.9.3)
   - SDURLCache
   - SDWebImage (= 2.7.4)
   - ViewDeck
