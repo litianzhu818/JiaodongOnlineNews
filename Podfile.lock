@@ -2,7 +2,6 @@ PODS:
   - AFNetworking (0.10.1)
   - CocoaLumberjack (1.6.2)
   - JSONKit (1.5pre)
-  - Nimbus/Core (0.9.3)
   - SDURLCache (1.2)
   - SDWebImage (2.7.4):
     - SDWebImage/Main
@@ -13,7 +12,6 @@ DEPENDENCIES:
   - AFNetworking (= 0.10.1)
   - CocoaLumberjack
   - JSONKit
-  - Nimbus/Core (= 0.9.3)
   - SDURLCache
   - SDWebImage (= 2.7.4)
   - ViewDeck
@@ -22,7 +20,6 @@ SPEC CHECKSUMS:
   AFNetworking: df1042246c17373b96f12f04bf5c6e1c25992cd4
   CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
-  Nimbus: ae656df29167efecb120d46bfaadce32c90c19ac
   SDURLCache: cf4dcdd0d01473c334e9338e82a8733de156ef15
   SDWebImage: 06f076026fe7867ab0100fce95d943f7bff981eb
   ViewDeck: b5eddc8559b0e47259ab7addbf2de6768061f139

@@ -25,12 +25,6 @@
 // Please contact the author.
 // Version: 1.5pre.
 
-// Nimbus/Core
-#define COCOAPODS_POD_AVAILABLE_Nimbus_Core
-#define COCOAPODS_VERSION_MAJOR_Nimbus_Core 0
-#define COCOAPODS_VERSION_MINOR_Nimbus_Core 9
-#define COCOAPODS_VERSION_PATCH_Nimbus_Core 3
-
 // SDURLCache
 #define COCOAPODS_POD_AVAILABLE_SDURLCache
 #define COCOAPODS_VERSION_MAJOR_SDURLCache 1
