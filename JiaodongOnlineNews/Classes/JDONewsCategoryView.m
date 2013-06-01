@@ -14,7 +14,8 @@
 @implementation JDONewsCategoryView
 
 - (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info {
-    if ((self = [super initWithFrame:frame])) {
+    if ((self = [super init])) {
+        self.frame = frame;
         self.info = info;
         
         self.reuseIdentifier = info.reuseId;
@@ -155,7 +156,6 @@
     if(section == 0)    return self.headArray.count/3;
     return self.listArray.count;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *headlineIdentifier = @"headlineIdentifier";

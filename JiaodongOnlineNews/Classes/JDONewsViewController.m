@@ -59,7 +59,7 @@ BOOL pageControlUsed;
     
     [_pageControl setCurrentPage:0 animated:false];
     [_scrollView moveToPageAtIndex:0 animated:false];
-    [self changeNewPageStatus:[NSNumber numberWithInt:0]];
+    [self changeNewPageStatus];
     
     [self.view addSubview:_scrollView];
     [self.view addSubview:_pageControl];
@@ -92,6 +92,8 @@ BOOL pageControlUsed;
 
 }
 
+#pragma mark - PagingScrollView delegate 
+
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {
     return _pageInfos.count;
 }
@@ -115,13 +117,16 @@ BOOL pageControlUsed;
     _pageControl.lastPageIndex = pagingScrollView.centerPageIndex;
 }
 
+#pragma mark - ScrollView delegate 
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
 
 }
 
+// 拖动scrollview换页完成时执行该回调
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
 	pageControlUsed = NO;
-    [self changeNewPageStatus:[NSNumber numberWithInt:-1]];
+    [self changeNewPageStatus];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -131,59 +136,26 @@ BOOL pageControlUsed;
     CGFloat pageWidth = scrollView.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
 	[_pageControl setCurrentPage:page animated:YES];
-    
 }
 
+// 点击pagecontrol换页完成时执行该回调
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView_{
 	pageControlUsed = NO;
+    [self changeNewPageStatus];
 }
 
 - (void)onPageChangedByPageControl:(id)sender{
     pageControlUsed = YES;
-    // 若切换的页面不是连续的页面，则先非动画移动到目标页面-1，在动画滚动到目标页
-#warning 可以考虑调整到类似安卓的动态调整页面顺序
-    if( abs(_pageControl.currentPage - _pageControl.lastPageIndex) > 1){
-        if(_pageControl.currentPage > _pageControl.lastPageIndex){
-            [_scrollView moveToPageAtIndex:_pageControl.currentPage-1 animated:false];
-            [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
-        }else{
-            [_scrollView moveToPageAtIndex:_pageControl.currentPage+1 animated:false];
-            [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
-        }
-//        [self slideToCurrentPage:true];
-    }else{
-        [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
-//        [self slideToCurrentPage:true];
-    }
+    [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
     _pageControl.lastPageIndex = _pageControl.currentPage;
-    [self changeNewPageStatus:[NSNumber numberWithInt:_pageControl.currentPage]];
 }
 
-// 使用moveToPageAtIndex:animated:替换该方法，避免scrollViewDidScroll:被反复调用带来的性能问题
-//- (void)slideToCurrentPage:(bool)animated{
-//	int page = _pageControl.currentPage;
-//
-//    CGRect frame = _scrollView.frame;
-//    frame.origin.x = frame.size.width * page;
-//    frame.origin.y = 0;
-//    [_scrollView.pagingScrollView scrollRectToVisible:frame animated:animated];
-//}
 
-
-- (void) changeNewPageStatus:(NSNumber *)pageIndex{
-    // pageControl切换时，centerPageIndex的设置有延迟，故直接从_pageControl.currentPage取值
-    int _pageIndex = [pageIndex intValue];
-    int tmpPageIndex = _pageIndex == -1 ? _scrollView.centerPageIndex:_pageIndex;
-
-    NSString *reuseIdentifier=[(JDONewsCategoryInfo *)[_pageInfos objectAtIndex:tmpPageIndex] reuseId];
+- (void) changeNewPageStatus{
+    NSString *reuseIdentifier=[(JDONewsCategoryInfo *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex] reuseId];
     JDONewsCategoryView *page = (JDONewsCategoryView *)[_pageCache objectForKey:reuseIdentifier];
-
-    if(page == nil){
-        NSLog(@"111");
-        // 使用延迟递归是因为如果通过pageControl切换时，page的创建有延迟。
-        [self performSelector:@selector(changeNewPageStatus:) withObject:pageIndex afterDelay:0.2];
-        return;
-    }
+    NSAssert(page != nil, @"scroll view 中的页面不能为nil");
+    
 //    NSLog(@"page index:%d category:%@,status:%d",tmpPageIndex,page.info.title,page.status);
     if(page.status == NewsViewStatusNormal){
 //        if(){   // 上次加载时间离现在超过5分钟 或者是从本地数据库加载，则重新加载
