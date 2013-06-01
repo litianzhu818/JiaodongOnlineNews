@@ -50,7 +50,7 @@ BOOL pageControlUsed;
     _scrollView.dataSource = self;
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
     _scrollView.pagingScrollView.bounces = false;
-    _scrollView.pageHorizontalMargin = 0;
+    _scrollView.pageMargin = 0;
     [_scrollView reloadData];
     
     

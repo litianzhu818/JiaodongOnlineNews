@@ -9,7 +9,6 @@
 #import "JDONewsCategoryView.h"
 #import "JDONewsModel.h"
 #import "UIImageView+WebCache.h"
-#import "NINetworkImageView.h"
 #import "JDONewsTableCell.h"
 
 @implementation JDONewsCategoryView
