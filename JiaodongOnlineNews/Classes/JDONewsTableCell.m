@@ -7,7 +7,9 @@
 //
 
 #import "JDONewsTableCell.h"
-#import "JDOCommonUtil.h"
+#import "JDONewsModel.h"
+
+#define Default_Image @"default_icon.png"
 
 @interface JDONewsTableCell ()
 
@@ -22,6 +24,12 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.style = style;
+        self.textLabel.font = [UIFont boldSystemFontOfSize:16];
+        self.detailTextLabel.font = [UIFont systemFontOfSize:13];
+        self.detailTextLabel.numberOfLines = 2;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.imageView.layer.cornerRadius = 5;
+        self.imageView.layer.masksToBounds = true;
     }
     return self;
 }
@@ -50,7 +58,24 @@
             
         }
     }
+}
+
+- (void)setModel:(JDONewsModel *)newsModel{
+    __block UIImageView *blockImageView = self.imageView;
     
+    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+        if(!cached){    // 非缓存加载时使用渐变动画
+            CATransition *transition = [CATransition animation];
+            transition.duration = 0.5;
+            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            transition.type = kCATransitionFade;
+            [blockImageView.layer addAnimation:transition forKey:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+    self.textLabel.text = newsModel.title;
+    self.detailTextLabel.text = newsModel.summary;
 }
 
 @end

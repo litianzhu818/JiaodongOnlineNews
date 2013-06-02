@@ -75,6 +75,7 @@
 		2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9678BA174AF78A008AC097 /* JDOImageUtil.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
 		2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */; };
+		2DE0845F175B872800A1A6BC /* JDONewsHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */; };
 		2DF21F53174CA93B000DEB70 /* right_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DF21F52174CA93B000DEB70 /* right_menu@2x.png */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
@@ -207,6 +208,8 @@
 		2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOSettingViewController.h; sourceTree = "<group>"; };
 		2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOSettingViewController.m; sourceTree = "<group>"; };
 		2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOSettingViewController.xib; sourceTree = "<group>"; };
+		2DE0845D175B872700A1A6BC /* JDONewsHeadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsHeadCell.h; sourceTree = "<group>"; };
+		2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsHeadCell.m; sourceTree = "<group>"; };
 		2DF21F52174CA93B000DEB70 /* right_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right_menu@2x.png"; sourceTree = "<group>"; };
 		5F222CF8F96D417D992D04DB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -436,6 +439,8 @@
 				2D89BA4B1754825600960614 /* JDONewsCategoryView.m */,
 				2D86D5A3175885E50000AA6A /* JDONewsTableCell.h */,
 				2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */,
+				2DE0845D175B872700A1A6BC /* JDONewsHeadCell.h */,
+				2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -637,6 +642,7 @@
 				2D8B4097175A495600C8B04F /* NSString+NimbusCore.m in Sources */,
 				2D8B40A1175A496200C8B04F /* NIPageView.m in Sources */,
 				2D8B40A2175A496200C8B04F /* NIPagingScrollView.m in Sources */,
+				2DE0845F175B872800A1A6BC /* JDONewsHeadCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

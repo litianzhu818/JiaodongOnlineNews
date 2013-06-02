@@ -8,8 +8,8 @@
 
 #import "JDONewsCategoryView.h"
 #import "JDONewsModel.h"
-#import "UIImageView+WebCache.h"
 #import "JDONewsTableCell.h"
+#import "JDONewsHeadCell.h"
 
 @implementation JDONewsCategoryView
 
@@ -154,7 +154,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(section == 0)    return self.headArray.count/3;
+    if(section == 0){
+        return self.headArray.count==0 ? 0:1;
+    }
     return self.listArray.count;
 }
 
@@ -162,61 +164,29 @@
     static NSString *headlineIdentifier = @"headlineIdentifier";
     static NSString *listIdentifier = @"listIdentifier";
     #warning 测试时暂时不开启磁盘缓存 SDWebImageCacheMemoryOnly
-    SDWebImageOptions option = SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly;
     
     if(indexPath.section == 0){
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:headlineIdentifier];
+        JDONewsHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:headlineIdentifier];
         if(cell == nil){
-            cell =[[JDONewsTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:headlineIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell = [[JDONewsHeadCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headlineIdentifier];
         }
-        JDONewsModel *newsModel = [self.headArray objectAtIndex:indexPath.row];
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:option];
+        [cell setModels:self.headArray];
         return cell;
     }else{
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
+        JDONewsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
         if (cell == nil){
             cell =[[JDONewsTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:listIdentifier];
-            cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
-            cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
-            cell.detailTextLabel.numberOfLines = 2;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.imageView.layer.cornerRadius = 5;
-            cell.imageView.layer.masksToBounds = true;
         }
         JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
-        
-//        // 性能对比测试 UIImageView+AFNetworking
-//        [cell.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"]];
-//        // 性能对比测试 NINetworkImageView
-//        NINetworkImageView *iv = [[NINetworkImageView alloc] initWithImage:[UIImage imageNamed:@"default_icon.png"]];
-//        [iv setPathToNetworkImage:[SERVER_URL stringByAppendingString:newsModel.mpic]];
-//        [cell addSubview:iv];
-        
-        __block UIImageView *blockImageView = cell.imageView;
-
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:option success:^(UIImage *image, BOOL cached) {
-            if(!cached){    // 非缓存加载时使用渐变动画
-                CATransition *transition = [CATransition animation];
-                transition.duration = 0.5;
-                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                transition.type = kCATransitionFade;
-                [blockImageView.layer addAnimation:transition forKey:nil];
-            }
-        } failure:^(NSError *error) {
-            
-        }];
-        
-        cell.textLabel.text = newsModel.title;
-        cell.detailTextLabel.text = newsModel.summary;
+        [cell setModel:newsModel];
         return cell;
     }
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.section == 0)  return 140;
-    return 70;
+    if(indexPath.section == 0)  return Headline_Height;
+    return News_Cell_Height;
 }
 
 

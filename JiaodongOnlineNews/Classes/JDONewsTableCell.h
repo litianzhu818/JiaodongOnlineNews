@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class JDONewsModel;
+
 @interface JDONewsTableCell : UITableViewCell
+
+- (void)setModel:(JDONewsModel *)newsModel;
 
 @end

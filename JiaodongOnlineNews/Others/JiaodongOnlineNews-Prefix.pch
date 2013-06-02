@@ -18,10 +18,14 @@
     #import "IIViewDeckController.h"
     #import "Reachability.h"
     #import "NSArray+Model.h"
+    #import "UIImageView+WebCache.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
+    #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly
 #endif
 
+#define Headline_Height 170
+#define News_Cell_Height 70
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys"
 #define ADV_SERVICE @"/Data/getAdv"
 #define NEWS_SERVICE @"/Data/getArticles"
