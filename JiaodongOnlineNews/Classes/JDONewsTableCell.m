@@ -9,13 +9,19 @@
 #import "JDONewsTableCell.h"
 #import "JDOCommonUtil.h"
 
+@interface JDONewsTableCell ()
+
+@property (nonatomic,assign) UITableViewCellStyle style;
+
+@end
+
 @implementation JDONewsTableCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
+        self.style = style;
     }
     return self;
 }
@@ -29,18 +35,22 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.imageView.frame = CGRectMake(7,7,72,55);
     
-    float limgW =  self.imageView.image.size.width;
-    if(limgW > 0) {
-        float cellWidth = self.frame.size.width;
-        float labelWdith = cellWidth - 89 - 7;
-        CGRect frame = self.textLabel.frame;
-        self.textLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
-        frame = self.detailTextLabel.frame;
-        self.detailTextLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
+    if(self.style == UITableViewCellStyleSubtitle){
+        self.imageView.frame = CGRectMake(7,7,72,55);
         
+        float limgW =  self.imageView.image.size.width;
+        if(limgW > 0) {
+            float cellWidth = self.frame.size.width;
+            float labelWdith = cellWidth - 89 - 7;
+            CGRect frame = self.textLabel.frame;
+            self.textLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
+            frame = self.detailTextLabel.frame;
+            self.detailTextLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
+            
+        }
     }
+    
 }
 
 @end

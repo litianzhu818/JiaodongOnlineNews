@@ -123,6 +123,13 @@ BOOL pageControlUsed;
 
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if (!decelerate){
+        pageControlUsed = NO;
+        [self changeNewPageStatus];
+    }
+}
+
 // 拖动scrollview换页完成时执行该回调
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
 	pageControlUsed = NO;

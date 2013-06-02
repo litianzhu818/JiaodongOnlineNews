@@ -96,6 +96,7 @@
     AFJSONRequestOperation *headlineOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:headlineRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSArray *jsonArray = (NSArray *)JSON;
         self.headArray = [jsonArray jsonArrayToModelArray:[JDONewsModel class] ];
+#warning 头条和列表的刷新操作应该合并
         [self.tableView reloadData];
         [self setStatus:NewsViewStatusNormal];
         if(completion)  completion(true);
@@ -160,6 +161,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *headlineIdentifier = @"headlineIdentifier";
     static NSString *listIdentifier = @"listIdentifier";
+    #warning 测试时暂时不开启磁盘缓存 SDWebImageCacheMemoryOnly
+    SDWebImageOptions option = SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly;
     
     if(indexPath.section == 0){
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:headlineIdentifier];
@@ -168,7 +171,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         JDONewsModel *newsModel = [self.headArray objectAtIndex:indexPath.row];
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly];
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:option];
         return cell;
     }else{
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
@@ -190,8 +193,19 @@
 //        [iv setPathToNetworkImage:[SERVER_URL stringByAppendingString:newsModel.mpic]];
 //        [cell addSubview:iv];
         
-#warning 测试时暂时不开启磁盘缓存 SDWebImageCacheMemoryOnly
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly];
+        __block UIImageView *blockImageView = cell.imageView;
+
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:option success:^(UIImage *image, BOOL cached) {
+            if(!cached){    // 非缓存加载时使用渐变动画
+                CATransition *transition = [CATransition animation];
+                transition.duration = 0.5;
+                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                transition.type = kCATransitionFade;
+                [blockImageView.layer addAnimation:transition forKey:nil];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
         
         cell.textLabel.text = newsModel.title;
         cell.detailTextLabel.text = newsModel.summary;
