@@ -22,31 +22,31 @@ static NSDateFormatter *dateFormatter;
 }
 
 
-+ (NSString *)formatDate:(NSDate *) date withFormatter:(HDSDateFormat) format{
++ (NSString *)formatDate:(NSDate *) date withFormatter:(DateFormatType) format{
     if(dateFormatter == nil){
         dateFormatter = [[NSDateFormatter alloc] init];
     }
     NSString *formatString;
     switch (format) {
-        case HDSDateYMD:    formatString = @"yyyy/MM/dd";  break;
-        case HDSDateMD:     formatString = @"MM/dd";  break;
-        case HDSDateYMDHM:  formatString = @"yyyy/MM/dd HH:mm";  break;
-        case HDSDateMDHM:   formatString = @"MM/dd HH:mm";  break;
+        case DateFormatYMD:    formatString = @"yyyy/MM/dd";  break;
+        case DateFormatMD:     formatString = @"MM/dd";  break;
+        case DateFormatYMDHM:  formatString = @"yyyy/MM/dd HH:mm";  break;
+        case DateFormatMDHM:   formatString = @"MM/dd HH:mm";  break;
         default:    break;
     }
     [dateFormatter setDateFormat:formatString];
     return [dateFormatter stringFromDate:date];
 }
-+ (NSDate *)formatString:(NSString *)date withFormatter:(HDSDateFormat) format{
++ (NSDate *)formatString:(NSString *)date withFormatter:(DateFormatType) format{
     if(dateFormatter == nil){
         dateFormatter = [[NSDateFormatter alloc] init];
     }
     NSString *formatString;
     switch (format) {
-        case HDSDateYMD:    formatString = @"yyyy/MM/dd";  break;
-        case HDSDateMD:     formatString = @"MM/dd";  break;
-        case HDSDateYMDHM:  formatString = @"yyyy/MM/dd HH:mm";  break;
-        case HDSDateMDHM:   formatString = @"MM/dd HH:mm";  break;
+        case DateFormatYMD:    formatString = @"yyyy/MM/dd";  break;
+        case DateFormatMD:     formatString = @"MM/dd";  break;
+        case DateFormatYMDHM:  formatString = @"yyyy/MM/dd HH:mm";  break;
+        case DateFormatMDHM:   formatString = @"MM/dd HH:mm";  break;
         default:    break;
     }
     [dateFormatter setDateFormat:formatString];

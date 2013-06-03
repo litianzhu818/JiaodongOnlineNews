@@ -79,12 +79,14 @@ BOOL pageControlUsed;
     
     float xVelocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].x;
 //    NSLog(@"ViewDeckPanGesture velocity:%g offset:%g.",xVelocity,scrollView.contentOffset.x);
-    // 快速连续滑动时，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x>0 && 320>contentOffset.x>0，
-    // 动画执行完成时，velocity.x>0 && contentOffset.x=0
+    
     if(xVelocity > 0.0f){
+        // 快速连续滑动时，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x>0 && 320>contentOffset.x>0，
+        // 动画执行完成时，velocity.x>0 && contentOffset.x=0
         if(otherGestureRecognizer.view == _scrollView.pagingScrollView && _scrollView.pagingScrollView.contentOffset.x < _scrollView.frame.size.width){
             return true;
         }
+#warning 未考虑在头条的最左边一条再向左滑动的情况判断
     }
     if(xVelocity < 0.0f){
         if(otherGestureRecognizer.view == _scrollView.pagingScrollView && _scrollView.pagingScrollView.contentOffset.x > _scrollView.pagingScrollView.contentSize.width-2*_scrollView.frame.size.width){
@@ -157,8 +159,19 @@ BOOL pageControlUsed;
 
 - (void)onPageChangedByPageControl:(id)sender{
     pageControlUsed = YES;
-    [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
+    
+    // 若切换的页面不是连续的页面，则先非动画移动到目标页面-1，在动画滚动到目标页
+    if( (_pageControl.currentPage - _pageControl.lastPageIndex) > 1){
+        [_scrollView moveToPageAtIndex:_pageControl.currentPage-1 animated:false];
+        [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
+    }else if((_pageControl.lastPageIndex - _pageControl.currentPage) > 1){
+        [_scrollView moveToPageAtIndex:_pageControl.currentPage+1 animated:false];
+        [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
+    }else{
+        [_scrollView moveToPageAtIndex:_pageControl.currentPage animated:true];
+    }
     _pageControl.lastPageIndex = _pageControl.currentPage;
+    
 }
 
 
@@ -179,7 +192,7 @@ BOOL pageControlUsed;
             [page setStatus:NewsViewStatusNoNetwork];
         }else{  // 从网络加载数据，切换到loading状态
             [page setStatus:NewsViewStatusLoading];
-            [page loadDataFromNetwork:nil];
+            [page loadDataFromNetwork];
         }
     }
 }

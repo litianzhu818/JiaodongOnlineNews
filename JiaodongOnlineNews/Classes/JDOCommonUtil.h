@@ -9,19 +9,19 @@
 #import <Foundation/Foundation.h>
 
 typedef enum{
-    HDSDateYMD,
-    HDSDateMD,
-    HDSDateYMDHM,
-    HDSDateMDHM
-}HDSDateFormat;
+    DateFormatYMD,
+    DateFormatMD,
+    DateFormatYMDHM,
+    DateFormatMDHM
+}DateFormatType;
 
 @interface JDOCommonUtil : NSObject
 
 + (void) showFrameDetail:(UIView *)view;
 + (void) showBoundsDetail:(UIView *)view;
 
-+ (NSString *)formatDate:(NSDate *) date withFormatter:(HDSDateFormat) format;
-+ (NSDate *)formatString:(NSString *)date withFormatter:(HDSDateFormat) format;
++ (NSString *)formatDate:(NSDate *) date withFormatter:(DateFormatType) format;
++ (NSDate *)formatString:(NSString *)date withFormatter:(DateFormatType) format;
 
 + (UIColor *) colorFromString:(NSString *)colorString;
 + (UIColor *) colorFromString:(NSString *)colorString alpha:(CGFloat) alpha;

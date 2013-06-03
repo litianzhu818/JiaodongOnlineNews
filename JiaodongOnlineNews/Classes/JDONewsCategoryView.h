@@ -25,6 +25,9 @@ typedef enum {
     NewsViewStatusRetry,        //服务器错误,点击重试
 } NewsViewStatus;   //新闻页面的几种状态变化
 
+typedef void(^LoadDataSuccessBlock)(NSArray *dataList);
+typedef void(^LoadDataFailureBlock)(NSString *errorStr);
+
 
 @interface JDONewsCategoryView : NIPageView <UITableViewDelegate, UITableViewDataSource>
 
@@ -32,15 +35,17 @@ typedef enum {
 
 @property (nonatomic,assign) JDONewsCategoryInfo *info;
 @property (nonatomic,assign) NewsViewStatus status;
-@property (nonatomic, readwrite, retain) UITableView *tableView;
-@property (nonatomic, readwrite, retain) UIImageView *noNetWorkView;
-@property (nonatomic, readwrite, retain) UIImageView *logoView;
-@property (nonatomic, readwrite, retain) UIImageView *retryView;
-@property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) UIImageView *noNetWorkView;
+@property (nonatomic,strong) UIImageView *logoView;
+@property (nonatomic,strong) UIImageView *retryView;
+@property (nonatomic,strong) UIActivityIndicatorView *activityIndicator;
 
-@property (nonatomic, strong) NSArray *headArray;
-@property (nonatomic, strong) NSArray *listArray;
+@property (nonatomic,strong) NSMutableArray *headArray;
+@property (nonatomic,strong) NSMutableArray *listArray;
 
-- (void) loadDataFromNetwork:(void (^)(BOOL finished))completion;
+- (void)loadDataFromNetwork;
+//- (void)loadHeadlineSuccess:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
+//- (void)loadNewsListSuccess:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
 @end
