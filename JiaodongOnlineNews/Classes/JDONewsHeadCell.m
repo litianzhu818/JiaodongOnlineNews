@@ -53,7 +53,7 @@
 }
 
 - (void)setModels:(NSArray *)models{
-    self.models = models;
+    _models = models;
     
     self.imageViews = [NSMutableArray arrayWithCapacity:models.count];
     [[_scrollView subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -94,6 +94,11 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // 修改pageControl的位置和titleLabel的内容
+    float width = CGRectGetWidth(self.bounds);
+    int page = _scrollView.contentOffset.x / width;
+    _pageControl.currentPage = page;
+    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:page];
+    _titleLabel.text = newsModel.title;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

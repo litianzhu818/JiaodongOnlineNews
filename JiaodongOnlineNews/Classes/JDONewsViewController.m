@@ -81,11 +81,15 @@ BOOL pageControlUsed;
 //    NSLog(@"ViewDeckPanGesture velocity:%g offset:%g.",xVelocity,scrollView.contentOffset.x);
     // 快速连续滑动时，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x>0 && 320>contentOffset.x>0，
     // 动画执行完成时，velocity.x>0 && contentOffset.x=0
-    if(xVelocity > 0.0f && _scrollView.pagingScrollView.contentOffset.x < _scrollView.frame.size.width){
-        return true;
+    if(xVelocity > 0.0f){
+        if(otherGestureRecognizer.view == _scrollView.pagingScrollView && _scrollView.pagingScrollView.contentOffset.x < _scrollView.frame.size.width){
+            return true;
+        }
     }
-    if(xVelocity < 0.0f && _scrollView.pagingScrollView.contentOffset.x > _scrollView.pagingScrollView.contentSize.width-2*_scrollView.frame.size.width){
-        return true;
+    if(xVelocity < 0.0f){
+        if(otherGestureRecognizer.view == _scrollView.pagingScrollView && _scrollView.pagingScrollView.contentOffset.x > _scrollView.pagingScrollView.contentSize.width-2*_scrollView.frame.size.width){
+            return true;
+        }
     }
 
     return false;
