@@ -9,5 +9,19 @@
 #import <UIKit/UIKit.h>
 
 @interface JDOFeedbackViewController : UIViewController
+{
+    IBOutlet UITextField *name;
+    IBOutlet UITextField *email;
+    IBOutlet UITextField *tel;
+    IBOutlet UITextField *content;
+    IBOutlet UIButton *report;
+    
+    NSString *nameString;
+    NSString *emailString;
+    NSString *telString;
+    NSString *contentString;
+}
+
+- (IBAction)reportButtonClick:(id)sender;
 
 @end
