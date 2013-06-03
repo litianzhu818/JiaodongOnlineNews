@@ -14,7 +14,6 @@
     IBOutlet UITextField *email;
     IBOutlet UITextField *tel;
     IBOutlet UITextField *content;
-    IBOutlet UIButton *report;
     
     NSString *nameString;
     NSString *emailString;
@@ -23,5 +22,6 @@
 }
 
 - (IBAction)reportButtonClick:(id)sender;
+- (void)sendToServer;
 
 @end

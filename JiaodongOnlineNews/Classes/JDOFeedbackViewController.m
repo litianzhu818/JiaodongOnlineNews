@@ -20,9 +20,41 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
+        contentString = [[NSString alloc] init];
+        nameString = [[NSString alloc] init];
+        telString = [[NSString alloc] init];
+        emailString = [[NSString alloc] init];
     }
     return self;
+}
+
+- (void)reportButtonClick:(id)sender
+{
+    nameString = name.text;
+    telString = tel.text;
+    emailString = email.text;
+    contentString = content.text;
+    
+    if (contentString.length == 0) {
+        //弹出错误提示
+    } else {
+        [self sendToServer];
+    }
+}
+
+- (void)sendToServer
+{
+    NSString *feedbackService = [SERVER_URL stringByAppendingString:FEEDBACK_SERVICE];
+    NSString *feedbackUrl = @"http://p.jiaodong.net/jdmsys/Data/suggestCollection?username=name&phone=13909090909&email=test@163.com&content=ceshi";
+    NSError *error ;
+    NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:feedbackUrl] options:NSDataReadingUncached error:&error];
+    if(error != nil){
+        return;
+    }
+    NSDictionary *jsonObject = [jsonData objectFromJSONData];
+    
+    NSString *status = [jsonObject valueForKey:@"status"];
+    NSLog(@"%@",status);
 }
 
 - (void)viewDidLoad
