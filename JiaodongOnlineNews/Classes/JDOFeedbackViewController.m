@@ -42,12 +42,27 @@
     }
 }
 
-- (void)sendToServer
+-(NSURL*)paramToUrl
 {
     NSString *feedbackService = [SERVER_URL stringByAppendingString:FEEDBACK_SERVICE];
-    NSString *feedbackUrl = @"http://p.jiaodong.net/jdmsys/Data/suggestCollection?username=name&phone=13909090909&email=test@163.com&content=ceshi";
+    feedbackService = [feedbackService stringByAppendingString:[@"content=" stringByAppendingString:contentString]];
+    if (nameString.length != 0) {
+        feedbackService = [feedbackService stringByAppendingString:[@"&username=" stringByAppendingString:nameString]];
+    }
+    if (telString.length != 0) {
+        feedbackService = [feedbackService stringByAppendingString:[@"&phone=" stringByAppendingString:telString]];
+    }
+    if (emailString.length != 0) {
+        feedbackService = [feedbackService stringByAppendingString:[@"&email=" stringByAppendingString:emailString]];
+    }
+    return [NSURL URLWithString:feedbackService];
+}
+
+- (void)sendToServer
+{
+    
     NSError *error ;
-    NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:feedbackUrl] options:NSDataReadingUncached error:&error];
+    NSData *jsonData = [NSData dataWithContentsOfURL:[self paramToUrl] options:NSDataReadingUncached error:&error];
     if(error != nil){
         return;
     }

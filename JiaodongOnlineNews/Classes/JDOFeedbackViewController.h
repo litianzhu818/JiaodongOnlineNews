@@ -19,9 +19,12 @@
     NSString *emailString;
     NSString *telString;
     NSString *contentString;
+    
+    NSURL *feedbackUrl;
 }
 
 - (IBAction)reportButtonClick:(id)sender;
 - (void)sendToServer;
+- (NSURL*)paramToUrl;
 
 @end
