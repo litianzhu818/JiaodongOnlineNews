@@ -21,10 +21,14 @@
     NSString *contentString;
     
     NSURL *feedbackUrl;
+    NSURLResponse *response;
+    NSMutableData *feedbackData;
+    NSURLConnection *connection;
 }
 
+typedef void(^LoadDataSuccessBlock)(NSArray *dataList);
+typedef void(^LoadDataFailureBlock)(NSString *errorStr);
 - (IBAction)reportButtonClick:(id)sender;
 - (void)sendToServer;
-- (NSURL*)paramToUrl;
 
 @end

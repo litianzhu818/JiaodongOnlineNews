@@ -8,6 +8,7 @@
 
 #import "JDOFeedbackViewController.h"
 #import "JDONavigationView.h"
+#import "JDOHttpClient.h"
 
 @interface JDOFeedbackViewController ()
 
@@ -24,6 +25,8 @@
         nameString = [[NSString alloc] init];
         telString = [[NSString alloc] init];
         emailString = [[NSString alloc] init];
+        
+        feedbackData = [[NSMutableData alloc] init];
     }
     return self;
 }
@@ -42,34 +45,19 @@
     }
 }
 
--(NSURL*)paramToUrl
-{
-    NSString *feedbackService = [SERVER_URL stringByAppendingString:FEEDBACK_SERVICE];
-    feedbackService = [feedbackService stringByAppendingString:[@"content=" stringByAppendingString:contentString]];
-    if (nameString.length != 0) {
-        feedbackService = [feedbackService stringByAppendingString:[@"&username=" stringByAppendingString:nameString]];
-    }
-    if (telString.length != 0) {
-        feedbackService = [feedbackService stringByAppendingString:[@"&phone=" stringByAppendingString:telString]];
-    }
-    if (emailString.length != 0) {
-        feedbackService = [feedbackService stringByAppendingString:[@"&email=" stringByAppendingString:emailString]];
-    }
-    return [NSURL URLWithString:feedbackService];
-}
-
 - (void)sendToServer
 {
     
-    NSError *error ;
-    NSData *jsonData = [NSData dataWithContentsOfURL:[self paramToUrl] options:NSDataReadingUncached error:&error];
-    if(error != nil){
-        return;
-    }
-    NSDictionary *jsonObject = [jsonData objectFromJSONData];
+    NSDictionary *feedbackparams = [[NSDictionary alloc] initWithObjectsAndKeys:@"username", nameString, @"content", contentString, @"phone", telString, @"email", emailString, nil];
     
-    NSString *status = [jsonObject valueForKey:@"status"];
-    NSLog(@"%@",status);
+    JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
+    
+    [httpclient getPath:FEEDBACK_SERVICE parameters:feedbackparams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
 }
 
 - (void)viewDidLoad
