@@ -13,8 +13,6 @@
 #import "SVPullToRefresh.h"
 #import "JDOCommonUtil.h"
 
-#define Headline_Page_Size 3
-#define Newslist_Page_Size 20
 #define Finished_Label_Tag 111
 
 @interface JDONewsCategoryView ()
@@ -31,8 +29,8 @@
         self.frame = frame;
         self.info = info;
         self.currentPage = 0;
-        self.headArray = [[NSMutableArray alloc] initWithCapacity:Headline_Page_Size];
-        self.listArray = [[NSMutableArray alloc] initWithCapacity:Newslist_Page_Size];
+        self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
+        self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
         
         self.reuseIdentifier = info.reuseId;
         self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
@@ -114,7 +112,7 @@
 - (void)loadDataFromNetwork{
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
-    [self loadHeadlineSuccess:^(NSArray *dataList) {
+    [JDONewsModel loadHeadlineChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -126,9 +124,10 @@
             }
         }
     } failure:^(NSString *errorStr) {
+        NSLog(@"错误内容--%@", errorStr);
         [self setStatus:NewsViewStatusRetry];
     }];
-    [self loadNewsListSuccess:^(NSArray *dataList) {
+    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
         if(dataList == nil){
             // 数据加载完成
         }else if(dataList.count >0){
@@ -142,16 +141,16 @@
             }
         }
     } failure:^(NSString *errorStr) {
+        NSLog(@"错误内容--%@", errorStr);
         [self setStatus:NewsViewStatusRetry];
     }];
-    
 }
 
 - (void) refresh{
     self.currentPage = 0;
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
-    [self loadHeadlineSuccess:^(NSArray *dataList) {
+    [JDONewsModel loadHeadlineChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -163,9 +162,9 @@
             }
         }
     } failure:^(NSString *errorStr) {
-        
+        NSLog(@"错误内容--%@", errorStr);
     }];
-    [self loadNewsListSuccess:^(NSArray *dataList) {
+    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
         if(dataList == nil){
 
         }else if(dataList.count >0){
@@ -181,7 +180,7 @@
             [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
         }
     } failure:^(NSString *errorStr) {
-        
+        NSLog(@"错误内容--%@", errorStr);
     }];
 }
 
@@ -193,13 +192,13 @@
 
 - (void) loadMore{
     self.currentPage += 1;
-    [self loadNewsListSuccess:^(NSArray *dataList) {
+    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
         bool finished = false;  
         if(dataList == nil){    // 数据加载完成
             [self.tableView.infiniteScrollingView stopAnimating];
             finished = true;
         }else if(dataList.count >0){
-            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:Newslist_Page_Size];
+            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:NewsList_Page_Size];
             for(int i=0;i<dataList.count;i++){
                 [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:1]];
             }
@@ -209,7 +208,7 @@
             [self.tableView endUpdates];
             
             [self.tableView.infiniteScrollingView stopAnimating];
-            if(dataList.count < Newslist_Page_Size){
+            if(dataList.count < NewsList_Page_Size){
                 finished = true;
             }
         }
@@ -230,62 +229,8 @@
             });
         }
     } failure:^(NSString *errorStr) {
-
+        NSLog(@"错误内容--%@", errorStr);
     }];
-}
-
-- (void)loadHeadlineSuccess:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
-    NSString *newsUrl = [SERVER_URL stringByAppendingString:NEWS_SERVICE];
-    NSString *headlineUrl=[newsUrl stringByAppendingFormat:@"?channelid=%@&pageSize=%d&atype=a",self.info.channel,Headline_Page_Size];
-    NSURLRequest *headlineRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:headlineUrl]];
-    
-    AFJSONRequestOperation *headlineOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:headlineRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSArray *jsonArray = (NSArray *)JSON;
-        if(success)  success([jsonArray jsonArrayToModelArray:[JDONewsModel class] ]);
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSString *errorStr ;
-        if(response.statusCode != 200){
-            errorStr = [@"服务器端错误:" stringByAppendingString:[NSHTTPURLResponse localizedStringForStatusCode:response.statusCode]];
-            [self setStatus:NewsViewStatusRetry];
-        }else{
-            errorStr = error.domain;
-        }
-        if(failure)  failure(errorStr);
-    }];
-    [headlineOperation start];
-}
-
-- (void)loadNewsListSuccess:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
-    NSString *newsUrl = [SERVER_URL stringByAppendingString:NEWS_SERVICE];
-    NSString *listUrl = [newsUrl stringByAppendingFormat:@"?channelid=%@&p=%d&pageSize=%d&natype=a",self.info.channel,self.currentPage,Newslist_Page_Size];
-    NSURLRequest *listRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:listUrl]];
-    
-    // 取列表内容时，使用AFHTTPRequestOperation代替AFJSONRequestOperation，原因是服务器返回结果不规范，包括：
-    // 1.服务器返回的response类型不标准(内容为json，声明为text/html)
-    // 2.返回结果为空是，直接返回字符串的null,不符合json格式，无法被正确解析
-    AFHTTPRequestOperation *listOperation = [[AFHTTPRequestOperation alloc] initWithRequest:listRequest];
-    [listOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if([@"null" isEqualToString:operation.responseString]){
-            if(success)  success(nil);
-        }else{
-            NSArray *jsonArray = [(NSData *)responseObject objectFromJSONData];
-            if(success)  success([jsonArray jsonArrayToModelArray:[JDONewsModel class] ]);
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSString *errorStr ;
-        if(operation.response.statusCode != 200){
-            errorStr = [@"服务器端错误:" stringByAppendingString:[NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode]];
-        }else{
-            errorStr = error.domain;
-        }
-        NSLog(@"请求url--%@,错误内容--%@",listUrl, errorStr);
-#warning 显示错误提示信息
-        if(failure)  failure(errorStr);
-    }];
-    
-    [listOperation start];
 }
 
 // 将普通新闻和头条划分为两个section
@@ -299,7 +244,6 @@
     }else{
         return self.listArray.count==0 ? 5:self.listArray.count;
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -325,7 +269,6 @@
         }
         return cell;
     }
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

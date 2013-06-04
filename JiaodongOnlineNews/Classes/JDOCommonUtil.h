@@ -26,4 +26,6 @@ typedef enum{
 + (UIColor *) colorFromString:(NSString *)colorString;
 + (UIColor *) colorFromString:(NSString *)colorString alpha:(CGFloat) alpha;
 
++ (NSString *) formatErrorWithOperation:(AFHTTPRequestOperation *)operation error:(NSError *)error;
+
 @end

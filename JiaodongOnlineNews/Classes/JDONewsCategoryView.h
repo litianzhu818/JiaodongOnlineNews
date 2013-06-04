@@ -25,9 +25,6 @@ typedef enum {
     NewsViewStatusRetry,        //服务器错误,点击重试
 } NewsViewStatus;   //新闻页面的几种状态变化
 
-typedef void(^LoadDataSuccessBlock)(NSArray *dataList);
-typedef void(^LoadDataFailureBlock)(NSString *errorStr);
-
 
 @interface JDONewsCategoryView : NIPageView <UITableViewDelegate, UITableViewDataSource>
 
@@ -45,7 +42,5 @@ typedef void(^LoadDataFailureBlock)(NSString *errorStr);
 @property (nonatomic,strong) NSMutableArray *listArray;
 
 - (void)loadDataFromNetwork;
-//- (void)loadHeadlineSuccess:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
-//- (void)loadNewsListSuccess:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
 @end

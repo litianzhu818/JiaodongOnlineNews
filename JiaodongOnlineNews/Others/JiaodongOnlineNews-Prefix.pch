@@ -19,6 +19,7 @@
     #import "Reachability.h"
     #import "NSArray+Model.h"
     #import "UIImageView+WebCache.h"
+    #import "JDOCommonUtil.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
     #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly
@@ -26,7 +27,7 @@
 
 #define Headline_Height 170
 #define News_Cell_Height 70
-#define SERVER_URL @"http://p.jiaodong.net/jdmsys"
-#define ADV_SERVICE @"/Data/getAdv"
-#define NEWS_SERVICE @"/Data/getArticles"
-#define FEEDBACK_SERVICE @"/Data/suggestCollection?"
+#define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
+#define ADV_SERVICE @"Data/getAdv"
+#define NEWS_SERVICE @"Data/getArticles"
+#define FEEDBACK_SERVICE @"Data/suggestCollection"

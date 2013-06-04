@@ -28,7 +28,6 @@
 		2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D329AD41750A91100003EA2 /* JDOScrollView.m */; };
 		2D5DEE69174C9BAB00F21FC2 /* left_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */; };
 		2D86D59617584E420000AA6A /* JDONewsCategoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */; };
-		2D86D59C175863A90000AA6A /* AFJSONRequestOperation+ContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59B175863A90000AA6A /* AFJSONRequestOperation+ContentType.m */; };
 		2D86D59F175872FE0000AA6A /* JDONewsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59E175872FE0000AA6A /* JDONewsModel.m */; };
 		2D86D5A2175875630000AA6A /* NSArray+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5A1175875630000AA6A /* NSArray+Model.m */; };
 		2D86D5A5175885E50000AA6A /* JDONewsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */; };
@@ -76,6 +75,8 @@
 		2D98BF84175C3FAF00530C0B /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98BF81175C3FAF00530C0B /* UIScrollView+SVInfiniteScrolling.m */; };
 		2D98BF85175C3FAF00530C0B /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98BF83175C3FAF00530C0B /* UIScrollView+SVPullToRefresh.m */; };
 		2D9C7494175C87EC00B74ACE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D9C7493175C87EC00B74ACE /* Localizable.strings */; };
+		2D9FDC0A175D6B37003EAF78 /* JDOHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */; };
+		2D9FDC0E175D7922003EAF78 /* JDOJsonClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
 		2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */; };
 		2DE0845F175B872800A1A6BC /* JDONewsHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */; };
@@ -119,8 +120,6 @@
 		2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left_menu@2x.png"; sourceTree = "<group>"; };
 		2D86D59417584E420000AA6A /* JDONewsCategoryInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsCategoryInfo.h; sourceTree = "<group>"; };
 		2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsCategoryInfo.m; sourceTree = "<group>"; };
-		2D86D59A175863A90000AA6A /* AFJSONRequestOperation+ContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFJSONRequestOperation+ContentType.h"; sourceTree = "<group>"; };
-		2D86D59B175863A90000AA6A /* AFJSONRequestOperation+ContentType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFJSONRequestOperation+ContentType.m"; sourceTree = "<group>"; };
 		2D86D59D175872FE0000AA6A /* JDONewsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsModel.h; sourceTree = "<group>"; };
 		2D86D59E175872FE0000AA6A /* JDONewsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsModel.m; sourceTree = "<group>"; };
 		2D86D5A0175875630000AA6A /* NSArray+Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Model.h"; sourceTree = "<group>"; };
@@ -214,6 +213,11 @@
 		2D98BF82175C3FAF00530C0B /* UIScrollView+SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVPullToRefresh.h"; sourceTree = "<group>"; };
 		2D98BF83175C3FAF00530C0B /* UIScrollView+SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVPullToRefresh.m"; sourceTree = "<group>"; };
 		2D9C7493175C87EC00B74ACE /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		2D9FDC08175D6B37003EAF78 /* JDOHttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOHttpClient.h; sourceTree = "<group>"; };
+		2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOHttpClient.m; sourceTree = "<group>"; };
+		2D9FDC0C175D7922003EAF78 /* JDOJsonClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOJsonClient.h; sourceTree = "<group>"; };
+		2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOJsonClient.m; sourceTree = "<group>"; };
+		2D9FDC0F175D7980003EAF78 /* JDOWebClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWebClient.h; sourceTree = "<group>"; };
 		2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOSettingViewController.h; sourceTree = "<group>"; };
 		2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOSettingViewController.m; sourceTree = "<group>"; };
 		2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOSettingViewController.xib; sourceTree = "<group>"; };
@@ -258,8 +262,6 @@
 				2D9678BA174AF78A008AC097 /* JDOImageUtil.m */,
 				2D86D5A917588E330000AA6A /* JDOCommonUtil.h */,
 				2D86D5AA17588E330000AA6A /* JDOCommonUtil.m */,
-				2D86D59A175863A90000AA6A /* AFJSONRequestOperation+ContentType.h */,
-				2D86D59B175863A90000AA6A /* AFJSONRequestOperation+ContentType.m */,
 				2D86D5A0175875630000AA6A /* NSArray+Model.h */,
 				2D86D5A1175875630000AA6A /* NSArray+Model.m */,
 			);
@@ -324,6 +326,7 @@
 				D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */,
 				D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */,
 				D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */,
+				2D9FDC0B175D78F6003EAF78 /* Http */,
 				2D86D59317584E030000AA6A /* Model */,
 				2D8D44F9174DF21800786545 /* Views */,
 				2D01E67A1748D78300B81568 /* Utils */,
@@ -502,6 +505,18 @@
 			name = SVPullToRefresh;
 			sourceTree = "<group>";
 		};
+		2D9FDC0B175D78F6003EAF78 /* Http */ = {
+			isa = PBXGroup;
+			children = (
+				2D9FDC0F175D7980003EAF78 /* JDOWebClient.h */,
+				2D9FDC08175D6B37003EAF78 /* JDOHttpClient.h */,
+				2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */,
+				2D9FDC0C175D7922003EAF78 /* JDOJsonClient.h */,
+				2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */,
+			);
+			name = Http;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -635,7 +650,6 @@
 				FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */,
 				D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */,
 				2D86D59617584E420000AA6A /* JDONewsCategoryInfo.m in Sources */,
-				2D86D59C175863A90000AA6A /* AFJSONRequestOperation+ContentType.m in Sources */,
 				2D86D59F175872FE0000AA6A /* JDONewsModel.m in Sources */,
 				2D86D5A2175875630000AA6A /* NSArray+Model.m in Sources */,
 				2D86D5A5175885E50000AA6A /* JDONewsTableCell.m in Sources */,
@@ -669,6 +683,8 @@
 				2DE0845F175B872800A1A6BC /* JDONewsHeadCell.m in Sources */,
 				2D98BF84175C3FAF00530C0B /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				2D98BF85175C3FAF00530C0B /* UIScrollView+SVPullToRefresh.m in Sources */,
+				2D9FDC0A175D6B37003EAF78 /* JDOHttpClient.m in Sources */,
+				2D9FDC0E175D7922003EAF78 /* JDOJsonClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

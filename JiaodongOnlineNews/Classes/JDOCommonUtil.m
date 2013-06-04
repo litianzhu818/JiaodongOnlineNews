@@ -65,4 +65,13 @@ static NSDateFormatter *dateFormatter;
     ];
 }
 
++ (NSString *) formatErrorWithOperation:(AFHTTPRequestOperation *)operation error:(NSError *)error{
+    NSString *errorStr ;
+    if(operation.response.statusCode != 200){
+        errorStr = [@"服务器端错误:" stringByAppendingString:[NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode]];
+    }else{
+        errorStr = error.domain;
+    }
+    return errorStr;
+}
 @end
