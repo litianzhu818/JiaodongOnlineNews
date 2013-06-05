@@ -65,6 +65,8 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *errorString = [JDOCommonUtil formatErrorWithOperation:operation error:error];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交失败" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
         NSLog(@"status:%@", errorString);
     }];
 
