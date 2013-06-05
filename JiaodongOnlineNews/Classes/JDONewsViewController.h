@@ -12,7 +12,7 @@
 @class JDOPageControl;
 @class NIPagingScrollView;
 
-@interface JDONewsViewController : UIViewController <UIScrollViewDelegate,UIGestureRecognizerDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource>
+@interface JDONewsViewController : UIViewController <UIScrollViewDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource>
 
 
 @property (nonatomic,strong) NIPagingScrollView *scrollView;

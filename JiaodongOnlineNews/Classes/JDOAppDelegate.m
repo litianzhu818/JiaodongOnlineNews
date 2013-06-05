@@ -134,14 +134,14 @@
     JDOLeftViewController *leftController = [[JDOLeftViewController alloc] initWithNibName:@"JDOLeftViewController" bundle:nil];
     JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"JDORightViewController" bundle:nil];
     
-    JDONewsViewController *newsViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
-    JDOCenterViewController *centerController = [[JDOCenterViewController alloc] initWithRootViewController:newsViewController];
+    JDOCenterViewController *centerController = [[JDOCenterViewController alloc] init];
     centerController.navigationBar.topItem.title = @"胶东在线";
+    [centerController setRootViewControllerType:MenuItemNews];
 
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
     deckController.leftSize = 100;
     deckController.rightSize = 100;
-    deckController.panningGestureDelegate = newsViewController;
+    deckController.panningGestureDelegate = centerController;
     deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
     deckController.delegate = centerController;
     
@@ -156,8 +156,8 @@
     [hostReach startNotifier];
     
     // 开启内存与磁盘缓存
-    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
-    [NSURLCache setSharedURLCache:urlCache];
+//    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
+//    [NSURLCache setSharedURLCache:urlCache];
     
     if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
         advImage = [UIImage imageNamed:@"default_adv.jpg"];

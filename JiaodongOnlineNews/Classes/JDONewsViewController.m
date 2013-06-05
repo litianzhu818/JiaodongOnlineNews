@@ -65,39 +65,6 @@ BOOL pageControlUsed;
     [self.view addSubview:_pageControl];
 }
 
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-//    NSLog(@"=======%@======",NSStringFromSelector(_cmd));
-//    NSLog(@"gesture:%@",gestureRecognizer);
-//    NSLog(@"other gesture:%@",otherGestureRecognizer);
-    
-    // possible状态下xVelocity==0，只有继续识别才有可能进入began状态，进入began状态后，也必须继续返回true才能执行gesture的回调
-    if(gestureRecognizer.state == UIGestureRecognizerStatePossible ){
-        return true;
-    }
-    // otherGestureRecognizer的可能类型是UIScrollViewPanGestureRecognizer或者UIScrollViewPagingSwipeGestureRecognizer
-    
-    float xVelocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].x;
-//    NSLog(@"ViewDeckPanGesture velocity:%g offset:%g.",xVelocity,scrollView.contentOffset.x);
-    
-    if(xVelocity > 0.0f){
-        // 快速连续滑动时，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x>0 && 320>contentOffset.x>0，
-        // 动画执行完成时，velocity.x>0 && contentOffset.x=0
-        if(otherGestureRecognizer.view == _scrollView.pagingScrollView && _scrollView.pagingScrollView.contentOffset.x < _scrollView.frame.size.width){
-            return true;
-        }
-#warning 未考虑在头条的最左边一条再向左滑动的情况判断
-    }
-    if(xVelocity < 0.0f){
-        if(otherGestureRecognizer.view == _scrollView.pagingScrollView && _scrollView.pagingScrollView.contentOffset.x > _scrollView.pagingScrollView.contentSize.width-2*_scrollView.frame.size.width){
-            return true;
-        }
-    }
-
-    return false;
-
-}
-
 #pragma mark - PagingScrollView delegate 
 
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {

@@ -74,4 +74,59 @@ static NSDateFormatter *dateFormatter;
     }
     return errorStr;
 }
+
++ (NSDictionary *)paramsFromURL:(NSString *)url {
+    
+	NSString *protocolString = [url substringToIndex:([url rangeOfString:@"://"].location)];
+    
+	NSString *tmpString = [url substringFromIndex:([url rangeOfString:@"://"].location + 3)];
+	NSString *hostString = nil;
+    
+	if (0 < [tmpString rangeOfString:@"/"].length) {
+		hostString = [tmpString substringToIndex:([tmpString rangeOfString:@"/"].location)];
+	}
+	else if (0 < [tmpString rangeOfString:@"?"].length) {
+		hostString = [tmpString substringToIndex:([tmpString rangeOfString:@"?"].location)];
+	}
+	else {
+		hostString = tmpString;
+	}
+    
+	tmpString = [url substringFromIndex:([url rangeOfString:hostString].location + [url rangeOfString:hostString].length)];
+	NSString *uriString = @"/";
+	if (0 < [tmpString rangeOfString:@"/"].length) {
+		if (0 < [tmpString rangeOfString:@"?"].length) {
+			uriString = [tmpString substringToIndex:[tmpString rangeOfString:@"?"].location];
+		}
+		else {
+			uriString = tmpString;
+		}
+	}
+    
+	NSMutableDictionary* pairs = [NSMutableDictionary dictionary];
+	if (0 < [url rangeOfString:@"?"].length) {
+		NSString *paramString = [url substringFromIndex:([url rangeOfString:@"?"].location + 1)];
+		NSCharacterSet* delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&amp;;"];
+		NSScanner* scanner = [[NSScanner alloc] initWithString:paramString];
+		while (![scanner isAtEnd]) {
+			NSString* pairString = nil;
+			[scanner scanUpToCharactersFromSet:delimiterSet intoString:&pairString];
+			[scanner scanCharactersFromSet:delimiterSet intoString:NULL];
+			NSArray* kvPair = [pairString componentsSeparatedByString:@"="];
+			if (kvPair.count == 2) {
+				NSString* key = [[kvPair objectAtIndex:0]
+								 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				NSString* value = [[kvPair objectAtIndex:1]
+								   stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				[pairs setObject:value forKey:key];
+			}
+		}
+	}
+    
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			pairs, PARAMS,
+			protocolString, PROTOCOL,
+			hostString, HOST,
+			uriString, URI, nil];
+}
 @end

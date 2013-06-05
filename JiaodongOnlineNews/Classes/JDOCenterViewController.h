@@ -8,6 +8,30 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOCenterViewController : UINavigationController <IIViewDeckControllerDelegate>
+typedef enum {
+    MenuItemNews = 0,
+    MenuItemImage,
+    MenuItemTopic,
+    MenuItemConvenience,
+    MenuItemLivehood,
+    MenuItemCount
+} MenuItem;
+
+@class JDONewsViewController;
+@class JDOImageViewController;
+
+typedef enum {
+    RootViewControllerNews,
+    RootViewControllerImage,
+    RootViewControllerTopic,
+    
+} RootViewControllerType;
+
+@interface JDOCenterViewController : UINavigationController <IIViewDeckControllerDelegate,UIGestureRecognizerDelegate>
+
++ (JDONewsViewController *) sharedNewsViewController;
++ (JDOImageViewController *) sharedImageViewController;
+
+- (void) setRootViewControllerType:(MenuItem) menuItem;
 
 @end

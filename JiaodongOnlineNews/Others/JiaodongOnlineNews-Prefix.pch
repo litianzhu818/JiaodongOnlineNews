@@ -18,6 +18,7 @@
     #import "IIViewDeckController.h"
     #import "Reachability.h"
     #import "NSArray+Model.h"
+    #import "NSDictionary+Model.h"
     #import "UIImageView+WebCache.h"
     #import "JDOCommonUtil.h"
 
@@ -30,4 +31,5 @@
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"
 #define NEWS_SERVICE @"Data/getArticles"
+#define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"

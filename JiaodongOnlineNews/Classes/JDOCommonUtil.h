@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#define PROTOCOL	@"PROTOCOL"
+#define HOST		@"HOST"
+#define PARAMS		@"PARAMS"
+#define URI			@"URI"
+
 typedef enum{
     DateFormatYMD,
     DateFormatMD,
@@ -27,5 +32,7 @@ typedef enum{
 + (UIColor *) colorFromString:(NSString *)colorString alpha:(CGFloat) alpha;
 
 + (NSString *) formatErrorWithOperation:(AFHTTPRequestOperation *)operation error:(NSError *)error;
+
++ (NSDictionary *)paramsFromURL:(NSString *)url;
 
 @end
