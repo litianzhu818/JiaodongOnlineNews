@@ -11,7 +11,8 @@
 #import "JDONewsTableCell.h"
 #import "JDONewsHeadCell.h"
 #import "SVPullToRefresh.h"
-#import "JDOCommonUtil.h"
+#import "JDONewsDetailController.h"
+#import "JDOCenterViewController.h"
 
 #define Finished_Label_Tag 111
 
@@ -276,11 +277,16 @@
     return News_Cell_Height;
 }
 
-
-//- (void)setPageIndex:(NSInteger)pageIndex {
-//    _pageIndex = pageIndex;
-//    [self setNeedsLayout];
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 0){
+        
+    }else{
+        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] init];
+        detailController.newsModel = [self.listArray objectAtIndex:indexPath.row];
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+        [centerController pushViewController:detailController animated:true];
+    }
+}
 
 
 @end

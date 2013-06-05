@@ -1,0 +1,91 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='content.css' rel='stylesheet'/>
+    <script src="content.js"></script>
+    
+    <style type="text/css">
+        body {
+            margin: 0px;
+            padding:0 15px 0 15px;
+            background-color: #f6f6f6;
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color:#000000;
+        }
+        
+        #title {
+            text-align: center;
+            font: 22px "微软雅黑", "黑体", "宋体";
+            padding-top: 15px;
+        }
+        
+        #subtitle {
+            text-align: center;
+            color: #a5a5a5;
+            font: 12px "宋体";
+            margin: 10px 0;
+        }
+        
+        .source a {
+            color: #a5a5a5;
+            margin: 0 5px;
+        }
+        
+        .source a.red {
+            color: #aa0800;
+            margin: 0 10px;
+        }
+        .rel_title{
+            background:#E9E9E9;
+        }
+        #rel{
+            font-size: 18px;
+            line-height: 35px;
+        }
+        
+        .contentstyle {
+            color: #212121;
+            text-align: left; /*justify*/
+            margin-top: 10px;
+            word-wrap: break-word;
+        }
+        .normal_font{
+            font-size:18px;
+            line-height:25px;
+        }
+        </style>
+    
+</head>
+<body>
+    <!-- 文章部分 -->
+    <div id="title_section">
+        {% if title %}
+        <div id='title'>{{title}}</div>
+        <div id='subtitle'>来源:{{source}}　<span aria-hidden="true">{{addtime}}</span></div>
+        {% else%}
+        <div id='title'>此文章不存在</div>
+        {% /if %}
+    </div>
+    <div id="body_section" class="contentstyle,{{font_class}}">
+        {{content}}
+    </div>
+    <!-- 广告推广 -->
+    {% if ad %}{{ad}}{% /if %}
+    <!-- 相关投票 -->
+    {% if vote %}{{vote}}{% /if %}
+    <!-- 相关新闻 -->
+    {% for relate in relates %}
+        {% if currentLoop.currentIndex == 0 %}
+            (the best!) {% comment %} Should only happen for Matt {% /comment %}
+            {% for 1 to 5 %}*{% /for %}
+        {% /if %}
+    {% /for %}
+    <!-- 热门跟贴 -->
+    {% if comments %}{{comments}}{% /if %}
+    <!-- 推荐栏目 -->
+    {% if topics %}{{topics}}{% /if %}
+</body></html>

@@ -156,8 +156,8 @@
     [hostReach startNotifier];
     
     // 开启内存与磁盘缓存
-    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
-    [NSURLCache setSharedURLCache:urlCache];
+//    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
+//    [NSURLCache setSharedURLCache:urlCache];
     
     if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
         advImage = [UIImage imageNamed:@"default_adv.jpg"];

@@ -16,13 +16,13 @@ typedef void(^LoadDataFailureBlock)(NSString *errorStr);
 
 @interface JDONewsModel : NSObject
 
-@property (nonatomic,strong) NSString *atype;
-@property (nonatomic,strong) NSString *clicknum;
-@property (nonatomic,strong) NSString *id;
-@property (nonatomic,strong) NSString *mpic;
-@property (nonatomic,strong) NSString *pubtime;
-@property (nonatomic,strong) NSString *summary;
-@property (nonatomic,strong) NSString *title;
+@property (nonatomic,copy) NSString *atype;
+@property (nonatomic,copy) NSString *clicknum;
+@property (nonatomic,copy) NSString *id;
+@property (nonatomic,copy) NSString *mpic;
+@property (nonatomic,copy) NSString *pubtime;
+@property (nonatomic,copy) NSString *summary;
+@property (nonatomic,copy) NSString *title;
 
 + (void)loadNewsListChannel:(NSString *)channel pageNum:(int)pageNum success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 + (void)loadHeadlineChannel:(NSString *)channel pageNum:(int)pageNum success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;

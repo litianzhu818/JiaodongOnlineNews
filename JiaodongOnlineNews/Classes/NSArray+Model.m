@@ -15,7 +15,7 @@
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         
         NSDictionary *dictObj = (NSDictionary *)obj;
-        NSObject *model = [[class alloc] init];
+        id model = [[class alloc] init];
         
         [dictObj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             [model setValue:obj forKey:key];
