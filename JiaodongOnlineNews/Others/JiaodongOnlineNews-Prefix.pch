@@ -30,4 +30,4 @@
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"
 #define NEWS_SERVICE @"Data/getArticles"
-#define FEEDBACK_SERVICE @"Data/suggestCollection/"
+#define FEEDBACK_SERVICE @"Data/suggestCollection"

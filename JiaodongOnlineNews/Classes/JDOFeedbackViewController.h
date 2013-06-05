@@ -19,11 +19,7 @@
     NSString *emailString;
     NSString *telString;
     NSString *contentString;
-    
-    NSURL *feedbackUrl;
-    NSURLResponse *response;
-    NSMutableData *feedbackData;
-    NSURLConnection *connection;
+
 }
 
 typedef void(^LoadDataSuccessBlock)(NSArray *dataList);
