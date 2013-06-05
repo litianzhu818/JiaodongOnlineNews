@@ -8,6 +8,8 @@
 
 #import "JDOCenterViewController.h"
 #import "NIPagingScrollView.h"
+#import "JDONewsViewController.h"
+#import "JDOImageViewController.h"
 
 @interface JDOCenterViewController ()
 
@@ -15,8 +17,7 @@
 
 @implementation JDOCenterViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -24,16 +25,88 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
++ (JDONewsViewController *) sharedNewsViewController{
+    static JDONewsViewController *_sharedNewsController = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedNewsController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
+    });
+    return _sharedNewsController;
 }
 
-- (void)didReceiveMemoryWarning
-{
++ (JDOImageViewController *) sharedImageViewController{
+    static JDOImageViewController *_sharedImageController = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedImageController = [[JDOImageViewController alloc] initWithNibName:nil bundle:nil];
+    });
+    return _sharedImageController;
+}
+
+- (void) setRootViewControllerType:(MenuItem) menuItem{
+    switch (menuItem) {
+        case MenuItemNews:
+            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            break;
+        case MenuItemImage:
+            [self setViewControllers:@[[[self class] sharedImageViewController]]];
+            break;
+        case MenuItemTopic:
+//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            break;
+        case MenuItemConvenience:
+//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            break;
+        case MenuItemLivehood:
+//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    //    NSLog(@"=======%@======",NSStringFromSelector(_cmd));
+    //    NSLog(@"gesture:%@",gestureRecognizer);
+    //    NSLog(@"other gesture:%@",otherGestureRecognizer);
+    
+    NIPagingScrollView *targetView = [[self class] sharedNewsViewController].scrollView;
+    if(otherGestureRecognizer.view != targetView.pagingScrollView){
+        return true;
+    }
+    
+    // possible状态下xVelocity==0，只有继续识别才有可能进入began状态，进入began状态后，也必须继续返回true才能执行gesture的回调
+    if(gestureRecognizer.state == UIGestureRecognizerStatePossible ){
+        return true;
+    }
+    // otherGestureRecognizer的可能类型是UIScrollViewPanGestureRecognizer或者UIScrollViewPagingSwipeGestureRecognizer
+    
+    float xVelocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].x;
+    //    NSLog(@"ViewDeckPanGesture velocity:%g offset:%g.",xVelocity,scrollView.contentOffset.x);
+    
+    // 快速连续滑动时，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x>0 && 320>contentOffset.x>0，
+    // 动画执行完成时，velocity.x>0 && contentOffset.x=0
+    if(xVelocity > 0.0f && targetView.pagingScrollView.contentOffset.x < targetView.frame.size.width){
+        return true;
+#warning 未考虑在头条的最左边一条再向左滑动的情况判断
+    }
+    if(xVelocity < 0.0f && targetView.pagingScrollView.contentOffset.x > targetView.pagingScrollView.contentSize.width-2*targetView.frame.size.width){
+        return true;
+    }
+    
+    return false;
+    
+}
+
+
+- (void)viewDidLoad{
+    [super viewDidLoad];
+}
+
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (BOOL)shouldAutorotate{
@@ -48,7 +121,7 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark - view deck delegate
+#pragma mark - IIViewDeckControllerDelegate
 
 - (void)addLog:(NSString*)line {
 //    self.tableView.frame = (CGRect) { self.viewDeckController.rightSize, self.tableView.frame.origin.y,
@@ -78,10 +151,12 @@
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController willOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
     [self addLog:[NSString stringWithFormat:@"will open %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
     
-    id scrollView = [[self.viewControllers objectAtIndex:0] valueForKey:@"scrollView"];
-    if(scrollView && [scrollView isKindOfClass:[NIPagingScrollView class]]){
-        [[(NIPagingScrollView *)scrollView pagingScrollView] setScrollEnabled:false];
+    UIViewController *currentTopController = [self.viewControllers objectAtIndex:0];
+    if([currentTopController isKindOfClass:[JDONewsViewController class]]){
+        NIPagingScrollView *scrollView = [(JDONewsViewController *)currentTopController scrollView];
+        [scrollView.pagingScrollView setScrollEnabled:false];
     }
+    
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController didOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
@@ -91,9 +166,10 @@
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController willCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
     [self addLog:[NSString stringWithFormat:@"will close %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
     
-    id scrollView = [[self.viewControllers objectAtIndex:0] valueForKey:@"scrollView"];
-    if(scrollView && [scrollView isKindOfClass:[NIPagingScrollView class]]){
-        [[(NIPagingScrollView *)scrollView pagingScrollView] setScrollEnabled:true];
+    UIViewController *currentTopController = [self.viewControllers objectAtIndex:0];
+    if([currentTopController isKindOfClass:[JDONewsViewController class]]){
+        NIPagingScrollView *scrollView = [(JDONewsViewController *)currentTopController scrollView];
+        [scrollView.pagingScrollView setScrollEnabled:true];
     }
 }
 

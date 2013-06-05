@@ -6,15 +6,7 @@
 
 #import "JDOLeftViewController.h"
 #import "IIViewDeckController.h"
-
-typedef enum {
-    LeftMenuItemNews = 0,
-    LeftMenuItemTopic,
-    LeftMenuItemImage,
-    LeftMenuItemConvenience,
-    LeftMenuItemLivehood,
-    LeftMenuItemCount
-} LeftMenuItem;
+#import "JDOCenterViewController.h"
 
 @implementation JDOLeftViewController
 
@@ -33,7 +25,7 @@ NSArray *iconTitles;
     [super viewDidLoad];
 
     iconNames = @[@"left_menu",@"left_menu",@"left_menu",@"left_menu",@"left_menu"];
-    iconTitles = @[@"新闻",@"话题",@"图片",@"便民",@"民声"];
+    iconTitles = @[@"新闻",@"图片",@"话题",@"便民",@"民声"];
     
     self.tableView.scrollsToTop = NO;
     // Uncomment the following line to preserve selection between presentations.
@@ -61,7 +53,7 @@ NSArray *iconTitles;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return LeftMenuItemCount;
+    return MenuItemCount;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -69,7 +61,7 @@ NSArray *iconTitles;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"LeftMenuItem";
+    static NSString *CellIdentifier = @"MenuItem";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -92,12 +84,10 @@ NSArray *iconTitles;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
-        if ([controller.centerController isKindOfClass:[UINavigationController class]]) {
-            UITableViewController *cc = (UITableViewController *)((UINavigationController *)controller.centerController).topViewController;
-            cc.navigationItem.title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-            if ([cc respondsToSelector:@selector(tableView)]) {
-                [cc.tableView deselectRowAtIndexPath:[cc.tableView indexPathForSelectedRow] animated:NO];
-            }
+        if ([controller.centerController isKindOfClass:[JDOCenterViewController class]]) {
+            JDOCenterViewController *centerController = (JDOCenterViewController *)controller.centerController;
+            [centerController setRootViewControllerType:indexPath.row];
+            centerController.navigationItem.title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
         }
     } completion:^(IIViewDeckController *controller, BOOL success) {
         
