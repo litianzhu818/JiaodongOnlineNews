@@ -46,14 +46,24 @@
 
 - (void)sendToServer
 {
-    NSDictionary *params = @{@"username": nameString, @"content": contentString, @"phone": telString, @"email": emailString};
-    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:contentString forKey:@"content"];
+    if (nameString.length != 0) {
+        [params setValue:nameString forKey:@"username"];
+    }
+    if (telString.length != 0) {
+        [params setValue:telString forKey:@"phone"];
+    }
+    if (emailString.length != 0) {
+        [params setValue:emailString forKey:@"email"];
+    }
+   
     JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
     
     [httpclient getPath:FEEDBACK_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = [(NSData *)responseObject objectFromJSONData];
         id jsonvalue = [json objectForKey:@"status"];
-        if (jsonvalue) {
+        if ([jsonvalue isKindOfClass:[NSNumber class]]) {
             int status = [[json objectForKey:@"status"] intValue];
             if (status == 1) {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交成功" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -62,6 +72,9 @@
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交失败" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [av show];
             }
+        } else {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交失败" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *errorString = [JDOCommonUtil formatErrorWithOperation:operation error:error];
