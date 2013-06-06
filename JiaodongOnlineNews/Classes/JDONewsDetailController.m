@@ -12,8 +12,11 @@
 #import "JDOWebClient.h"
 #import "JDONewsDetailModel.h"
 #import "JDOCenterViewController.h"
+#import "WebViewJavascriptBridge_iOS.h"
 
 @interface JDONewsDetailController ()
+
+@property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 
 @end
 
@@ -30,47 +33,87 @@
 
 - (void)loadView{
     [super loadView];
+    // 导航栏
     JDONavigationView *navigationView = [[JDONavigationView alloc] init];
     [self.view addSubview:navigationView];
     [navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
     [navigationView setTitle:@"新闻详情"];
     [navigationView addCustomButtonWithTarget:self action:@selector(backToViewList)];
-    
+    // 内容
     self.view.backgroundColor = [JDOCommonUtil colorFromString:@"f6f6f6"];// 与html的body背景色相同
-    
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, 460-44)];
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-40)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
     [self.view addSubview:_webView];
+    // 工具栏
+    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-40, 320, 40)];
+    for(int i =0;i<4;i++ ){
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeContactAdd];
+        btn.frame = CGRectMake(i*80, 0, 80, 40);
+        btn.tag = i;
+        [toolView addSubview:btn];
+        [btn addTarget:self action:@selector(changeFontSize:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    [self.view addSubview:toolView];
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, 460-44)];
-    [view setTag:108];
-    [view setBackgroundColor:[UIColor blackColor]];
-    [view setAlpha:0.3];
-    [self.view addSubview:view];
+    // mask
+    UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
+    [maskView setTag:108];
+    [maskView setBackgroundColor:[UIColor blackColor]];
+    [maskView setAlpha:0.3];
+    [self.view addSubview:maskView];
     
     self.activityIndicationView = [[UIActivityIndicatorView alloc] init];
     self.activityIndicationView.center = self.webView.center;
     self.activityIndicationView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [self.view addSubview:_activityIndicationView];
-    
-}
-
-- (void) backToViewList{
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.view.tag = 101;
+    
+    [self buildWebViewJavascriptBridge];
+    [self loadWebView];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    NSLog(@"memory warning");
+}
+     
+- (void) buildWebViewJavascriptBridge{
+//    [WebViewJavascriptBridge enableLogging];
+    
+    _bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView webViewDelegate:self handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"ObjC received message from JS: %@", data);
+        responseCallback(@"Response for message from ObjC");
+    }];
+    
+    [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
+        // 通过pushViewController 显示图集视图
+        responseCallback(linkId);
+    }];
+    [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
+        // 显示图片详情
+        responseCallback(imageId);
+    }];
+}
+
+- (void) loadWebView{
     [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
             // 新闻不存在
         }else if([responseObject isKindOfClass:[NSDictionary class]]){
 //            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
-#warning 必须保证webView不能横向滚动，否者pan手势不起作用
             NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
             NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
             [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
@@ -82,14 +125,15 @@
     [self.activityIndicationView startAnimating];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
+- (void) backToViewList{
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    NSLog(@"memory warning");
+- (void) changeFontSize:(UIControl *)sender{
+    int tag = [sender tag];
+    NSArray *fontSize = @[@"small_font",@"normal_font",@"big_font",@"small_font"];
+    [_bridge callHandler:@"changeFontSize" data:[fontSize objectAtIndex:tag]];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{

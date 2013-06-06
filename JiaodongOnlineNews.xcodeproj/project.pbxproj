@@ -81,6 +81,16 @@
 		2D8D44EE174DA7B500786545 /* top_navigation_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */; };
 		2D8D44F1174DAB2800786545 /* JDONavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D44F0174DAB2800786545 /* JDONavigationView.m */; };
 		2D8D44F8174DEB9900786545 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC23174898BA0071A601 /* Default.png */; };
+		2D8DB0A31760C6DB00DB3EF0 /* NILauncherButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0971760C6DB00DB3EF0 /* NILauncherButtonView.m */; };
+		2D8DB0A41760C6DB00DB3EF0 /* NILauncherPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0991760C6DB00DB3EF0 /* NILauncherPageView.m */; };
+		2D8DB0A51760C6DB00DB3EF0 /* NILauncherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB09B1760C6DB00DB3EF0 /* NILauncherView.m */; };
+		2D8DB0A61760C6DB00DB3EF0 /* NILauncherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB09D1760C6DB00DB3EF0 /* NILauncherViewController.m */; };
+		2D8DB0A71760C6DB00DB3EF0 /* NILauncherViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB09F1760C6DB00DB3EF0 /* NILauncherViewModel.m */; };
+		2D8DB0A81760C6DB00DB3EF0 /* NILauncherViewObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0A11760C6DB00DB3EF0 /* NILauncherViewObject.m */; };
+		2D8DB0AE1760CA8500DB3EF0 /* NIBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0AC1760CA8500DB3EF0 /* NIBadgeView.m */; };
+		2D8DB0B11760D49C00DB3EF0 /* JDOConvenienceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0B01760D49C00DB3EF0 /* JDOConvenienceController.m */; };
+		2D8DB0B41760D67400DB3EF0 /* BadgedLauncherButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0B31760D67400DB3EF0 /* BadgedLauncherButtonView.m */; };
+		2D8DB0B71760EA2D00DB3EF0 /* JDOConvenienceViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0B61760EA2D00DB3EF0 /* JDOConvenienceViewModel.m */; };
 		2D8E4B78175F8FEC00B94E57 /* leftside_shadow_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */; };
 		2D8ED76E1754F3B40093A574 /* progressbar_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8ED76D1754F3B40093A574 /* progressbar_logo.png */; };
 		2D8ED7701754F4270093A574 /* default_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8ED76F1754F4270093A574 /* default_icon.png */; };
@@ -267,6 +277,28 @@
 		2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_navigation_back@2x.png"; sourceTree = "<group>"; };
 		2D8D44EF174DAB2800786545 /* JDONavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONavigationView.h; sourceTree = "<group>"; };
 		2D8D44F0174DAB2800786545 /* JDONavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONavigationView.m; sourceTree = "<group>"; };
+		2D8DB0961760C6DB00DB3EF0 /* NILauncherButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherButtonView.h; sourceTree = "<group>"; };
+		2D8DB0971760C6DB00DB3EF0 /* NILauncherButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NILauncherButtonView.m; sourceTree = "<group>"; };
+		2D8DB0981760C6DB00DB3EF0 /* NILauncherPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherPageView.h; sourceTree = "<group>"; };
+		2D8DB0991760C6DB00DB3EF0 /* NILauncherPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NILauncherPageView.m; sourceTree = "<group>"; };
+		2D8DB09A1760C6DB00DB3EF0 /* NILauncherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherView.h; sourceTree = "<group>"; };
+		2D8DB09B1760C6DB00DB3EF0 /* NILauncherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NILauncherView.m; sourceTree = "<group>"; };
+		2D8DB09C1760C6DB00DB3EF0 /* NILauncherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherViewController.h; sourceTree = "<group>"; };
+		2D8DB09D1760C6DB00DB3EF0 /* NILauncherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NILauncherViewController.m; sourceTree = "<group>"; };
+		2D8DB09E1760C6DB00DB3EF0 /* NILauncherViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherViewModel.h; sourceTree = "<group>"; };
+		2D8DB09F1760C6DB00DB3EF0 /* NILauncherViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NILauncherViewModel.m; sourceTree = "<group>"; };
+		2D8DB0A01760C6DB00DB3EF0 /* NILauncherViewObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherViewObject.h; sourceTree = "<group>"; };
+		2D8DB0A11760C6DB00DB3EF0 /* NILauncherViewObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NILauncherViewObject.m; sourceTree = "<group>"; };
+		2D8DB0A21760C6DB00DB3EF0 /* NimbusLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusLauncher.h; sourceTree = "<group>"; };
+		2D8DB0AB1760CA8500DB3EF0 /* NIBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIBadgeView.h; sourceTree = "<group>"; };
+		2D8DB0AC1760CA8500DB3EF0 /* NIBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIBadgeView.m; sourceTree = "<group>"; };
+		2D8DB0AD1760CA8500DB3EF0 /* NimbusBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusBadge.h; sourceTree = "<group>"; };
+		2D8DB0AF1760D49C00DB3EF0 /* JDOConvenienceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceController.h; sourceTree = "<group>"; };
+		2D8DB0B01760D49C00DB3EF0 /* JDOConvenienceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOConvenienceController.m; sourceTree = "<group>"; };
+		2D8DB0B21760D67400DB3EF0 /* BadgedLauncherButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgedLauncherButtonView.h; sourceTree = "<group>"; };
+		2D8DB0B31760D67400DB3EF0 /* BadgedLauncherButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgedLauncherButtonView.m; sourceTree = "<group>"; };
+		2D8DB0B51760EA2D00DB3EF0 /* JDOConvenienceViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceViewModel.h; sourceTree = "<group>"; };
+		2D8DB0B61760EA2D00DB3EF0 /* JDOConvenienceViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOConvenienceViewModel.m; sourceTree = "<group>"; };
 		2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftside_shadow_bg@2x.png"; sourceTree = "<group>"; };
 		2D8ED76D1754F3B40093A574 /* progressbar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressbar_logo.png; sourceTree = "<group>"; };
 		2D8ED76F1754F4270093A574 /* default_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_icon.png; sourceTree = "<group>"; };
@@ -414,6 +446,8 @@
 				D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */,
 				D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */,
 				D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */,
+				2D8DB0AF1760D49C00DB3EF0 /* JDOConvenienceController.h */,
+				2D8DB0B01760D49C00DB3EF0 /* JDOConvenienceController.m */,
 				2D9FDC0B175D78F6003EAF78 /* Http */,
 				2D86D59317584E030000AA6A /* Model */,
 				2D8D44F9174DF21800786545 /* Views */,
@@ -456,6 +490,8 @@
 				2D86D59E175872FE0000AA6A /* JDONewsModel.m */,
 				2D1DDB56175E2AD10048F7A7 /* JDONewsDetailModel.h */,
 				2D1DDB57175E2AD10048F7A7 /* JDONewsDetailModel.m */,
+				2D8DB0B51760EA2D00DB3EF0 /* JDOConvenienceViewModel.h */,
+				2D8DB0B61760EA2D00DB3EF0 /* JDOConvenienceViewModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -475,6 +511,8 @@
 		2D8B404B175A482200C8B04F /* Nimbus */ = {
 			isa = PBXGroup;
 			children = (
+				2D8DB0AA1760CA6B00DB3EF0 /* badge */,
+				2D8DB0A91760C6E100DB3EF0 /* Launcher */,
 				2D8B404D175A483300C8B04F /* PagingScrollView */,
 				2D8B404C175A482E00C8B04F /* Core */,
 			);
@@ -576,8 +614,40 @@
 				FF19A047175F39A000375716 /* JDOListView.m */,
 				2D93122917600A2500C73802 /* UIView+Transition.h */,
 				2D93122A17600A2500C73802 /* UIView+Transition.m */,
+				2D8DB0B21760D67400DB3EF0 /* BadgedLauncherButtonView.h */,
+				2D8DB0B31760D67400DB3EF0 /* BadgedLauncherButtonView.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		2D8DB0A91760C6E100DB3EF0 /* Launcher */ = {
+			isa = PBXGroup;
+			children = (
+				2D8DB0961760C6DB00DB3EF0 /* NILauncherButtonView.h */,
+				2D8DB0971760C6DB00DB3EF0 /* NILauncherButtonView.m */,
+				2D8DB0981760C6DB00DB3EF0 /* NILauncherPageView.h */,
+				2D8DB0991760C6DB00DB3EF0 /* NILauncherPageView.m */,
+				2D8DB09A1760C6DB00DB3EF0 /* NILauncherView.h */,
+				2D8DB09B1760C6DB00DB3EF0 /* NILauncherView.m */,
+				2D8DB09C1760C6DB00DB3EF0 /* NILauncherViewController.h */,
+				2D8DB09D1760C6DB00DB3EF0 /* NILauncherViewController.m */,
+				2D8DB09E1760C6DB00DB3EF0 /* NILauncherViewModel.h */,
+				2D8DB09F1760C6DB00DB3EF0 /* NILauncherViewModel.m */,
+				2D8DB0A01760C6DB00DB3EF0 /* NILauncherViewObject.h */,
+				2D8DB0A11760C6DB00DB3EF0 /* NILauncherViewObject.m */,
+				2D8DB0A21760C6DB00DB3EF0 /* NimbusLauncher.h */,
+			);
+			name = Launcher;
+			sourceTree = "<group>";
+		};
+		2D8DB0AA1760CA6B00DB3EF0 /* badge */ = {
+			isa = PBXGroup;
+			children = (
+				2D8DB0AB1760CA8500DB3EF0 /* NIBadgeView.h */,
+				2D8DB0AC1760CA8500DB3EF0 /* NIBadgeView.m */,
+				2D8DB0AD1760CA8500DB3EF0 /* NimbusBadge.h */,
+			);
+			name = badge;
 			sourceTree = "<group>";
 		};
 		2D8FAC211748969B0071A601 /* Resources */ = {
@@ -846,6 +916,16 @@
 				2D996A9B175F29AF00C57673 /* MLNavigationController.m in Sources */,
 				2D93122B17600A2500C73802 /* UIView+Transition.m in Sources */,
 				2D93122D17604A3900C73802 /* common.js in Sources */,
+				2D8DB0A31760C6DB00DB3EF0 /* NILauncherButtonView.m in Sources */,
+				2D8DB0A41760C6DB00DB3EF0 /* NILauncherPageView.m in Sources */,
+				2D8DB0A51760C6DB00DB3EF0 /* NILauncherView.m in Sources */,
+				2D8DB0A61760C6DB00DB3EF0 /* NILauncherViewController.m in Sources */,
+				2D8DB0A71760C6DB00DB3EF0 /* NILauncherViewModel.m in Sources */,
+				2D8DB0A81760C6DB00DB3EF0 /* NILauncherViewObject.m in Sources */,
+				2D8DB0AE1760CA8500DB3EF0 /* NIBadgeView.m in Sources */,
+				2D8DB0B11760D49C00DB3EF0 /* JDOConvenienceController.m in Sources */,
+				2D8DB0B41760D67400DB3EF0 /* BadgedLauncherButtonView.m in Sources */,
+				2D8DB0B71760EA2D00DB3EF0 /* JDOConvenienceViewModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

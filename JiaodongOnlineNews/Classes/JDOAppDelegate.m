@@ -24,7 +24,7 @@
 #define max_disk_cache 50
 #define advertise_file_name @"advertise"
 #define advertise_img_width 320
-#define advertise_img_height 460
+#define advertise_img_height App_Height
 
 @implementation JDOAppDelegate
 
@@ -65,7 +65,7 @@
             UIImage *downloadImage = [UIImage imageWithData:imgData];
             // 同比缩放
 //            advImage=[JDOImageUtil adjustImage:downloadImage toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
-            advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320, 460)];
+            advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320, App_Height)];
             
             // 图片加载成功后才保存服务器版本号
             [userDefault setObject:advServerVersion forKey:@"adv_version"];
@@ -83,7 +83,7 @@
             if(imgData){
                 // 同比缩放
 //                advImage = [JDOImageUtil adjustImage:[UIImage imageWithData:imgData] toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
-                advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320, 460)];
+                advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320, App_Height)];
             }else{
                 // 从本地路径加载缓存广告图失败,使用默认广告图
                 advImage = [UIImage imageNamed:@"default_adv.jpg"];
@@ -95,7 +95,7 @@
 
 - (void)showAdvertiseView{
     
-    advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
+    advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, App_Height)];
     // 2秒之后仍未加载完成,则显示已缓存的广告图
     if(advImage == nil){
         NSFileManager * fm = [NSFileManager defaultManager];
@@ -167,7 +167,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
     
-//    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, 460)];
+//    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, App_Height)];
 //    splashView.image = [UIImage imageNamed:@"Default.png"];
 //    [self.window addSubview:splashView];
 //    

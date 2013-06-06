@@ -31,11 +31,7 @@ BOOL pageControlUsed;
 //    self.view.userInteractionEnabled = false; // 所有子视图都会忽略手势事件
     
     // 自定义导航栏
-    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
-    [navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
-    [navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
-    [navigationView setTitle:@"胶东在线"];
-    [self.view addSubview:navigationView];
+    [self setupNavigationView];
     
     _pageInfos = @[
         [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
@@ -66,6 +62,14 @@ BOOL pageControlUsed;
     
     [self.view addSubview:_scrollView];
     [self.view addSubview:_pageControl];
+}
+
+- (void) setupNavigationView{
+    self.navigationView = [[JDONavigationView alloc] init];
+    [_navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
+    [_navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
+    [_navigationView setTitle:@"胶东在线"];
+    [self.view addSubview:_navigationView];
 }
 
 #pragma mark - PagingScrollView delegate 
