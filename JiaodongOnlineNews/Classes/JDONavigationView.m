@@ -19,11 +19,35 @@
     return self;
 }
 
-- (UIButton *) addBackButton{
+- (id)init
+{
+    return [self initWithFrame:CGRectMake(0, 0, 320, 44)];
+}
+
+- (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [btn setBackgroundImage:[UIImage imageNamed:@"top_navigation_back"] forState:UIControlStateNormal];
-    [btn setBackgroundImage:[UIImage imageNamed:@"top_navigation_back_highlighted"] forState:UIControlStateHighlighted];
+    [btn setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
+    [btn setBackgroundImage:[UIImage imageNamed:highlightImage] forState:UIControlStateHighlighted];
     [self addSubview:btn];
+    return btn;
+}
+- (UIButton *) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(320-44, 0, 44, 44)];
+    [btn setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
+    [btn setBackgroundImage:[UIImage imageNamed:highlightImage] forState:UIControlStateHighlighted];
+    [self addSubview:btn];
+    return btn;
+}
+
+- (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector{
+    UIButton *btn = [self addLeftButtonImage:image highlightImage:highlightImage];
+    [btn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    return btn;
+}
+
+- (UIButton *) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector{
+    UIButton *btn = [self addRightButtonImage:image highlightImage:highlightImage];
+    [btn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     return btn;
 }
 
@@ -35,12 +59,12 @@
     [self addSubview:titleLabel];
 }
 
-- (UIButton *) addCustomButton{
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(320-44, 0, 44, 44)];
-    [btn setBackgroundImage:[UIImage imageNamed:@"right_menu"] forState:UIControlStateNormal];
-    [btn setBackgroundImage:[UIImage imageNamed:@"right_menu"] forState:UIControlStateHighlighted];
-    [self addSubview:btn];
-    return btn;
+- (UIButton *) addBackButtonWithTarget:(id)target action:(SEL)selector {
+    return [self addLeftButtonImage:@"top_navigation_back" highlightImage:@"top_navigation_back_highlighted" target:target action:selector];
+}
+
+- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector {
+    return [self addRightButtonImage:@"right_menu" highlightImage:@"right_menu" target:target action:selector];
 }
 
 /*

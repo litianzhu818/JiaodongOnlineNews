@@ -135,7 +135,6 @@
     JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"JDORightViewController" bundle:nil];
     
     JDOCenterViewController *centerController = [[JDOCenterViewController alloc] init];
-    centerController.navigationBar.topItem.title = @"胶东在线";
     [centerController setRootViewControllerType:MenuItemNews];
 
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
