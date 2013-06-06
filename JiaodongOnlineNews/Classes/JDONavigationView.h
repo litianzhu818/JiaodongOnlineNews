@@ -10,8 +10,15 @@
 
 @interface JDONavigationView : UIView
 
-- (UIButton *) addBackButton;
+- (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage;
+- (UIButton *) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage;
+
+- (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector;
+- (UIButton *) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector;
+
 - (void) setTitle:(NSString *)title;
-- (UIButton *) addCustomButton;
+
+- (UIButton *) addBackButtonWithTarget:(id)target action:(SEL)selector;
+- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector;
 
 @end

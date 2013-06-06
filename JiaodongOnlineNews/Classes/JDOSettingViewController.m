@@ -28,10 +28,8 @@
     [super viewDidLoad];
     JDONavigationView *navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:navigationView];
-    UIButton *backButton = [navigationView addBackButton];
-    [backButton addTarget:self action:@selector(onBackBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [navigationView setTitle:@"设置"];
-    [navigationView addCustomButton];
 }
 
 - (void) onBackBtnClick{

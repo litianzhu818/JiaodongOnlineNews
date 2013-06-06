@@ -76,12 +76,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    JDONavigationView *navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    [self.view addSubview:navigationView];
-    UIButton *backButton = [navigationView addBackButton];
-    [backButton addTarget:self action:@selector(onBackBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
+    [navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [navigationView setTitle:@"意见反馈"];
-    [navigationView addCustomButton];
+    [self.view addSubview:navigationView];
 }
 
 - (void) onBackBtnClick{

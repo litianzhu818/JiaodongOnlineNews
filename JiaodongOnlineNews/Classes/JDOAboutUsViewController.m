@@ -26,12 +26,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    JDONavigationView *navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
     [self.view addSubview:navigationView];
-    UIButton *backButton = [navigationView addBackButton];
-    [backButton addTarget:self action:@selector(onBackBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [navigationView setTitle:@"关于我们"];
-    [navigationView addCustomButton];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,44,320,416)];
     [self.view addSubview:imageView];
     imageView.image = [UIImage imageNamed:@"aboutus"];
