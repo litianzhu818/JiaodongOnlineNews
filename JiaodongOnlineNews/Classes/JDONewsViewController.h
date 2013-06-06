@@ -14,8 +14,13 @@
 
 @interface JDONewsViewController : UIViewController <UIScrollViewDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource>
 
-
+/**
+ 存放内容的控件
+ */
 @property (nonatomic,strong) NIPagingScrollView *scrollView;
+/**
+ 顶部标签页
+ */
 @property (nonatomic,strong) JDOPageControl *pageControl;
 
 @end
