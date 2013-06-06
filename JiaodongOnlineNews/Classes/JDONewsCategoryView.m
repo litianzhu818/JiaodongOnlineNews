@@ -117,11 +117,9 @@
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
             headlineFinished = true;
             if(newslistFinished){
-                [self setStatus:NewsViewStatusNormal];
-                [self updateLastRefreshTime];
+                [self reloadTableView];
             }
         }
     } failure:^(NSString *errorStr) {
@@ -134,11 +132,9 @@
         }else if(dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
             newslistFinished = true;
             if(headlineFinished){
-                [self setStatus:NewsViewStatusNormal];
-                [self updateLastRefreshTime];
+                [self reloadTableView];
             }
         }
     } failure:^(NSString *errorStr) {
@@ -146,6 +142,8 @@
         [self setStatus:NewsViewStatusRetry];
     }];
 }
+
+
 
 - (void) refresh{
     self.currentPage = 0;
@@ -155,11 +153,9 @@
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             headlineFinished = true;
             if(newslistFinished){
-                [self.tableView.pullToRefreshView stopAnimating];
-                [self updateLastRefreshTime];
+                [self reloadTableView];
             }
         }
     } failure:^(NSString *errorStr) {
@@ -171,11 +167,9 @@
         }else if(dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
             newslistFinished = true;
             if(headlineFinished){
-                [self.tableView.pullToRefreshView stopAnimating];
-                [self updateLastRefreshTime];
+                [self reloadTableView];
             }
             [self.tableView.infiniteScrollingView setEnabled:true];
             [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
@@ -183,6 +177,13 @@
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
     }];
+}
+
+- (void) reloadTableView{
+    [self setStatus:NewsViewStatusNormal];
+    [self.tableView.pullToRefreshView stopAnimating];
+    [self updateLastRefreshTime];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,2)] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void) updateLastRefreshTime{

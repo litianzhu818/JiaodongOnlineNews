@@ -1,64 +1,24 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href='content.css' rel='stylesheet'/>
-    <script src="content.js"></script>
-    
+    <link href='style.css' rel='stylesheet'/>
     <style type="text/css">
-        body {
-            margin: 0px;
-            padding:0 15px 0 15px;
-            background-color: #f6f6f6;
-            overflow-x: hidden;
-        }
         
-        a {
-            text-decoration: none;
-            color:#000000;
-        }
-        
-        #title {
-            text-align: center;
-            font: 22px "微软雅黑", "黑体", "宋体";
-            padding-top: 15px;
-        }
-        
-        #subtitle {
-            text-align: center;
-            color: #a5a5a5;
-            font: 12px "宋体";
-            margin: 10px 0;
-        }
-        
-        .source a {
-            color: #a5a5a5;
-            margin: 0 5px;
-        }
-        
-        .source a.red {
-            color: #aa0800;
-            margin: 0 10px;
-        }
-        .rel_title{
-            background:#E9E9E9;
-        }
-        #rel{
-            font-size: 18px;
-            line-height: 35px;
-        }
-        
-        .contentstyle {
-            color: #212121;
-            text-align: left; /*justify*/
-            margin-top: 10px;
-            word-wrap: break-word;
-        }
-        .normal_font{
-            font-size:18px;
-            line-height:25px;
-        }
-        </style>
-    
+    </style>
+    <script src="jquery.min.js"></script>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+        $(function(){
+          $("img").each(adjustImgSize);
+          $("img[tapToLoad='true']").one("click", function(){
+             // 替换为加载提示图，并加载原图
+             $(this).attr('src' ,'loading.gif');		// 更换为加载效果gif
+             window.showimage.loadImage($(this).attr('realUrl'));
+             $(this).click(clickImageEvent);
+             });
+          $("img[tapToLoad!='true']").click(clickImageEvent);
+        });
+    </script>
 </head>
 <body>
     <!-- 文章部分 -->
@@ -86,6 +46,4 @@
     {% /for %}
     <!-- 热门跟贴 -->
     {% if comments %}{{comments}}{% /if %}
-    <!-- 推荐栏目 -->
-    {% if topics %}{{topics}}{% /if %}
 </body></html>

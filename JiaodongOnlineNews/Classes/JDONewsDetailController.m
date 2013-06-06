@@ -72,7 +72,9 @@
 //            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
 #warning 必须保证webView不能横向滚动，否者pan手势不起作用
             NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
-            [self.webView loadHTMLString:mergedHTML baseURL:nil];
+            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
+//            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://tieba.baidu.com"]]];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

@@ -9,7 +9,7 @@
 #import "UIView+Transition.h"
 #import <objc/runtime.h>
 
-#define Transition_Time 0.5f
+#define Transition_Time 0.3f
 #define Min_Scale 0.95f
 #define Max_Alpah 0.4f
 

@@ -10,6 +10,10 @@
 
 @interface JDOPathUtil : NSObject
 
++ (NSString *)getHomeFilePath:(NSString *)fileName;
 + (NSString *)getDocumentsFilePath:(NSString *)fileName;
++ (NSString *)getCacheFilePath:(NSString *)fileName;
++ (NSString *)getTmpFilePath:(NSString *)fileName;
+
 + (NSURL *)getDocumentsDirectoryURL;
 @end
