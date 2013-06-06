@@ -552,6 +552,8 @@
 				2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */,
 				FF19A046175F39A000375716 /* JDOListView.h */,
 				FF19A047175F39A000375716 /* JDOListView.m */,
+				2D93122917600A2500C73802 /* UIView+Transition.h */,
+				2D93122A17600A2500C73802 /* UIView+Transition.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -813,6 +815,8 @@
 				2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */,
 				2D996A94175ED55800C57673 /* JDOImageViewController.m in Sources */,
 				FF19A048175F39A000375716 /* JDOListView.m in Sources */,
+				2D996A9B175F29AF00C57673 /* MLNavigationController.m in Sources */,
+				2D93122B17600A2500C73802 /* UIView+Transition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
