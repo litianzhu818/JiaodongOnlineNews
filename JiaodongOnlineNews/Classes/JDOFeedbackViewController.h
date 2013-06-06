@@ -19,12 +19,12 @@
     NSString *emailString;
     NSString *telString;
     NSString *contentString;
-    
-    NSURL *feedbackUrl;
+
 }
 
+typedef void(^LoadDataSuccessBlock)(NSArray *dataList);
+typedef void(^LoadDataFailureBlock)(NSString *errorStr);
 - (IBAction)reportButtonClick:(id)sender;
 - (void)sendToServer;
-- (NSURL*)paramToUrl;
 
 @end
