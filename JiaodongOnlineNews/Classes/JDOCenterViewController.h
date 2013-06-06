@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MLNavigationController.h"
 
 typedef enum {
     MenuItemNews = 0,
@@ -27,7 +28,7 @@ typedef enum {
     
 } RootViewControllerType;
 
-@interface JDOCenterViewController : UINavigationController <IIViewDeckControllerDelegate,UIGestureRecognizerDelegate>
+@interface JDOCenterViewController : MLNavigationController <IIViewDeckControllerDelegate,UIGestureRecognizerDelegate>
 
 + (JDONewsViewController *) sharedNewsViewController;
 + (JDOImageViewController *) sharedImageViewController;

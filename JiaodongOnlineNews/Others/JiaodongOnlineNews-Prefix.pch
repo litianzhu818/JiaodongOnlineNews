@@ -21,6 +21,8 @@
     #import "NSDictionary+Model.h"
     #import "UIImageView+WebCache.h"
     #import "JDOCommonUtil.h"
+    #import "JDONavigationView.h"
+    #import "UIView+Transition.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
     #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly

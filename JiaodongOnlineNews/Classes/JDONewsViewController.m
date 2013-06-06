@@ -30,9 +30,12 @@ BOOL pageControlUsed;
     [super viewDidLoad];
 //    self.view.userInteractionEnabled = false; // 所有子视图都会忽略手势事件
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"导航" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleLeftView)];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"菜单" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleRightView)];
+    // 自定义导航栏
+    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
+    [navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
+    [navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
+    [navigationView setTitle:@"胶东在线"];
+    [self.view addSubview:navigationView];
     
     _pageInfos = @[
         [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
@@ -44,7 +47,7 @@ BOOL pageControlUsed;
     
     _pageCache = [[NSMutableDictionary alloc] initWithCapacity:5];
     
-    _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,37,[self.view bounds].size.width,[self.view bounds].size.height - 37)];
+    _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,44+37,[self.view bounds].size.width,[self.view bounds].size.height -44- 37)];
     _scrollView.backgroundColor = [UIColor whiteColor];
     _scrollView.delegate = self;
     _scrollView.dataSource = self;
@@ -54,7 +57,7 @@ BOOL pageControlUsed;
     [_scrollView reloadData];
     
     
-    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_pageInfos];
+    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_pageInfos];
     [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     
     [_pageControl setCurrentPage:0 animated:false];

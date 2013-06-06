@@ -15,15 +15,25 @@
 
 @end
 
+
+// *******************************UINavigationController内嵌View结构*******************************
+//                                UILayoutContainerView(self.view)
+//              UINavigationTransitionView      UINavigationBar     UIImageView
+// UIViewControllerWrapperView  UIViewControllerWrapperView
+// UIView (pushed UIViewController's view)
+// ***********************************************************************************************
+
 @implementation JDOCenterViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        // 自定义导航栏
+        self.navigationBarHidden = true;
     }
     return self;
 }
+
 
 + (JDONewsViewController *) sharedNewsViewController{
     static JDONewsViewController *_sharedNewsController = nil;
@@ -65,6 +75,34 @@
     }
 }
 
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    if( self.viewControllers.count == 1){
+        [self.viewDeckController setEnabled:false] ;
+    }
+    if (animated) {
+        [self.view pushView:viewController.view complete:^{
+            [super pushViewController:viewController animated:false];
+        }];
+    }else{
+        [super pushViewController:viewController animated:false];
+    }
+}
+
+- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    if( [self.viewControllers indexOfObject:viewController] == 0){
+        [self.viewDeckController setEnabled:true] ;
+    }
+    if (animated) {
+        [self.view popView:viewController.view complete:^{
+            [super popToViewController:viewController animated:false];
+        }];
+        return nil;
+    }else{
+        return [super popToViewController:viewController animated:false];
+    }
+}
+
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
@@ -74,6 +112,10 @@
     
     NIPagingScrollView *targetView = [[self class] sharedNewsViewController].scrollView;
     if(otherGestureRecognizer.view != targetView.pagingScrollView){
+        #warning 在头条上滑动不起作用，未考虑在头条的最左边一条再向左滑动时应该出左菜单的情况
+        if([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]]){
+            return false;
+        }
         return true;
     }
     
@@ -90,7 +132,6 @@
     // 动画执行完成时，velocity.x>0 && contentOffset.x=0
     if(xVelocity > 0.0f && targetView.pagingScrollView.contentOffset.x < targetView.frame.size.width){
         return true;
-#warning 未考虑在头条的最左边一条再向左滑动的情况判断
     }
     if(xVelocity < 0.0f && targetView.pagingScrollView.contentOffset.x > targetView.pagingScrollView.contentSize.width-2*targetView.frame.size.width){
         return true;
