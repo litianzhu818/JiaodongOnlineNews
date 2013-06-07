@@ -47,7 +47,7 @@ JDOAboutUsViewController *aboutUsController;
     // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
     animation.subtype = kCATransitionFromRight;
     
-    aboutUsController.view.frame = CGRectMake(0, 20, 320, 460);
+    aboutUsController.view.frame = CGRectMake(0, 20, 320, App_Height);
     [SharedAppDelegate.window insertSubview:aboutUsController.view aboveSubview:SharedAppDelegate.deckController.view];
     //    SharedAppDelegate.window.rootViewController = settingContrller;
     [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
@@ -66,7 +66,7 @@ JDOAboutUsViewController *aboutUsController;
     // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
     animation.subtype = kCATransitionFromRight;
     
-    settingContrller.view.frame = CGRectMake(0, 20, 320, 460);
+    settingContrller.view.frame = CGRectMake(0, 20, 320, App_Height);
     [SharedAppDelegate.window insertSubview:settingContrller.view aboveSubview:SharedAppDelegate.deckController.view];
 //    SharedAppDelegate.window.rootViewController = settingContrller;
     [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
@@ -86,7 +86,7 @@ JDOAboutUsViewController *aboutUsController;
     // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
     animation.subtype = kCATransitionFromRight;
     
-    feedbackController.view.frame = CGRectMake(0, 20, 320, 460);
+    feedbackController.view.frame = CGRectMake(0, 20, 320, App_Height);
     [SharedAppDelegate.window insertSubview:feedbackController.view aboveSubview:SharedAppDelegate.deckController.view];
     //    SharedAppDelegate.window.rootViewController = settingContrller;
     [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];

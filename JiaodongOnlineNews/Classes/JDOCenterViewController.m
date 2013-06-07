@@ -10,6 +10,7 @@
 #import "NIPagingScrollView.h"
 #import "JDONewsViewController.h"
 #import "JDOImageViewController.h"
+#import "JDOConvenienceController.h"
 
 @interface JDOCenterViewController ()
 
@@ -36,43 +37,55 @@
 
 
 + (JDONewsViewController *) sharedNewsViewController{
-    static JDONewsViewController *_sharedNewsController = nil;
+    static JDONewsViewController *_controller = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedNewsController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
+        _controller = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
     });
-    return _sharedNewsController;
+    return _controller;
 }
 
 + (JDOImageViewController *) sharedImageViewController{
-    static JDOImageViewController *_sharedImageController = nil;
+    static JDOImageViewController *_controller = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedImageController = [[JDOImageViewController alloc] initWithNibName:nil bundle:nil];
+        _controller = [[JDOImageViewController alloc] initWithNibName:nil bundle:nil];
     });
-    return _sharedImageController;
+    return _controller;
 }
 
-- (void) setRootViewControllerType:(MenuItem) menuItem{
++ (JDOConvenienceController *) sharedConvenienceController{
+    static JDOConvenienceController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOConvenienceController alloc] initWithNibName:nil bundle:nil];
+    });
+    return _controller;
+}
+
+- (id<JDONavigationView>) setRootViewControllerType:(MenuItem) menuItem{
+    id<JDONavigationView> controller;
     switch (menuItem) {
         case MenuItemNews:
-            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            controller = [[self class] sharedNewsViewController];
             break;
         case MenuItemImage:
-            [self setViewControllers:@[[[self class] sharedImageViewController]]];
+//            controller = [[self class] sharedImageViewController];
             break;
         case MenuItemTopic:
-//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+//            controller = [[self class] sharedImageViewController];
             break;
         case MenuItemConvenience:
-//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            controller = [[self class] sharedConvenienceController];
             break;
         case MenuItemLivehood:
-//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+//            controller = [[self class] sharedImageViewController];
             break;
         default:
             break;
     }
+    [self setViewControllers:@[controller]];
+    return controller;
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{

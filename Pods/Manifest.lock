@@ -7,6 +7,8 @@ PODS:
     - SDWebImage/Main
   - SDWebImage/Main (2.7.4)
   - ViewDeck (2.2.11)
+  - WebViewJavascriptBridge (3.0.0):
+    - JSONKit
 
 DEPENDENCIES:
   - AFNetworking (= 0.10.1)
@@ -15,6 +17,7 @@ DEPENDENCIES:
   - SDURLCache
   - SDWebImage (= 2.7.4)
   - ViewDeck
+  - WebViewJavascriptBridge
 
 SPEC CHECKSUMS:
   AFNetworking: df1042246c17373b96f12f04bf5c6e1c25992cd4
@@ -23,5 +26,6 @@ SPEC CHECKSUMS:
   SDURLCache: cf4dcdd0d01473c334e9338e82a8733de156ef15
   SDWebImage: 06f076026fe7867ab0100fce95d943f7bff981eb
   ViewDeck: b5eddc8559b0e47259ab7addbf2de6768061f139
+  WebViewJavascriptBridge: a4e53367831ad8621f89665c2b28578541a47b19
 
 COCOAPODS: 0.19.1
