@@ -12,7 +12,7 @@
 @class JDOPageControl;
 @class NIPagingScrollView;
 
-@interface JDONewsViewController : UIViewController <UIScrollViewDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource>
+@interface JDONewsViewController : UIViewController <JDONavigationView,UIScrollViewDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource>
 
 /**
  存放内容的控件
@@ -22,5 +22,6 @@
  顶部标签页
  */
 @property (nonatomic,strong) JDOPageControl *pageControl;
+@property (strong,nonatomic) JDONavigationView *navigationView;
 
 @end

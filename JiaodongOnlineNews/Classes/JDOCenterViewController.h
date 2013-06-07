@@ -33,6 +33,18 @@ typedef enum {
 + (JDONewsViewController *) sharedNewsViewController;
 + (JDOImageViewController *) sharedImageViewController;
 
-- (void) setRootViewControllerType:(MenuItem) menuItem;
+- (UIViewController *) setRootViewControllerType:(MenuItem) menuItem;
+
+- (void)pushViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated;
+
+- (NSArray *)popToViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated;
+
+@end
+
+@protocol JDONavigationView
+
+@required
+@property (strong,nonatomic) JDONavigationView *navigationView;
+- (void) setupNavigationView;
 
 @end

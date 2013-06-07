@@ -10,6 +10,7 @@
 #import "NIPagingScrollView.h"
 #import "JDONewsViewController.h"
 #import "JDOImageViewController.h"
+#import "JDOConvenienceController.h"
 
 @interface JDOCenterViewController ()
 
@@ -36,51 +37,77 @@
 
 
 + (JDONewsViewController *) sharedNewsViewController{
-    static JDONewsViewController *_sharedNewsController = nil;
+    static JDONewsViewController *_controller = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedNewsController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
+        _controller = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
     });
-    return _sharedNewsController;
+    return _controller;
 }
 
 + (JDOImageViewController *) sharedImageViewController{
-    static JDOImageViewController *_sharedImageController = nil;
+    static JDOImageViewController *_controller = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedImageController = [[JDOImageViewController alloc] init];
     });
-    return _sharedImageController;
+    return _controller;
 }
 
-- (void) setRootViewControllerType:(MenuItem) menuItem{
++ (JDOConvenienceController *) sharedConvenienceController{
+    static JDOConvenienceController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOConvenienceController alloc] initWithNibName:nil bundle:nil];
+    });
+    return _controller;
+}
+
+- (id<JDONavigationView>) setRootViewControllerType:(MenuItem) menuItem{
+    id<JDONavigationView> controller;
     switch (menuItem) {
         case MenuItemNews:
-            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            controller = [[self class] sharedNewsViewController];
             break;
         case MenuItemImage:
-            [self setViewControllers:@[[[self class] sharedImageViewController]]];
+//            controller = [[self class] sharedImageViewController];
             break;
         case MenuItemTopic:
-//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+//            controller = [[self class] sharedImageViewController];
             break;
         case MenuItemConvenience:
-//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+            controller = [[self class] sharedConvenienceController];
             break;
         case MenuItemLivehood:
-//            [self setViewControllers:@[[[self class] sharedNewsViewController]]];
+//            controller = [[self class] sharedImageViewController];
             break;
         default:
             break;
     }
+    [self setViewControllers:@[controller]];
+    return controller;
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     if( self.viewControllers.count == 1){
         [self.viewDeckController setEnabled:false] ;
     }
+    [self pushViewController:viewController orientation:JDOTransitionFromRight animated:animated];
+}
+
+- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    if( [self.viewControllers indexOfObject:viewController] == 0){
+        [self.viewDeckController setEnabled:true] ;
+    }
+    return [self popToViewController:viewController orientation:JDOTransitionToRight animated:animated];
+}
+
+- (void)pushViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated{
     if (animated) {
-        [self.view pushView:viewController.view complete:^{
+        [self.view pushView:viewController.view orientation:orientation complete:^{
+            [self.view.blackMask removeFromSuperview];
+            self.view.transform = CGAffineTransformIdentity;
+            [viewController.view removeFromSuperview];
             [super pushViewController:viewController animated:false];
         }];
     }else{
@@ -88,12 +115,12 @@
     }
 }
 
-- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    if( [self.viewControllers indexOfObject:viewController] == 0){
-        [self.viewDeckController setEnabled:true] ;
-    }
+- (NSArray *)popToViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated{
     if (animated) {
-        [self.view popView:viewController.view complete:^{
+        [self.view popView:viewController.view orientation:orientation complete:^{
+            [self.view.blackMask removeFromSuperview];
+            self.view.frame = CGRectMake(0, 0, 320, App_Height);
+            [viewController.view removeFromSuperview];
             [super popToViewController:viewController animated:false];
         }];
         return nil;
