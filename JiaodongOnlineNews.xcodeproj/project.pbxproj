@@ -517,6 +517,8 @@
 				2D1DDB57175E2AD10048F7A7 /* JDONewsDetailModel.m */,
 				FF14D0F91761B8E600D6D4F4 /* JDOListDataModel.h */,
 				FF14D0FA1761B8E700D6D4F4 /* JDOListDataModel.m */,
+				2D8DB0B51760EA2D00DB3EF0 /* JDOConvenienceViewModel.h */,
+				2D8DB0B61760EA2D00DB3EF0 /* JDOConvenienceViewModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -847,6 +849,12 @@
 				2D1DDB5D175E33DC0048F7A7 /* sample_template.txt in Resources */,
 				2D8E4B78175F8FEC00B94E57 /* leftside_shadow_bg@2x.png in Resources */,
 				FF14D0F81761B1E400D6D4F4 /* ImageTableCell.xib in Resources */,
+				2D93122F17604B1900C73802 /* img_set_flag.png in Resources */,
+				2D29B276176065D300F116E4 /* style.css in Resources */,
+				2D96C98A17615D9A00D88EBA /* collect.png in Resources */,
+				2D96C98B17615D9A00D88EBA /* font.png in Resources */,
+				2D96C98C17615D9A00D88EBA /* review.png in Resources */,
+				2D96C98D17615D9A00D88EBA /* share.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,6 +965,19 @@
 				2D93122B17600A2500C73802 /* UIView+Transition.m in Sources */,
 				FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */,
 				FF14D0FB1761B8E700D6D4F4 /* JDOListDataModel.m in Sources */,
+				2D93122D17604A3900C73802 /* common.js in Sources */,
+				2D8DB0A31760C6DB00DB3EF0 /* NILauncherButtonView.m in Sources */,
+				2D8DB0A41760C6DB00DB3EF0 /* NILauncherPageView.m in Sources */,
+				2D8DB0A51760C6DB00DB3EF0 /* NILauncherView.m in Sources */,
+				2D8DB0A61760C6DB00DB3EF0 /* NILauncherViewController.m in Sources */,
+				2D8DB0A71760C6DB00DB3EF0 /* NILauncherViewModel.m in Sources */,
+				2D8DB0A81760C6DB00DB3EF0 /* NILauncherViewObject.m in Sources */,
+				2D8DB0AE1760CA8500DB3EF0 /* NIBadgeView.m in Sources */,
+				2D8DB0B11760D49C00DB3EF0 /* JDOConvenienceController.m in Sources */,
+				2D8DB0B41760D67400DB3EF0 /* BadgedLauncherButtonView.m in Sources */,
+				2D8DB0B71760EA2D00DB3EF0 /* JDOConvenienceViewModel.m in Sources */,
+				2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */,
+				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
