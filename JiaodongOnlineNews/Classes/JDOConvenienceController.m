@@ -21,7 +21,7 @@
         self.title = @"Badges";
         
         NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"ytweather"];
-        NSArray *titles = @[@"违章查询",@"公交线路",@"便民指南",@"违章查询",@"公交线路",@"便民指南",@"违章查询",@"公交线路",@"便民指南"];
+        NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"烟台天气"];
         
         NSMutableArray* contents = [[NSMutableArray alloc] initWithCapacity:9];
         for( int i=0;i<9;i++){
@@ -81,31 +81,36 @@
     id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
     switch (index) {
         case 0:
-            NSLog(@"0000000000000000000");
+            if (self.feedbackviewController == nil) {
+                JDOBusViewController *temp = [[JDOBusViewController alloc] initWithNibName:@"JDOBusViewController" bundle:nil];
+                self.feedbackviewController = temp;
+                temp = nil;
+            }
+            [self.navigationController pushViewController:self.feedbackviewController animated:YES];
             break;
         case 1:
-            NSLog(@"0000000000000000000");
+
             break;
         case 2:
-            NSLog(@"0000000000000000000");
+
             break;
         case 3:
-            NSLog(@"0000000000000000000");
+
             break;
         case 4:
-            NSLog(@"0000000000000000000");
+
             break;
         case 5:
-            NSLog(@"0000000000000000000");
+
             break;
         case 6:
-            NSLog(@"0000000000000000000");
+
             break;
         case 7:
-            NSLog(@"0000000000000000000");
+
             break;
         case 8:
-            NSLog(@"0000000000000000000");
+
             break;
 
     }

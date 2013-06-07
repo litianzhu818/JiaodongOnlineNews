@@ -9,6 +9,7 @@
 #import "JDOFeedbackViewController.h"
 #import "JDONavigationView.h"
 #import "JDOHttpClient.h"
+#import "TPKeyboardAvoidingScrollView.h"
 
 @interface JDOFeedbackViewController ()
 
@@ -21,16 +22,16 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        contentString = [[NSString alloc] init];
-        nameString = [[NSString alloc] init];
-        telString = [[NSString alloc] init];
-        emailString = [[NSString alloc] init];
     }
     return self;
 }
 
 - (void)reportButtonClick:(id)sender
 {
+    contentString = [[NSString alloc] init];
+    nameString = [[NSString alloc] init];
+    telString = [[NSString alloc] init];
+    emailString = [[NSString alloc] init];
     nameString = name.text;
     telString = tel.text;
     emailString = email.text;
@@ -93,6 +94,9 @@
     [navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [navigationView setTitle:@"意见反馈"];
     [self.view addSubview:navigationView];
+    TPKeyboardAvoidingScrollView *tp = self.view;
+    [tp setScrollEnabled:NO];
+    tp = nil;
 }
 
 - (void) onBackBtnClick{
