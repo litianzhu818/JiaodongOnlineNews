@@ -24,6 +24,7 @@
     #import "JDONavigationView.h"
     #import "UIView+Transition.h"
     #import "JDOPathUtil.h"
+    #import "JDOCenterViewController.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
     #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly

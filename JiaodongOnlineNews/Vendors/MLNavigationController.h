@@ -10,7 +10,5 @@
 
 @interface MLNavigationController : UINavigationController
 
-//- (void)pushViewController:(UIViewController *)viewController;
-//- (NSArray *)popToViewController:(UIViewController *)viewController;
 
 @end

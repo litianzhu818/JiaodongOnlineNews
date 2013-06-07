@@ -35,6 +35,10 @@ typedef enum {
 
 - (UIViewController *) setRootViewControllerType:(MenuItem) menuItem;
 
+- (void)pushViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated;
+
+- (NSArray *)popToViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated;
+
 @end
 
 @protocol JDONavigationView
