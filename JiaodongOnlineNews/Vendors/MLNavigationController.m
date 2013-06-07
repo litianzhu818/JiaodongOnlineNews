@@ -49,23 +49,18 @@
     self.shadowView .frame = CGRectMake(-10, 0, 10, self.view.frame.size.height);
     [self.view addSubview:self.shadowView ];
     
-    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self
-                                                                                 action:@selector(paningGestureReceive:)];
-    [recognizer delaysTouchesBegan];
-    [self.view addGestureRecognizer:recognizer];
+//    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self
+//                                                                                 action:@selector(paningGestureReceive:)];
+//    [recognizer delaysTouchesBegan];
+//    [self.view addGestureRecognizer:recognizer];
 }
 
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    [self.screenShotsList addObject:[self capture]];
-    
-    [super pushViewController:viewController animated:animated];
-}
+
 
 // override the pop method
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
-    [self.screenShotsList removeLastObject];
+//    [self.screenShotsList removeLastObject];
     
     return [super popViewControllerAnimated:animated];
 }

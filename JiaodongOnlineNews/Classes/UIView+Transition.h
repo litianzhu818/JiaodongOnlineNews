@@ -8,9 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    JDOTransitionFromRight,
+    JDOTransitionFromBottom,
+    JDOTransitionToRight,
+    JDOTransitionToBottom
+} JDOTransitionOrientation;
+
 @interface UIView (Transition)
 
-- (void) pushView:(UIView *) moveInView complete:(void (^)()) complete;
-- (void) popView:(UIView *) presentView complete:(void (^)()) complete;
+- (UIView *) blackMask;
+
+- (void) pushView:(UIView *) moveInView orientation:(JDOTransitionOrientation)orientation complete:(void (^)()) complete;
+- (void) pushView:(UIView *) moveInView startFrame:(CGRect)startFrame endFrame:(CGRect)endFrame complete:(void (^)())complete;
+- (void) pushView:(UIView *) moveInView process:(void (^)(CGRect* _startFrame,CGRect* _endFrame,NSTimeInterval* _interval))process complete:(void (^)())complete;
+
+- (void) popView:(UIView *) presentView orientation:(JDOTransitionOrientation)orientation complete:(void (^)()) complete;
+- (void) popView:(UIView *) presentView startFrame:(CGRect)startFrame endFrame:(CGRect)endFrame complete:(void (^)()) complete;
+- (void) popView:(UIView *) presentView process:(void (^)(CGRect* _startFrame,CGRect* _endFrame,NSTimeInterval* _interval))process complete:(void (^)())complete;
 
 @end

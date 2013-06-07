@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "NimbusPagingScrollView.h"
-#import "JDOCenterViewController.h"
 
 @class JDOPageControl;
 @class NIPagingScrollView;

@@ -104,6 +104,12 @@
 		2D931234176054D300C73802 /* jquery.min.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */; };
 		2D931235176054D300C73802 /* common.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D93122C17604A3900C73802 /* common.js */; };
 		2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9678BA174AF78A008AC097 /* JDOImageUtil.m */; };
+		2D96C98A17615D9A00D88EBA /* collect.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D96C98617615D9A00D88EBA /* collect.png */; };
+		2D96C98B17615D9A00D88EBA /* font.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D96C98717615D9A00D88EBA /* font.png */; };
+		2D96C98C17615D9A00D88EBA /* review.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D96C98817615D9A00D88EBA /* review.png */; };
+		2D96C98D17615D9A00D88EBA /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D96C98917615D9A00D88EBA /* share.png */; };
+		2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D96C9901761661800D88EBA /* TPKeyboardAvoidingScrollView.m */; };
+		2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D96C9921761661800D88EBA /* TPKeyboardAvoidingTableView.m */; };
 		2D98BF84175C3FAF00530C0B /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98BF81175C3FAF00530C0B /* UIScrollView+SVInfiniteScrolling.m */; };
 		2D98BF85175C3FAF00530C0B /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98BF83175C3FAF00530C0B /* UIScrollView+SVPullToRefresh.m */; };
 		2D996A94175ED55800C57673 /* JDOImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D996A93175ED55700C57673 /* JDOImageViewController.m */; };
@@ -322,6 +328,14 @@
 		2D93122E17604B1900C73802 /* img_set_flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_set_flag.png; sourceTree = "<group>"; };
 		2D9678B9174AF78A008AC097 /* JDOImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageUtil.h; sourceTree = "<group>"; };
 		2D9678BA174AF78A008AC097 /* JDOImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageUtil.m; sourceTree = "<group>"; };
+		2D96C98617615D9A00D88EBA /* collect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collect.png; sourceTree = "<group>"; };
+		2D96C98717615D9A00D88EBA /* font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font.png; sourceTree = "<group>"; };
+		2D96C98817615D9A00D88EBA /* review.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = review.png; sourceTree = "<group>"; };
+		2D96C98917615D9A00D88EBA /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
+		2D96C98F1761661800D88EBA /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
+		2D96C9901761661800D88EBA /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
+		2D96C9911761661800D88EBA /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
+		2D96C9921761661800D88EBA /* TPKeyboardAvoidingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingTableView.m; sourceTree = "<group>"; };
 		2D98BF7F175C3FAF00530C0B /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
 		2D98BF80175C3FAF00530C0B /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
 		2D98BF81175C3FAF00530C0B /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
@@ -517,6 +531,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2D96C98E1761660800D88EBA /* TPKeyboardAvoiding */,
 				2D996A98175F298F00C57673 /* MultiLayerNavigation */,
 				2D5409BB175DE5AE00718FFB /* MGTemplateEngine */,
 				2D98BF7E175C3F8100530C0B /* SVPullToRefresh */,
@@ -717,6 +732,17 @@
 			);
 			name = Others;
 			path = JiaodongOnlineNews/Others;
+			sourceTree = "<group>";
+		};
+		2D96C98E1761660800D88EBA /* TPKeyboardAvoiding */ = {
+			isa = PBXGroup;
+			children = (
+				2D96C98F1761661800D88EBA /* TPKeyboardAvoidingScrollView.h */,
+				2D96C9901761661800D88EBA /* TPKeyboardAvoidingScrollView.m */,
+				2D96C9911761661800D88EBA /* TPKeyboardAvoidingTableView.h */,
+				2D96C9921761661800D88EBA /* TPKeyboardAvoidingTableView.m */,
+			);
+			name = TPKeyboardAvoiding;
 			sourceTree = "<group>";
 		};
 		2D98BF7E175C3F8100530C0B /* SVPullToRefresh */ = {
@@ -962,6 +988,8 @@
 				2D8DB0B11760D49C00DB3EF0 /* JDOConvenienceController.m in Sources */,
 				2D8DB0B41760D67400DB3EF0 /* BadgedLauncherButtonView.m in Sources */,
 				2D8DB0B71760EA2D00DB3EF0 /* JDOConvenienceViewModel.m in Sources */,
+				2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */,
+				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,9 +14,23 @@
 #import "JDOCenterViewController.h"
 #import "WebViewJavascriptBridge_iOS.h"
 
+#define Toolbar_Tag 100
+#define Review_Tag  100
+#define Share_Tag   101
+#define Font_Tag    102
+#define Collect_Tag 103
+
+#define Toolbar_Btn_Size 32
+#define Toolbar_Height   40
+#define Textfield_Height 40
+
 @interface JDONewsDetailController ()
 
 @property (strong, nonatomic) WebViewJavascriptBridge *bridge;
+@property (strong, nonatomic) UIView *reviewPanel;
+@property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
+@property (strong, nonatomic) UITextField *textField;
+@property (assign, nonatomic) BOOL isKeyboardShowing;
 
 @end
 
@@ -33,31 +47,21 @@
 
 - (void)loadView{
     [super loadView];
-    // 导航栏
-    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
-    [self.view addSubview:navigationView];
-    [navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
-    [navigationView setTitle:@"新闻详情"];
-    [navigationView addCustomButtonWithTarget:self action:@selector(backToViewList)];
+    // 自定义导航栏
+    [self setupNavigationView];
     // 内容
     self.view.backgroundColor = [JDOCommonUtil colorFromString:@"f6f6f6"];// 与html的body背景色相同
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-40)]; // 去掉导航栏和工具栏
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-Toolbar_Height)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
     [self.view addSubview:_webView];
     // 工具栏
-    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-40, 320, 40)];
-    for(int i =0;i<4;i++ ){
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeContactAdd];
-        btn.frame = CGRectMake(i*80, 0, 80, 40);
-        btn.tag = i;
-        [toolView addSubview:btn];
-        [btn addTarget:self action:@selector(changeFontSize:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    [self.view addSubview:toolView];
+    [self setupToolBar];
+    // 评论输入panel
+    [self setupReviewPanel];
     
-    // mask
+    // WebView加载mask
     UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
     [maskView setTag:108];
     [maskView setBackgroundColor:[UIColor blackColor]];
@@ -68,6 +72,38 @@
     self.activityIndicationView.center = self.webView.center;
     self.activityIndicationView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [self.view addSubview:_activityIndicationView];
+    
+}
+
+- (void) setupNavigationView{
+    self.navigationView = [[JDONavigationView alloc] init];
+    [_navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
+    [_navigationView setTitle:@"新闻详情"];
+    [_navigationView addCustomButtonWithTarget:self action:@selector(backToViewList)];
+    [self.view addSubview:_navigationView];
+}
+
+- (void) setupToolBar{
+    NSArray *icons = @[@"review",@"share",@"font",@"collect"];
+    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-Toolbar_Height, 320, Toolbar_Height)];
+    for(int i =0;i<4;i++ ){
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, 4, Toolbar_Btn_Size, Toolbar_Btn_Size)];
+        [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal];
+        [btn setTag:Toolbar_Tag+i];
+        [btn addTarget:self action:@selector(toolbarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [toolView addSubview:btn];
+    }
+    [self.view addSubview:toolView];
+}
+
+- (void) setupReviewPanel{
+    _isKeyboardShowing = false;
+    _reviewPanel = [[UIView alloc] init];
+    _reviewPanel.backgroundColor = [UIColor grayColor];
+    _textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 320, Textfield_Height)];
+    [_textField setPlaceholder:@"说点什么吧..."];
+    [_reviewPanel addSubview:_textField];
+    _textField.delegate = self;
 }
 
 - (void)viewDidLoad{
@@ -75,17 +111,27 @@
     
     [self buildWebViewJavascriptBridge];
     [self loadWebView];
+    self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideReviewView)];
+    [self.view.blackMask addGestureRecognizer:self.closeReviewGesture];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+-(void)viewDidUnload{
+    [super viewDidUnload];
+    
+    [self.view.blackMask removeGestureRecognizer:self.closeReviewGesture];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
-    NSLog(@"memory warning");
 }
      
 - (void) buildWebViewJavascriptBridge{
@@ -130,11 +176,92 @@
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
 }
 
-- (void) changeFontSize:(UIControl *)sender{
-    int tag = [sender tag];
-    NSArray *fontSize = @[@"small_font",@"normal_font",@"big_font",@"small_font"];
-    [_bridge callHandler:@"changeFontSize" data:[fontSize objectAtIndex:tag]];
+- (void) toolbarBtnClicked:(UIControl *)sender{
+    switch (sender.tag) {
+        case Review_Tag:
+            [self writeReviewView];
+            break;
+        case Share_Tag:
+            
+            break;
+        case Font_Tag:
+            
+            break;
+        case Collect_Tag:{
+            NSArray *fontSize = @[@"small_font",@"normal_font",@"big_font",@"small_font"];
+            [_bridge callHandler:@"changeFontSize" data:[fontSize objectAtIndex:0]];
+            break;
+        }
+        default:
+            break;
+    }
+    
 }
+
+// 在键盘事件的通知中获得以下参数，用来同步视图动画和键盘动画
+CGRect endFrame;
+NSTimeInterval timeInterval;
+
+- (void)writeReviewView{
+
+    [self.view pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
+        [_textField becomeFirstResponder];
+        _isKeyboardShowing = true;
+        *_startFrame = CGRectMake(0, App_Height, 320, Textfield_Height+5);
+        *_endFrame = endFrame;
+        *_timeInterval = timeInterval;
+    } complete:^{
+        
+    }];
+
+}
+
+// 显示键盘和切换输入法时都会执行
+- (void)keyboardWillShow:(NSNotification *)notification{
+    NSDictionary *userInfo = [notification userInfo];
+    
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
+    
+    CGFloat keyboardTop = keyboardRect.origin.y;
+    
+    if( _isKeyboardShowing == false){
+        endFrame = CGRectMake(0, keyboardTop-Textfield_Height, 320, Textfield_Height+5);// +5是为了去掉输入框与键盘间的空隙
+        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        [animationDurationValue getValue:&timeInterval];
+    }else{
+        _reviewPanel.frame = CGRectMake(0, keyboardTop-Textfield_Height, 320, Textfield_Height+5);
+    }
+}
+
+- (void)hideReviewView{
+    [_textField resignFirstResponder];
+    _isKeyboardShowing = false;
+    [_reviewPanel popView:self.view process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
+        *_startFrame = _reviewPanel.frame;
+        *_endFrame = CGRectMake(0, App_Height, 320, Textfield_Height+5);
+        *_timeInterval = timeInterval;
+    } complete:^{
+        [_reviewPanel removeFromSuperview];
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification{
+    NSDictionary *userInfo = [notification userInfo];
+    
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    [animationDurationValue getValue:&timeInterval];
+}
+
+#pragma mark - TextField delegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    
+    return true;
+}
+
+#pragma mark - Webview delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
 //    NSString *scheme = request.URL.scheme;
