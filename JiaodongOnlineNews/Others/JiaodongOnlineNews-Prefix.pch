@@ -32,6 +32,7 @@
 #define News_Cell_Height 70
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"
+#define IMAGE_SERVICE @"Data/getImages"
 #define NEWS_SERVICE @"Data/getArticles"
 #define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"

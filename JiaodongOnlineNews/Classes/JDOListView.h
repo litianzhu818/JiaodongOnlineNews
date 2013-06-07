@@ -16,9 +16,8 @@ typedef enum {
     NewsViewStatusRetry,        //服务器错误,点击重试
 } NewsViewStatus;   //新闻页面的几种状态变化
 @interface JDOListView : UIView
-- (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info;
+- (id)initWithFrame:(CGRect)frame serviceName:(NSString*)serviceName modelClass:(Class)modelClass;
 
-@property (nonatomic,assign) JDONewsCategoryInfo *info;
 @property (nonatomic,assign) NewsViewStatus status;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) UIImageView *noNetWorkView;
@@ -27,6 +26,7 @@ typedef enum {
 @property (nonatomic,strong) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic,strong) NSMutableArray *listArray;
-
+@property (nonatomic,copy) NSString *serviceName;
+@property (nonatomic,strong) Class modelClass;
 - (void)loadDataFromNetwork;
 @end
