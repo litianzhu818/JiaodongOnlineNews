@@ -20,12 +20,12 @@
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         self.title = @"Badges";
         
-        NSArray *icons = @[@"icon.png",@"navbar_selected",@"right_menu",@"icon.png",@"navbar_selected",@"right_menu",@"icon.png",@"navbar_selected",@"right_menu"];
+        NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"ytweather"];
         NSArray *titles = @[@"违章查询",@"公交线路",@"便民指南",@"违章查询",@"公交线路",@"便民指南",@"违章查询",@"公交线路",@"便民指南"];
         
         NSMutableArray* contents = [[NSMutableArray alloc] initWithCapacity:9];
         for( int i=0;i<9;i++){
-            [contents addObject:[BadgedLauncherViewObject objectWithTitle:[titles objectAtIndex:i] image:[UIImage imageNamed:[icons objectAtIndex:i] ] badgeNumber:i]];
+            [contents addObject:[BadgedLauncherViewObject objectWithTitle:[titles objectAtIndex:i] image:[UIImage imageNamed:[icons objectAtIndex:i] ] badgeNumber:0]];
         }
         _model = [[JDOConvenienceViewModel alloc] initWithArrayOfPages:@[contents] delegate:self];
     }
@@ -79,13 +79,37 @@
 
 - (void)launcherView:(NILauncherView *)launcher didSelectItemOnPage:(NSInteger)page atIndex:(NSInteger)index {
     id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
-    
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Notice"
-                                                    message:[@"Did tap button with title: " stringByAppendingString:object.title]
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+    switch (index) {
+        case 0:
+            NSLog(@"0000000000000000000");
+            break;
+        case 1:
+            NSLog(@"0000000000000000000");
+            break;
+        case 2:
+            NSLog(@"0000000000000000000");
+            break;
+        case 3:
+            NSLog(@"0000000000000000000");
+            break;
+        case 4:
+            NSLog(@"0000000000000000000");
+            break;
+        case 5:
+            NSLog(@"0000000000000000000");
+            break;
+        case 6:
+            NSLog(@"0000000000000000000");
+            break;
+        case 7:
+            NSLog(@"0000000000000000000");
+            break;
+        case 8:
+            NSLog(@"0000000000000000000");
+            break;
+
+    }
+
 }
 
 @end

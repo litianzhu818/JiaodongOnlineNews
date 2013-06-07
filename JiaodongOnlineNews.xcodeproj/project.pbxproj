@@ -117,6 +117,15 @@
 		2DF21F53174CA93B000DEB70 /* right_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DF21F52174CA93B000DEB70 /* right_menu@2x.png */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
+		D8ED26E81761B4DA0008FEC1 /* airplane@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26E71761B4DA0008FEC1 /* airplane@2x.png */; };
+		D8ED26EC1761B5320008FEC1 /* breakrule@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26E91761B5320008FEC1 /* breakrule@2x.png */; };
+		D8ED26ED1761B5320008FEC1 /* bus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26EA1761B5320008FEC1 /* bus@2x.png */; };
+		D8ED26EE1761B5320008FEC1 /* lifeknowledge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26EB1761B5320008FEC1 /* lifeknowledge@2x.png */; };
+		D8ED26F41761B53D0008FEC1 /* ship@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26EF1761B53D0008FEC1 /* ship@2x.png */; };
+		D8ED26F51761B53D0008FEC1 /* telnumber@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F01761B53D0008FEC1 /* telnumber@2x.png */; };
+		D8ED26F61761B53D0008FEC1 /* train@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F11761B53D0008FEC1 /* train@2x.png */; };
+		D8ED26F71761B53D0008FEC1 /* transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F21761B53D0008FEC1 /* transport@2x.png */; };
+		D8ED26F81761B53D0008FEC1 /* ytweather@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */; };
 		FF19A048175F39A000375716 /* JDOListView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19A047175F39A000375716 /* JDOListView.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 		FFD8B6871756E779007B878C /* aboutus.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD8B6861756E779007B878C /* aboutus.png */; };
@@ -339,6 +348,15 @@
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
+		D8ED26E71761B4DA0008FEC1 /* airplane@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplane@2x.png"; sourceTree = "<group>"; };
+		D8ED26E91761B5320008FEC1 /* breakrule@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakrule@2x.png"; sourceTree = "<group>"; };
+		D8ED26EA1761B5320008FEC1 /* bus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bus@2x.png"; sourceTree = "<group>"; };
+		D8ED26EB1761B5320008FEC1 /* lifeknowledge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lifeknowledge@2x.png"; sourceTree = "<group>"; };
+		D8ED26EF1761B53D0008FEC1 /* ship@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ship@2x.png"; sourceTree = "<group>"; };
+		D8ED26F01761B53D0008FEC1 /* telnumber@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "telnumber@2x.png"; sourceTree = "<group>"; };
+		D8ED26F11761B53D0008FEC1 /* train@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "train@2x.png"; sourceTree = "<group>"; };
+		D8ED26F21761B53D0008FEC1 /* transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transport@2x.png"; sourceTree = "<group>"; };
+		D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytweather@2x.png"; sourceTree = "<group>"; };
 		FF19A046175F39A000375716 /* JDOListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListView.h; sourceTree = "<group>"; };
 		FF19A047175F39A000375716 /* JDOListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListView.m; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
@@ -653,22 +671,31 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2D93122E17604B1900C73802 /* img_set_flag.png */,
-				2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */,
 				FFD8B6861756E779007B878C /* aboutus.png */,
-				2D8ED7731754FD910093A574 /* retry.png */,
+				D8ED26E71761B4DA0008FEC1 /* airplane@2x.png */,
 				2D8ED7711754F43A0093A574 /* bad_net.png */,
+				D8ED26E91761B5320008FEC1 /* breakrule@2x.png */,
+				D8ED26EA1761B5320008FEC1 /* bus@2x.png */,
+				2D8FAC23174898BA0071A601 /* Default.png */,
+				2D01E6801748DB2F00B81568 /* default_adv.jpg */,
 				2D8ED76F1754F4270093A574 /* default_icon.png */,
-				2D8ED76D1754F3B40093A574 /* progressbar_logo.png */,
+				2D8FAC1F174896220071A601 /* icon.png */,
+				2D93122E17604B1900C73802 /* img_set_flag.png */,
+				2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */,
+				2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */,
+				D8ED26EB1761B5320008FEC1 /* lifeknowledge@2x.png */,
 				2D13EF93174E1374007FF1CC /* navbar_background@2x.png */,
 				2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */,
-				2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */,
-				2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */,
+				2D8ED76D1754F3B40093A574 /* progressbar_logo.png */,
+				2D8ED7731754FD910093A574 /* retry.png */,
 				2DF21F52174CA93B000DEB70 /* right_menu@2x.png */,
-				2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */,
-				2D8FAC1F174896220071A601 /* icon.png */,
-				2D01E6801748DB2F00B81568 /* default_adv.jpg */,
-				2D8FAC23174898BA0071A601 /* Default.png */,
+				D8ED26EF1761B53D0008FEC1 /* ship@2x.png */,
+				D8ED26F01761B53D0008FEC1 /* telnumber@2x.png */,
+				2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */,
+				2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */,
+				D8ED26F11761B53D0008FEC1 /* train@2x.png */,
+				D8ED26F21761B53D0008FEC1 /* transport@2x.png */,
+				D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */,
 			);
 			name = Resources;
 			path = JiaodongOnlineNews/Resources;
@@ -807,6 +834,15 @@
 				2D8E4B78175F8FEC00B94E57 /* leftside_shadow_bg@2x.png in Resources */,
 				2D93122F17604B1900C73802 /* img_set_flag.png in Resources */,
 				2D29B276176065D300F116E4 /* style.css in Resources */,
+				D8ED26E81761B4DA0008FEC1 /* airplane@2x.png in Resources */,
+				D8ED26EC1761B5320008FEC1 /* breakrule@2x.png in Resources */,
+				D8ED26ED1761B5320008FEC1 /* bus@2x.png in Resources */,
+				D8ED26EE1761B5320008FEC1 /* lifeknowledge@2x.png in Resources */,
+				D8ED26F41761B53D0008FEC1 /* ship@2x.png in Resources */,
+				D8ED26F51761B53D0008FEC1 /* telnumber@2x.png in Resources */,
+				D8ED26F61761B53D0008FEC1 /* train@2x.png in Resources */,
+				D8ED26F71761B53D0008FEC1 /* transport@2x.png in Resources */,
+				D8ED26F81761B53D0008FEC1 /* ytweather@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
