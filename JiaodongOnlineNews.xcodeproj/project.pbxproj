@@ -1010,6 +1010,8 @@
 				2D8DB0B71760EA2D00DB3EF0 /* JDOConvenienceViewModel.m in Sources */,
 				2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
+				2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */,
+				2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */,
 				D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
