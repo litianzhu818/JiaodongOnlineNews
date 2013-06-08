@@ -30,4 +30,29 @@
     return self;
 }
 
+- (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
+    
+    [self getPath:serviceName parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if(success)  {
+            if(modelClass == nil){  // 若无modelClass，则直接返回NSArray或NSDictionary
+                success(responseObject);
+            }else{
+                Class _modelClass = NSClassFromString(modelClass);
+                if([responseObject isKindOfClass:[NSArray class]]){
+                    success([responseObject jsonArrayToModelArray:_modelClass ]);
+                }else if([responseObject isKindOfClass:[NSDictionary class]]){
+                    success([responseObject jsonDictionaryToModel:_modelClass ]);
+                }else{
+                    NSLog(@"未知Json数据类型");
+                }
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(failure) {
+            failure([JDOCommonUtil formatErrorWithOperation:operation error:error]);
+        }
+    }];
+    
+}
+
 @end

@@ -22,8 +22,6 @@
 
 }
 
-typedef void(^LoadDataSuccessBlock)(NSArray *dataList);
-typedef void(^LoadDataFailureBlock)(NSString *errorStr);
 - (IBAction)reportButtonClick:(id)sender;
 - (void)sendToServer;
 

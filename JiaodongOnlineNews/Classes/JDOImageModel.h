@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JDOListDataModel.h"
-@interface JDOImageModel : JDOListDataModel
+
+@interface JDOImageModel : NSObject
 @property (nonatomic,copy) NSString *id;
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,copy) NSString *follownums;

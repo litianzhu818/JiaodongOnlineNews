@@ -29,4 +29,54 @@
     return self;
 }
 
+// 若服务器返回结果不规范，包括：
+// 1.服务器返回的response类型不标准(内容为json，声明为text/html)
+// 2.返回结果为空是，直接返回字符串的null,不符合json格式，无法被正确解析
+// 此时使用HttpClient类型代替JsonClient
+
+- (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
+    
+    [self getPath:serviceName parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if([@"null" isEqualToString:operation.responseString]){
+            if(success)  success(nil);
+        }else{
+            id jsonResult = [(NSData *)responseObject objectFromJSONData];
+            if(success)  {
+                if(modelClass == nil){  // 若无modelClass，则直接返回NSArray或NSDictionary
+                    success(jsonResult);
+                }else{
+                    Class _modelClass = NSClassFromString(modelClass);
+                    if([jsonResult isKindOfClass:[NSArray class]]){
+                        success([jsonResult jsonArrayToModelArray:_modelClass ]);
+                    }else if([jsonResult isKindOfClass:[NSDictionary class]]){
+                        success([jsonResult jsonDictionaryToModel:_modelClass ]);
+                    }else{
+                        NSLog(@"未知Json数据类型");
+                    }
+                }
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(failure) {
+            failure([JDOCommonUtil formatErrorWithOperation:operation error:error]);
+        }
+    }];
+    
+}
+
+- (void)getNSDataByServiceName:(NSString*)serviceName params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
+    
+    [self getPath:serviceName parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if([@"null" isEqualToString:operation.responseString]){
+            if(success)     success(nil);
+        }else{
+            if(success)     success(responseObject);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(failure) {
+            failure([JDOCommonUtil formatErrorWithOperation:operation error:error]);
+        }
+    }];
+}
+
 @end

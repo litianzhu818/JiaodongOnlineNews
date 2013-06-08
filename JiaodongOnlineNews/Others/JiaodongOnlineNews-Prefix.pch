@@ -25,6 +25,9 @@
     #import "UIView+Transition.h"
     #import "JDOPathUtil.h"
     #import "JDOCenterViewController.h"
+    #import "JDOHttpClient.h"
+    #import "JDOJsonClient.h"
+    #import "JDOStatusView.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
     #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly
@@ -34,6 +37,7 @@
 
 #define Headline_Height 170
 #define News_Cell_Height 70
+
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"
 #define IMAGE_SERVICE @"Data/getImages"

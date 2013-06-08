@@ -20,9 +20,10 @@
 
 -(void)loadView{
     [super loadView];
-    _listView = [[JDOListView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame serviceName:IMAGE_SERVICE modelClass:[JDOImageModel class]];
+    _listView = [[JDOListView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) serviceName:IMAGE_SERVICE modelClass:[JDOImageModel class]];
     _listView.tableView.dataSource = self;
     _listView.tableView.delegate = self;
+    _listView.tableView.rowHeight = 196.0f;
     [self.view addSubview:_listView];
 }
 
@@ -40,19 +41,21 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _listView.listArray.count==0 ? 5:_listView.listArray.count;
+    return _listView.listArray.count;//_listView.listArray.count==0 ? 5:_listView.listArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCell"];
     if(cell == nil){
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ImageTableCell" owner:self options:nil];
-        if([nib count] > 0){
-            cell = self.imageCell;
-        }else{
-            NSLog(@"failed to load CustomCell nib file!");
-        }
+        cell = [nib objectAtIndex:0];
     }
+    UILabel *label = (UILabel*)[cell viewWithTag:1];
+    NSInteger row = [indexPath row];
+    NSArray *list = _listView.listArray;
+    JDOImageModel *image = [list objectAtIndex:row];
+    [label setText:image.title];
+   
         return cell;
 }
 
@@ -64,7 +67,6 @@
 
 
 - (void)viewDidUnload {
-    [self setImageCell:nil];
     [super viewDidUnload];
 }
 @end

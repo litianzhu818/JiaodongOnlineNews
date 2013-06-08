@@ -63,14 +63,14 @@
     return _controller;
 }
 
-- (id<JDONavigationView>) setRootViewControllerType:(MenuItem) menuItem{
+- (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
         case MenuItemNews:
             controller = [[self class] sharedNewsViewController];
             break;
         case MenuItemImage:
-//            controller = [[self class] sharedImageViewController];
+            controller = [[self class] sharedImageViewController];
             break;
         case MenuItemTopic:
 //            controller = [[self class] sharedImageViewController];
@@ -85,7 +85,6 @@
             break;
     }
     [self setViewControllers:@[controller]];
-    return controller;
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{

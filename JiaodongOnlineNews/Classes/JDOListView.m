@@ -9,8 +9,8 @@
 #import "JDOListView.h"
 #import "SVPullToRefresh.h"
 #import "NimbusPagingScrollView.h"
-#import "JDOListDataModel.h"
 
+#define Page_Size 20
 #define Finished_Label_Tag 112
 @interface JDOListView ()
 
@@ -105,20 +105,20 @@
 
 - (void)loadDataFromNetwork{
 
-    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
-        if(dataList == nil){
-            // 数据加载完成
-        }else if(dataList.count >0){
-            [self.listArray removeAllObjects];
-            [self.listArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
-            [self setStatus:NewsViewStatusNormal];
-            [self updateLastRefreshTime];
-        }
-    } failure:^(NSString *errorStr) {
-        NSLog(@"错误内容--%@", errorStr);
-        [self setStatus:NewsViewStatusRetry];
-    }];
+//    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
+//        if(dataList == nil){
+//            // 数据加载完成
+//        }else if(dataList.count >0){
+//            [self.listArray removeAllObjects];
+//            [self.listArray addObjectsFromArray:dataList];
+//            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+//            [self setStatus:NewsViewStatusNormal];
+//            [self updateLastRefreshTime];
+//        }
+//    } failure:^(NSString *errorStr) {
+//        NSLog(@"错误内容--%@", errorStr);
+//        [self setStatus:NewsViewStatusRetry];
+//    }];
 }
 
 - (void) refresh{
@@ -126,24 +126,24 @@
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
     
-    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
-        if(dataList == nil){
-            
-        }else if(dataList.count >0){
-            [self.listArray removeAllObjects];
-            [self.listArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-            newslistFinished = true;
-            if(headlineFinished){
-                [self.tableView.pullToRefreshView stopAnimating];
-                [self updateLastRefreshTime];
-            }
-            [self.tableView.infiniteScrollingView setEnabled:true];
-            [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
-        }
-    } failure:^(NSString *errorStr) {
-        NSLog(@"错误内容--%@", errorStr);
-    }];
+//    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
+//        if(dataList == nil){
+//            
+//        }else if(dataList.count >0){
+//            [self.listArray removeAllObjects];
+//            [self.listArray addObjectsFromArray:dataList];
+//            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+//            newslistFinished = true;
+//            if(headlineFinished){
+//                [self.tableView.pullToRefreshView stopAnimating];
+//                [self updateLastRefreshTime];
+//            }
+//            [self.tableView.infiniteScrollingView setEnabled:true];
+//            [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+//        }
+//    } failure:^(NSString *errorStr) {
+//        NSLog(@"错误内容--%@", errorStr);
+//    }];
 }
 
 - (void) updateLastRefreshTime{
@@ -154,45 +154,45 @@
 
 - (void) loadMore{
     self.currentPage += 1;
-    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
-        bool finished = false;
-        if(dataList == nil){    // 数据加载完成
-            [self.tableView.infiniteScrollingView stopAnimating];
-            finished = true;
-        }else if(dataList.count >0){
-            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:Page_Size];
-            for(int i=0;i<dataList.count;i++){
-                [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
-            }
-            [self.listArray addObjectsFromArray:dataList];
-            [self.tableView beginUpdates];
-            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
-            [self.tableView endUpdates];
-            
-            [self.tableView.infiniteScrollingView stopAnimating];
-            if(dataList.count < Page_Size){
-                finished = true;
-            }
-        }
-        if(finished){
-            // 延时执行是为了给insertRowsAtIndexPaths的动画留出时间
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                if([self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag]){
-                    [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = false;
-                }else{
-                    UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.infiniteScrollingView.bounds.size.width, self.tableView.infiniteScrollingView.bounds.size.height)];
-                    finishLabel.textAlignment = NSTextAlignmentCenter;
-                    finishLabel.text = @"数据已全部加载完成";
-                    finishLabel.tag = Finished_Label_Tag;
-                    [self.tableView.infiniteScrollingView setEnabled:false];
-                    [self.tableView.infiniteScrollingView addSubview:finishLabel];
-                }
-            });
-        }
-    } failure:^(NSString *errorStr) {
-        NSLog(@"错误内容--%@", errorStr);
-    }];
+//    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
+//        bool finished = false;
+//        if(dataList == nil){    // 数据加载完成
+//            [self.tableView.infiniteScrollingView stopAnimating];
+//            finished = true;
+//        }else if(dataList.count >0){
+//            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:Page_Size];
+//            for(int i=0;i<dataList.count;i++){
+//                [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
+//            }
+//            [self.listArray addObjectsFromArray:dataList];
+//            [self.tableView beginUpdates];
+//            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
+//            [self.tableView endUpdates];
+//            
+//            [self.tableView.infiniteScrollingView stopAnimating];
+//            if(dataList.count < Page_Size){
+//                finished = true;
+//            }
+//        }
+//        if(finished){
+//            // 延时执行是为了给insertRowsAtIndexPaths的动画留出时间
+//            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+//            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//                if([self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag]){
+//                    [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = false;
+//                }else{
+//                    UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.infiniteScrollingView.bounds.size.width, self.tableView.infiniteScrollingView.bounds.size.height)];
+//                    finishLabel.textAlignment = NSTextAlignmentCenter;
+//                    finishLabel.text = @"数据已全部加载完成";
+//                    finishLabel.tag = Finished_Label_Tag;
+//                    [self.tableView.infiniteScrollingView setEnabled:false];
+//                    [self.tableView.infiniteScrollingView addSubview:finishLabel];
+//                }
+//            });
+//        }
+//    } failure:^(NSString *errorStr) {
+//        NSLog(@"错误内容--%@", errorStr);
+//    }];
 }
 
 @end
