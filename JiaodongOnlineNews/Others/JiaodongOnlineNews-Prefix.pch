@@ -27,6 +27,7 @@
     #import "JDOCenterViewController.h"
     #import "JDOHttpClient.h"
     #import "JDOJsonClient.h"
+    #import "JDOStatusView.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
     #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly

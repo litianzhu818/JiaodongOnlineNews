@@ -63,7 +63,7 @@
     return _controller;
 }
 
-- (id<JDONavigationView>) setRootViewControllerType:(MenuItem) menuItem{
+- (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
         case MenuItemNews:
@@ -85,7 +85,6 @@
             break;
     }
     [self setViewControllers:@[controller]];
-    return controller;
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{

@@ -86,8 +86,7 @@ NSArray *iconTitles;
     [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
         if ([controller.centerController isKindOfClass:[JDOCenterViewController class]]) {
             JDOCenterViewController *centerController = (JDOCenterViewController *)controller.centerController;
-            UIViewController *controller = [centerController setRootViewControllerType:indexPath.row];
-            centerController.navigationItem.title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+            [centerController setRootViewControllerType:indexPath.row];
         }
     } completion:^(IIViewDeckController *controller, BOOL success) {
         

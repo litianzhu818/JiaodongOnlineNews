@@ -283,7 +283,7 @@ NSTimeInterval timeInterval;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    
+    return true;
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView{

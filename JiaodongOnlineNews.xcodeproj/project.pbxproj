@@ -18,6 +18,7 @@
 		2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */; };
 		2D080CEF173CE4D9005653A7 /* JDONewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */; };
 		2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D771762CAC30011C0D7 /* JDOCommentModel.m */; };
+		2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D7A1762F30A0011C0D7 /* JDOStatusView.m */; };
 		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
 		2D13EF95174E1374007FF1CC /* navbar_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF93174E1374007FF1CC /* navbar_background@2x.png */; };
 		2D13EF96174E1374007FF1CC /* navbar_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */; };
@@ -163,6 +164,8 @@
 		2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDONewsViewController.m; sourceTree = "<group>"; };
 		2D115D761762CAC30011C0D7 /* JDOCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCommentModel.h; sourceTree = "<group>"; };
 		2D115D771762CAC30011C0D7 /* JDOCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCommentModel.m; sourceTree = "<group>"; };
+		2D115D791762F30A0011C0D7 /* JDOStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOStatusView.h; sourceTree = "<group>"; };
+		2D115D7A1762F30A0011C0D7 /* JDOStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOStatusView.m; sourceTree = "<group>"; };
 		2D13EF90174E11D5007FF1CC /* JDOPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPageControl.h; sourceTree = "<group>"; };
 		2D13EF91174E11D5007FF1CC /* JDOPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPageControl.m; sourceTree = "<group>"; };
 		2D13EF93174E1374007FF1CC /* navbar_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_background@2x.png"; sourceTree = "<group>"; };
@@ -220,8 +223,8 @@
 		2D86D5AA17588E330000AA6A /* JDOCommonUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCommonUtil.m; sourceTree = "<group>"; };
 		2D86D5AC175894970000AA6A /* JDOCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCenterViewController.h; sourceTree = "<group>"; };
 		2D86D5AD175894980000AA6A /* JDOCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCenterViewController.m; sourceTree = "<group>"; };
-		2D89BA4A1754825600960614 /* JDONewsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsCategoryView.h; sourceTree = "<group>"; };
-		2D89BA4B1754825600960614 /* JDONewsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsCategoryView.m; sourceTree = "<group>"; };
+		2D89BA4A1754825600960614 /* JDONewsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = JDONewsCategoryView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		2D89BA4B1754825600960614 /* JDONewsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = JDONewsCategoryView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2D8AB31E17526A3200F3AAAC /* JDONewsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDONewsViewController.xib; sourceTree = "<group>"; };
 		2D8B403A175A37A700C8B04F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2D8B404E175A495500C8B04F /* NIActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIActions.h; sourceTree = "<group>"; };
@@ -644,6 +647,8 @@
 				2D93122A17600A2500C73802 /* UIView+Transition.m */,
 				2D8DB0B21760D67400DB3EF0 /* BadgedLauncherButtonView.h */,
 				2D8DB0B31760D67400DB3EF0 /* BadgedLauncherButtonView.m */,
+				2D115D791762F30A0011C0D7 /* JDOStatusView.h */,
+				2D115D7A1762F30A0011C0D7 /* JDOStatusView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -688,10 +693,7 @@
 				2D93122E17604B1900C73802 /* img_set_flag.png */,
 				2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */,
 				FFD8B6861756E779007B878C /* aboutus.png */,
-				D8ED26E71761B4DA0008FEC1 /* airplane@2x.png */,
 				2D8ED7711754F43A0093A574 /* bad_net.png */,
-				D8ED26E91761B5320008FEC1 /* breakrule@2x.png */,
-				D8ED26EA1761B5320008FEC1 /* bus@2x.png */,
 				2D8FAC23174898BA0071A601 /* Default.png */,
 				2D01E6801748DB2F00B81568 /* default_adv.jpg */,
 				2D8ED76F1754F4270093A574 /* default_icon.png */,
@@ -699,19 +701,13 @@
 				2D93122E17604B1900C73802 /* img_set_flag.png */,
 				2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */,
 				2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */,
-				D8ED26EB1761B5320008FEC1 /* lifeknowledge@2x.png */,
 				2D13EF93174E1374007FF1CC /* navbar_background@2x.png */,
 				2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */,
 				2D8ED76D1754F3B40093A574 /* progressbar_logo.png */,
 				2D8ED7731754FD910093A574 /* retry.png */,
 				2DF21F52174CA93B000DEB70 /* right_menu@2x.png */,
-				D8ED26EF1761B53D0008FEC1 /* ship@2x.png */,
-				D8ED26F01761B53D0008FEC1 /* telnumber@2x.png */,
 				2D8D44EC174DA7B500786545 /* top_navigation_back@2x.png */,
 				2D8D44EB174DA7B500786545 /* top_navigation_back_highlighted@2x.png */,
-				D8ED26F11761B53D0008FEC1 /* train@2x.png */,
-				D8ED26F21761B53D0008FEC1 /* transport@2x.png */,
-				D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */,
 			);
 			name = Resources;
 			path = JiaodongOnlineNews/Resources;
@@ -866,15 +862,6 @@
 				2D96C98B17615D9A00D88EBA /* font.png in Resources */,
 				2D96C98C17615D9A00D88EBA /* review.png in Resources */,
 				2D96C98D17615D9A00D88EBA /* share.png in Resources */,
-				D8ED26E81761B4DA0008FEC1 /* airplane@2x.png in Resources */,
-				D8ED26EC1761B5320008FEC1 /* breakrule@2x.png in Resources */,
-				D8ED26ED1761B5320008FEC1 /* bus@2x.png in Resources */,
-				D8ED26EE1761B5320008FEC1 /* lifeknowledge@2x.png in Resources */,
-				D8ED26F41761B53D0008FEC1 /* ship@2x.png in Resources */,
-				D8ED26F51761B53D0008FEC1 /* telnumber@2x.png in Resources */,
-				D8ED26F61761B53D0008FEC1 /* train@2x.png in Resources */,
-				D8ED26F71761B53D0008FEC1 /* transport@2x.png in Resources */,
-				D8ED26F81761B53D0008FEC1 /* ytweather@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -998,6 +985,7 @@
 				2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
 				2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */,
+				2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

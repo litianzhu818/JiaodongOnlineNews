@@ -51,27 +51,14 @@
             [blockSelf loadMore];
         }];
         
-        self.noNetWorkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bad_net"]];
-        self.noNetWorkView.center = self.center;
-        [self addSubview:self.noNetWorkView];
-        
-        self.retryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"retry"]];
-        self.retryView.center = self.center;
-        [self addSubview:self.retryView];
-        
-        self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"progressbar_logo"]];
-        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleMargins;
-        [self.activityIndicator sizeToFit];
-        self.activityIndicator.center = CGPointMake(self.logoView.center.x,self.logoView.center.y-50);
-        [self.logoView addSubview:self.activityIndicator];
-        self.logoView.center = self.center;
-        [self addSubview:self.logoView];
+        self.statusView = [[JDOStatusView alloc] initWithFrame:self.bounds];
+        [self.statusView setReloadTarget:self selector:@selector(loadDataFromNetwork)];
+        [self addSubview:self.statusView];
         
         // 从本地数据库读取，本地只保存20条记录
 //        if(){   //从本地读取数据条数为0
 //            // 显示logo界面，不显示加载进度指示，当实际调用loadcurrentPage的时候才从网络加载并显示进度
-        [self setStatus:NewsViewStatusLogo];
+        [self setCurrentState:ViewStatusLogo];
 //        }else{
 //            [self setStatus:NewsViewStatusNormal];
 //        }
@@ -80,36 +67,15 @@
     return self;
 }
 
-- (void) setStatus:(NewsViewStatus)status{
+- (void) setCurrentState:(ViewStatusType)status{
+    if(_status == status)   return;
     _status = status;
-    switch (status) {
-        case NewsViewStatusNormal:
-            self.tableView.hidden = false;
-            self.logoView.hidden = self.retryView.hidden = self.noNetWorkView.hidden = true;
-            break;
-        case NewsViewStatusNoNetwork:
-            self.noNetWorkView.hidden = false;
-            self.logoView.hidden = self.retryView.hidden = self.tableView.hidden = true;
-            break;
-        case NewsViewStatusLogo:
-            self.logoView.hidden = false;
-            self.activityIndicator.hidden = true;
-            self.noNetWorkView.hidden = self.retryView.hidden = self.tableView.hidden = true;
-            break;
-        case NewsViewStatusLoading:
-            self.logoView.hidden = false;
-            self.activityIndicator.hidden = false;
-            self.noNetWorkView.hidden = self.retryView.hidden = self.tableView.hidden = true;
-            break;
-        case NewsViewStatusRetry:
-            self.retryView.hidden = false;
-            self.noNetWorkView.hidden = self.logoView.hidden = self.tableView.hidden = true;
-            break;
-    }
-    if(status == NewsViewStatusLoading){
-        [self.activityIndicator startAnimating];
+    
+    self.statusView.status = status;
+    if(status == ViewStatusNormal){
+        self.tableView.hidden = false;
     }else{
-        [self.activityIndicator stopAnimating];
+        self.tableView.hidden = true;
     }
 }
 
@@ -120,7 +86,6 @@
 - (NSDictionary *) headLineParam{
     return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:0],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
 }
-
 
 - (void)loadDataFromNetwork{
     __block bool headlineFinished = false;
@@ -137,7 +102,7 @@
         }
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
-        [self setStatus:NewsViewStatusRetry];
+        [self setCurrentState:ViewStatusRetry];
     }];
     
     // 加载列表
@@ -154,7 +119,7 @@
         }
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
-        [self setStatus:NewsViewStatusRetry];
+        [self setCurrentState:ViewStatusRetry];
     }];
 }
 
@@ -195,11 +160,11 @@
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
     }];
-    
+
 }
 
 - (void) reloadTableView{
-    [self setStatus:NewsViewStatusNormal];
+    [self setCurrentState:ViewStatusNormal];
     [self.tableView.pullToRefreshView stopAnimating];
     [self updateLastRefreshTime];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,2)] withRowAnimation:UITableViewRowAnimationFade];
