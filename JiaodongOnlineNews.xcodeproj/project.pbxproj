@@ -22,6 +22,8 @@
 		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
 		2D13EF95174E1374007FF1CC /* navbar_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF93174E1374007FF1CC /* navbar_background@2x.png */; };
 		2D13EF96174E1374007FF1CC /* navbar_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */; };
+		2D141460176324E400A6A50A /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D14145D176324E400A6A50A /* UIDevice+IdentifierAddition.m */; };
+		2D141461176324E400A6A50A /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D14145F176324E400A6A50A /* NSString+MD5Addition.m */; };
 		2D19CFE117499F3800BDAE39 /* JDOPathUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE017499F3800BDAE39 /* JDOPathUtil.m */; };
 		2D19CFE9174A3F8700BDAE39 /* JDOLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */; };
 		2D19CFEA174A3F8700BDAE39 /* JDOLeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D19CFE5174A3F8700BDAE39 /* JDOLeftViewController.xib */; };
@@ -170,6 +172,10 @@
 		2D13EF91174E11D5007FF1CC /* JDOPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPageControl.m; sourceTree = "<group>"; };
 		2D13EF93174E1374007FF1CC /* navbar_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_background@2x.png"; sourceTree = "<group>"; };
 		2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_selected@2x.png"; sourceTree = "<group>"; };
+		2D14145C176324E400A6A50A /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
+		2D14145D176324E400A6A50A /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
+		2D14145E176324E400A6A50A /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
+		2D14145F176324E400A6A50A /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
 		2D19CFDF17499F3800BDAE39 /* JDOPathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPathUtil.h; sourceTree = "<group>"; };
 		2D19CFE017499F3800BDAE39 /* JDOPathUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPathUtil.m; sourceTree = "<group>"; };
 		2D19CFE3174A3F8700BDAE39 /* JDOLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLeftViewController.h; sourceTree = "<group>"; };
@@ -483,6 +489,17 @@
 			path = JiaodongOnlineNews/Classes;
 			sourceTree = "<group>";
 		};
+		2D141462176324E700A6A50A /* UniqueIdentifier */ = {
+			isa = PBXGroup;
+			children = (
+				2D14145C176324E400A6A50A /* UIDevice+IdentifierAddition.h */,
+				2D14145D176324E400A6A50A /* UIDevice+IdentifierAddition.m */,
+				2D14145E176324E400A6A50A /* NSString+MD5Addition.h */,
+				2D14145F176324E400A6A50A /* NSString+MD5Addition.m */,
+			);
+			name = UniqueIdentifier;
+			sourceTree = "<group>";
+		};
 		2D5409BB175DE5AE00718FFB /* MGTemplateEngine */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,6 +546,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2D141462176324E700A6A50A /* UniqueIdentifier */,
 				2D96C98E1761660800D88EBA /* TPKeyboardAvoiding */,
 				2D996A98175F298F00C57673 /* MultiLayerNavigation */,
 				2D5409BB175DE5AE00718FFB /* MGTemplateEngine */,
@@ -986,6 +1004,8 @@
 				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
 				2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */,
 				2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */,
+				2D141460176324E400A6A50A /* UIDevice+IdentifierAddition.m in Sources */,
+				2D141461176324E400A6A50A /* NSString+MD5Addition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

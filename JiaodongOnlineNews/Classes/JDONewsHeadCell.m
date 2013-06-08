@@ -65,6 +65,7 @@
     _scrollView.contentSize = CGSizeMake(models.count *width, height);
     for (int i=0; i<models.count; i++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i*width, 0, width, height)];
+        imageView.userInteractionEnabled = true;
         [self.imageViews addObject:imageView];
         [_scrollView addSubview:imageView];
         
