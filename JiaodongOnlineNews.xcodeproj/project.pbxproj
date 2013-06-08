@@ -132,8 +132,6 @@
 		D8ED26F61761B53D0008FEC1 /* train@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F11761B53D0008FEC1 /* train@2x.png */; };
 		D8ED26F71761B53D0008FEC1 /* transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F21761B53D0008FEC1 /* transport@2x.png */; };
 		D8ED26F81761B53D0008FEC1 /* ytweather@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */; };
-		D8ED26FC1761D34E0008FEC1 /* JDOBusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8ED26FA1761D34E0008FEC1 /* JDOBusViewController.m */; };
-		D8ED26FD1761D34E0008FEC1 /* JDOBusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26FB1761D34E0008FEC1 /* JDOBusViewController.xib */; };
 		FF19A048175F39A000375716 /* JDOListView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19A047175F39A000375716 /* JDOListView.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 		FFD8B6871756E779007B878C /* aboutus.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD8B6861756E779007B878C /* aboutus.png */; };
@@ -373,9 +371,6 @@
 		D8ED26F11761B53D0008FEC1 /* train@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "train@2x.png"; sourceTree = "<group>"; };
 		D8ED26F21761B53D0008FEC1 /* transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transport@2x.png"; sourceTree = "<group>"; };
 		D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytweather@2x.png"; sourceTree = "<group>"; };
-		D8ED26F91761D34E0008FEC1 /* JDOBusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOBusViewController.h; sourceTree = "<group>"; };
-		D8ED26FA1761D34E0008FEC1 /* JDOBusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOBusViewController.m; sourceTree = "<group>"; };
-		D8ED26FB1761D34E0008FEC1 /* JDOBusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOBusViewController.xib; sourceTree = "<group>"; };
 		FF19A046175F39A000375716 /* JDOListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListView.h; sourceTree = "<group>"; };
 		FF19A047175F39A000375716 /* JDOListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListView.m; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
@@ -485,9 +480,6 @@
 				D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */,
 				2D8DB0AF1760D49C00DB3EF0 /* JDOConvenienceController.h */,
 				2D8DB0B01760D49C00DB3EF0 /* JDOConvenienceController.m */,
-				D8ED26F91761D34E0008FEC1 /* JDOBusViewController.h */,
-				D8ED26FA1761D34E0008FEC1 /* JDOBusViewController.m */,
-				D8ED26FB1761D34E0008FEC1 /* JDOBusViewController.xib */,
 				2D9FDC0B175D78F6003EAF78 /* Http */,
 				2D86D59317584E030000AA6A /* Model */,
 				2D8D44F9174DF21800786545 /* Views */,
@@ -887,7 +879,6 @@
 				D8ED26F61761B53D0008FEC1 /* train@2x.png in Resources */,
 				D8ED26F71761B53D0008FEC1 /* transport@2x.png in Resources */,
 				D8ED26F81761B53D0008FEC1 /* ytweather@2x.png in Resources */,
-				D8ED26FD1761D34E0008FEC1 /* JDOBusViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1009,7 +1000,6 @@
 				2D8DB0B71760EA2D00DB3EF0 /* JDOConvenienceViewModel.m in Sources */,
 				2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
-				D8ED26FC1761D34E0008FEC1 /* JDOBusViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
