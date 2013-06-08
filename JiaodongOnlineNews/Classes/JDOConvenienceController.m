@@ -20,12 +20,12 @@
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         self.title = @"Badges";
         
-        NSArray *icons = @[@"icon.png",@"navbar_selected",@"right_menu",@"icon.png",@"navbar_selected",@"right_menu",@"icon.png",@"navbar_selected",@"right_menu"];
-        NSArray *titles = @[@"违章查询",@"公交线路",@"便民指南",@"违章查询",@"公交线路",@"便民指南",@"违章查询",@"公交线路",@"便民指南"];
+        NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"ytweather"];
+        NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"烟台天气"];
         
         NSMutableArray* contents = [[NSMutableArray alloc] initWithCapacity:9];
         for( int i=0;i<9;i++){
-            [contents addObject:[BadgedLauncherViewObject objectWithTitle:[titles objectAtIndex:i] image:[UIImage imageNamed:[icons objectAtIndex:i] ] badgeNumber:i]];
+            [contents addObject:[BadgedLauncherViewObject objectWithTitle:[titles objectAtIndex:i] image:[UIImage imageNamed:[icons objectAtIndex:i] ] badgeNumber:0]];
         }
         _model = [[JDOConvenienceViewModel alloc] initWithArrayOfPages:@[contents] delegate:self];
     }
@@ -79,13 +79,37 @@
 
 - (void)launcherView:(NILauncherView *)launcher didSelectItemOnPage:(NSInteger)page atIndex:(NSInteger)index {
     id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
-    
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Notice"
-                                                    message:[@"Did tap button with title: " stringByAppendingString:object.title]
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+    switch (index) {
+        case 0:
+            
+            break;
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+        case 4:
+
+            break;
+        case 5:
+
+            break;
+        case 6:
+
+            break;
+        case 7:
+
+            break;
+        case 8:
+
+            break;
+
+    }
+
 }
 
 @end
