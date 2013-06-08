@@ -40,3 +40,4 @@
 #define NEWS_SERVICE @"Data/getArticles"
 #define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"
+#define CONVENIENCE_SERVICE @"Data/convenience"
