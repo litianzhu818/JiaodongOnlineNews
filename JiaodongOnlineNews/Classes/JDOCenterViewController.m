@@ -49,7 +49,7 @@
     static JDOImageViewController *_controller = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _controller = [[JDOImageViewController alloc] initWithNibName:nil bundle:nil];
+        _sharedImageController = [[JDOImageViewController alloc] init];
     });
     return _controller;
 }

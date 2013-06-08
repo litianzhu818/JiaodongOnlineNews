@@ -9,7 +9,8 @@
 #import "JDOListView.h"
 #import "SVPullToRefresh.h"
 #import "NimbusPagingScrollView.h"
-#import "JDONewsModel.h"
+#import "JDOListDataModel.h"
+
 #define Finished_Label_Tag 112
 @interface JDOListView ()
 
@@ -19,12 +20,13 @@
 @end
 @implementation JDOListView
 
-- (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info {
+- (id)initWithFrame:(CGRect)frame serviceName:(NSString *)serviceName modelClass:(Class)modelClass{
     if ((self = [super init])) {
         self.frame = frame;
-        self.info = info;
+        self.serviceName = serviceName;
         self.currentPage = 0;
-        self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
+        self.listArray = [[NSMutableArray alloc] initWithCapacity:Page_Size];
+        self.modelClass = modelClass;
         
         //self.reuseIdentifier = info.reuseId;
         self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
@@ -102,20 +104,16 @@
 }
 
 - (void)loadDataFromNetwork{
-    __block bool headlineFinished = false;
-    __block bool newslistFinished = false;
-    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
+
+    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
         if(dataList == nil){
             // 数据加载完成
         }else if(dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
-            newslistFinished = true;
-            if(headlineFinished){
-                [self setStatus:NewsViewStatusNormal];
-                [self updateLastRefreshTime];
-            }
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+            [self setStatus:NewsViewStatusNormal];
+            [self updateLastRefreshTime];
         }
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
@@ -128,13 +126,13 @@
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
     
-    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
+    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
         if(dataList == nil){
             
         }else if(dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             newslistFinished = true;
             if(headlineFinished){
                 [self.tableView.pullToRefreshView stopAnimating];
@@ -156,15 +154,15 @@
 
 - (void) loadMore{
     self.currentPage += 1;
-    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
+    [JDOListDataModel loadDataByServiceName:_serviceName modelClass:self.modelClass pageNum:self.currentPage success:^(NSArray *dataList) {
         bool finished = false;
         if(dataList == nil){    // 数据加载完成
             [self.tableView.infiniteScrollingView stopAnimating];
             finished = true;
         }else if(dataList.count >0){
-            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:NewsList_Page_Size];
+            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:Page_Size];
             for(int i=0;i<dataList.count;i++){
-                [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:1]];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
             }
             [self.listArray addObjectsFromArray:dataList];
             [self.tableView beginUpdates];
@@ -172,7 +170,7 @@
             [self.tableView endUpdates];
             
             [self.tableView.infiniteScrollingView stopAnimating];
-            if(dataList.count < NewsList_Page_Size){
+            if(dataList.count < Page_Size){
                 finished = true;
             }
         }

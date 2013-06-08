@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOImageViewController : UIViewController
+@interface JDOImageViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@property (strong, nonatomic) IBOutlet UITableViewCell *imageCell;
 
 @end
