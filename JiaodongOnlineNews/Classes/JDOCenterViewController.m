@@ -70,7 +70,7 @@
             controller = [[self class] sharedNewsViewController];
             break;
         case MenuItemImage:
-//            controller = [[self class] sharedImageViewController];
+            controller = [[self class] sharedImageViewController];
             break;
         case MenuItemTopic:
 //            controller = [[self class] sharedImageViewController];

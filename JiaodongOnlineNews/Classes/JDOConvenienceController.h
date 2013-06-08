@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NimbusLauncher.h"
 #import "JDOCenterViewController.h"
+#import "JDOConvenienceItemController.h"
 
 @interface JDOConvenienceController : NILauncherViewController <JDONavigationView>
 
