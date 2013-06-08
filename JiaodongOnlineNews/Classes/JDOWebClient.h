@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 胶东在线. All rights reserved.
 //
 
-#import "JDOHttpClient.h"
-#import "JDOJsonClient.h"
+typedef void(^LoadDataSuccessBlock)(id result);
+typedef void(^LoadDataFailureBlock)(NSString *errorStr);
+
 

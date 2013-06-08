@@ -155,17 +155,17 @@ BOOL pageControlUsed;
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
     
 //    NSLog(@"page index:%d category:%@,status:%d",tmpPageIndex,page.info.title,page.status);
-    if(page.status == NewsViewStatusNormal){
+    if(page.status == ViewStatusNormal){
 //        if(){   // 上次加载时间离现在超过5分钟 或者是从本地数据库加载，则重新加载
 //            
 //        }
-    }else if(page.status == NewsViewStatusLoading){
+    }else if(page.status == ViewStatusLoading){
         return;
     }else{
         if(![Reachability isEnableNetwork]){   // 若无网络，显示无网络界面，应监听网络通知，若有网络则自动加载
-            [page setStatus:NewsViewStatusNoNetwork];
+            [page setCurrentState:ViewStatusNoNetwork];
         }else{  // 从网络加载数据，切换到loading状态
-            [page setStatus:NewsViewStatusLoading];
+            [page setCurrentState:ViewStatusLoading];
             [page loadDataFromNetwork];
         }
     }

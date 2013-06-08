@@ -10,7 +10,7 @@
 
 @class JDONewsModel;
 
-@interface JDONewsDetailController : UIViewController <JDONavigationView,UIWebViewDelegate,UITextFieldDelegate>
+@interface JDONewsDetailController : UIViewController <JDONavigationView,UIWebViewDelegate,UITextViewDelegate>
 
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDONewsModel *newsModel;

@@ -7,9 +7,14 @@
 //
 
 #import "AFHTTPClient.h"
+#import "JDOWebClient.h"
 
 @interface JDOHttpClient : AFHTTPClient
 
 + (JDOHttpClient *)sharedClient;
+
+- (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
+
+- (void)getNSDataByServiceName:(NSString*)serviceName params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
 @end
