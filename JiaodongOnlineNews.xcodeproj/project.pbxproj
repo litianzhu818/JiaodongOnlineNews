@@ -139,7 +139,6 @@
 		D8ED26F81761B53D0008FEC1 /* ytweather@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FF14D0F81761B1E400D6D4F4 /* ImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */; };
-		FF14D0FB1761B8E700D6D4F4 /* JDOListDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0FA1761B8E700D6D4F4 /* JDOListDataModel.m */; };
 		FF19A048175F39A000375716 /* JDOListView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19A047175F39A000375716 /* JDOListView.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 		FFD8B6871756E779007B878C /* aboutus.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD8B6861756E779007B878C /* aboutus.png */; };
@@ -392,8 +391,6 @@
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
 		FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageModel.m; sourceTree = "<group>"; };
 		FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageTableCell.xib; sourceTree = "<group>"; };
-		FF14D0F91761B8E600D6D4F4 /* JDOListDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListDataModel.h; sourceTree = "<group>"; };
-		FF14D0FA1761B8E700D6D4F4 /* JDOListDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListDataModel.m; sourceTree = "<group>"; };
 		FF19A046175F39A000375716 /* JDOListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListView.h; sourceTree = "<group>"; };
 		FF19A047175F39A000375716 /* JDOListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListView.m; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
@@ -1032,6 +1029,7 @@
 				2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */,
 				2D141460176324E400A6A50A /* UIDevice+IdentifierAddition.m in Sources */,
 				2D141461176324E400A6A50A /* NSString+MD5Addition.m in Sources */,
+				D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
