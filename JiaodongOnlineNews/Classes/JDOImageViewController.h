@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOImageViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (strong, nonatomic) IBOutlet UITableViewCell *imageCell;
+@interface JDOImageViewController : UIViewController<JDONavigationView,UITableViewDelegate, UITableViewDataSource>
+@property (strong,nonatomic) JDONavigationView *navigationView;
 
 @end

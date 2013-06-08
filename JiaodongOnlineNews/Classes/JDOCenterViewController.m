@@ -49,7 +49,7 @@
     static JDOImageViewController *_controller = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedImageController = [[JDOImageViewController alloc] init];
+        _controller = [[JDOImageViewController alloc] init];
     });
     return _controller;
 }
@@ -70,7 +70,7 @@
             controller = [[self class] sharedNewsViewController];
             break;
         case MenuItemImage:
-//            controller = [[self class] sharedImageViewController];
+            controller = [[self class] sharedImageViewController];
             break;
         case MenuItemTopic:
 //            controller = [[self class] sharedImageViewController];
