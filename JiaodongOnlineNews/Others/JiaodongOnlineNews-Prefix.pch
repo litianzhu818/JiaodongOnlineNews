@@ -25,6 +25,8 @@
     #import "UIView+Transition.h"
     #import "JDOPathUtil.h"
     #import "JDOCenterViewController.h"
+    #import "JDOHttpClient.h"
+    #import "JDOJsonClient.h"
 
     #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
     #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly
@@ -34,9 +36,30 @@
 
 #define Headline_Height 170
 #define News_Cell_Height 70
+
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"
 #define IMAGE_SERVICE @"Data/getImages"
 #define NEWS_SERVICE @"Data/getArticles"
 #define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"
+#define RELATE_SERVICE @"Data/getRelateByAid"
+#define QUESTION_LIST_SERVICE @"Jdms/getQuestionList"
+#define QUESTION_DETAIL_SERVICE @"Jdms/questionDetail"
+#define QUESTION_ADD_COMMENT_SERVICE @"Jdms/addComment"
+#define QUESTION_COMMENT_LIST_SERVICE @"Jdms/getComment"
+#define REPORT_QUESTION_SERVICE @"Jdms/doQuestion"
+#define BRANCHS_LIST_SERVICE @"Jdms/getDepts"
+#define BRANCHS_UPDATE_SERVICE @"Jdms/checkDeptUpdate"
+#define CONVENIENCE_SERVICE @"Data/convenience"
+#define TOPIC_LIST_SERVICE @"Data/getTopics"
+#define TOPIC_DETAIL_SERVICE @"Data/getTopicDetail"
+#define VOTE_SERVICE @"Data/vote"
+#define IMAGE_DETAIL_SERVICE @"Data/getImageDetail"
+#define COMMIT_COMMENT_SERVICE @"Data/commitComment"
+#define VIEW_COMMENT_SERVICE @"Data/viewComment"
+#define VIOLATION_SERVICE @"Data/getViolation"
+#define BINDVIOLATIONINFO_SERVICE @"Data/bindViolationInfo"
+#define SETVIOPUSHPERMISSION_SERVICE @"Data/setVioPushPermission"
+#define DELVIOLATIONINFO_SERVICE @"Data/delViolationInfo"
+#define SETNEWSPUSH @"Data/bindClientConfig"

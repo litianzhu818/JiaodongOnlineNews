@@ -17,6 +17,7 @@
 		2D080CE2173CE4D9005653A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE1173CE4D9005653A7 /* main.m */; };
 		2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */; };
 		2D080CEF173CE4D9005653A7 /* JDONewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */; };
+		2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D771762CAC30011C0D7 /* JDOCommentModel.m */; };
 		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
 		2D13EF95174E1374007FF1CC /* navbar_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF93174E1374007FF1CC /* navbar_background@2x.png */; };
 		2D13EF96174E1374007FF1CC /* navbar_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */; };
@@ -125,7 +126,6 @@
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FF14D0F81761B1E400D6D4F4 /* ImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */; };
-		FF14D0FB1761B8E700D6D4F4 /* JDOListDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0FA1761B8E700D6D4F4 /* JDOListDataModel.m */; };
 		FF19A048175F39A000375716 /* JDOListView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19A047175F39A000375716 /* JDOListView.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 		FFD8B6871756E779007B878C /* aboutus.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD8B6861756E779007B878C /* aboutus.png */; };
@@ -161,6 +161,8 @@
 		2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDOAppDelegate.m; sourceTree = "<group>"; };
 		2D080CED173CE4D9005653A7 /* JDONewsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JDONewsViewController.h; sourceTree = "<group>"; };
 		2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDONewsViewController.m; sourceTree = "<group>"; };
+		2D115D761762CAC30011C0D7 /* JDOCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCommentModel.h; sourceTree = "<group>"; };
+		2D115D771762CAC30011C0D7 /* JDOCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCommentModel.m; sourceTree = "<group>"; };
 		2D13EF90174E11D5007FF1CC /* JDOPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPageControl.h; sourceTree = "<group>"; };
 		2D13EF91174E11D5007FF1CC /* JDOPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPageControl.m; sourceTree = "<group>"; };
 		2D13EF93174E1374007FF1CC /* navbar_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_background@2x.png"; sourceTree = "<group>"; };
@@ -359,8 +361,6 @@
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
 		FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageModel.m; sourceTree = "<group>"; };
 		FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageTableCell.xib; sourceTree = "<group>"; };
-		FF14D0F91761B8E600D6D4F4 /* JDOListDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListDataModel.h; sourceTree = "<group>"; };
-		FF14D0FA1761B8E700D6D4F4 /* JDOListDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListDataModel.m; sourceTree = "<group>"; };
 		FF19A046175F39A000375716 /* JDOListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListView.h; sourceTree = "<group>"; };
 		FF19A047175F39A000375716 /* JDOListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListView.m; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
@@ -509,16 +509,16 @@
 			children = (
 				2D86D59417584E420000AA6A /* JDONewsCategoryInfo.h */,
 				2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */,
-				2D86D59D175872FE0000AA6A /* JDONewsModel.h */,
 				FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */,
 				FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */,
+				2D86D59D175872FE0000AA6A /* JDONewsModel.h */,
 				2D86D59E175872FE0000AA6A /* JDONewsModel.m */,
 				2D1DDB56175E2AD10048F7A7 /* JDONewsDetailModel.h */,
 				2D1DDB57175E2AD10048F7A7 /* JDONewsDetailModel.m */,
-				FF14D0F91761B8E600D6D4F4 /* JDOListDataModel.h */,
-				FF14D0FA1761B8E700D6D4F4 /* JDOListDataModel.m */,
 				2D8DB0B51760EA2D00DB3EF0 /* JDOConvenienceViewModel.h */,
 				2D8DB0B61760EA2D00DB3EF0 /* JDOConvenienceViewModel.m */,
+				2D115D761762CAC30011C0D7 /* JDOCommentModel.h */,
+				2D115D771762CAC30011C0D7 /* JDOCommentModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -964,7 +964,6 @@
 				2D996A9B175F29AF00C57673 /* MLNavigationController.m in Sources */,
 				2D93122B17600A2500C73802 /* UIView+Transition.m in Sources */,
 				FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */,
-				FF14D0FB1761B8E700D6D4F4 /* JDOListDataModel.m in Sources */,
 				2D93122D17604A3900C73802 /* common.js in Sources */,
 				2D8DB0A31760C6DB00DB3EF0 /* NILauncherButtonView.m in Sources */,
 				2D8DB0A41760C6DB00DB3EF0 /* NILauncherPageView.m in Sources */,
@@ -978,6 +977,7 @@
 				2D8DB0B71760EA2D00DB3EF0 /* JDOConvenienceViewModel.m in Sources */,
 				2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
+				2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

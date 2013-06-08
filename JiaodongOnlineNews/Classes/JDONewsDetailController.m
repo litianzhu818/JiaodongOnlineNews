@@ -22,14 +22,16 @@
 
 #define Toolbar_Btn_Size 32
 #define Toolbar_Height   40
-#define Textfield_Height 40
+#define Textfield_Height 80
+#define ReviewPanel_Height 90
+#define SubmitBtn_Width 50
 
 @interface JDONewsDetailController ()
 
 @property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 @property (strong, nonatomic) UIView *reviewPanel;
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
-@property (strong, nonatomic) UITextField *textField;
+@property (strong, nonatomic) UITextView *textView;
 @property (assign, nonatomic) BOOL isKeyboardShowing;
 
 @end
@@ -100,10 +102,26 @@
     _isKeyboardShowing = false;
     _reviewPanel = [[UIView alloc] init];
     _reviewPanel.backgroundColor = [UIColor grayColor];
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 320, Textfield_Height)];
-    [_textField setPlaceholder:@"说点什么吧..."];
-    [_reviewPanel addSubview:_textField];
-    _textField.delegate = self;
+    _textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 320-10-10-SubmitBtn_Width, Textfield_Height)];
+    _textView.layer.cornerRadius = 5;
+    _textView.layer.masksToBounds = true;
+    _textView.font = [UIFont systemFontOfSize:16];
+    [_reviewPanel addSubview:_textView];
+    _textView.delegate = self;
+    UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect] ;
+    submitBtn.frame = CGRectMake(320-5-SubmitBtn_Width, ReviewPanel_Height-5-30, SubmitBtn_Width, 30);
+    [submitBtn addTarget:self action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
+    [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
+    [_reviewPanel addSubview:submitBtn];
+}
+
+- (void)submitReview:(id)sender{
+    
+    if([[_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]){
+        return;
+    }
+//    COMMIT_COMMENT_SERVICE;
+//    JDOHttpClient 
 }
 
 - (void)viewDidLoad{
@@ -205,9 +223,9 @@ NSTimeInterval timeInterval;
 - (void)writeReviewView{
 
     [self.view pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
-        [_textField becomeFirstResponder];
+        [_textView becomeFirstResponder];
         _isKeyboardShowing = true;
-        *_startFrame = CGRectMake(0, App_Height, 320, Textfield_Height+5);
+        *_startFrame = CGRectMake(0, App_Height, 320, ReviewPanel_Height);
         *_endFrame = endFrame;
         *_timeInterval = timeInterval;
     } complete:^{
@@ -226,21 +244,22 @@ NSTimeInterval timeInterval;
     
     CGFloat keyboardTop = keyboardRect.origin.y;
     
+    CGRect _endFrame = CGRectMake(0, keyboardTop-ReviewPanel_Height, 320, ReviewPanel_Height);
     if( _isKeyboardShowing == false){
-        endFrame = CGRectMake(0, keyboardTop-Textfield_Height, 320, Textfield_Height+5);// +5是为了去掉输入框与键盘间的空隙
+        endFrame = _endFrame;
         NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
         [animationDurationValue getValue:&timeInterval];
     }else{
-        _reviewPanel.frame = CGRectMake(0, keyboardTop-Textfield_Height, 320, Textfield_Height+5);
+        _reviewPanel.frame = _endFrame;
     }
 }
 
 - (void)hideReviewView{
-    [_textField resignFirstResponder];
+    [_textView resignFirstResponder];
     _isKeyboardShowing = false;
     [_reviewPanel popView:self.view process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
         *_startFrame = _reviewPanel.frame;
-        *_endFrame = CGRectMake(0, App_Height, 320, Textfield_Height+5);
+        *_endFrame = CGRectMake(0, App_Height, 320, ReviewPanel_Height);
         *_timeInterval = timeInterval;
     } complete:^{
         [_reviewPanel removeFromSuperview];
@@ -254,11 +273,21 @@ NSTimeInterval timeInterval;
     [animationDurationValue getValue:&timeInterval];
 }
 
-#pragma mark - TextField delegate
+#pragma mark - TextView delegate
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+- (void)textViewDidBeginEditing:(UITextView *)textView{
     
-    return true;
+}
+- (void)textViewDidEndEditing:(UITextView *)textView{
+    
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView{
+    
 }
 
 #pragma mark - Webview delegate

@@ -14,6 +14,9 @@
 #import "JDONewsDetailController.h"
 #import "JDOCenterViewController.h"
 
+#define NewsHead_Page_Size 3
+#define NewsList_Page_Size 20
+
 #define Finished_Label_Tag 111
 
 @interface JDONewsCategoryView ()
@@ -110,10 +113,20 @@
     }
 }
 
+- (NSDictionary *) newsListParam{
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a"};
+}
+
+- (NSDictionary *) headLineParam{
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:0],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
+}
+
+
 - (void)loadDataFromNetwork{
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
-    [JDONewsModel loadHeadlineChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
+    // 加载头条
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -126,7 +139,9 @@
         NSLog(@"错误内容--%@", errorStr);
         [self setStatus:NewsViewStatusRetry];
     }];
-    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
+    
+    // 加载列表
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
         if(dataList == nil){
             // 数据加载完成
         }else if(dataList.count >0){
@@ -149,7 +164,8 @@
     self.currentPage = 0;
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
-    [JDONewsModel loadHeadlineChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
+    // 刷新头条
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -161,9 +177,11 @@
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
     }];
-    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
+    
+    // 刷新列表
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
         if(dataList == nil){
-
+            // 数据加载完成
         }else if(dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
@@ -177,6 +195,7 @@
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
     }];
+    
 }
 
 - (void) reloadTableView{
@@ -194,8 +213,10 @@
 
 - (void) loadMore{
     self.currentPage += 1;
-    [JDONewsModel loadNewsListChannel:self.info.channel pageNum:self.currentPage success:^(NSArray *dataList) {
-        bool finished = false;  
+    
+    // 加载列表
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
+        bool finished = false;
         if(dataList == nil){    // 数据加载完成
             [self.tableView.infiniteScrollingView stopAnimating];
             finished = true;
@@ -233,6 +254,7 @@
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
     }];
+
 }
 
 // 将普通新闻和头条划分为两个section
