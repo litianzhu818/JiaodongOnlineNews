@@ -81,12 +81,7 @@
     id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
     switch (index) {
         case 0:
-            if (self.feedbackviewController == nil) {
-                JDOBusViewController *temp = [[JDOBusViewController alloc] initWithNibName:@"JDOBusViewController" bundle:nil];
-                self.feedbackviewController = temp;
-                temp = nil;
-            }
-            [self.navigationController pushViewController:self.feedbackviewController animated:YES];
+            
             break;
         case 1:
 
