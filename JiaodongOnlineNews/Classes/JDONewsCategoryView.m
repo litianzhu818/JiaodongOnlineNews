@@ -246,6 +246,9 @@
             cell = [[JDONewsHeadCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headlineIdentifier];
         }
         [cell setModels:self.headArray];
+        for(int i=0; i<cell.imageViews.count; i++){
+            [[cell.imageViews objectAtIndex:i] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(galleryImageClicked:)]];
+        }
         return cell;
     }else{
         JDONewsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
@@ -260,6 +263,17 @@
     }
 }
 
+- (void) galleryImageClicked:(UITapGestureRecognizer *)gesture{
+    JDONewsHeadCell *cell = (JDONewsHeadCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    int index = [cell.imageViews indexOfObject:gesture.view];
+    
+    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] init];
+    detailController.newsModel = [self.headArray objectAtIndex:index];
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+    [centerController pushViewController:detailController animated:true];
+}
+
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0)  return Headline_Height;
     return News_Cell_Height;
@@ -267,7 +281,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0){
-        
+        // section0 由于存在scrollView与didSelectRowAtIndexPath冲突，不会进入该函数，通过给UIImageView设置gesture的方式解决
     }else{
         JDONewsDetailController *detailController = [[JDONewsDetailController alloc] init];
         detailController.newsModel = [self.listArray objectAtIndex:indexPath.row];

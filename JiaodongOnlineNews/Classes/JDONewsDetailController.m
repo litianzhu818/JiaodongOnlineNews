@@ -13,6 +13,7 @@
 #import "JDONewsDetailModel.h"
 #import "JDOCenterViewController.h"
 #import "WebViewJavascriptBridge_iOS.h"
+#import "UIDevice+IdentifierAddition.h"
 
 #define Toolbar_Tag 100
 #define Review_Tag  100
@@ -47,6 +48,8 @@
     return self;
 }
 
+#pragma mark - View Life Cycle
+
 - (void)loadView{
     [super loadView];
     // 自定义导航栏
@@ -77,53 +80,6 @@
     
 }
 
-- (void) setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] init];
-    [_navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
-    [_navigationView setTitle:@"新闻详情"];
-    [_navigationView addCustomButtonWithTarget:self action:@selector(backToViewList)];
-    [self.view addSubview:_navigationView];
-}
-
-- (void) setupToolBar{
-    NSArray *icons = @[@"review",@"share",@"font",@"collect"];
-    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-Toolbar_Height, 320, Toolbar_Height)];
-    for(int i =0;i<4;i++ ){
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, 4, Toolbar_Btn_Size, Toolbar_Btn_Size)];
-        [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal];
-        [btn setTag:Toolbar_Tag+i];
-        [btn addTarget:self action:@selector(toolbarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [toolView addSubview:btn];
-    }
-    [self.view addSubview:toolView];
-}
-
-- (void) setupReviewPanel{
-    _isKeyboardShowing = false;
-    _reviewPanel = [[UIView alloc] init];
-    _reviewPanel.backgroundColor = [UIColor grayColor];
-    _textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 320-10-10-SubmitBtn_Width, Textfield_Height)];
-    _textView.layer.cornerRadius = 5;
-    _textView.layer.masksToBounds = true;
-    _textView.font = [UIFont systemFontOfSize:16];
-    [_reviewPanel addSubview:_textView];
-    _textView.delegate = self;
-    UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect] ;
-    submitBtn.frame = CGRectMake(320-5-SubmitBtn_Width, ReviewPanel_Height-5-30, SubmitBtn_Width, 30);
-    [submitBtn addTarget:self action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
-    [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
-    [_reviewPanel addSubview:submitBtn];
-}
-
-- (void)submitReview:(id)sender{
-    
-    if([[_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]){
-        return;
-    }
-//    COMMIT_COMMENT_SERVICE;
-//    JDOHttpClient 
-}
-
 - (void)viewDidLoad{
     [super viewDidLoad];
     
@@ -151,47 +107,41 @@
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
-     
-- (void) buildWebViewJavascriptBridge{
-//    [WebViewJavascriptBridge enableLogging];
-    
-    _bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView webViewDelegate:self handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSLog(@"ObjC received message from JS: %@", data);
-        responseCallback(@"Response for message from ObjC");
-    }];
-    
-    [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
-        // 通过pushViewController 显示图集视图
-        responseCallback(linkId);
-    }];
-    [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
-        // 显示图片详情
-        responseCallback(imageId);
-    }];
-}
 
-- (void) loadWebView{
-    [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
-            // 新闻不存在
-        }else if([responseObject isKindOfClass:[NSDictionary class]]){
-//            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
-            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
-            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
-//            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://tieba.baidu.com"]]];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-    [self.activityIndicationView startAnimating];
+#pragma mark - Navigation
+
+- (void) setupNavigationView{
+    self.navigationView = [[JDONavigationView alloc] init];
+    [_navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
+    [_navigationView setTitle:@"新闻详情"];
+    [_navigationView addCustomButtonWithTarget:self action:@selector(showReviewList)];
+    [self.view addSubview:_navigationView];
 }
 
 - (void) backToViewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+}
+
+- (void) showReviewList{
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] init];
+//    [centerViewController pushViewController:<#(UIViewController *)#> orientation:<#(JDOTransitionOrientation)#> animated:<#(BOOL)#>];
+}
+
+#pragma mark - ToolBar
+
+- (void) setupToolBar{
+    NSArray *icons = @[@"review",@"share",@"font",@"collect"];
+    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-Toolbar_Height, 320, Toolbar_Height)];
+    for(int i =0;i<4;i++ ){
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, 4, Toolbar_Btn_Size, Toolbar_Btn_Size)];
+        [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal];
+        [btn setTag:Toolbar_Tag+i];
+        [btn addTarget:self action:@selector(toolbarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [toolView addSubview:btn];
+    }
+    [self.view addSubview:toolView];
 }
 
 - (void) toolbarBtnClicked:(UIControl *)sender{
@@ -216,12 +166,31 @@
     
 }
 
+#pragma mark - Write Review
+
+- (void) setupReviewPanel{
+    _isKeyboardShowing = false;
+    _reviewPanel = [[UIView alloc] init];
+    _reviewPanel.backgroundColor = [UIColor grayColor];
+    _textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 320-10-10-SubmitBtn_Width, Textfield_Height)];
+    _textView.layer.cornerRadius = 5;
+    _textView.layer.masksToBounds = true;
+    _textView.font = [UIFont systemFontOfSize:16];
+    [_reviewPanel addSubview:_textView];
+    _textView.delegate = self;
+    UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect] ;
+    submitBtn.frame = CGRectMake(320-5-SubmitBtn_Width, ReviewPanel_Height-5-30, SubmitBtn_Width, 30);
+    [submitBtn addTarget:self action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
+    [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
+    [_reviewPanel addSubview:submitBtn];
+}
+
 // 在键盘事件的通知中获得以下参数，用来同步视图动画和键盘动画
 CGRect endFrame;
 NSTimeInterval timeInterval;
 
 - (void)writeReviewView{
-
+    
     [self.view pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
         [_textView becomeFirstResponder];
         _isKeyboardShowing = true;
@@ -231,7 +200,7 @@ NSTimeInterval timeInterval;
     } complete:^{
         
     }];
-
+    
 }
 
 // 显示键盘和切换输入法时都会执行
@@ -271,6 +240,70 @@ NSTimeInterval timeInterval;
     
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     [animationDurationValue getValue:&timeInterval];
+}
+
+- (void)submitReview:(id)sender{
+    
+    if([[_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]){
+        return;
+    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:5];
+    [params setObject:self.newsModel.id forKey:@"aid"];
+    [params setObject:_textView.text forKey:@"content"];
+    [params setObject:@"" forKey:@"nickName"];
+    [params setObject:@"" forKey:@"uid"];
+    [params setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"deviceId"];
+    
+    [[JDOHttpClient sharedClient] getJSONByServiceName:COMMIT_COMMENT_SERVICE modelClass:nil params:params success:^(NSDictionary *result) {
+        NSNumber *status = [result objectForKey:@"status"];
+        if([status intValue] == 1){ // 提交成功,隐藏键盘
+            [self hideReviewView];
+        }else if([status intValue] == 0){
+            // 提交失败,服务器错误
+            NSLog(@"提交失败,服务器错误");
+        }
+    } failure:^(NSString *errorStr) {
+        NSLog(@"错误内容--%@", errorStr);
+    }];
+}
+
+#pragma mark - Load WebView
+     
+- (void) buildWebViewJavascriptBridge{
+//    [WebViewJavascriptBridge enableLogging];
+    
+    _bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView webViewDelegate:self handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"ObjC received message from JS: %@", data);
+        responseCallback(@"Response for message from ObjC");
+    }];
+    
+    [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
+        // 通过pushViewController 显示图集视图
+        responseCallback(linkId);
+    }];
+    [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
+        // 显示图片详情
+        responseCallback(imageId);
+    }];
+}
+
+- (void) loadWebView{
+    [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
+            // 新闻不存在
+        }else if([responseObject isKindOfClass:[NSDictionary class]]){
+//            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
+            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
+            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
+//            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://tieba.baidu.com"]]];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    [self.activityIndicationView startAnimating];
 }
 
 #pragma mark - TextView delegate
