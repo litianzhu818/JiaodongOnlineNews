@@ -660,7 +660,6 @@
 				2D080CD4173CE4D9005653A7 /* Frameworks */,
 				2D080CD3173CE4D9005653A7 /* Products */,
 				5F222CF8F96D417D992D04DB /* Pods.xcconfig */,
-				2DF3D8A01764807D00857AE4 /* JiaodongOnlineNews copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1021,6 +1020,7 @@
 			isa = PBXGroup;
 			children = (
 				2D080CDD173CE4D9005653A7 /* JiaodongOnlineNews-Info.plist */,
+				2DF3D8A01764807D00857AE4 /* JiaodongOnlineNews copy-Info.plist */,
 				2D080CE1173CE4D9005653A7 /* main.m */,
 				2D080CE3173CE4D9005653A7 /* JiaodongOnlineNews-Prefix.pch */,
 				2D8FAC301748AC470071A601 /* InfoPlist.strings */,
