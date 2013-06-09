@@ -55,6 +55,7 @@
 		2D86D5AE175894990000AA6A /* JDOCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5AD175894980000AA6A /* JDOCenterViewController.m */; };
 		2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D89BA4B1754825600960614 /* JDONewsCategoryView.m */; };
 		2D8AB31F17526A3200F3AAAC /* JDONewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AB31E17526A3200F3AAAC /* JDONewsViewController.xib */; };
+		2D8AC1541763854D006B4A22 /* JDOReviewListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8AC1531763854C006B4A22 /* JDOReviewListController.m */; };
 		2D8B403B175A37A700C8B04F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8B403A175A37A700C8B04F /* QuartzCore.framework */; };
 		2D8B4081175A495600C8B04F /* NIActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B404F175A495500C8B04F /* NIActions.m */; };
 		2D8B4082175A495600C8B04F /* NIButtonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B4052175A495500C8B04F /* NIButtonUtilities.m */; };
@@ -128,15 +129,6 @@
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
-		D8ED26E81761B4DA0008FEC1 /* airplane@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26E71761B4DA0008FEC1 /* airplane@2x.png */; };
-		D8ED26EC1761B5320008FEC1 /* breakrule@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26E91761B5320008FEC1 /* breakrule@2x.png */; };
-		D8ED26ED1761B5320008FEC1 /* bus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26EA1761B5320008FEC1 /* bus@2x.png */; };
-		D8ED26EE1761B5320008FEC1 /* lifeknowledge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26EB1761B5320008FEC1 /* lifeknowledge@2x.png */; };
-		D8ED26F41761B53D0008FEC1 /* ship@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26EF1761B53D0008FEC1 /* ship@2x.png */; };
-		D8ED26F51761B53D0008FEC1 /* telnumber@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F01761B53D0008FEC1 /* telnumber@2x.png */; };
-		D8ED26F61761B53D0008FEC1 /* train@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F11761B53D0008FEC1 /* train@2x.png */; };
-		D8ED26F71761B53D0008FEC1 /* transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F21761B53D0008FEC1 /* transport@2x.png */; };
-		D8ED26F81761B53D0008FEC1 /* ytweather@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FF14D0F81761B1E400D6D4F4 /* ImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */; };
 		FF19A048175F39A000375716 /* JDOListView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19A047175F39A000375716 /* JDOListView.m */; };
@@ -242,6 +234,8 @@
 		2D89BA4A1754825600960614 /* JDONewsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = JDONewsCategoryView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2D89BA4B1754825600960614 /* JDONewsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = JDONewsCategoryView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2D8AB31E17526A3200F3AAAC /* JDONewsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDONewsViewController.xib; sourceTree = "<group>"; };
+		2D8AC1521763854C006B4A22 /* JDOReviewListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOReviewListController.h; sourceTree = "<group>"; };
+		2D8AC1531763854C006B4A22 /* JDOReviewListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOReviewListController.m; sourceTree = "<group>"; };
 		2D8B403A175A37A700C8B04F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2D8B404E175A495500C8B04F /* NIActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIActions.h; sourceTree = "<group>"; };
 		2D8B404F175A495500C8B04F /* NIActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIActions.m; sourceTree = "<group>"; };
@@ -379,15 +373,6 @@
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
-		D8ED26E71761B4DA0008FEC1 /* airplane@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplane@2x.png"; sourceTree = "<group>"; };
-		D8ED26E91761B5320008FEC1 /* breakrule@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakrule@2x.png"; sourceTree = "<group>"; };
-		D8ED26EA1761B5320008FEC1 /* bus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bus@2x.png"; sourceTree = "<group>"; };
-		D8ED26EB1761B5320008FEC1 /* lifeknowledge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lifeknowledge@2x.png"; sourceTree = "<group>"; };
-		D8ED26EF1761B53D0008FEC1 /* ship@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ship@2x.png"; sourceTree = "<group>"; };
-		D8ED26F01761B53D0008FEC1 /* telnumber@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "telnumber@2x.png"; sourceTree = "<group>"; };
-		D8ED26F11761B53D0008FEC1 /* train@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "train@2x.png"; sourceTree = "<group>"; };
-		D8ED26F21761B53D0008FEC1 /* transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transport@2x.png"; sourceTree = "<group>"; };
-		D8ED26F31761B53D0008FEC1 /* ytweather@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytweather@2x.png"; sourceTree = "<group>"; };
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
 		FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageModel.m; sourceTree = "<group>"; };
 		FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageTableCell.xib; sourceTree = "<group>"; };
@@ -482,6 +467,8 @@
 				2D8AB31E17526A3200F3AAAC /* JDONewsViewController.xib */,
 				2D5409DA175DEA5800718FFB /* JDONewsDetailController.h */,
 				2D5409DB175DEA5800718FFB /* JDONewsDetailController.m */,
+				2D8AC1521763854C006B4A22 /* JDOReviewListController.h */,
+				2D8AC1531763854C006B4A22 /* JDOReviewListController.m */,
 				2D996A92175ED55700C57673 /* JDOImageViewController.h */,
 				FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */,
 				2D996A93175ED55700C57673 /* JDOImageViewController.m */,
@@ -1030,6 +1017,7 @@
 				2D141460176324E400A6A50A /* UIDevice+IdentifierAddition.m in Sources */,
 				2D141461176324E400A6A50A /* NSString+MD5Addition.m in Sources */,
 				D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */,
+				2D8AC1541763854D006B4A22 /* JDOReviewListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

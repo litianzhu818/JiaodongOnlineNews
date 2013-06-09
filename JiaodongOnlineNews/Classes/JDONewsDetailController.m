@@ -14,6 +14,7 @@
 #import "JDOCenterViewController.h"
 #import "WebViewJavascriptBridge_iOS.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "JDOReviewListController.h"
 
 #define Toolbar_Tag 100
 #define Review_Tag  100
@@ -26,6 +27,9 @@
 #define Textfield_Height 80
 #define ReviewPanel_Height 90
 #define SubmitBtn_Width 50
+
+#define Review_Max_Length 200
+#define Remain_Word_Label 200
 
 @interface JDONewsDetailController ()
 
@@ -125,8 +129,8 @@
 
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] init];
-//    [centerViewController pushViewController:<#(UIViewController *)#> orientation:<#(JDOTransitionOrientation)#> animated:<#(BOOL)#>];
+    JDOReviewListController *reviewController = [[JDOReviewListController alloc] init];
+    [centerViewController pushViewController:reviewController animated:true];
 }
 
 #pragma mark - ToolBar
@@ -172,12 +176,22 @@
     _isKeyboardShowing = false;
     _reviewPanel = [[UIView alloc] init];
     _reviewPanel.backgroundColor = [UIColor grayColor];
+    
     _textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 320-10-10-SubmitBtn_Width, Textfield_Height)];
     _textView.layer.cornerRadius = 5;
     _textView.layer.masksToBounds = true;
     _textView.font = [UIFont systemFontOfSize:16];
     [_reviewPanel addSubview:_textView];
     _textView.delegate = self;
+    
+    UILabel *remainWordNum = [[UILabel alloc] initWithFrame:CGRectMake(320-5-SubmitBtn_Width, 5, SubmitBtn_Width, 40)];
+//    remainWordNum.text = [NSString stringWithFormat:@"还有%d字可输入",Review_Max_Length ];
+    remainWordNum.tag = Remain_Word_Label;
+    remainWordNum.backgroundColor =[UIColor clearColor];
+    remainWordNum.numberOfLines = 2;
+    remainWordNum.font = [UIFont systemFontOfSize:10];
+    [_reviewPanel addSubview:remainWordNum];
+    
     UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect] ;
     submitBtn.frame = CGRectMake(320-5-SubmitBtn_Width, ReviewPanel_Height-5-30, SubmitBtn_Width, 30);
     [submitBtn addTarget:self action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
@@ -316,7 +330,16 @@ NSTimeInterval timeInterval;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    return true;
+    if (range.location>=Review_Max_Length){
+        return  NO;
+    }else{
+        return YES;
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)textView{
+    int remain = Review_Max_Length-textView.text.length;
+    [(UILabel *)[self.reviewPanel viewWithTag:Remain_Word_Label] setText:[NSString stringWithFormat:@"还有%d字可输入",remain<0 ? 0:remain]];
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView{
