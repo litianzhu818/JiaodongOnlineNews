@@ -28,13 +28,18 @@ typedef enum{
 + (NSString *)formatDate:(NSDate *) date withFormatter:(DateFormatType) format;
 + (NSDate *)formatString:(NSString *)date withFormatter:(DateFormatType) format;
 
-+ (UIColor *) colorFromString:(NSString *)colorString;
-+ (UIColor *) colorFromString:(NSString *)colorString alpha:(CGFloat) alpha;
-
 + (NSString *) formatErrorWithOperation:(AFHTTPRequestOperation *)operation error:(NSError *)error;
 
 + (NSDictionary *)paramsFromURL:(NSString *)url;
 
-+ (BOOL) isEmptyString:(NSString *)string;
++ (NSURL *)documentsDirectoryURL;
++ (NSURL *)cachesDirectoryURL;
++ (NSURL *)downloadsDirectoryURL;
++ (NSURL *)libraryDirectoryURL;
++ (NSURL *)applicationSupportDirectoryURL;
 
 @end
+
+BOOL JDOIsEmptyString(NSString *string);
+NSString* JDOGetHomeFilePath(NSString *fileName);
+NSString* JDOGetTmpFilePath(NSString *fileName);

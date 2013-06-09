@@ -8,6 +8,8 @@
 
 #import "JDOReviewListController.h"
 #import "JDOCommentModel.h"
+#import "JDONewsReviewCell.h"
+#import "NIFoundationMethods.h"
 
 @interface JDOReviewListController ()
 
@@ -36,6 +38,9 @@
     // 评论列表
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.allowsSelection = false;
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
 }
 
 - (void) backToDetailList{
@@ -59,18 +64,26 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"commentIdentifier";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    JDONewsReviewCell *cell = (JDONewsReviewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        cell = [[JDONewsReviewCell alloc] initWithReuseIdentifier:identifier];
     }
     if(self.listArray.count == 0){
-        cell.textLabel.text = @"暂无评论";
+        [cell setModel:nil];
     }else{
-        JDOCommentModel *commentModel = [self.listArray objectAtIndex:indexPath.row];
-        cell.textLabel.text = [JDOCommonUtil isEmptyString:commentModel.nickName] ? @"胶东在线网友" :commentModel.nickName;
-        cell.detailTextLabel.text = commentModel.content;
+        [cell setModel:[self.listArray objectAtIndex:indexPath.row]];
     }
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.listArray.count == 0){
+        return 30;
+    }else{
+        JDOCommentModel *commentModel = [self.listArray objectAtIndex:indexPath.row];
+        float contentHeight = NISizeOfStringWithLabelProperties(commentModel.content, CGSizeMake(300, MAXFLOAT), [UIFont systemFontOfSize:Review_Font_Size], UILineBreakModeWordWrap, 0).height;
+        return contentHeight + Comment_Name_Height + 10+15 /*上下边距*/ +5 /*间隔*/ ;
+    }
 }
 
 @end

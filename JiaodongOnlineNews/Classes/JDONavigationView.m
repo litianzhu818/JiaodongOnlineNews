@@ -21,18 +21,22 @@
 
 - (id)init
 {
-    return [self initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self = [self initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"top_navigation_background"] ];
+    return self;
 }
 
 - (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+#warning 图片按钮宽度应该改回44，因为背景有渐变，更好的办法是按钮背景色透明，背景加到NavigationView上
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     [btn setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
     [btn setBackgroundImage:[UIImage imageNamed:highlightImage] forState:UIControlStateHighlighted];
     [self addSubview:btn];
     return btn;
 }
 - (UIButton *) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(320-44, 0, 44, 44)];
+    #warning 图片按钮宽度应该改回44
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(320-50, 0, 50, 44)];
     [btn setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
     [btn setBackgroundImage:[UIImage imageNamed:highlightImage] forState:UIControlStateHighlighted];
     [self addSubview:btn];
@@ -55,6 +59,8 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, 320-44*2, 44)];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont boldSystemFontOfSize:20];
     titleLabel.text = title;
     [self addSubview:titleLabel];
 }

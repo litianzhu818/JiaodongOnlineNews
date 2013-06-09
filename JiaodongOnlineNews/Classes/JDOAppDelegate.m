@@ -11,7 +11,6 @@
 #import "JDONewsViewController.h"
 #import "Reachability.h"
 #import "SDURLCache.h"
-#import "JDOPathUtil.h"
 #import "JDOImageUtil.h"
 #import "IIViewDeckController.h"
 #import "JDOLeftViewController.h"
@@ -71,7 +70,7 @@
             [userDefault setObject:advServerVersion forKey:@"adv_version"];
             [userDefault synchronize];
             // 图片缓存到磁盘
-            [imgData writeToFile:[JDOPathUtil getDocumentsFilePath:advertise_file_name] options:NSDataWritingAtomic error:&error];
+            [imgData writeToFile:NIPathForDocumentsResource(advertise_file_name) options:NSDataWritingAtomic error:&error];
             if(error != nil){
                 NSLog(@"磁盘缓存广告页图片出错:%@",error);
                 return;
@@ -79,7 +78,7 @@
         }else{
             // 从磁盘读取，也可以使用[NSData dataWithContentsOfFile];
             NSFileManager * fm = [NSFileManager defaultManager];
-            NSData *imgData = [fm contentsAtPath:[JDOPathUtil getDocumentsFilePath:advertise_file_name]];
+            NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
             if(imgData){
                 // 同比缩放
 //                advImage = [JDOImageUtil adjustImage:[UIImage imageWithData:imgData] toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
@@ -99,7 +98,7 @@
     // 2秒之后仍未加载完成,则显示已缓存的广告图
     if(advImage == nil){
         NSFileManager * fm = [NSFileManager defaultManager];
-        NSData *imgData = [fm contentsAtPath:[JDOPathUtil getDocumentsFilePath:advertise_file_name]];
+        NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
         if(imgData){
             advImage = [UIImage imageWithData:imgData];
         }else{
