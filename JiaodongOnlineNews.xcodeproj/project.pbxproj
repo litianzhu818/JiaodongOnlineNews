@@ -131,7 +131,6 @@
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FF14D0F81761B1E400D6D4F4 /* ImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */; };
-		FF19A048175F39A000375716 /* JDOListView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19A047175F39A000375716 /* JDOListView.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 		FFD8B6871756E779007B878C /* aboutus.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD8B6861756E779007B878C /* aboutus.png */; };
 /* End PBXBuildFile section */
@@ -376,8 +375,6 @@
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
 		FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageModel.m; sourceTree = "<group>"; };
 		FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageTableCell.xib; sourceTree = "<group>"; };
-		FF19A046175F39A000375716 /* JDOListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListView.h; sourceTree = "<group>"; };
-		FF19A047175F39A000375716 /* JDOListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListView.m; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
 		FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAboutUsViewController.m; sourceTree = "<group>"; };
 		FFD8B6861756E779007B878C /* aboutus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aboutus.png; sourceTree = "<group>"; };
@@ -669,8 +666,6 @@
 				2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */,
 				2DE0845D175B872700A1A6BC /* JDONewsHeadCell.h */,
 				2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */,
-				FF19A046175F39A000375716 /* JDOListView.h */,
-				FF19A047175F39A000375716 /* JDOListView.m */,
 				2D93122917600A2500C73802 /* UIView+Transition.h */,
 				2D93122A17600A2500C73802 /* UIView+Transition.m */,
 				2D8DB0B21760D67400DB3EF0 /* BadgedLauncherButtonView.h */,
@@ -995,7 +990,6 @@
 				2D1DDB5B175E2BBC0048F7A7 /* NSDictionary+Model.m in Sources */,
 				2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */,
 				2D996A94175ED55800C57673 /* JDOImageViewController.m in Sources */,
-				FF19A048175F39A000375716 /* JDOListView.m in Sources */,
 				2D996A9B175F29AF00C57673 /* MLNavigationController.m in Sources */,
 				2D93122B17600A2500C73802 /* UIView+Transition.m in Sources */,
 				FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */,

@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface JDOImageViewController : UIViewController<JDONavigationView,UITableViewDelegate, UITableViewDataSource>
-@property (strong,nonatomic) JDONavigationView *navigationView;
+#import "JDOListViewController.h"
+@interface JDOImageViewController : JDOListViewController< UITableViewDelegate, UITableViewDataSource>
 
 @end

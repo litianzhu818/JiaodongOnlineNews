@@ -7,31 +7,38 @@
 //
 
 #import "JDOImageViewController.h"
-#import "JDOListView.h"
 #import "JDOImageModel.h"
+
+#define ImageList_Page_Size 20
+
 @interface JDOImageViewController ()
 
-@property(strong,nonatomic)JDOListView* listView;
+@property(strong,nonatomic)UITableView* tableView;
+
+@property (nonatomic,strong) NSDate *lastUpdateTime;
+@property (nonatomic,assign) int currentPage;
+@property (nonatomic,strong) NSMutableArray *listArray;
+
 @end
 
 @implementation JDOImageViewController
 
 
-
--(void)loadView{
-    [super loadView];
-    _listView = [[JDOListView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) serviceName:IMAGE_SERVICE modelClass:[JDOImageModel class]];
-    _listView.tableView.dataSource = self;
-    _listView.tableView.delegate = self;
-    _listView.tableView.rowHeight = 196.0f;
-    [self.view addSubview:_listView];
+-(id)init{
+    self = [super initWithServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" Title:@"精选图片"];
+    if(self){
+        
+    }
+    return self;
 }
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_listView loadDataFromNetwork];
-	// Do any additional setup after loading the view.
+	self.tableView.rowHeight = 196.0f;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,7 +48,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _listView.listArray.count;//_listView.listArray.count==0 ? 5:_listView.listArray.count;
+    return self.listArray.count;//_tableView.listArray.count==0 ? 5:_tableView.listArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -52,14 +59,12 @@
     }
     UILabel *label = (UILabel*)[cell viewWithTag:1];
     NSInteger row = [indexPath row];
-    NSArray *list = _listView.listArray;
+    NSArray *list = self.listArray;
     JDOImageModel *image = [list objectAtIndex:row];
     [label setText:image.title];
    
         return cell;
 }
-
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
