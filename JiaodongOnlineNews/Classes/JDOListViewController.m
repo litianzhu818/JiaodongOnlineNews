@@ -32,12 +32,16 @@
         NSNumber *__pageSize = [self.listParam objectForKey:@"pageSize"];
         
         if(__currentPage == nil){
-            self.currentPage = 0;
+            self.currentPage = 1;
             [self.listParam setObject:@0 forKey:@"p"];
+        }else{
+            self.currentPage = [(NSNumber *)[self.listParam objectForKey:@"p"] intValue];
         }
         if(__pageSize == nil){
             self.pageSize = Default_Page_Size;
             [self.listParam setObject:@Default_Page_Size forKey:@"pageSize"];
+        }else{
+            self.pageSize = [(NSNumber *)[self.listParam objectForKey:@"pageSize"] intValue];
         }
         self.needRefreshControl = needRefreshControl;
     }
@@ -127,8 +131,7 @@
     [self.listArray addObjectsFromArray:dataList];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     [self updateLastRefreshTime];
-    int pageSize = [(NSNumber *)[self.listParam objectForKey:@"pageSize"] intValue];
-    if( dataList.count<pageSize ){
+    if( dataList.count<self.pageSize ){
         [self.tableView.infiniteScrollingView setEnabled:false];
         [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
     }else{
