@@ -35,4 +35,6 @@ typedef enum{
 
 + (NSDictionary *)paramsFromURL:(NSString *)url;
 
++ (BOOL) isEmptyString:(NSString *)string;
+
 @end

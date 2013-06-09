@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JDOListViewController.h"
 
-@interface JDOReviewListController : UIViewController<JDONavigationView,UITableViewDelegate, UITableViewDataSource>
+@interface JDOReviewListController : JDOListViewController<UITableViewDelegate, UITableViewDataSource>
 
-@property (strong,nonatomic) JDONavigationView *navigationView;
-@property (strong,nonatomic) UITableView *tableView;
+-(id)initWithParams:(NSDictionary *)params;
 
 @end

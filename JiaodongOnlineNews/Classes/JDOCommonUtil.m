@@ -129,4 +129,8 @@ static NSDateFormatter *dateFormatter;
 			hostString, HOST,
 			uriString, URI, nil];
 }
+
++ (BOOL) isEmptyString:(NSString *)string{
+    return string == NULL || [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""] || string.length == 0;
+}
 @end

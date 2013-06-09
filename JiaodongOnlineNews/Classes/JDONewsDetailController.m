@@ -129,7 +129,7 @@
 
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    JDOReviewListController *reviewController = [[JDOReviewListController alloc] init];
+    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithParams:@{@"aid":self.newsModel.id,@"deviceId":[[UIDevice currentDevice] uniqueDeviceIdentifier]}];
     [centerViewController pushViewController:reviewController animated:true];
 }
 
@@ -258,7 +258,7 @@ NSTimeInterval timeInterval;
 
 - (void)submitReview:(id)sender{
     
-    if([[_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]){
+    if([JDOCommonUtil isEmptyString:_textView.text]){
         return;
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:5];
