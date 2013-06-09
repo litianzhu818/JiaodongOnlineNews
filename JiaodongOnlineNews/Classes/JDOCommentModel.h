@@ -10,4 +10,11 @@
 
 @interface JDOCommentModel : NSObject
 
+@property (nonatomic,copy) NSString *id;
+@property (nonatomic,copy) NSString *nickName;
+@property (nonatomic,copy) NSString *uid;
+@property (nonatomic,copy) NSString *content;
+@property (nonatomic,copy) NSString *pubtime;
+@property (nonatomic,copy) NSString *audit;
+
 @end

@@ -32,7 +32,7 @@
     if ((self = [super init])) {
         self.frame = frame;
         self.info = info;
-        self.currentPage = 0;
+        self.currentPage = 1;
         self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
         self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
         
@@ -84,7 +84,7 @@
 }
 
 - (NSDictionary *) headLineParam{
-    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:0],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
 }
 
 - (void)loadDataFromNetwork{
@@ -126,7 +126,7 @@
 
 
 - (void) refresh{
-    self.currentPage = 0;
+    self.currentPage = 1;
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
     // 刷新头条

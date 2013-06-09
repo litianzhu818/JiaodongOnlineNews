@@ -7,6 +7,9 @@
 //
 
 #import "JDOReviewListController.h"
+#import "JDOCommentModel.h"
+#import "JDONewsReviewCell.h"
+#import "NIFoundationMethods.h"
 
 @interface JDOReviewListController ()
 
@@ -14,32 +17,30 @@
 
 @implementation JDOReviewListController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+-(id)initWithParams:(NSDictionary *)params{
+    return [super initWithServiceName:VIEW_COMMENT_SERVICE modelClass:@"JDOCommentModel" title:@"热门评论" params:[params mutableCopy] needRefreshControl:true];
+}
+
+- (void)loadView{
+    [super loadView];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+}
+
+- (void) setupNavigationView{
+    [self.navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(backToDetailList)];
+    [self.navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(backToDetailList)];
+    [self.navigationView setTitle:self.title];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // 自定义导航栏
-    [self setupNavigationView];
     // 评论列表
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) style:UITableViewStyleGrouped];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    [self.view addSubview:self.tableView];
-}
-
-- (void) setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] init];
-    [_navigationView addBackButtonWithTarget:self action:@selector(backToDetailList)];
-    [_navigationView setTitle:@"热门评论"];
-    [self.view addSubview:_navigationView];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.allowsSelection = false;
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
 }
 
 - (void) backToDetailList{
@@ -50,22 +51,39 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    if(self.listArray.count == 0){
+        return 1;
+    }
+    return self.listArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *identifier = @"identifier";
+    static NSString *identifier = @"commentIdentifier";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    JDONewsReviewCell *cell = (JDONewsReviewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[JDONewsReviewCell alloc] initWithReuseIdentifier:identifier];
+    }
+    if(self.listArray.count == 0){
+        [cell setModel:nil];
+    }else{
+        [cell setModel:[self.listArray objectAtIndex:indexPath.row]];
     }
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.listArray.count == 0){
+        return 30;
+    }else{
+        JDOCommentModel *commentModel = [self.listArray objectAtIndex:indexPath.row];
+        float contentHeight = NISizeOfStringWithLabelProperties(commentModel.content, CGSizeMake(300, MAXFLOAT), [UIFont systemFontOfSize:Review_Font_Size], UILineBreakModeWordWrap, 0).height;
+        return contentHeight + Comment_Name_Height + 10+15 /*上下边距*/ +5 /*间隔*/ ;
+    }
 }
 
 @end

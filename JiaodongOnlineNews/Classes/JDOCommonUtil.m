@@ -53,18 +53,6 @@ static NSDateFormatter *dateFormatter;
     return [dateFormatter dateFromString:date];
 }
 
-+ (UIColor *) colorFromString:(NSString *)colorString{
-    return [self colorFromString:colorString alpha:1.0f];
-}
-+ (UIColor *) colorFromString:(NSString *)colorString alpha:(CGFloat) alpha{
-    return [UIColor colorWithRed:
-            strtoul([[colorString substringWithRange:NSMakeRange(0, 2)] UTF8String],0,16)/255.0f
-        green:strtoul([[colorString substringWithRange:NSMakeRange(2, 2)] UTF8String],0,16)/255.0f
-        blue:strtoul([[colorString substringWithRange:NSMakeRange(4, 2)] UTF8String],0,16)/255.0f
-        alpha:alpha
-    ];
-}
-
 + (NSString *) formatErrorWithOperation:(AFHTTPRequestOperation *)operation error:(NSError *)error{
     NSString *errorStr ;
     if(operation.response.statusCode != 200){
@@ -129,4 +117,53 @@ static NSDateFormatter *dateFormatter;
 			hostString, HOST,
 			uriString, URI, nil];
 }
+
+//NSFileManager* fm=[NSFileManager defaultManager];
+//if(![fm fileExistsAtPath:[self dataFilePath]]){
+//
+//    //下面是对该文件进行制定路径的保存
+//    [fm createDirectoryAtPath:[self dataFilePath] withIntermediateDirectories:YES attributes:nil error:nil];
+//
+//    //取得一个目录下得所有文件名
+//    NSArray *files = [fm subpathsAtPath: [self dataFilePath] ];
+//
+//    //读取某个文件
+//    NSData *data = [fm contentsAtPath:[self dataFilePath]];
+//
+//    //或者
+//    NSData *data = [NSData dataWithContentOfPath:[self dataFilePath]];
+//}
++ (NSURL *)documentsDirectoryURL {
+	return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+
++ (NSURL *)cachesDirectoryURL {
+	return [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
++ (NSURL *)downloadsDirectoryURL {
+	return [[[NSFileManager defaultManager] URLsForDirectory:NSDownloadsDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+
++ (NSURL *)libraryDirectoryURL {
+	return [[[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+
++ (NSURL *)applicationSupportDirectoryURL {
+	return [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
 @end
+
+BOOL JDOIsEmptyString(NSString *string) {
+    return string == NULL || [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""] || string.length == 0;
+}
+NSString* JDOGetHomeFilePath(NSString *fileName){
+    return [NSHomeDirectory() stringByAppendingPathComponent:fileName];
+}
+NSString* JDOGetTmpFilePath(NSString *fileName){
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+}

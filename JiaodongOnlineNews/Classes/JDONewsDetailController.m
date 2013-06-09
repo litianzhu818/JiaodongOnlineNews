@@ -15,6 +15,9 @@
 #import "WebViewJavascriptBridge_iOS.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "JDOReviewListController.h"
+#import "SSTextView.h"
+#import "NSString+SSToolkitAdditions.h"
+#import "UIColor+SSToolkitAdditions.h"
 
 #define Toolbar_Tag 100
 #define Review_Tag  100
@@ -30,13 +33,14 @@
 
 #define Review_Max_Length 200
 #define Remain_Word_Label 200
+#define Comment_Placeholder @"说点什么吧..."
 
 @interface JDONewsDetailController ()
 
 @property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 @property (strong, nonatomic) UIView *reviewPanel;
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
-@property (strong, nonatomic) UITextView *textView;
+@property (strong, nonatomic) SSTextView *textView;
 @property (assign, nonatomic) BOOL isKeyboardShowing;
 
 @end
@@ -59,7 +63,7 @@
     // 自定义导航栏
     [self setupNavigationView];
     // 内容
-    self.view.backgroundColor = [JDOCommonUtil colorFromString:@"f6f6f6"];// 与html的body背景色相同
+    self.view.backgroundColor = [UIColor colorWithHex:@"f6f6f6"];// 与html的body背景色相同
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-Toolbar_Height)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
@@ -101,7 +105,6 @@
     
     [self.view.blackMask removeGestureRecognizer:self.closeReviewGesture];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -129,7 +132,7 @@
 
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    JDOReviewListController *reviewController = [[JDOReviewListController alloc] init];
+    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithParams:@{@"aid":self.newsModel.id,@"deviceId":[[UIDevice currentDevice] uniqueDeviceIdentifier]}];
     [centerViewController pushViewController:reviewController animated:true];
 }
 
@@ -177,12 +180,14 @@
     _reviewPanel = [[UIView alloc] init];
     _reviewPanel.backgroundColor = [UIColor grayColor];
     
-    _textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 320-10-10-SubmitBtn_Width, Textfield_Height)];
+    _textView = [[SSTextView alloc] initWithFrame:CGRectMake(5, 5, 320-10-10-SubmitBtn_Width, Textfield_Height)];
     _textView.layer.cornerRadius = 5;
     _textView.layer.masksToBounds = true;
     _textView.font = [UIFont systemFontOfSize:16];
-    [_reviewPanel addSubview:_textView];
     _textView.delegate = self;
+    _textView.placeholder = Comment_Placeholder;
+    [_reviewPanel addSubview:_textView];
+    
     
     UILabel *remainWordNum = [[UILabel alloc] initWithFrame:CGRectMake(320-5-SubmitBtn_Width, 5, SubmitBtn_Width, 40)];
 //    remainWordNum.text = [NSString stringWithFormat:@"还有%d字可输入",Review_Max_Length ];
@@ -258,12 +263,12 @@ NSTimeInterval timeInterval;
 
 - (void)submitReview:(id)sender{
     
-    if([[_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]){
+    if(JDOIsEmptyString(_textView.text) || [[_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:Comment_Placeholder]){
         return;
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:5];
     [params setObject:self.newsModel.id forKey:@"aid"];
-    [params setObject:_textView.text forKey:@"content"];
+    [params setObject:[_textView.text stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters] forKey:@"content"];
     [params setObject:@"" forKey:@"nickName"];
     [params setObject:@"" forKey:@"uid"];
     [params setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"deviceId"];

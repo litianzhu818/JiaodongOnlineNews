@@ -25,7 +25,7 @@
 
 
 -(id)init{
-    self = [super initWithServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" Title:@"精选图片"];
+    self = [super initWithServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" title:@"精选图片" params:nil needRefreshControl:true];
     if(self){
         
     }

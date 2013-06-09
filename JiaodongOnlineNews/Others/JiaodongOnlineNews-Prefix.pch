@@ -22,7 +22,6 @@
 #import "JDOCommonUtil.h"
 #import "JDONavigationView.h"
 #import "UIView+Transition.h"
-#import "JDOPathUtil.h"
 #import "JDOCenterViewController.h"
 #import "JDOHttpClient.h"
 #import "JDOJsonClient.h"
@@ -37,6 +36,7 @@
 
 #define Headline_Height 170
 #define News_Cell_Height 70
+#define Review_Font_Size 14
 
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"
