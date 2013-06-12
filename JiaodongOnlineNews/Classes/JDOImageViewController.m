@@ -8,9 +8,9 @@
 
 #import "JDOImageViewController.h"
 #import "JDOImageModel.h"
-
+#import "UIImageView+WebCache.h"
 #define ImageList_Page_Size 20
-
+#define Default_Image @"default_icon.png"
 @interface JDOImageViewController ()
 
 @property(strong,nonatomic)UITableView* tableView;
@@ -36,7 +36,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.rowHeight = 196.0f;
+	self.tableView.rowHeight = 197.0f;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 }
@@ -62,7 +62,18 @@
     NSArray *list = self.listArray;
     JDOImageModel *image = [list objectAtIndex:row];
     [label setText:image.title];
-   
+    __block  UIImageView *blockImageView = (UIImage*)[cell viewWithTag:2];
+    [blockImageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:image.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+        if(!cached){    // 非缓存加载时使用渐变动画
+            CATransition *transition = [CATransition animation];
+            transition.duration = 0.3;
+            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            transition.type = kCATransitionFade;
+            [blockImageView.layer addAnimation:transition forKey:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
         return cell;
 }
 
