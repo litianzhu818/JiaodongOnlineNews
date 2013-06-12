@@ -83,6 +83,10 @@
 		2D8B40A2175A496200C8B04F /* NIPagingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B409C175A496200C8B04F /* NIPagingScrollView.m */; };
 		2D8D44F1174DAB2800786545 /* JDONavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D44F0174DAB2800786545 /* JDONavigationView.m */; };
 		2D8D44F8174DEB9900786545 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC23174898BA0071A601 /* Default.png */; };
+		2D8D85DB1767386B00D7D34F /* review_item.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D85DA1767386B00D7D34F /* review_item.png */; };
+		2D8D85DC1767386B00D7D34F /* review_item.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D85DA1767386B00D7D34F /* review_item.png */; };
+		2D8D85DF17676E0C00D7D34F /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D85DE17676E0C00D7D34F /* CMPopTipView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2D8D85E017676E0C00D7D34F /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D85DE17676E0C00D7D34F /* CMPopTipView.m */; };
 		2D8DB0A31760C6DB00DB3EF0 /* NILauncherButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0971760C6DB00DB3EF0 /* NILauncherButtonView.m */; };
 		2D8DB0A41760C6DB00DB3EF0 /* NILauncherPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB0991760C6DB00DB3EF0 /* NILauncherPageView.m */; };
 		2D8DB0A51760C6DB00DB3EF0 /* NILauncherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8DB09B1760C6DB00DB3EF0 /* NILauncherView.m */; };
@@ -479,6 +483,9 @@
 		2D8B40A0175A496200C8B04F /* NIPagingScrollViewPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NIPagingScrollViewPage.h; path = JiaodongOnlineNews/Vendors/NIPagingScrollViewPage.h; sourceTree = SOURCE_ROOT; };
 		2D8D44EF174DAB2800786545 /* JDONavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONavigationView.h; sourceTree = "<group>"; };
 		2D8D44F0174DAB2800786545 /* JDONavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONavigationView.m; sourceTree = "<group>"; };
+		2D8D85DA1767386B00D7D34F /* review_item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = review_item.png; sourceTree = "<group>"; };
+		2D8D85DD17676E0C00D7D34F /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
+		2D8D85DE17676E0C00D7D34F /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		2D8DB0961760C6DB00DB3EF0 /* NILauncherButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherButtonView.h; sourceTree = "<group>"; };
 		2D8DB0971760C6DB00DB3EF0 /* NILauncherButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NILauncherButtonView.m; sourceTree = "<group>"; };
 		2D8DB0981760C6DB00DB3EF0 /* NILauncherPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NILauncherPageView.h; sourceTree = "<group>"; };
@@ -789,6 +796,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2D8D85E117676E1000D7D34F /* CMPopTipView */,
 				2D8E00D817644B10002F0590 /* SSToolkit */,
 				2D141462176324E700A6A50A /* UniqueIdentifier */,
 				2D96C98E1761660800D88EBA /* TPKeyboardAvoiding */,
@@ -915,6 +923,15 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		2D8D85E117676E1000D7D34F /* CMPopTipView */ = {
+			isa = PBXGroup;
+			children = (
+				2D8D85DD17676E0C00D7D34F /* CMPopTipView.h */,
+				2D8D85DE17676E0C00D7D34F /* CMPopTipView.m */,
+			);
+			name = CMPopTipView;
+			sourceTree = "<group>";
+		};
 		2D8DB0A91760C6E100DB3EF0 /* Launcher */ = {
 			isa = PBXGroup;
 			children = (
@@ -979,6 +996,7 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2D8D85DA1767386B00D7D34F /* review_item.png */,
 				2D8E00C317642EC1002F0590 /* airplane@2x.png */,
 				2D8E00C417642EC1002F0590 /* breakrule@2x.png */,
 				2D8E00C517642EC1002F0590 /* bus@2x.png */,
@@ -1197,6 +1215,7 @@
 				2D8E010617647C82002F0590 /* top_navigation_back_highlighted.png in Resources */,
 				2D8E010717647C82002F0590 /* top_navigation_back.png in Resources */,
 				2D8E010917647D71002F0590 /* right_menu.png in Resources */,
+				2D8D85DB1767386B00D7D34F /* review_item.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1245,6 +1264,7 @@
 				2DF3D8951764807C00857AE4 /* top_navigation_back_highlighted.png in Resources */,
 				2DF3D8961764807C00857AE4 /* top_navigation_back.png in Resources */,
 				2DF3D8971764807C00857AE4 /* right_menu.png in Resources */,
+				2D8D85DC1767386B00D7D34F /* review_item.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1413,6 +1433,7 @@
 				2D8E00F617645F0E002F0590 /* NSData+SSToolkitAdditions.m in Sources */,
 				2D8E00F917646147002F0590 /* UIColor+SSToolkitAdditions.m in Sources */,
 				2D8E00FC176462C5002F0590 /* UIControl+SSToolkitAdditions.m in Sources */,
+				2D8D85DF17676E0C00D7D34F /* CMPopTipView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1519,6 +1540,7 @@
 				2DF3D8631764807C00857AE4 /* NSData+SSToolkitAdditions.m in Sources */,
 				2DF3D8641764807C00857AE4 /* UIColor+SSToolkitAdditions.m in Sources */,
 				2DF3D8651764807C00857AE4 /* UIControl+SSToolkitAdditions.m in Sources */,
+				2D8D85E017676E0C00D7D34F /* CMPopTipView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

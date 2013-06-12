@@ -283,8 +283,7 @@
     if(indexPath.section == 0){
         // section0 由于存在scrollView与didSelectRowAtIndexPath冲突，不会进入该函数，通过给UIImageView设置gesture的方式解决
     }else{
-        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] init];
-        detailController.newsModel = [self.listArray objectAtIndex:indexPath.row];
+        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         [centerController pushViewController:detailController animated:true];
     }

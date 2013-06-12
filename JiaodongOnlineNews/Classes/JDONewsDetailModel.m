@@ -28,7 +28,11 @@
     // 默认字号从UserDefault获取 small_font,normal_font,big_font
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSString *fontClass = [userDefault objectForKey:@"font_class"];
-    if(fontClass == nil)    fontClass = @"normal_font";
+    if(fontClass == nil){
+        fontClass = @"normal_font";
+        [userDefault setObject:fontClass forKey:@"font_class"];
+        [userDefault synchronize];
+    }
     
     NSMutableDictionary *variables = [[NSMutableDictionary alloc] init];
     [variables setValue:fontClass forKey:@"font_class"];

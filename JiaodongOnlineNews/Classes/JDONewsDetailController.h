@@ -17,4 +17,6 @@
 @property (nonatomic,strong) UIActivityIndicatorView *activityIndicationView;
 @property (strong,nonatomic) JDONavigationView *navigationView;
 
+- (id)initWithNewsModel:(JDONewsModel *)newsModel;
+
 @end

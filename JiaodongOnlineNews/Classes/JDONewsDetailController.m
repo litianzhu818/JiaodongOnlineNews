@@ -18,6 +18,7 @@
 #import "SSTextView.h"
 #import "NSString+SSToolkitAdditions.h"
 #import "UIColor+SSToolkitAdditions.h"
+#import "CMPopTipView.h"
 
 #define Toolbar_Tag 100
 #define Review_Tag  100
@@ -34,6 +35,9 @@
 #define Review_Max_Length 200
 #define Remain_Word_Label 200
 #define Comment_Placeholder @"说点什么吧..."
+#define Font_Selected_Color [UIColor blueColor]
+#define Font_Unselected_Color [UIColor whiteColor]
+#define PoptipView_Autodismiss_Delay 1.0
 
 @interface JDONewsDetailController ()
 
@@ -42,16 +46,21 @@
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
 @property (strong, nonatomic) SSTextView *textView;
 @property (assign, nonatomic) BOOL isKeyboardShowing;
+@property (strong, nonatomic) UIButton *selectedFontBtn;
+@property (strong, nonatomic) CMPopTipView *fontPopTipView;
+@property (assign, nonatomic,getter = isCollected) BOOL collected;
+@property (strong, nonatomic) CMPopTipView *collectPopTipView;
 
 @end
 
 @implementation JDONewsDetailController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)initWithNewsModel:(JDONewsModel *)newsModel{
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        // Custom initialization
+        self.newsModel = newsModel;
+#warning 查询该新闻是否被收藏
+        self.collected = false;
     }
     return self;
 }
@@ -121,7 +130,7 @@
     self.navigationView = [[JDONavigationView alloc] init];
     [_navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
     [_navigationView setTitle:@"新闻详情"];
-    [_navigationView addCustomButtonWithTarget:self action:@selector(showReviewList)];
+    [_navigationView addRightButtonImage:@"review_item" highlightImage:@"review_item" target:self action:@selector(showReviewList)];
     [self.view addSubview:_navigationView];
 }
 
@@ -143,7 +152,13 @@
     UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-Toolbar_Height, 320, Toolbar_Height)];
     for(int i =0;i<4;i++ ){
         UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, 4, Toolbar_Btn_Size, Toolbar_Btn_Size)];
-        [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal];
+        if( i==3 && self.isCollected){
+#warning 替换收藏过的图片
+            [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
+        }else{
+            [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal]; 
+        }
+        
         [btn setTag:Toolbar_Tag+i];
         [btn addTarget:self action:@selector(toolbarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [toolView addSubview:btn];
@@ -151,7 +166,7 @@
     [self.view addSubview:toolView];
 }
 
-- (void) toolbarBtnClicked:(UIControl *)sender{
+- (void) toolbarBtnClicked:(UIButton *)sender{
     switch (sender.tag) {
         case Review_Tag:
             [self writeReviewView];
@@ -159,12 +174,12 @@
         case Share_Tag:
             
             break;
-        case Font_Tag:
-            
+        case Font_Tag:{
+            [self popupFontPanel:sender];
             break;
+        }
         case Collect_Tag:{
-            NSArray *fontSize = @[@"small_font",@"normal_font",@"big_font",@"small_font"];
-            [_bridge callHandler:@"changeFontSize" data:[fontSize objectAtIndex:0]];
+            [self collectNews:sender];
             break;
         }
         default:
@@ -284,6 +299,84 @@ NSTimeInterval timeInterval;
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
     }];
+}
+
+#pragma mark - Font
+- (void) popupFontPanel:(UIButton *)sender{
+    if(_fontPopTipView == nil){
+        UIView *fontView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 20)];
+        NSArray *fontLabelName = @[@"小",@"中",@"大"];
+        NSArray *fontCSSName = @[@"small_font",@"normal_font",@"big_font"];
+        NSArray *fontSize = @[@16,@18,@20];
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSString *fontClass = [userDefault objectForKey:@"font_class"];
+        if(fontClass == nil)    fontClass = @"normal_font";
+        for(int i=0;i<3;i++){
+            UIButton *fontBtn = [[UIButton alloc] initWithFrame:CGRectMake(i*40, 0, 40, 20)];
+            [fontBtn setTitle:[fontLabelName objectAtIndex:i] forState:UIControlStateNormal];
+            [fontBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:[[fontSize objectAtIndex:i] intValue]]];
+            [fontBtn addTarget:self action:@selector(changeFontSize:) forControlEvents:UIControlEventTouchUpInside];
+            [fontBtn setTitleColor:Font_Unselected_Color forState:UIControlStateNormal];
+            [fontBtn setTitleColor:Font_Selected_Color forState:UIControlStateSelected];
+            if([fontClass isEqualToString:[fontCSSName objectAtIndex:i]]){
+                self.selectedFontBtn = fontBtn;
+                [fontBtn setSelected:true];
+            }else{
+                [fontBtn setSelected:false];
+            }
+            [fontView addSubview:fontBtn];
+        }
+        _fontPopTipView = [[CMPopTipView alloc] initWithCustomView:fontView];
+        _fontPopTipView.disableTapToDismiss = YES;
+        _fontPopTipView.preferredPointDirection = PointDirectionDown;
+        _fontPopTipView.backgroundColor = [UIColor darkGrayColor];
+        _fontPopTipView.animation = CMPopTipAnimationPop;
+        _fontPopTipView.dismissTapAnywhere = YES;
+    }
+    [_fontPopTipView presentPointingAtView:sender inView:self.view animated:YES];
+}
+- (void) changeFontSize:(UIButton *)sender{
+    if(self.selectedFontBtn == sender)  return;
+    self.selectedFontBtn = sender;
+    NSArray *fontLabelName = @[@"小",@"中",@"大"];
+    NSArray *fontCSSName = @[@"small_font",@"normal_font",@"big_font"];
+    NSString *title = [sender titleForState:UIControlStateNormal];
+    [sender setSelected:true];
+    for(UIView *otherBtn in [[sender superview] subviews]){
+        if([otherBtn isKindOfClass:[UIButton class]] && otherBtn!=sender){
+            [(UIButton *)otherBtn setSelected:false];
+        }
+    }
+    NSString *selectedFontCSSName = [fontCSSName objectAtIndex:[fontLabelName indexOfObject:title]];
+    [_bridge callHandler:@"changeFontSize" data:selectedFontCSSName];
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault setObject:selectedFontCSSName forKey:@"font_class"];
+    [userDefault synchronize];
+    [_fontPopTipView.autoDismissTimer invalidate];
+    [_fontPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];
+}
+
+#pragma mark - Collect
+
+- (void) collectNews:(UIButton *)sender{
+    if(_collectPopTipView == nil){
+        _collectPopTipView = [[CMPopTipView alloc] initWithMessage:@""];
+        _collectPopTipView.disableTapToDismiss = YES;
+        _collectPopTipView.preferredPointDirection = PointDirectionDown;
+        _collectPopTipView.backgroundColor = [UIColor darkGrayColor];
+        _collectPopTipView.animation = CMPopTipAnimationPop;
+        _collectPopTipView.dismissTapAnywhere = NO;
+    }
+    if(self.isCollected){
+#warning 取消收藏
+        self.collected = false;
+        _collectPopTipView.message = @"  取消收藏!  ";
+    }else{
+        self.collected = true;
+        _collectPopTipView.message = @"  收藏成功!  ";
+    }
+    [_collectPopTipView presentPointingAtView:sender inView:self.view animated:YES];
+    [_collectPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];
 }
 
 #pragma mark - Load WebView
