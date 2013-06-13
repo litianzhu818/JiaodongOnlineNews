@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HPGrowingTextView.h"
 
 @class JDONewsModel;
 
-@interface JDONewsDetailController : UIViewController <JDONavigationView,UIWebViewDelegate,UITextViewDelegate>
+@interface JDONewsDetailController : UIViewController <JDONavigationView,UIWebViewDelegate,UITextViewDelegate,HPGrowingTextViewDelegate>
 
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDONewsModel *newsModel;

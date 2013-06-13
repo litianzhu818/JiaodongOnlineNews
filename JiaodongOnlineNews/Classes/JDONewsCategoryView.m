@@ -267,8 +267,7 @@
     JDONewsHeadCell *cell = (JDONewsHeadCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     int index = [cell.imageViews indexOfObject:gesture.view];
     
-    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] init];
-    detailController.newsModel = [self.headArray objectAtIndex:index];
+    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.headArray objectAtIndex:index]];
     JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
     [centerController pushViewController:detailController animated:true];
 }

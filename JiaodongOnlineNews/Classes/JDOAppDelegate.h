@@ -8,14 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class JDOViewController;
 @class IIViewDeckController;
 
 @interface JDOAppDelegate : UIResponder <UIApplicationDelegate,UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
-@property (strong, nonatomic) JDOViewController *viewController;
 
 @property (retain, nonatomic) IIViewDeckController *deckController;
 

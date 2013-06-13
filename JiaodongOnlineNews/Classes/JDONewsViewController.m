@@ -64,6 +64,16 @@ BOOL pageControlUsed;
     [self.view addSubview:_pageControl];
 }
 
+- (void)viewDidUnload{
+    [super viewDidUnload];
+    [self setPageControl:nil];
+    [self setScrollView:nil];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
+    return YES;
+}
+
 - (void) setupNavigationView{
     self.navigationView = [[JDONavigationView alloc] init];
     [_navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
@@ -169,14 +179,6 @@ BOOL pageControlUsed;
             [page loadDataFromNetwork];
         }
     }
-}
-
-- (void)viewDidUnload{
-    [super viewDidUnload];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
-    return YES;
 }
 
 @end
