@@ -25,4 +25,5 @@ install_resource()
       ;;
   esac
 }
+install_resource 'MWPhotoBrowser/MWPhotoBrowser/MWPhotoBrowser.bundle'
 install_resource 'WebViewJavascriptBridge/WebViewJavascriptBridgeAbstract/WebViewJavascriptBridge.js.txt'

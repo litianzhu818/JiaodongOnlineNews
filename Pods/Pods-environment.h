@@ -18,12 +18,30 @@
 #define COCOAPODS_VERSION_MINOR_CocoaLumberjack 6
 #define COCOAPODS_VERSION_PATCH_CocoaLumberjack 2
 
+// DCIntrospect
+#define COCOAPODS_POD_AVAILABLE_DCIntrospect
+#define COCOAPODS_VERSION_MAJOR_DCIntrospect 0
+#define COCOAPODS_VERSION_MINOR_DCIntrospect 0
+#define COCOAPODS_VERSION_PATCH_DCIntrospect 2
+
 // JSONKit
 #define COCOAPODS_POD_AVAILABLE_JSONKit
 // This library does not follow semantic-versioning,
 // so we were not able to define version macros.
 // Please contact the author.
 // Version: 1.5pre.
+
+// MBProgressHUD
+#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
+#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 6
+#define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
+
+// MWPhotoBrowser
+#define COCOAPODS_POD_AVAILABLE_MWPhotoBrowser
+#define COCOAPODS_VERSION_MAJOR_MWPhotoBrowser 1
+#define COCOAPODS_VERSION_MINOR_MWPhotoBrowser 0
+#define COCOAPODS_VERSION_PATCH_MWPhotoBrowser 1
 
 // SDURLCache
 #define COCOAPODS_POD_AVAILABLE_SDURLCache

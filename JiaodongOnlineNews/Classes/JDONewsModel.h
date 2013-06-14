@@ -17,6 +17,7 @@
 @property (nonatomic,copy) NSString *pubtime;
 @property (nonatomic,copy) NSString *summary;
 @property (nonatomic,copy) NSString *title;
-
+@property (nonatomic,copy) NSString *spic;
+@property (nonatomic,copy) NSString *modifytime;
 
 @end
