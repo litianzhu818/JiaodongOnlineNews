@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HPGrowingTextView.h"
 
 @class JDONewsModel;
 
-@interface JDONewsDetailController : UIViewController <JDONavigationView,UIWebViewDelegate,UITextViewDelegate,HPGrowingTextViewDelegate>
+@interface JDONewsDetailController : UIViewController <JDONavigationView,UIWebViewDelegate,UITextViewDelegate>
 
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDONewsModel *newsModel;
@@ -19,5 +18,7 @@
 @property (strong,nonatomic) JDONavigationView *navigationView;
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
+- (void)writeReview;
+- (void)hideReviewView;
 
 @end

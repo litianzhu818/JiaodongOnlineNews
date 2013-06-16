@@ -27,6 +27,7 @@
 #import "JDOJsonClient.h"
 #import "JDOStatusView.h"
 #import "UIScrollView+SVPullToRefresh.h"
+#import <AGCommon/CoreDefinition.h>
 
 #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly
