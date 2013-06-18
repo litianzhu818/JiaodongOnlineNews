@@ -9,14 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "HPGrowingTextView.h"
 #import <AGCommon/CMHTableView.h>
-#import <ShareSDK/ISSShareViewDelegate.h>
 #import "JDONewsDetailController.h"
 
-@interface JDONewsReviewView : UIView <HPGrowingTextViewDelegate,CMHTableViewDataSource,CMHTableViewDelegate,ISSViewDelegate>
+@interface JDONewsReviewView : UIView <HPGrowingTextViewDelegate,CMHTableViewDataSource,CMHTableViewDelegate>
 
 @property (strong, nonatomic) HPGrowingTextView *textView;
 @property (strong, nonatomic) UILabel *remainWordNum;
 
-- (id)initWithFrame:(CGRect)frame controller:(JDONewsDetailController *)controller;
+- (id)initWithController:(JDONewsDetailController *)controller;
+- (NSArray *)selectedClients;
+- (CGRect) initialFrame;
 
 @end

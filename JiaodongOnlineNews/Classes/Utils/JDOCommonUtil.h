@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <ShareSDK/ShareSDK.h>
 
 #define PROTOCOL	@"PROTOCOL"
 #define HOST		@"HOST"
@@ -43,3 +44,5 @@ typedef enum{
 BOOL JDOIsEmptyString(NSString *string);
 NSString* JDOGetHomeFilePath(NSString *fileName);
 NSString* JDOGetTmpFilePath(NSString *fileName);
+
+id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate);

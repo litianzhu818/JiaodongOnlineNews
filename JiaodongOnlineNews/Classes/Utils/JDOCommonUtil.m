@@ -7,6 +7,7 @@
 //
 
 #import "JDOCommonUtil.h"
+#import "JDOShareViewDelegate.h"
 
 @implementation JDOCommonUtil
 
@@ -166,4 +167,23 @@ NSString* JDOGetHomeFilePath(NSString *fileName){
 }
 NSString* JDOGetTmpFilePath(NSString *fileName){
     return [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+}
+
+id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){
+    id<ISSViewDelegate> _delegate;
+    if( viewDelegate == nil){
+        _delegate = [JDOShareViewDelegate sharedDelegate];
+    }else{
+        _delegate = viewDelegate;
+    }
+    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
+                                                         allowCallback:false
+                                                         authViewStyle:SSAuthViewStyleModal
+                                                          viewDelegate:_delegate
+                                               authManagerViewDelegate:_delegate];
+    //在授权页面中添加关注官方微博
+    [authOptions setFollowAccounts:@{
+        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"naiyi1984"],
+        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"intotherainzy"]}];
+    return authOptions;
 }

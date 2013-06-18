@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WXApi.h"
 
 @class IIViewDeckController;
 
-@interface JDOAppDelegate : UIResponder <UIApplicationDelegate,UINavigationControllerDelegate>
+@interface JDOAppDelegate : UIResponder <UIApplicationDelegate,UINavigationControllerDelegate,WXApiDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

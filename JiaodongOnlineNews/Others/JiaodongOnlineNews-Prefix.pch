@@ -28,6 +28,7 @@
 #import "JDOStatusView.h"
 #import "UIScrollView+SVPullToRefresh.h"
 #import <AGCommon/CoreDefinition.h>
+#import "UIColor+SSToolkitAdditions.h"
 
 #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly

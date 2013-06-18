@@ -21,6 +21,8 @@
 #import "JDOShareViewController.h"
 #import "JDONewsReviewView.h"
 #import "HPTextViewInternal.h"
+#import <ShareSDK/ShareSDK.h>
+#import "JDOShareViewDelegate.h"
 
 #define Toolbar_Tag 100
 #define Review_Tag  100
@@ -49,6 +51,7 @@
 @property (assign, nonatomic,getter = isCollected) BOOL collected;
 @property (strong, nonatomic) CMPopTipView *collectPopTipView;
 @property (strong, nonatomic) JDOShareViewController *shareViewController;
+@property (strong, nonatomic) UIView *blackMask;
 
 @end
 
@@ -103,7 +106,8 @@
     [self buildWebViewJavascriptBridge];
     [self loadWebView];
     self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideReviewView)];
-    [self.view.blackMask addGestureRecognizer:self.closeReviewGesture];
+    _blackMask = self.view.blackMask;
+    [_blackMask addGestureRecognizer:self.closeReviewGesture];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:_reviewPanel.textView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:_reviewPanel.textView];
@@ -116,7 +120,7 @@
     [self setFontPopTipView:nil];
     [self setCollectPopTipView:nil];
     
-    [self.view.blackMask removeGestureRecognizer:self.closeReviewGesture];
+    [_blackMask removeGestureRecognizer:self.closeReviewGesture];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:_reviewPanel.textView];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:_reviewPanel.textView];
 }
@@ -192,7 +196,7 @@ NSTimeInterval timeInterval;
 
 - (void)writeReview{
     if( _reviewPanel == nil){
-        _reviewPanel = [[JDONewsReviewView alloc] initWithFrame:CGRectMake(0, App_Height, 320, Review_Panel_Init_Height) controller:self];
+        _reviewPanel = [[JDONewsReviewView alloc] initWithController:self];
         [(HPTextViewInternal *)_reviewPanel.textView.internalTextView setPlaceholder:Review_Comment_Placeholder];
     }
     
@@ -216,7 +220,6 @@ NSTimeInterval timeInterval;
     // self.view会scale到0.95，所以用superview(UIViewControllerWrapperView)作为参考系
     keyboardRect = [self.view.superview convertRect:keyboardRect fromView:nil];
     
-//    _reviewPanel.frame = CGRectMake(0, App_Height, 320, Review_Panel_Init_Height);
     CGRect reviewPanelFrame = _reviewPanel.frame;
     reviewPanelFrame.origin.y = self.view.bounds.size.height - (keyboardRect.size.height + reviewPanelFrame.size.height);
     CGRect _endFrame = reviewPanelFrame;
@@ -263,12 +266,10 @@ NSTimeInterval timeInterval;
     
     [[JDOHttpClient sharedClient] getJSONByServiceName:COMMIT_COMMENT_SERVICE modelClass:nil params:params success:^(NSDictionary *result) {
         NSNumber *status = [result objectForKey:@"status"];
-        if([status intValue] == 1){ // 提交成功,隐藏键盘
+        if([status intValue] == 1 || [status intValue] == 2){ // 1:提交成功 2:重复提交,隐藏键盘
             // 清空内容，重设键盘高度
             _reviewPanel.textView.text = nil;
-            CGRect reviewPanelFrame = _reviewPanel.frame;
-            reviewPanelFrame.size.height = Review_Panel_Init_Height;
-            _reviewPanel.frame = reviewPanelFrame;
+            _reviewPanel.frame = [_reviewPanel initialFrame];
             [_reviewPanel.remainWordNum setHidden:true];
             [self hideReviewView];
         }else if([status intValue] == 0){
@@ -278,13 +279,42 @@ NSTimeInterval timeInterval;
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
     }];
+    
+    // 同时发布到微博
+    [self shareReview];
+}
+
+- (void)shareReview{
+    NSArray *selectedClients = [_reviewPanel selectedClients];
+    if ([selectedClients count] == 0) {
+        return;
+    }
+    
+    id<ISSContent> publishContent = [ShareSDK content:[_reviewPanel.textView.text stringByAppendingString:[self defaultShareContent]]
+                                       defaultContent:nil
+                                                image:nil
+                                                title:self.newsModel.title
+                                                  url:@"http://m.jiaodong.net"
+                                          description:self.newsModel.summary
+                                            mediaType:SSPublishContentMediaTypeNews];
+    
+    [ShareSDK oneKeyShareContent:publishContent
+                       shareList:selectedClients
+                     authOptions:JDOGetOauthOptions(nil)
+                   statusBarTips:YES
+                          result:nil];
+}
+
+- (NSString *)defaultShareContent{
+    return [NSString stringWithFormat:@" //评论胶东在线新闻【%@】 http://m.jiaodong.net",self.newsModel.title];
+    
 }
 
 #pragma mark - Share
 
 - (void) setupSharePanel{
     if( _shareViewController == nil){
-        _shareViewController = [[JDOShareViewController alloc] init];
+        _shareViewController = [[JDOShareViewController alloc] initWithNewsModel:self.newsModel];
     };
 }
 

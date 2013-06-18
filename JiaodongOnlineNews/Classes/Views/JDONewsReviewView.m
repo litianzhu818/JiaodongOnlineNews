@@ -10,8 +10,11 @@
 #import "UIColor+SSToolkitAdditions.h"
 #import <ShareSDK/ShareSDK.h>
 #import "AGCustomShareItemView.h"
+#import "JDOShareViewDelegate.h"
 
 #define Review_Text_Init_Height 40
+#define Review_ShareBar_Height 40
+
 #define Review_Left_Margin 10
 #define Review_Right_Margin 10
 #define SubmitBtn_Width 60
@@ -23,16 +26,17 @@
 @property (strong, nonatomic) CMHTableView *tableView;
 @property (strong, nonatomic) UILabel *textLabel;
 @property (strong, nonatomic) NSArray *oneKeyShareListArray;
-@property (strong, nonatomic) UIButton *backBtn;
 @property (strong, nonatomic) JDONewsDetailController *controller;
 
 @end
 
-@implementation JDONewsReviewView
+@implementation JDONewsReviewView{
+    JDOShareViewDelegate *shareViewDelegate;
+}
 
-- (id)initWithFrame:(CGRect)frame controller:(JDONewsDetailController *)controller
+- (id)initWithController:(JDONewsDetailController *)controller
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame: [self initialFrame]];
     if (self) {
         self.controller = controller;
         self.backgroundColor = [UIColor grayColor];
@@ -70,7 +74,7 @@
         submitBtn.tag = Review_SubmitBtn_Tag;
         submitBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
         submitBtn.frame = CGRectMake(320-Review_Right_Margin-SubmitBtn_Width, 8, SubmitBtn_Width, 27);
-        [submitBtn addTarget:self action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
+        [submitBtn addTarget:self.controller action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
         [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
         [submitBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
         submitBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
@@ -79,7 +83,6 @@
         [submitBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
         [submitBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
         [self addSubview:submitBtn];
-        
         
         _remainWordNum = [[UILabel alloc] initWithFrame:CGRectMake(320-Review_Right_Margin-SubmitBtn_Width+2, 10, SubmitBtn_Width, 30)];
         _remainWordNum.hidden = true;
@@ -90,38 +93,55 @@
         [self addSubview:_remainWordNum];
         
         // 分享栏
-        _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.textColor = [UIColor colorWithHex:@"d2d2d2"];
-        _textLabel.text = @"分享到:";
-        _textLabel.font = [UIFont boldSystemFontOfSize:12];
-        [_textLabel sizeToFit];
-        _textLabel.frame = CGRectMake(3, 40, _textLabel.frame.size.width + 3, 30);
-        _textLabel.contentMode = UIViewContentModeCenter;
-        [self addSubview:_textLabel];
-        float tableViewX = _textLabel.frame.origin.x+_textLabel.frame.size.width;
+//        _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+//        _textLabel.backgroundColor = [UIColor clearColor];
+//        _textLabel.textColor = [UIColor colorWithHex:@"d2d2d2"];
+//        _textLabel.text = @"分享到:";
+//        _textLabel.font = [UIFont boldSystemFontOfSize:12];
+//        [_textLabel sizeToFit];
+//        _textLabel.frame = CGRectMake(3, Review_Text_Init_Height, _textLabel.frame.size.width + 3, Review_ShareBar_Height);
+//        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
+//        _textLabel.contentMode = UIViewContentModeCenter;
+//        [self addSubview:_textLabel];
+//        float tableViewX = _textLabel.frame.origin.x+_textLabel.frame.size.width;
         
-        _tableView = [[CMHTableView alloc] initWithFrame:CGRectMake(tableViewX, 40, 320-tableViewX, 30)];
+        _tableView = [[CMHTableView alloc] initWithFrame:CGRectMake(7, Review_Text_Init_Height, 320-14, Review_ShareBar_Height)];
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _tableView.dataSource = self;
         _tableView.delegate = self;
-        _tableView.itemWidth = 40;
+        _tableView.itemWidth = 38;
         _tableView.showsHorizontalScrollIndicator = NO;
+        _tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
         [self addSubview:_tableView];
         
-        _oneKeyShareListArray = @[
-            @{@"type":SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),@"selected":[NSNumber numberWithBool:NO]},
-            @{@"type":SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),@"selected":[NSNumber numberWithBool:NO]},
-            @{@"type":SHARE_TYPE_NUMBER(ShareTypeQQSpace),@"selected":[NSNumber numberWithBool:NO]},
-            @{@"type":SHARE_TYPE_NUMBER(ShareType163Weibo),@"selected":[NSNumber numberWithBool:NO]},
-            @{@"type":SHARE_TYPE_NUMBER(ShareTypeSohuWeibo),@"selected":[NSNumber numberWithBool:NO]},                         
-            @{@"type":SHARE_TYPE_NUMBER(ShareTypeRenren),@"selected":[NSNumber numberWithBool:NO]},
-            @{@"type":SHARE_TYPE_NUMBER(ShareTypeKaixin),@"selected":[NSNumber numberWithBool:NO]},
-            @{@"type":SHARE_TYPE_NUMBER(ShareTypeDouBan),@"selected":[NSNumber numberWithBool:NO]}
+#warning 是否自动选中已经获得权限的项目?
+        _oneKeyShareListArray =  @[
+            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
+            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeQQSpace),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
+            [@{@"type":SHARE_TYPE_NUMBER(ShareType163Weibo),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
+            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeSohuWeibo),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
+            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeRenren),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
+            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeKaixin),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
+            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeDouBan),@"selected":[NSNumber numberWithBool:NO]}mutableCopy]
         ];
+        
+        shareViewDelegate = [[JDOShareViewDelegate alloc] initWithBackBlock:^{
+            [self authCompleted];
+        } completeBlock:^{
+            [self performSelector:@selector(authCompleted) withObject:nil afterDelay:0.15];
+        }];
     }
     return self;
+}
+
+- (CGRect) initialFrame{
+    return CGRectMake(0, App_Height, 320, Review_Text_Init_Height+Review_ShareBar_Height);
+}
+
+- (void) authCompleted{
+    [self.controller writeReview];
 }
 
 - (NSArray *)selectedClients
@@ -155,7 +175,6 @@
         itemView = [[AGCustomShareItemView alloc] initWithReuseIdentifier:reuseId clickHandler:^(NSIndexPath *indexPath) {
             if (indexPath.row < [_oneKeyShareListArray count]){
                 
-                [self.controller hideReviewView];
                 NSMutableDictionary *item = [_oneKeyShareListArray objectAtIndex:indexPath.row];
                 ShareType shareType = [[item objectForKey:@"type"] integerValue];
               
@@ -164,30 +183,20 @@
                     [item setObject:[NSNumber numberWithBool:selected] forKey:@"selected"];
                     [_tableView reloadData];
                 }else{
-                    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
-                                                                       allowCallback:YES
-                                                                       authViewStyle:SSAuthViewStyleModal
-                                                                        viewDelegate:self
-                                                             authManagerViewDelegate:self];
+                    [self.controller hideReviewView];
+                    id<ISSAuthOptions> authOptions = JDOGetOauthOptions(shareViewDelegate);
                   
-                    //在授权页面中添加关注官方微博
-                    [authOptions setFollowAccounts:@{
-                        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"ShareSDK"],
-                        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"ShareSDK"]}];
-                  
-                    [ShareSDK getUserInfoWithType:shareType
-                                    authOptions:authOptions
-                                         result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
-                                             if (result){
-                                                 [item setObject:[NSNumber numberWithBool:YES] forKey:@"selected"];
-                                                 [_tableView reloadData];
-                                             }else{
-                                                 if ([error errorCode] != -103){
-                                                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"绑定失败!" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-                                                     [alertView show];
-                                                 }
-                                             }
-                                         }];
+                    [ShareSDK authWithType:shareType options:authOptions result:^(SSAuthState state, id<ICMErrorInfo> error) {
+                        if (state == SSAuthStateSuccess){
+                            [item setObject:[NSNumber numberWithBool:YES] forKey:@"selected"];
+                            [_tableView reloadData];
+                        }else if(state == SSAuthStateFail){
+                            if ([error errorCode] != -103){
+                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"绑定失败!" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+                                [alertView show];
+                            }
+                        }
+                    }];
                 }
             }
         }];
@@ -206,24 +215,6 @@
     }
     
     return itemView;
-}
-
-- (void)viewOnWillDisplay:(UIViewController *)viewController shareType:(ShareType)shareType{
-
-    [viewController.navigationController setNavigationBarHidden:true];
-    UIView *authView = (UIView *)[[viewController.view subviews] objectAtIndex:1];
-//    NSAssert([authView isKindOfClass:NSClassFromString(@"SSSinaWeiboAuthView")], @"authView不是SSSinaWeiboAuthView");
-    authView.frame = CGRectMake(0, 44, 320, App_Height-44-40);
-    _backBtn = (UIButton *)[[[[viewController.navigationController.navigationBar items] objectAtIndex:0] leftBarButtonItem] customView];
-    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
-    [navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
-    [navigationView setTitle:@"分享"];
-    [viewController.view addSubview:navigationView];
-}
-
-- (void) backToParent{
-    [_backBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
-    [self.controller writeReview];
 }
 
 #pragma mark - GrowingTextView delegate
@@ -252,7 +243,7 @@
     r.origin.y += diff;
 	self.frame = r;
     
-    if(r.size.height > 60){
+    if(r.size.height > 100){
         [_remainWordNum setHidden:false];
     }else{
         [_remainWordNum setHidden:true];
