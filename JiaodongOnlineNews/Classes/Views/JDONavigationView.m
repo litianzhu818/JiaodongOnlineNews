@@ -10,15 +10,6 @@
 
 @implementation JDONavigationView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor colorWithRed:0.3 green:0.6 blue:0.9 alpha:1.0];
-    }
-    return self;
-}
-
 - (id)init
 {
     self = [self initWithFrame:CGRectMake(0, 0, 320, 44)];

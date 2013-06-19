@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOListViewController : UIViewController<JDONavigationView,JDOStatusView>
+@interface JDOListViewController : JDONavigationController<JDOStatusView>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,strong) UITableView *tableView;
-@property (strong,nonatomic) JDONavigationView *navigationView;
 @property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,strong) NSMutableArray *listArray;
 @property (nonatomic,copy) NSString *serviceName;

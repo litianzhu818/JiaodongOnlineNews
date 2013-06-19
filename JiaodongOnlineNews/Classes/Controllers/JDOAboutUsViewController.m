@@ -7,7 +7,7 @@
 //
 
 #import "JDOAboutUsViewController.h"
-#import "JDONavigationView.h"
+
 @interface JDOAboutUsViewController ()
 
 @end
@@ -26,13 +26,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
-    [self.view addSubview:navigationView];
-    [navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [navigationView setTitle:@"关于我们"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,44,320,416)];
     [self.view addSubview:imageView];
     imageView.image = [UIImage imageNamed:@"aboutus"];
+}
+
+- (void)setupNavigationView{
+    [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
+    [self.navigationView setTitle:@"关于我们"];
 }
 
 - (void) onBackBtnClick{

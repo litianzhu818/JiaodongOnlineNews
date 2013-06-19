@@ -9,8 +9,10 @@
 #import "JDOImageViewController.h"
 #import "JDOImageModel.h"
 #import "UIImageView+WebCache.h"
+
 #define ImageList_Page_Size 20
 #define Default_Image @"default_icon.png"
+
 @interface JDOImageViewController ()
 
 @property(strong,nonatomic)UITableView* tableView;
@@ -39,6 +41,12 @@
 	self.tableView.rowHeight = 197.0f;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+}
+
+- (void) setupNavigationView{
+    [self.navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
+    [self.navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
+    [self.navigationView setTitle:@"精选图片"];
 }
 
 - (void)didReceiveMemoryWarning

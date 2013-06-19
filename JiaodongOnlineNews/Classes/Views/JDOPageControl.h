@@ -1,5 +1,5 @@
 //
-//  JDONavigationView.h
+//  JDOPageControl.h
 //  JiaodongOnlineNews
 //
 //  Created by zhang yi on 13-5-23.

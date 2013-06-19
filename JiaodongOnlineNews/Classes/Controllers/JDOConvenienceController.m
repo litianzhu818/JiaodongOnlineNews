@@ -46,7 +46,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationView = [[JDONavigationView alloc] init];
     [self setupNavigationView];
+    [self.view addSubview:_navigationView];
+    
     self.launcherView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     self.launcherView.delegate = self;
     self.launcherView.dataSource = self.model;
@@ -55,11 +58,10 @@
 }
 
 - (void)setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] init];
     [_navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
     [_navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
     [_navigationView setTitle:@"便民查询"];
-    [self.view addSubview:_navigationView];
+    
 }
 
 - (void)launcherViewModel:(NILauncherViewModel *)launcherViewModel

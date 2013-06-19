@@ -7,7 +7,7 @@
 //
 
 #import "JDOSettingViewController.h"
-#import "JDONavigationView.h"
+#import "JDOShareAuthController.h"
 
 @interface JDOSettingViewController ()
 
@@ -26,10 +26,16 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    JDONavigationView *navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    [self.view addSubview:navigationView];
-    [navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [navigationView setTitle:@"设置"];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
+}
+
+- (void)setupNavigationView{
+    [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
+    [self.navigationView setTitle:@"设置"];
 }
 
 - (void) onBackBtnClick{
@@ -48,10 +54,37 @@
     
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *reuseIdentifier = @"reuseIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    if(cell == nil){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+    }
+    cell.textLabel.text = @"分享授权";
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    switch (indexPath.row) {
+        case 0:{
+            JDOShareAuthController *detailController = [[JDOShareAuthController alloc] init];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:detailController animated:true];
+            break;
+        }
+        default:
+            break;
+    }
+    
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOSettingViewController : UIViewController
+@interface JDOSettingViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic,strong) UITableView *tableView;
 
 @end

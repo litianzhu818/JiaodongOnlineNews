@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOFeedbackViewController : UIViewController
+@interface JDOFeedbackViewController : JDONavigationController
 {
     IBOutlet UITextField *name;
     IBOutlet UITextField *email;

@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "JDONewsModel.h"
 
-@interface JDOShareViewController : UIViewController <JDONavigationView>
+@interface JDOShareViewController : JDONavigationController
 
-@property (strong,nonatomic) JDONavigationView *navigationView;
 @property (strong,nonatomic) JDONewsModel *newsModel;
 
 - (id) initWithNewsModel:(JDONewsModel *)newsModel;

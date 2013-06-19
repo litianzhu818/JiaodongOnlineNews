@@ -9,8 +9,10 @@
 #import "JDOListViewController.h"
 #import "SVPullToRefresh.h"
 #import "NimbusPagingScrollView.h"
+
 #define Default_Page_Size 20
 #define Finished_Label_Tag 112
+
 @interface JDOListViewController ()
 @property (nonatomic,strong) NSDate *lastUpdateTime;
 @property (nonatomic,assign) int currentPage;
@@ -49,10 +51,6 @@
 }
 -(void)loadView{
     [super loadView];
-    // 自定义导航栏
-    self.navigationView = [[JDONavigationView alloc] init];
-    [self.view addSubview:_navigationView];
-    [self setupNavigationView];
     
     CGRect frame = CGRectMake(0, 44, 320, App_Height-44);
     _tableView = [[UITableView alloc] initWithFrame:frame];
@@ -70,10 +68,6 @@
     self.statusView = [[JDOStatusView alloc] initWithFrame:frame];
     [self.statusView setReloadTarget:self selector:@selector(loadDataFromNetwork)];
     [self.view addSubview:self.statusView];
-}
-
-- (void) setupNavigationView{
-    NSLog(@"%@必须在子类中覆盖",NSStringFromSelector(_cmd));
 }
 
 - (void)viewDidLoad

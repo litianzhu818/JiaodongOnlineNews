@@ -15,8 +15,6 @@
 #import "WebViewJavascriptBridge_iOS.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "JDOReviewListController.h"
-#import "NSString+SSToolkitAdditions.h"
-#import "UIColor+SSToolkitAdditions.h"
 #import "CMPopTipView.h"
 #import "JDOShareViewController.h"
 #import "JDONewsReviewView.h"
@@ -74,8 +72,6 @@
 
 - (void)loadView{
     [super loadView];
-    // 自定义导航栏
-    [self setupNavigationView];
     // 内容
     self.view.backgroundColor = [UIColor colorWithHex:@"f6f6f6"];// 与html的body背景色相同
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-Toolbar_Height)]; // 去掉导航栏和工具栏
@@ -136,11 +132,9 @@
 #pragma mark - Navigation
 
 - (void) setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] init];
-    [_navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
-    [_navigationView setTitle:@"新闻详情"];
-    [_navigationView addRightButtonImage:@"review_item" highlightImage:@"review_item" target:self action:@selector(showReviewList)];
-    [self.view addSubview:_navigationView];
+    [self.navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
+    [self.navigationView setTitle:@"新闻详情"];
+    [self.navigationView addRightButtonImage:@"review_item" highlightImage:@"review_item" target:self action:@selector(showReviewList)];
 }
 
 - (void) backToViewList{

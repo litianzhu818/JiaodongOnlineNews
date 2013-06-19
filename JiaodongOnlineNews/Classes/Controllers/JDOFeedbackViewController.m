@@ -7,7 +7,6 @@
 //
 
 #import "JDOFeedbackViewController.h"
-#import "JDONavigationView.h"
 #import "JDOHttpClient.h"
 #import "TPKeyboardAvoidingScrollView.h"
 
@@ -89,14 +88,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    JDONavigationView *navigationView = [[JDONavigationView alloc] init];
-    [navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [navigationView setTitle:@"意见反馈"];
-    [self.view addSubview:navigationView];
     TPKeyboardAvoidingScrollView *tp = self.view;
     [tp setScrollEnabled:NO];
     tp = nil;
+}
+
+- (void)setupNavigationView{
+    [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
+    [self.navigationView setTitle:@"意见反馈"];
 }
 
 - (void) onBackBtnClick{

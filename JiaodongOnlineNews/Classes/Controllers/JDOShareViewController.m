@@ -67,7 +67,6 @@
     self.titleLabel.text = [self getShareTitleAndContent];
     self.titleLabel.textColor = [UIColor colorWithHex:@"505050"];
     self.remainWordLabel.textColor = [UIColor colorWithHex:@"969696"];
-    [self setupNavigationView];
     
     [self.qqBtn setBackgroundImage:[UIImage imageNamed:@"QQ.png"] forState:UIControlStateNormal];
     [self.qqBtn setBackgroundImage:[UIImage imageNamed:@"QQ01.png"] forState:UIControlStateDisabled];
@@ -130,11 +129,9 @@
 }
 
 - (void) setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] init];
-    [_navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
-    [_navigationView setTitle:@"分享"];
-    [_navigationView addCustomButtonWithTarget:self action:@selector(backToParent)];
-    [self.view addSubview:_navigationView];
+    [self.navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
+    [self.navigationView setTitle:@"分享"];
+    [self.navigationView addCustomButtonWithTarget:self action:@selector(backToParent)];
 }
 
 - (void) backToParent{

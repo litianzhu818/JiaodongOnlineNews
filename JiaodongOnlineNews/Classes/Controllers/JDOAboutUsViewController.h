@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOAboutUsViewController : UIViewController
+@interface JDOAboutUsViewController : JDONavigationController
 
 @end
