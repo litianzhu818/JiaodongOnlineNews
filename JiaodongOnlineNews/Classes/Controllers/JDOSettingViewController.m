@@ -8,6 +8,7 @@
 
 #import "JDOSettingViewController.h"
 #import "JDOShareAuthController.h"
+#import "JDORightViewController.h"
 
 @interface JDOSettingViewController ()
 
@@ -27,7 +28,7 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
@@ -39,19 +40,7 @@
 }
 
 - (void) onBackBtnClick{
-    
-    CATransition *animation = [CATransition animation];
-    animation.duration = 0.5;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    // kCATransitionFade 淡化 kCATransitionPush 推挤 kCATransitionReveal 揭开 kCATransitionMoveIn 覆盖
-    animation.type = kCATransitionReveal;
-    // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
-    animation.subtype = kCATransitionFromLeft;
-    
-    [self.view removeFromSuperview];
-//    SharedAppDelegate.window.rootViewController = SharedAppDelegate.deckController;
-    [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
-    
+    [(JDORightViewController *)self.stackViewController popViewController];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -68,6 +57,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     cell.textLabel.text = @"分享授权";
     return cell;
@@ -76,9 +67,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
         case 0:{
-            JDOShareAuthController *detailController = [[JDOShareAuthController alloc] init];
-            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-            [centerController pushViewController:detailController animated:true];
+            JDOShareAuthController *shareAuthController = [[JDOShareAuthController alloc] init];
+            [(JDORightViewController *)self.stackViewController pushViewController:shareAuthController];
             break;
         }
         default:

@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JDORightViewController.h"
 
 @interface JDOSettingViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) JDORightViewController *rightController;
 
 @end

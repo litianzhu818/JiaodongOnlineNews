@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import <ShareSDK/ISSShareViewDelegate.h>
+#import "JDOShareAuthController.h"
 
 @interface JDOShareViewDelegate : NSObject <ISSViewDelegate>
 
 - (id) initWithBackBlock:(void (^)()) backBlock completeBlock:(void (^)()) completeBlock;
 
 + (JDOShareViewDelegate*) sharedDelegate;
+@property (strong) JDOShareAuthController *authController;
 
 @end

@@ -21,6 +21,7 @@ static JDOShareViewDelegate* sharedDelegate;
     void (^_backBlock)();
     void (^_completeBlock)();
     BOOL viewClosedByBack;
+    UIView *cloneView;
 }
 
 + (JDOShareViewDelegate*) sharedDelegate{
@@ -54,18 +55,45 @@ static JDOShareViewDelegate* sharedDelegate;
     JDONavigationView *navigationView = [[JDONavigationView alloc] init];
     [navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
     [navigationView setTitle:[ShareSDK getClientNameWithType:shareType]];
-    [viewController.view addSubview:navigationView];
+    
+    if(_authController){
+        cloneView = [[UIView alloc] initWithFrame:Transition_Window_Center];
+        for(UIView *subView in [viewController.view subviews]){
+            [subView removeFromSuperview];
+            [cloneView addSubview:subView];
+        }
+        [cloneView addSubview:navigationView];
+        [_authController.view pushView:cloneView startFrame:Transition_Window_Right endFrame:Transition_Window_Center complete:nil];
+        
+        [self performSelector:@selector(autoCloseUnusedView) withObject:nil afterDelay:1];
+    }else{
+        [viewController.view addSubview:navigationView];
+    }
+}
+
+- (void) autoCloseUnusedView{
+    
 }
 
 - (void)viewOnWillDismiss:(UIViewController *)viewController shareType:(ShareType)shareType{
     if(viewClosedByBack == false){ //授权完成返回
+        if(_authController){
+            [cloneView popView:_authController.view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:nil];
+        }
         if(_completeBlock) _completeBlock();
     }
 }
 
 - (void) backToParent{
     viewClosedByBack = true;
-    [_backBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+    if(_authController){
+        [cloneView popView:_authController.view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:^{
+            [_backBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+        }];
+    }else{
+        [_backBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+        
+    }
     if(_backBlock) _backBlock();
 }
 

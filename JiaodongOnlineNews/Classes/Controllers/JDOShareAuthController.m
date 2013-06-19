@@ -11,6 +11,7 @@
 #import "AGShareCell.h"
 #import <AGCommon/UIColor+Common.h>
 #import "JDOShareViewDelegate.h"
+#import "JDORightViewController.h"
 
 #define TARGET_CELL_ID @"targetCell"
 #define BASE_TAG 100
@@ -22,6 +23,7 @@
 @implementation JDOShareAuthController{
     UITableView *_tableView;
     NSMutableArray *_shareTypeArray;
+    JDOShareViewDelegate *sharedDelegate;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
@@ -108,38 +110,25 @@
 - (void)loadView{
     [super loadView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.width, self.view.height)
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.width, App_Height-44)
                                               style:UITableViewStyleGrouped];
-    _tableView.rowHeight = 50.0;
+    _tableView.rowHeight = 49.0;
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     _tableView.backgroundColor = [UIColor colorWithRGB:0xe1e0de];
     _tableView.backgroundView = nil;
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    _tableView.bounces = false;
+    _tableView.scrollEnabled = false;
     [self.view addSubview:_tableView];
 }
 
 - (void) setupNavigationView{
-    [self.navigationView addBackButtonWithTarget:self action:@selector(backToHome)];
+    [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [self.navigationView setTitle:@"分享授权"];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    return YES;
-}
-
--(BOOL)shouldAutorotate
-{
-    //iOS6下旋屏方法
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    //iOS6下旋屏方法
-    return SSInterfaceOrientationMaskAll;
+- (void) onBackBtnClick{
+    [(JDORightViewController *)self.stackViewController popViewController];
 }
 
 - (void)authSwitchChangeHandler:(UISwitch *)sender{
@@ -152,16 +141,30 @@
             //用户用户信息
             ShareType type = [[item objectForKey:@"type"] integerValue];
 #warning 是显示用户名还是"已授权"?
-            [ShareSDK getUserInfoWithType:type
-                              authOptions:JDOGetOauthOptions([JDOShareViewDelegate sharedDelegate])
-                                   result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
-                                       if (result){
-                                           [item setObject:[userInfo nickname] forKey:@"username"];
-                                           [_shareTypeArray writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
-                                       }
-                                       NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
-                                       [_tableView reloadData];
-                                   }];
+            sharedDelegate = [[JDOShareViewDelegate alloc] initWithBackBlock:^{
+                sender.on = false;
+            } completeBlock:nil];
+            sharedDelegate.authController = self;
+            [ShareSDK authWithType:type options:JDOGetOauthOptions(sharedDelegate) result:^(SSAuthState state, id<ICMErrorInfo> error) {
+                if (state == SSAuthStateSuccess){
+                    [_tableView reloadData];
+                }else if(state == SSAuthStateCancel){
+                    sender.on = false;
+                }else if(state == SSAuthStateFail){
+                    sender.on = false;
+                    NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
+                }
+            }];
+//            [ShareSDK getUserInfoWithType:type
+//                              authOptions:JDOGetOauthOptions(nil)
+//                                   result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
+//                                       if (result){
+//                                           [item setObject:[userInfo nickname] forKey:@"username"];
+//                                           [_shareTypeArray writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
+//                                       }
+//                                       NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
+//                                       [_tableView reloadData];
+//                                   }];
         }else{
             //取消授权
             [ShareSDK cancelAuthWithType:[[item objectForKey:@"type"] integerValue]];
@@ -198,9 +201,9 @@
         accessoryView.tag = BASE_TAG + indexPath.row;
         
         if (accessoryView.on){
-            cell.textLabel.text = [item objectForKey:@"username"];
+            cell.textLabel.text = @"已授权";//[item objectForKey:@"username"];
         }else{
-            cell.textLabel.text = @"尚未授权";
+            cell.textLabel.text = @"未授权";
         }
     }
     return cell;

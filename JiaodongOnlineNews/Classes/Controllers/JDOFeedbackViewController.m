@@ -9,6 +9,7 @@
 #import "JDOFeedbackViewController.h"
 #import "JDOHttpClient.h"
 #import "TPKeyboardAvoidingScrollView.h"
+#import "JDORightViewController.h"
 
 @interface JDOFeedbackViewController ()
 
@@ -99,19 +100,7 @@
 }
 
 - (void) onBackBtnClick{
-    
-    CATransition *animation = [CATransition animation];
-    animation.duration = 0.5;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    // kCATransitionFade 淡化 kCATransitionPush 推挤 kCATransitionReveal 揭开 kCATransitionMoveIn 覆盖
-    animation.type = kCATransitionReveal;
-    // kCATransitionFromRight kCATransitionFromLeft kCATransitionFromTop kCATransitionFromBottom
-    animation.subtype = kCATransitionFromLeft;
-    
-    [self.view removeFromSuperview];
-    //    SharedAppDelegate.window.rootViewController = SharedAppDelegate.deckController;
-    [SharedAppDelegate.window.layer addAnimation:animation forKey:@"animation"];
-    
+    [(JDORightViewController *)self.stackViewController popViewController];
 }
 
 - (void)didReceiveMemoryWarning

@@ -89,8 +89,8 @@
     frame.origin.x = x;
     self.view.frame = frame;
     
-    float scale = (x/6400)+0.95;
-    float alpha = 0.4 - (x/800);
+    float scale = (x/6400)+Min_Scale;
+    float alpha = Max_Alpah - (x/800);
 
     lastScreenShotView.transform = CGAffineTransformMakeScale(scale, scale);
     _blackMask.alpha = alpha;

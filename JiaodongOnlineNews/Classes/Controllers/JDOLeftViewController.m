@@ -8,6 +8,12 @@
 #import "IIViewDeckController.h"
 #import "JDOCenterViewController.h"
 
+@interface JDOLeftViewController ()
+
+@property (strong) UIView *blackMask;
+
+@end
+
 @implementation JDOLeftViewController
 
 NSArray *iconNames;
@@ -30,15 +36,20 @@ NSArray *iconTitles;
     self.tableView.scrollsToTop = NO;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+
+    _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , App_Height)];
+    _blackMask.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:_blackMask];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void) transitionToAlpha:(float) alpha Scale:(float) scale{
+    self.blackMask.alpha = alpha;
+//    self.view.transform = CGAffineTransformMakeScale(scale, scale);
 }
 
 - (void)viewDidUnload{
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

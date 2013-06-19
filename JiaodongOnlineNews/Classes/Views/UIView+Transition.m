@@ -10,8 +10,6 @@
 #import <objc/runtime.h>
 
 #define Transition_Time 0.4f
-#define Min_Scale 0.95f
-#define Max_Alpah 0.4f
 
 @implementation UIView (Transition)
 
@@ -21,11 +19,11 @@ static const char* blackMaskKey = "blackMaskKey";
 - (void) pushView:(UIView *) moveInView orientation:(JDOTransitionOrientation)orientation complete:(void (^)())complete{
     
     CGRect moveInStartFrame ;
-    CGRect moveInEndFrame = CGRectMake(0, 0, 320, App_Height);
+    CGRect moveInEndFrame = Transition_View_Center;
     if(orientation == JDOTransitionFromRight){
-        moveInStartFrame = CGRectMake(320, 0, 320, App_Height);
+        moveInStartFrame = Transition_View_Right;
     }else if(orientation == JDOTransitionFromBottom){
-        moveInStartFrame = CGRectMake(0, App_Height, 320, App_Height);
+        moveInStartFrame = Transition_View_Bottom;
     }
     
     [self pushView:moveInView startFrame:moveInStartFrame endFrame:moveInEndFrame complete:complete];
@@ -58,19 +56,19 @@ static const char* blackMaskKey = "blackMaskKey";
         self.blackMask.alpha = Max_Alpah;
     } completion:^(BOOL finished) {
         [self.shadowView removeFromSuperview];
-        complete();
+        if(complete)    complete();
     }];
     
 }
 
 - (void) popView:(UIView *) presentView orientation:(JDOTransitionOrientation)orientation complete:(void (^)()) complete{
     
-    CGRect moveOutStartFrame = CGRectMake(0, 0, 320, App_Height);
+    CGRect moveOutStartFrame = Transition_View_Center;
     CGRect moveOutEndFrame;
     if(orientation == JDOTransitionToRight){
-        moveOutEndFrame = CGRectMake(320, 0, 320, App_Height);
+        moveOutEndFrame = Transition_View_Right;
     }else if(orientation == JDOTransitionToBottom){
-        moveOutEndFrame = CGRectMake(0, App_Height, 320, App_Height);
+        moveOutEndFrame = Transition_View_Bottom;
     }
     [self popView:presentView startFrame:moveOutStartFrame endFrame:moveOutEndFrame complete:complete];
 }
@@ -104,14 +102,14 @@ static const char* blackMaskKey = "blackMaskKey";
         self.blackMask.alpha = 0;
     } completion:^(BOOL finished) {
         [self.shadowView removeFromSuperview];
-        complete();
+        if(complete)    complete();
     }];
 }
 
 - (UIView *) blackMask{
     UIView  *_blackMask = objc_getAssociatedObject(self, blackMaskKey);
     if( _blackMask == nil){
-        _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , App_Height)];
+        _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , 480)];
         _blackMask.backgroundColor = [UIColor blackColor];
         objc_setAssociatedObject(self, blackMaskKey, _blackMask, OBJC_ASSOCIATION_RETAIN);
     }
@@ -122,7 +120,7 @@ static const char* blackMaskKey = "blackMaskKey";
     UIImageView  *_shadowView = objc_getAssociatedObject(self, shadowViewKey);
     if( _shadowView == nil){
         _shadowView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"leftside_shadow_bg"]];
-        _shadowView.frame = CGRectMake(-10, 0, 10, App_Height);
+        _shadowView.frame = CGRectMake(-10, 0, 10, 480);
         objc_setAssociatedObject(self, shadowViewKey, _shadowView, OBJC_ASSOCIATION_RETAIN);
     }
     return _shadowView;

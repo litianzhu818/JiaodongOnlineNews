@@ -11,6 +11,7 @@
 @interface JDONavigationController : UIViewController <JDONavigationView>
 
 @property (strong,nonatomic) JDONavigationView *navigationView;
+@property (strong,nonatomic) UIViewController *stackViewController; /* 类似UINavigationController 在rightViewController多级导航中使用 */
 
 - (void) setupNavigationView;
 

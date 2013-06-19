@@ -11,6 +11,8 @@
 #import "JDONewsViewController.h"
 #import "JDOImageViewController.h"
 #import "JDOConvenienceController.h"
+#import "JDOLeftViewController.h"
+#import "JDORightViewController.h"
 
 @interface JDOCenterViewController ()
 
@@ -118,7 +120,7 @@
     if (animated) {
         [self.view popView:viewController.view orientation:orientation complete:^{
             [self.view.blackMask removeFromSuperview];
-            self.view.frame = CGRectMake(0, 0, 320, App_Height);
+            self.view.frame = Transition_View_Center;
             [viewController.view removeFromSuperview];
             [super popToViewController:viewController animated:false];
         }];
@@ -191,32 +193,53 @@
 #pragma mark - IIViewDeckControllerDelegate
 
 - (void)addLog:(NSString*)line {
-//    self.tableView.frame = (CGRect) { self.viewDeckController.rightSize, self.tableView.frame.origin.y,
-//        self.view.frame.size.width - self.viewDeckController.rightSize, self.tableView.frame.size.height };
-//    
-//    [self.logs addObject:line];
-//    NSIndexPath* index = [NSIndexPath indexPathForRow:self.logs.count-1 inSection:0];
-//    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:index] withRowAnimation:UITableViewRowAnimationBottom];
-//    [self.tableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    NSLog(@"%@",line);
 }
 
 //- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-//    [self addLog:@"apply Shadow"];
-//
 //    shadowLayer.masksToBounds = NO;
-//    shadowLayer.shadowRadius = 30;
-//    shadowLayer.shadowOpacity = 1;
+//    shadowLayer.shadowRadius = 30;  //10
+//    shadowLayer.shadowOpacity = 1;  //0.5
 //    shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
 //    shadowLayer.shadowOffset = CGSizeZero;
 //    shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
 //}
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController didChangeOffset:(CGFloat)offset orientation:(IIViewDeckOffsetOrientation)orientation panning:(BOOL)panning {
-    [self addLog:[NSString stringWithFormat:@"%@: %f", panning ? @"Pan" : @"Offset", offset]];
+    
+    if(orientation == IIViewDeckHorizontalOrientation){
+        if(offset != 0){
+            float _offset = offset>0 ? viewDeckController.leftSize+offset : viewDeckController.rightSize-offset;
+            float scale = _offset/6400+Min_Scale;
+            float alpha = Max_Alpah - (_offset/400);
+            if( _offset >= 320 ){
+                scale = 1.0f;
+                alpha = 0;
+            }
+            if(offset > 0){ 
+                [(JDOLeftViewController *)viewDeckController.leftController transitionToAlpha:alpha Scale:scale];
+            }else{
+                [(JDORightViewController *)viewDeckController.rightController transitionToAlpha:alpha Scale:scale];
+            }
+        }else{
+            [(JDOLeftViewController *)viewDeckController.leftController transitionToAlpha:Max_Alpah Scale:Min_Scale];
+            [(JDORightViewController *)viewDeckController.rightController transitionToAlpha:Max_Alpah Scale:Min_Scale];
+        }
+    }
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController willOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    [self addLog:[NSString stringWithFormat:@"will open %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
+//    if(animated){   // 点击按钮展开菜单
+//        
+//    }else{  // 拖动出菜单
+//        
+//    }
+
+    if (viewDeckSide == IIViewDeckLeftSide){
+        [(JDOLeftViewController *)viewDeckController.leftController transitionToAlpha:Max_Alpah Scale:Min_Scale];
+    }else if (viewDeckSide == IIViewDeckRightSide){
+        [(JDORightViewController *)viewDeckController.rightController transitionToAlpha:Max_Alpah Scale:Min_Scale];
+    }
     
     UIViewController *currentTopController = [self.viewControllers objectAtIndex:0];
     if([currentTopController isKindOfClass:[JDONewsViewController class]]){
@@ -227,11 +250,10 @@
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController didOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    [self addLog:[NSString stringWithFormat:@"did open %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
+
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController willCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    [self addLog:[NSString stringWithFormat:@"will close %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
     
     UIViewController *currentTopController = [self.viewControllers objectAtIndex:0];
     if([currentTopController isKindOfClass:[JDONewsViewController class]]){
@@ -241,21 +263,20 @@
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController didCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    [self addLog:[NSString stringWithFormat:@"did close %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
-    
     
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController didShowCenterViewFromSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    [self addLog:[NSString stringWithFormat:@"did show center view from %@", NSStringFromIIViewDeckSide(viewDeckSide)]];
+
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController willPreviewBounceViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    [self addLog:[NSString stringWithFormat:@"will preview bounce %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
+
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController didPreviewBounceViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    [self addLog:[NSString stringWithFormat:@"did preview bounce %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
+//    [self addLog:[NSString stringWithFormat:@"did preview bounce %@ view", NSStringFromIIViewDeckSide(viewDeckSide)]];
 }
+
 
 @end

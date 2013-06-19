@@ -1419,7 +1419,7 @@ static NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat velocit
     
     if (duration == DEFAULT_DURATION) duration = [self openSlideDuration:animated];
     
-    UIViewAnimationOptions options = UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState;
+    UIViewAnimationOptions options = UIViewAnimationOptionLayoutSubviews /*| UIViewAnimationOptionBeginFromCurrentState*/;//第一次出菜单不显示scale效果
     
     IIViewDeckControllerBlock finish = ^(IIViewDeckController *controller, BOOL success) {
         if (!success) {

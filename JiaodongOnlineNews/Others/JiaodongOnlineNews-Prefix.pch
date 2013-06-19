@@ -37,7 +37,16 @@
 #define USE_JSONKIT
 #define App_Height [[UIScreen mainScreen] applicationFrame].size.height
 
+// 视图转换
+#define Min_Scale 0.98f
+#define Max_Alpah 0.8f
+#define Transition_Window_Right CGRectMake(320, 20, 320, App_Height)
+#define Transition_Window_Center CGRectMake(0, 20, 320, App_Height)
+#define Transition_View_Right CGRectMake(320, 0, 320, App_Height)
+#define Transition_View_Center CGRectMake(0, 0, 320, App_Height)
+#define Transition_View_Bottom CGRectMake(0, App_Height, 320, App_Height)
 
+// 新闻
 #define Headline_Height 170
 #define News_Cell_Height 70
 #define Review_Font_Size 14
