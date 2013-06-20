@@ -9,7 +9,7 @@
 #import "UIView+Transition.h"
 #import <objc/runtime.h>
 
-#define Transition_Time 0.4f
+#define Transition_Time 0.3f
 
 @implementation UIView (Transition)
 

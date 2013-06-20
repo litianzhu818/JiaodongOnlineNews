@@ -22,8 +22,9 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 
-#define splash_stay_time 1.0
-#define advertise_stay_time 2.0
+#define splash_stay_time 0.5 //1.0
+#define advertise_stay_time 0.5 //2.0
+#define splash_adv_fadetime 0.5
 #define max_memory_cache 10
 #define max_disk_cache 50
 #define advertise_file_name @"advertise"
@@ -99,7 +100,7 @@
 
 - (void)showAdvertiseView{
     
-    advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, App_Height)];
+    advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
     // 2秒之后仍未加载完成,则显示已缓存的广告图
     if(advImage == nil){
         NSFileManager * fm = [NSFileManager defaultManager];
@@ -115,7 +116,7 @@
     advView.alpha = 0;
     [self.window addSubview:advView];
     
-    [UIView animateWithDuration:0.8 animations:^{
+    [UIView animateWithDuration:splash_adv_fadetime animations:^{
         splashView.alpha = 0;
 //        splashView.frame = CGRectMake(-60, -85, 440, 635);
         advView.alpha = 1.0;
@@ -127,6 +128,8 @@
 }
 
 - (void)navigateToMainView{
+    [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationNone];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     self.deckController = [self generateControllerStack];
     self.window.rootViewController = self.deckController;
     // 测试单独的JDONewsViewController
@@ -135,14 +138,14 @@
 }
 
 - (IIViewDeckController *)generateControllerStack {
-    JDOLeftViewController *leftController = [[JDOLeftViewController alloc] initWithNibName:@"JDOLeftViewController" bundle:nil];
+    JDOLeftViewController *leftController = [[JDOLeftViewController alloc] init];
     JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"JDORightViewController" bundle:nil];
     
     JDOCenterViewController *centerController = [[JDOCenterViewController alloc] init];
     [centerController setRootViewControllerType:MenuItemNews];
 
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
-    deckController.leftSize = 100;
+    deckController.leftSize = 120;
     deckController.rightSize = 100;
     deckController.panningGestureDelegate = centerController;
     deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
@@ -153,7 +156,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
     [ShareSDK registerApp:@"4991b66e0ae"];
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
@@ -180,13 +182,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
     
-//    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, App_Height)];
-//    splashView.image = [UIImage imageNamed:@"Default.png"];
-//    [self.window addSubview:splashView];
-//    
-//    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
+    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
+    splashView.image = [UIImage imageNamed:@"Default.png"];
+    [self.window addSubview:splashView];
     
-    [self navigateToMainView];
+    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
+    
+//    [self navigateToMainView];
     
     return YES;
 }

@@ -19,7 +19,7 @@
 
 - (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
 #warning 图片按钮宽度应该改回44，因为背景有渐变，更好的办法是按钮背景色透明，背景加到NavigationView上
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [btn setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
     [btn setBackgroundImage:[UIImage imageNamed:highlightImage] forState:UIControlStateHighlighted];
     [self addSubview:btn];

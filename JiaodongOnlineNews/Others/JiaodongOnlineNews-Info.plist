@@ -61,5 +61,9 @@
 	</array>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackOpaque</string>
 </dict>
 </plist>

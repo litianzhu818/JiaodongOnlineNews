@@ -28,6 +28,7 @@ typedef enum{
 
 + (NSString *)formatDate:(NSDate *) date withFormatter:(DateFormatType) format;
 + (NSDate *)formatString:(NSString *)date withFormatter:(DateFormatType) format;
++ (NSString*)getChineseCalendarWithDate:(NSDate *)date;
 
 + (NSString *) formatErrorWithOperation:(AFHTTPRequestOperation *)operation error:(NSError *)error;
 

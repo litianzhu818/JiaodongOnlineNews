@@ -127,7 +127,7 @@
             [@{@"type":SHARE_TYPE_NUMBER(ShareTypeDouBan),@"selected":[NSNumber numberWithBool:NO]}mutableCopy]
         ];
         
-        shareViewDelegate = [[JDOShareViewDelegate alloc] initWithBackBlock:^{
+        shareViewDelegate = [[JDOShareViewDelegate alloc] initWithPresentView:nil backBlock:^{
             [self authCompleted];
         } completeBlock:^{
             [self performSelector:@selector(authCompleted) withObject:nil afterDelay:0.15];
@@ -192,7 +192,7 @@
                             [_tableView reloadData];
                         }else if(state == SSAuthStateFail){
                             if ([error errorCode] != -103){
-                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"绑定失败!" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
                                 [alertView show];
                             }
                         }

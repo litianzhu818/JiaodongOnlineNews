@@ -121,7 +121,7 @@
             [sender setEnabled:false];
         }else if(state == SSAuthStateFail){
             if ([error errorCode] != -103){
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"绑定失败!" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
                 [alertView show];
             }
         }
@@ -138,6 +138,7 @@
     JDOCenterViewController *centerController = (JDOCenterViewController *)self.navigationController;
     [centerController popToViewController:[centerController.viewControllers objectAtIndex:1] orientation:JDOTransitionToBottom animated:true];
 }
+
 - (void)viewDidUnload {
     [self setWeixinBtn:nil];
     [self setFriendsBtn:nil];

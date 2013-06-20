@@ -26,19 +26,26 @@ BOOL pageControlUsed;
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidLoad{
-    [super viewDidLoad];
-//    self.view.userInteractionEnabled = false; // 所有子视图都会忽略手势事件
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
+        _pageInfos = @[
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"],
+           ];
+        _pageCache = [[NSMutableDictionary alloc] initWithCapacity:5];
+    }
+    return self;
+}
+
+-(void)loadView{
+    [super loadView];
     
-    _pageInfos = @[
-        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
-        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
-        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
-        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-        [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"],
-    ];
-    
-    _pageCache = [[NSMutableDictionary alloc] initWithCapacity:5];
+    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_pageInfos];
+    [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_pageControl];
     
     _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,44+37,[self.view bounds].size.width,[self.view bounds].size.height -44- 37)];
     _scrollView.backgroundColor = [UIColor whiteColor];
@@ -47,18 +54,20 @@ BOOL pageControlUsed;
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
     _scrollView.pagingScrollView.bounces = false;
     _scrollView.pageMargin = 0;
-    [_scrollView reloadData];
-    
-    
-    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width, 37) background:@"navbar_background" slider:@"navbar_selected" pages:_pageInfos];
-    [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_scrollView];
+}
+
+
+- (void)viewDidLoad{
+    [super viewDidLoad];
+//    self.view.userInteractionEnabled = false; // 所有子视图都会忽略手势事件
     
     [_pageControl setCurrentPage:0 animated:false];
-    [_scrollView moveToPageAtIndex:0 animated:false];
-    [self changeNewPageStatus];
     
-    [self.view addSubview:_scrollView];
-    [self.view addSubview:_pageControl];
+    [_scrollView reloadData];
+    [_scrollView moveToPageAtIndex:0 animated:false];
+    
+    [self changeNewPageStatus];
 }
 
 - (void)viewDidUnload{
@@ -72,8 +81,8 @@ BOOL pageControlUsed;
 }
 
 - (void) setupNavigationView{
-    [self.navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
-    [self.navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
+    [self.navigationView addLeftButtonImage:@"left_menu_btn" highlightImage:@"left_menu_btn_clicked" target:self.viewDeckController action:@selector(toggleLeftView)];
+    [self.navigationView addRightButtonImage:@"right_menu_btn" highlightImage:@"right_menu_btn_clicked" target:self.viewDeckController action:@selector(toggleRightView)];
     [self.navigationView setTitle:@"胶东在线"];
 }
 

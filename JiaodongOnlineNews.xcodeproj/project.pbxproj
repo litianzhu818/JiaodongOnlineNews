@@ -20,12 +20,9 @@
 		2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D771762CAC30011C0D7 /* JDOCommentModel.m */; };
 		2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D7A1762F30A0011C0D7 /* JDOStatusView.m */; };
 		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
-		2D13EF95174E1374007FF1CC /* navbar_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF93174E1374007FF1CC /* navbar_background@2x.png */; };
-		2D13EF96174E1374007FF1CC /* navbar_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */; };
 		2D141460176324E400A6A50A /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D14145D176324E400A6A50A /* UIDevice+IdentifierAddition.m */; };
 		2D141461176324E400A6A50A /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D14145F176324E400A6A50A /* NSString+MD5Addition.m */; };
 		2D19CFE9174A3F8700BDAE39 /* JDOLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */; };
-		2D19CFEA174A3F8700BDAE39 /* JDOLeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D19CFE5174A3F8700BDAE39 /* JDOLeftViewController.xib */; };
 		2D19CFEB174A3F8700BDAE39 /* JDORightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */; };
 		2D19CFEC174A3F8700BDAE39 /* JDORightViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D19CFE8174A3F8700BDAE39 /* JDORightViewController.xib */; };
 		2D1DDB55175E21870048F7A7 /* news_template.html in Resources */ = {isa = PBXBuildFile; fileRef = 2D1DDB54175E21870048F7A7 /* news_template.html */; };
@@ -47,7 +44,6 @@
 		2D5409DF175DEE2100718FFB /* UIWebView+RemoveShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409DE175DEE2100718FFB /* UIWebView+RemoveShadow.m */; };
 		2D58AE18176EBA52003B843F /* JDOShareViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D58AE17176EBA51003B843F /* JDOShareViewDelegate.m */; };
 		2D58AE1A176EDB49003B843F /* icon50*50.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D58AE19176EDB46003B843F /* icon50*50.png */; };
-		2D5DEE69174C9BAB00F21FC2 /* left_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */; };
 		2D86D59617584E420000AA6A /* JDONewsCategoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */; };
 		2D86D59F175872FE0000AA6A /* JDONewsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59E175872FE0000AA6A /* JDONewsModel.m */; };
 		2D86D5A2175875630000AA6A /* NSArray+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5A1175875630000AA6A /* NSArray+Model.m */; };
@@ -55,7 +51,28 @@
 		2D86D5AB17588E330000AA6A /* JDOCommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5AA17588E330000AA6A /* JDOCommonUtil.m */; };
 		2D86D5AE175894990000AA6A /* JDOCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5AD175894980000AA6A /* JDOCenterViewController.m */; };
 		2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D89BA4B1754825600960614 /* JDONewsCategoryView.m */; };
-		2D8AB31F17526A3200F3AAAC /* JDONewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AB31E17526A3200F3AAAC /* JDONewsViewController.xib */; };
+		2D8AABC6177203720049E730 /* menu_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB0177203720049E730 /* menu_background.png */; };
+		2D8AABC7177203720049E730 /* menu_convenience_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB1177203720049E730 /* menu_convenience_selected.png */; };
+		2D8AABC8177203720049E730 /* menu_convenience.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB2177203720049E730 /* menu_convenience.png */; };
+		2D8AABC9177203720049E730 /* menu_separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB3177203720049E730 /* menu_separator.png */; };
+		2D8AABCA177203720049E730 /* guanyu01.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB4177203720049E730 /* guanyu01.png */; };
+		2D8AABCB177203720049E730 /* guanyu02.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB5177203720049E730 /* guanyu02.png */; };
+		2D8AABCC177203720049E730 /* menu_news_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB6177203720049E730 /* menu_news_selected.png */; };
+		2D8AABCD177203720049E730 /* menu_news.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB7177203720049E730 /* menu_news.png */; };
+		2D8AABCE177203720049E730 /* menu_picture_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB8177203720049E730 /* menu_picture_selected.png */; };
+		2D8AABCF177203720049E730 /* menu_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABB9177203720049E730 /* menu_picture.png */; };
+		2D8AABD0177203720049E730 /* menu_topic_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABBA177203720049E730 /* menu_topic_selected.png */; };
+		2D8AABD1177203720049E730 /* menu_topic.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABBB177203720049E730 /* menu_topic.png */; };
+		2D8AABD2177203720049E730 /* shezhi01.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABBC177203720049E730 /* shezhi01.png */; };
+		2D8AABD3177203720049E730 /* shezhi02.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABBD177203720049E730 /* shezhi02.png */; };
+		2D8AABD4177203720049E730 /* shoucang01.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABBE177203720049E730 /* shoucang01.png */; };
+		2D8AABD5177203720049E730 /* shoucang02.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABBF177203720049E730 /* shoucang02.png */; };
+		2D8AABD6177203720049E730 /* tianqi.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABC0177203720049E730 /* tianqi.png */; };
+		2D8AABD7177203720049E730 /* menu_livehood_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABC1177203720049E730 /* menu_livehood_selected.png */; };
+		2D8AABD8177203720049E730 /* menu_livehood.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABC2177203720049E730 /* menu_livehood.png */; };
+		2D8AABD9177203720049E730 /* menu_row_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABC3177203720049E730 /* menu_row_selected.png */; };
+		2D8AABDA177203720049E730 /* yijianfankui01.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABC4177203720049E730 /* yijianfankui01.png */; };
+		2D8AABDB177203720049E730 /* yijianfankui02.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8AABC5177203720049E730 /* yijianfankui02.png */; };
 		2D8AC1541763854D006B4A22 /* JDOReviewListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8AC1531763854C006B4A22 /* JDOReviewListController.m */; };
 		2D8B403B175A37A700C8B04F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8B403A175A37A700C8B04F /* QuartzCore.framework */; };
 		2D8B4081175A495600C8B04F /* NIActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B404F175A495500C8B04F /* NIActions.m */; };
@@ -83,11 +100,19 @@
 		2D8B4097175A495600C8B04F /* NSString+NimbusCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B4080175A495500C8B04F /* NSString+NimbusCore.m */; };
 		2D8B40A1175A496200C8B04F /* NIPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B409A175A496200C8B04F /* NIPageView.m */; };
 		2D8B40A2175A496200C8B04F /* NIPagingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B409C175A496200C8B04F /* NIPagingScrollView.m */; };
+		2D8C0C6817728C1900BAD9D4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6717728C1900BAD9D4 /* Default.png */; };
+		2D8C0C6C17728C4600BAD9D4 /* right_menu_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6A17728C4600BAD9D4 /* right_menu_btn.png */; };
+		2D8C0C6E17728CE700BAD9D4 /* left_ment_btn_clicked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6D17728CE700BAD9D4 /* left_ment_btn_clicked.png */; };
+		2D8C0C7017728DBB00BAD9D4 /* right_menu_btn_clicked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6F17728DBB00BAD9D4 /* right_menu_btn_clicked.png */; };
+		2D8C0C7317728FAE00BAD9D4 /* navbar_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C7117728FAE00BAD9D4 /* navbar_selected.png */; };
+		2D8C0C7417728FAE00BAD9D4 /* navbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C7217728FAE00BAD9D4 /* navbar_background.png */; };
+		2D8C0C771772976200BAD9D4 /* top_navigation_back_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C751772976200BAD9D4 /* top_navigation_back_highlighted.png */; };
+		2D8C0C781772976200BAD9D4 /* top_navigation_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C761772976200BAD9D4 /* top_navigation_back.png */; };
+		2D8C0C7A17729B0600BAD9D4 /* left_menu_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C7917729B0600BAD9D4 /* left_menu_btn.png */; };
 		2D8D231817712A770012D6FD /* AGShareCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D231717712A770012D6FD /* AGShareCell.m */; };
 		2D8D231B17712AE40012D6FD /* JDOShareAuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D231A17712AE40012D6FD /* JDOShareAuthController.m */; };
 		2D8D231E1771313F0012D6FD /* JDONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D231D1771313F0012D6FD /* JDONavigationController.m */; };
 		2D8D44F1174DAB2800786545 /* JDONavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D44F0174DAB2800786545 /* JDONavigationView.m */; };
-		2D8D44F8174DEB9900786545 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8FAC23174898BA0071A601 /* Default.png */; };
 		2D8D85DB1767386B00D7D34F /* review_item.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D85DA1767386B00D7D34F /* review_item.png */; };
 		2D8D85DF17676E0C00D7D34F /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D85DE17676E0C00D7D34F /* CMPopTipView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D8D8FF5176AD41700BC9126 /* NJKWebViewProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D8FF4176AD41700BC9126 /* NJKWebViewProgress.m */; };
@@ -124,8 +149,6 @@
 		2D8E00F917646147002F0590 /* UIColor+SSToolkitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8E00F817646146002F0590 /* UIColor+SSToolkitAdditions.m */; };
 		2D8E00FC176462C5002F0590 /* UIControl+SSToolkitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8E00FB176462C4002F0590 /* UIControl+SSToolkitAdditions.m */; };
 		2D8E010317647B22002F0590 /* top_navigation_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8E010017647B22002F0590 /* top_navigation_background.png */; };
-		2D8E010617647C82002F0590 /* top_navigation_back_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8E010417647C82002F0590 /* top_navigation_back_highlighted.png */; };
-		2D8E010717647C82002F0590 /* top_navigation_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8E010517647C82002F0590 /* top_navigation_back.png */; };
 		2D8E010917647D71002F0590 /* right_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8E010817647D71002F0590 /* right_menu.png */; };
 		2D8E4B78175F8FEC00B94E57 /* leftside_shadow_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */; };
 		2D8ED76E1754F3B40093A574 /* progressbar_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8ED76D1754F3B40093A574 /* progressbar_logo.png */; };
@@ -211,6 +234,43 @@
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
 		2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */; };
 		2DE0845F175B872800A1A6BC /* JDONewsHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */; };
+		2DE931BD1772A86900A87ACC /* JDOLeftMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931BC1772A86900A87ACC /* JDOLeftMenuCell.m */; };
+		2DE931C01772C17600A87ACC /* JDOXmlClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931BF1772C17600A87ACC /* JDOXmlClient.m */; };
+		2DE931C31772D56B00A87ACC /* JDOWeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931C21772D56B00A87ACC /* JDOWeatherForcast.m */; };
+		2DE931C61772D57700A87ACC /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931C51772D57600A87ACC /* JDOWeather.m */; };
+		2DE931E81772E3E500A87ACC /* 暴雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931C81772E3E500A87ACC /* 暴雪.png */; };
+		2DE931E91772E3E500A87ACC /* 暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931C91772E3E500A87ACC /* 暴雨.png */; };
+		2DE931EA1772E3E500A87ACC /* 大暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931CA1772E3E500A87ACC /* 大暴雨.png */; };
+		2DE931EB1772E3E500A87ACC /* 大雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931CB1772E3E500A87ACC /* 大雪.png */; };
+		2DE931EC1772E3E500A87ACC /* 大雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931CC1772E3E500A87ACC /* 大雨.png */; };
+		2DE931ED1772E3E500A87ACC /* 冻雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931CD1772E3E500A87ACC /* 冻雨.png */; };
+		2DE931EE1772E3E500A87ACC /* 多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931CE1772E3E500A87ACC /* 多云.png */; };
+		2DE931EF1772E3E500A87ACC /* 多云转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931CF1772E3E500A87ACC /* 多云转晴.png */; };
+		2DE931F01772E3E500A87ACC /* 浮尘.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D01772E3E500A87ACC /* 浮尘.png */; };
+		2DE931F11772E3E500A87ACC /* 雷阵雨 伴有冰雹.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D11772E3E500A87ACC /* 雷阵雨 伴有冰雹.png */; };
+		2DE931F21772E3E500A87ACC /* 雷阵雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D21772E3E500A87ACC /* 雷阵雨.png */; };
+		2DE931F31772E3E500A87ACC /* 默认.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D31772E3E500A87ACC /* 默认.png */; };
+		2DE931F41772E3E500A87ACC /* 晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D41772E3E500A87ACC /* 晴.png */; };
+		2DE931F51772E3E500A87ACC /* 晴转多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D51772E3E500A87ACC /* 晴转多云.png */; };
+		2DE931F61772E3E500A87ACC /* 晴转小雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D61772E3E500A87ACC /* 晴转小雪.png */; };
+		2DE931F71772E3E500A87ACC /* 晴转小雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D71772E3E500A87ACC /* 晴转小雨.png */; };
+		2DE931F81772E3E500A87ACC /* 晴转阴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D81772E3E500A87ACC /* 晴转阴.png */; };
+		2DE931F91772E3E500A87ACC /* 沙尘暴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931D91772E3E500A87ACC /* 沙尘暴.png */; };
+		2DE931FA1772E3E500A87ACC /* 特大暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931DA1772E3E500A87ACC /* 特大暴雨.png */; };
+		2DE931FB1772E3E500A87ACC /* 雾.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931DB1772E3E500A87ACC /* 雾.png */; };
+		2DE931FC1772E3E500A87ACC /* 小雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931DC1772E3E500A87ACC /* 小雪.png */; };
+		2DE931FD1772E3E500A87ACC /* 小雪转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931DD1772E3E500A87ACC /* 小雪转晴.png */; };
+		2DE931FE1772E3E500A87ACC /* 小雨 转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931DE1772E3E500A87ACC /* 小雨 转晴.png */; };
+		2DE931FF1772E3E500A87ACC /* 小雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931DF1772E3E500A87ACC /* 小雨.png */; };
+		2DE932001772E3E500A87ACC /* 扬沙.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E01772E3E500A87ACC /* 扬沙.png */; };
+		2DE932011772E3E500A87ACC /* 阴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E11772E3E500A87ACC /* 阴.png */; };
+		2DE932021772E3E500A87ACC /* 阴转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E21772E3E500A87ACC /* 阴转晴.png */; };
+		2DE932031772E3E500A87ACC /* 雨夹雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E31772E3E500A87ACC /* 雨夹雪.png */; };
+		2DE932041772E3E500A87ACC /* 阵雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E41772E3E500A87ACC /* 阵雪.png */; };
+		2DE932051772E3E500A87ACC /* 阵雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E51772E3E500A87ACC /* 阵雨.png */; };
+		2DE932061772E3E500A87ACC /* 中雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E61772E3E500A87ACC /* 中雪.png */; };
+		2DE932071772E3E500A87ACC /* 中雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E71772E3E500A87ACC /* 中雨.png */; };
+		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
@@ -257,15 +317,12 @@
 		2D115D7A1762F30A0011C0D7 /* JDOStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOStatusView.m; sourceTree = "<group>"; };
 		2D13EF90174E11D5007FF1CC /* JDOPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPageControl.h; sourceTree = "<group>"; };
 		2D13EF91174E11D5007FF1CC /* JDOPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPageControl.m; sourceTree = "<group>"; };
-		2D13EF93174E1374007FF1CC /* navbar_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_background@2x.png"; sourceTree = "<group>"; };
-		2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_selected@2x.png"; sourceTree = "<group>"; };
 		2D14145C176324E400A6A50A /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
 		2D14145D176324E400A6A50A /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		2D14145E176324E400A6A50A /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		2D14145F176324E400A6A50A /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
 		2D19CFE3174A3F8700BDAE39 /* JDOLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLeftViewController.h; sourceTree = "<group>"; };
 		2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLeftViewController.m; sourceTree = "<group>"; };
-		2D19CFE5174A3F8700BDAE39 /* JDOLeftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOLeftViewController.xib; sourceTree = "<group>"; };
 		2D19CFE6174A3F8700BDAE39 /* JDORightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDORightViewController.h; sourceTree = "<group>"; };
 		2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDORightViewController.m; sourceTree = "<group>"; };
 		2D19CFE8174A3F8700BDAE39 /* JDORightViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDORightViewController.xib; sourceTree = "<group>"; };
@@ -304,7 +361,6 @@
 		2D58AE16176EBA51003B843F /* JDOShareViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOShareViewDelegate.h; sourceTree = "<group>"; };
 		2D58AE17176EBA51003B843F /* JDOShareViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOShareViewDelegate.m; sourceTree = "<group>"; };
 		2D58AE19176EDB46003B843F /* icon50*50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon50*50.png"; sourceTree = "<group>"; };
-		2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left_menu@2x.png"; sourceTree = "<group>"; };
 		2D86D59417584E420000AA6A /* JDONewsCategoryInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsCategoryInfo.h; sourceTree = "<group>"; };
 		2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsCategoryInfo.m; sourceTree = "<group>"; };
 		2D86D59D175872FE0000AA6A /* JDONewsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsModel.h; sourceTree = "<group>"; };
@@ -319,7 +375,28 @@
 		2D86D5AD175894980000AA6A /* JDOCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCenterViewController.m; sourceTree = "<group>"; };
 		2D89BA4A1754825600960614 /* JDONewsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = JDONewsCategoryView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2D89BA4B1754825600960614 /* JDONewsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = JDONewsCategoryView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		2D8AB31E17526A3200F3AAAC /* JDONewsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDONewsViewController.xib; sourceTree = "<group>"; };
+		2D8AABB0177203720049E730 /* menu_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_background.png; sourceTree = "<group>"; };
+		2D8AABB1177203720049E730 /* menu_convenience_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_convenience_selected.png; sourceTree = "<group>"; };
+		2D8AABB2177203720049E730 /* menu_convenience.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_convenience.png; sourceTree = "<group>"; };
+		2D8AABB3177203720049E730 /* menu_separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_separator.png; sourceTree = "<group>"; };
+		2D8AABB4177203720049E730 /* guanyu01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guanyu01.png; sourceTree = "<group>"; };
+		2D8AABB5177203720049E730 /* guanyu02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guanyu02.png; sourceTree = "<group>"; };
+		2D8AABB6177203720049E730 /* menu_news_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_news_selected.png; sourceTree = "<group>"; };
+		2D8AABB7177203720049E730 /* menu_news.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_news.png; sourceTree = "<group>"; };
+		2D8AABB8177203720049E730 /* menu_picture_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_picture_selected.png; sourceTree = "<group>"; };
+		2D8AABB9177203720049E730 /* menu_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_picture.png; sourceTree = "<group>"; };
+		2D8AABBA177203720049E730 /* menu_topic_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_topic_selected.png; sourceTree = "<group>"; };
+		2D8AABBB177203720049E730 /* menu_topic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_topic.png; sourceTree = "<group>"; };
+		2D8AABBC177203720049E730 /* shezhi01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shezhi01.png; sourceTree = "<group>"; };
+		2D8AABBD177203720049E730 /* shezhi02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shezhi02.png; sourceTree = "<group>"; };
+		2D8AABBE177203720049E730 /* shoucang01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoucang01.png; sourceTree = "<group>"; };
+		2D8AABBF177203720049E730 /* shoucang02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoucang02.png; sourceTree = "<group>"; };
+		2D8AABC0177203720049E730 /* tianqi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tianqi.png; sourceTree = "<group>"; };
+		2D8AABC1177203720049E730 /* menu_livehood_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_livehood_selected.png; sourceTree = "<group>"; };
+		2D8AABC2177203720049E730 /* menu_livehood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_livehood.png; sourceTree = "<group>"; };
+		2D8AABC3177203720049E730 /* menu_row_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_row_selected.png; sourceTree = "<group>"; };
+		2D8AABC4177203720049E730 /* yijianfankui01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yijianfankui01.png; sourceTree = "<group>"; };
+		2D8AABC5177203720049E730 /* yijianfankui02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yijianfankui02.png; sourceTree = "<group>"; };
 		2D8AC1521763854C006B4A22 /* JDOReviewListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOReviewListController.h; sourceTree = "<group>"; };
 		2D8AC1531763854C006B4A22 /* JDOReviewListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOReviewListController.m; sourceTree = "<group>"; };
 		2D8B403A175A37A700C8B04F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -383,6 +460,15 @@
 		2D8B409E175A496200C8B04F /* NIPagingScrollViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPagingScrollViewDataSource.h; sourceTree = "<group>"; };
 		2D8B409F175A496200C8B04F /* NIPagingScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPagingScrollViewDelegate.h; sourceTree = "<group>"; };
 		2D8B40A0175A496200C8B04F /* NIPagingScrollViewPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPagingScrollViewPage.h; sourceTree = "<group>"; };
+		2D8C0C6717728C1900BAD9D4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		2D8C0C6A17728C4600BAD9D4 /* right_menu_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_menu_btn.png; sourceTree = "<group>"; };
+		2D8C0C6D17728CE700BAD9D4 /* left_ment_btn_clicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_ment_btn_clicked.png; sourceTree = "<group>"; };
+		2D8C0C6F17728DBB00BAD9D4 /* right_menu_btn_clicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_menu_btn_clicked.png; sourceTree = "<group>"; };
+		2D8C0C7117728FAE00BAD9D4 /* navbar_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_selected.png; sourceTree = "<group>"; };
+		2D8C0C7217728FAE00BAD9D4 /* navbar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_background.png; sourceTree = "<group>"; };
+		2D8C0C751772976200BAD9D4 /* top_navigation_back_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_navigation_back_highlighted.png; sourceTree = "<group>"; };
+		2D8C0C761772976200BAD9D4 /* top_navigation_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_navigation_back.png; sourceTree = "<group>"; };
+		2D8C0C7917729B0600BAD9D4 /* left_menu_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_menu_btn.png; sourceTree = "<group>"; };
 		2D8D231617712A770012D6FD /* AGShareCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGShareCell.h; sourceTree = "<group>"; };
 		2D8D231717712A770012D6FD /* AGShareCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGShareCell.m; sourceTree = "<group>"; };
 		2D8D231917712AE40012D6FD /* JDOShareAuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOShareAuthController.h; sourceTree = "<group>"; };
@@ -454,8 +540,6 @@
 		2D8E00FA176462C4002F0590 /* UIControl+SSToolkitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+SSToolkitAdditions.h"; sourceTree = "<group>"; };
 		2D8E00FB176462C4002F0590 /* UIControl+SSToolkitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+SSToolkitAdditions.m"; sourceTree = "<group>"; };
 		2D8E010017647B22002F0590 /* top_navigation_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_navigation_background.png; sourceTree = "<group>"; };
-		2D8E010417647C82002F0590 /* top_navigation_back_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_navigation_back_highlighted.png; sourceTree = "<group>"; };
-		2D8E010517647C82002F0590 /* top_navigation_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_navigation_back.png; sourceTree = "<group>"; };
 		2D8E010817647D71002F0590 /* right_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_menu.png; sourceTree = "<group>"; };
 		2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftside_shadow_bg@2x.png"; sourceTree = "<group>"; };
 		2D8ED76D1754F3B40093A574 /* progressbar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressbar_logo.png; sourceTree = "<group>"; };
@@ -463,7 +547,6 @@
 		2D8ED7711754F43A0093A574 /* bad_net.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bad_net.png; sourceTree = "<group>"; };
 		2D8ED7731754FD910093A574 /* retry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retry.png; sourceTree = "<group>"; };
 		2D8FAC1F174896220071A601 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		2D8FAC23174898BA0071A601 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		2D8FAC2F1748AC470071A601 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2D93122917600A2500C73802 /* UIView+Transition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Transition.h"; sourceTree = "<group>"; };
 		2D93122A17600A2500C73802 /* UIView+Transition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Transition.m"; sourceTree = "<group>"; };
@@ -564,6 +647,47 @@
 		2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOSettingViewController.xib; sourceTree = "<group>"; };
 		2DE0845D175B872700A1A6BC /* JDONewsHeadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsHeadCell.h; sourceTree = "<group>"; };
 		2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsHeadCell.m; sourceTree = "<group>"; };
+		2DE931BB1772A86900A87ACC /* JDOLeftMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLeftMenuCell.h; sourceTree = "<group>"; };
+		2DE931BC1772A86900A87ACC /* JDOLeftMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLeftMenuCell.m; sourceTree = "<group>"; };
+		2DE931BE1772C17600A87ACC /* JDOXmlClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOXmlClient.h; sourceTree = "<group>"; };
+		2DE931BF1772C17600A87ACC /* JDOXmlClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOXmlClient.m; sourceTree = "<group>"; };
+		2DE931C11772D56B00A87ACC /* JDOWeatherForcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeatherForcast.h; sourceTree = "<group>"; };
+		2DE931C21772D56B00A87ACC /* JDOWeatherForcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeatherForcast.m; sourceTree = "<group>"; };
+		2DE931C41772D57600A87ACC /* JDOWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeather.h; sourceTree = "<group>"; };
+		2DE931C51772D57600A87ACC /* JDOWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeather.m; sourceTree = "<group>"; };
+		2DE931C81772E3E500A87ACC /* 暴雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雪.png"; sourceTree = "<group>"; };
+		2DE931C91772E3E500A87ACC /* 暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雨.png"; sourceTree = "<group>"; };
+		2DE931CA1772E3E500A87ACC /* 大暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大暴雨.png"; sourceTree = "<group>"; };
+		2DE931CB1772E3E500A87ACC /* 大雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大雪.png"; sourceTree = "<group>"; };
+		2DE931CC1772E3E500A87ACC /* 大雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大雨.png"; sourceTree = "<group>"; };
+		2DE931CD1772E3E500A87ACC /* 冻雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "冻雨.png"; sourceTree = "<group>"; };
+		2DE931CE1772E3E500A87ACC /* 多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云.png"; sourceTree = "<group>"; };
+		2DE931CF1772E3E500A87ACC /* 多云转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云转晴.png"; sourceTree = "<group>"; };
+		2DE931D01772E3E500A87ACC /* 浮尘.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "浮尘.png"; sourceTree = "<group>"; };
+		2DE931D11772E3E500A87ACC /* 雷阵雨 伴有冰雹.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雷阵雨 伴有冰雹.png"; sourceTree = "<group>"; };
+		2DE931D21772E3E500A87ACC /* 雷阵雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雷阵雨.png"; sourceTree = "<group>"; };
+		2DE931D31772E3E500A87ACC /* 默认.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "默认.png"; sourceTree = "<group>"; };
+		2DE931D41772E3E500A87ACC /* 晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴.png"; sourceTree = "<group>"; };
+		2DE931D51772E3E500A87ACC /* 晴转多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴转多云.png"; sourceTree = "<group>"; };
+		2DE931D61772E3E500A87ACC /* 晴转小雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴转小雪.png"; sourceTree = "<group>"; };
+		2DE931D71772E3E500A87ACC /* 晴转小雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴转小雨.png"; sourceTree = "<group>"; };
+		2DE931D81772E3E500A87ACC /* 晴转阴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴转阴.png"; sourceTree = "<group>"; };
+		2DE931D91772E3E500A87ACC /* 沙尘暴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "沙尘暴.png"; sourceTree = "<group>"; };
+		2DE931DA1772E3E500A87ACC /* 特大暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "特大暴雨.png"; sourceTree = "<group>"; };
+		2DE931DB1772E3E500A87ACC /* 雾.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雾.png"; sourceTree = "<group>"; };
+		2DE931DC1772E3E500A87ACC /* 小雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雪.png"; sourceTree = "<group>"; };
+		2DE931DD1772E3E500A87ACC /* 小雪转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雪转晴.png"; sourceTree = "<group>"; };
+		2DE931DE1772E3E500A87ACC /* 小雨 转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雨 转晴.png"; sourceTree = "<group>"; };
+		2DE931DF1772E3E500A87ACC /* 小雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雨.png"; sourceTree = "<group>"; };
+		2DE931E01772E3E500A87ACC /* 扬沙.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "扬沙.png"; sourceTree = "<group>"; };
+		2DE931E11772E3E500A87ACC /* 阴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阴.png"; sourceTree = "<group>"; };
+		2DE931E21772E3E500A87ACC /* 阴转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阴转晴.png"; sourceTree = "<group>"; };
+		2DE931E31772E3E500A87ACC /* 雨夹雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雨夹雪.png"; sourceTree = "<group>"; };
+		2DE931E41772E3E500A87ACC /* 阵雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阵雪.png"; sourceTree = "<group>"; };
+		2DE931E51772E3E500A87ACC /* 阵雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阵雨.png"; sourceTree = "<group>"; };
+		2DE931E61772E3E500A87ACC /* 中雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雪.png"; sourceTree = "<group>"; };
+		2DE931E71772E3E500A87ACC /* 中雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雨.png"; sourceTree = "<group>"; };
+		2DE932081772E99D00A87ACC /* weather.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = weather.xml; sourceTree = "<group>"; };
 		5F222CF8F96D417D992D04DB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D823DBC11762B88B0006F80B /* JDOConvenienceItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceItemController.h; sourceTree = "<group>"; };
@@ -741,8 +865,41 @@
 				2D8DB0B61760EA2D00DB3EF0 /* JDOConvenienceViewModel.m */,
 				2D115D761762CAC30011C0D7 /* JDOCommentModel.h */,
 				2D115D771762CAC30011C0D7 /* JDOCommentModel.m */,
+				2DE931C11772D56B00A87ACC /* JDOWeatherForcast.h */,
+				2DE931C21772D56B00A87ACC /* JDOWeatherForcast.m */,
+				2DE931C41772D57600A87ACC /* JDOWeather.h */,
+				2DE931C51772D57600A87ACC /* JDOWeather.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2D8AABAF177203410049E730 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				2D8AABB0177203720049E730 /* menu_background.png */,
+				2D8AABB1177203720049E730 /* menu_convenience_selected.png */,
+				2D8AABB2177203720049E730 /* menu_convenience.png */,
+				2D8AABB3177203720049E730 /* menu_separator.png */,
+				2D8AABB4177203720049E730 /* guanyu01.png */,
+				2D8AABB5177203720049E730 /* guanyu02.png */,
+				2D8AABB6177203720049E730 /* menu_news_selected.png */,
+				2D8AABB7177203720049E730 /* menu_news.png */,
+				2D8AABB8177203720049E730 /* menu_picture_selected.png */,
+				2D8AABB9177203720049E730 /* menu_picture.png */,
+				2D8AABBA177203720049E730 /* menu_topic_selected.png */,
+				2D8AABBB177203720049E730 /* menu_topic.png */,
+				2D8AABBC177203720049E730 /* shezhi01.png */,
+				2D8AABBD177203720049E730 /* shezhi02.png */,
+				2D8AABBE177203720049E730 /* shoucang01.png */,
+				2D8AABBF177203720049E730 /* shoucang02.png */,
+				2D8AABC0177203720049E730 /* tianqi.png */,
+				2D8AABC1177203720049E730 /* menu_livehood_selected.png */,
+				2D8AABC2177203720049E730 /* menu_livehood.png */,
+				2D8AABC3177203720049E730 /* menu_row_selected.png */,
+				2D8AABC4177203720049E730 /* yijianfankui01.png */,
+				2D8AABC5177203720049E730 /* yijianfankui02.png */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
@@ -882,6 +1039,8 @@
 				2D58AE17176EBA51003B843F /* JDOShareViewDelegate.m */,
 				2D8D231617712A770012D6FD /* AGShareCell.h */,
 				2D8D231717712A770012D6FD /* AGShareCell.m */,
+				2DE931BB1772A86900A87ACC /* JDOLeftMenuCell.h */,
+				2DE931BC1772A86900A87ACC /* JDOLeftMenuCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -968,8 +1127,21 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2DE931C71772E3C200A87ACC /* Weather */,
+				2D8AABAF177203410049E730 /* Menu */,
 				2D98C8DB177017C900061E2E /* Share */,
 				2D58AE19176EDB46003B843F /* icon50*50.png */,
+				2D8C0C6717728C1900BAD9D4 /* Default.png */,
+				2D8C0C7917729B0600BAD9D4 /* left_menu_btn.png */,
+				2D8C0C6D17728CE700BAD9D4 /* left_ment_btn_clicked.png */,
+				2D8C0C6A17728C4600BAD9D4 /* right_menu_btn.png */,
+				2D8C0C6F17728DBB00BAD9D4 /* right_menu_btn_clicked.png */,
+				2D8C0C7117728FAE00BAD9D4 /* navbar_selected.png */,
+				2D8C0C7217728FAE00BAD9D4 /* navbar_background.png */,
+				2D8C0C751772976200BAD9D4 /* top_navigation_back_highlighted.png */,
+				2D8C0C761772976200BAD9D4 /* top_navigation_back.png */,
+				2D8E010817647D71002F0590 /* right_menu.png */,
+				2D8E010017647B22002F0590 /* top_navigation_background.png */,
 				2D944ABA1769BC3C00CEC12F /* MessageEntrySendButton.png */,
 				2D944ABB1769BC3C00CEC12F /* MessageEntrySendButton@2x.png */,
 				2D944ABC1769BC3C00CEC12F /* MessageEntrySendButtonPressed.png */,
@@ -998,21 +1170,13 @@
 				2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */,
 				FFD8B6861756E779007B878C /* aboutus.png */,
 				2D8ED7711754F43A0093A574 /* bad_net.png */,
-				2D8FAC23174898BA0071A601 /* Default.png */,
 				2D01E6801748DB2F00B81568 /* default_adv.jpg */,
 				2D8ED76F1754F4270093A574 /* default_icon.png */,
 				2D8FAC1F174896220071A601 /* icon.png */,
 				2D93122E17604B1900C73802 /* img_set_flag.png */,
-				2D5DEE68174C9BAB00F21FC2 /* left_menu@2x.png */,
 				2D8E4B77175F8FEC00B94E57 /* leftside_shadow_bg@2x.png */,
-				2D13EF93174E1374007FF1CC /* navbar_background@2x.png */,
-				2D13EF94174E1374007FF1CC /* navbar_selected@2x.png */,
 				2D8ED76D1754F3B40093A574 /* progressbar_logo.png */,
 				2D8ED7731754FD910093A574 /* retry.png */,
-				2D8E010817647D71002F0590 /* right_menu.png */,
-				2D8E010417647C82002F0590 /* top_navigation_back_highlighted.png */,
-				2D8E010517647C82002F0590 /* top_navigation_back.png */,
-				2D8E010017647B22002F0590 /* top_navigation_background.png */,
 			);
 			name = Resources;
 			path = JiaodongOnlineNews/Resources;
@@ -1031,6 +1195,7 @@
 				2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */,
 				2D93122C17604A3900C73802 /* common.js */,
 				2D29B275176065D300F116E4 /* style.css */,
+				2DE932081772E99D00A87ACC /* weather.xml */,
 			);
 			name = Others;
 			path = JiaodongOnlineNews/Others;
@@ -1187,7 +1352,6 @@
 				2D86D5AD175894980000AA6A /* JDOCenterViewController.m */,
 				2D080CED173CE4D9005653A7 /* JDONewsViewController.h */,
 				2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */,
-				2D8AB31E17526A3200F3AAAC /* JDONewsViewController.xib */,
 				2D5409DA175DEA5800718FFB /* JDONewsDetailController.h */,
 				2D5409DB175DEA5800718FFB /* JDONewsDetailController.m */,
 				2D8AC1521763854C006B4A22 /* JDOReviewListController.h */,
@@ -1199,7 +1363,6 @@
 				FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */,
 				2D19CFE3174A3F8700BDAE39 /* JDOLeftViewController.h */,
 				2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */,
-				2D19CFE5174A3F8700BDAE39 /* JDOLeftViewController.xib */,
 				2D19CFE6174A3F8700BDAE39 /* JDORightViewController.h */,
 				2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */,
 				2D19CFE8174A3F8700BDAE39 /* JDORightViewController.xib */,
@@ -1234,8 +1397,49 @@
 				2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */,
 				2D9FDC0C175D7922003EAF78 /* JDOJsonClient.h */,
 				2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */,
+				2DE931BE1772C17600A87ACC /* JDOXmlClient.h */,
+				2DE931BF1772C17600A87ACC /* JDOXmlClient.m */,
 			);
 			path = Http;
+			sourceTree = "<group>";
+		};
+		2DE931C71772E3C200A87ACC /* Weather */ = {
+			isa = PBXGroup;
+			children = (
+				2DE931C81772E3E500A87ACC /* 暴雪.png */,
+				2DE931C91772E3E500A87ACC /* 暴雨.png */,
+				2DE931CA1772E3E500A87ACC /* 大暴雨.png */,
+				2DE931CB1772E3E500A87ACC /* 大雪.png */,
+				2DE931CC1772E3E500A87ACC /* 大雨.png */,
+				2DE931CD1772E3E500A87ACC /* 冻雨.png */,
+				2DE931CE1772E3E500A87ACC /* 多云.png */,
+				2DE931CF1772E3E500A87ACC /* 多云转晴.png */,
+				2DE931D01772E3E500A87ACC /* 浮尘.png */,
+				2DE931D11772E3E500A87ACC /* 雷阵雨 伴有冰雹.png */,
+				2DE931D21772E3E500A87ACC /* 雷阵雨.png */,
+				2DE931D31772E3E500A87ACC /* 默认.png */,
+				2DE931D41772E3E500A87ACC /* 晴.png */,
+				2DE931D51772E3E500A87ACC /* 晴转多云.png */,
+				2DE931D61772E3E500A87ACC /* 晴转小雪.png */,
+				2DE931D71772E3E500A87ACC /* 晴转小雨.png */,
+				2DE931D81772E3E500A87ACC /* 晴转阴.png */,
+				2DE931D91772E3E500A87ACC /* 沙尘暴.png */,
+				2DE931DA1772E3E500A87ACC /* 特大暴雨.png */,
+				2DE931DB1772E3E500A87ACC /* 雾.png */,
+				2DE931DC1772E3E500A87ACC /* 小雪.png */,
+				2DE931DD1772E3E500A87ACC /* 小雪转晴.png */,
+				2DE931DE1772E3E500A87ACC /* 小雨 转晴.png */,
+				2DE931DF1772E3E500A87ACC /* 小雨.png */,
+				2DE931E01772E3E500A87ACC /* 扬沙.png */,
+				2DE931E11772E3E500A87ACC /* 阴.png */,
+				2DE931E21772E3E500A87ACC /* 阴转晴.png */,
+				2DE931E31772E3E500A87ACC /* 雨夹雪.png */,
+				2DE931E41772E3E500A87ACC /* 阵雪.png */,
+				2DE931E51772E3E500A87ACC /* 阵雨.png */,
+				2DE931E61772E3E500A87ACC /* 中雪.png */,
+				2DE931E71772E3E500A87ACC /* 中雨.png */,
+			);
+			name = Weather;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1297,14 +1501,8 @@
 				2D01E6791748C81900B81568 /* InfoPlist.strings in Resources */,
 				2D8FAC20174896220071A601 /* icon.png in Resources */,
 				2D01E6811748DB2F00B81568 /* default_adv.jpg in Resources */,
-				2D19CFEA174A3F8700BDAE39 /* JDOLeftViewController.xib in Resources */,
 				2D19CFEC174A3F8700BDAE39 /* JDORightViewController.xib in Resources */,
-				2D5DEE69174C9BAB00F21FC2 /* left_menu@2x.png in Resources */,
 				2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */,
-				2D8D44F8174DEB9900786545 /* Default.png in Resources */,
-				2D13EF95174E1374007FF1CC /* navbar_background@2x.png in Resources */,
-				2D13EF96174E1374007FF1CC /* navbar_selected@2x.png in Resources */,
-				2D8AB31F17526A3200F3AAAC /* JDONewsViewController.xib in Resources */,
 				2D8ED76E1754F3B40093A574 /* progressbar_logo.png in Resources */,
 				2D8ED7701754F4270093A574 /* default_icon.png in Resources */,
 				2D8ED7721754F43A0093A574 /* bad_net.png in Resources */,
@@ -1329,8 +1527,6 @@
 				2D8E00D317642EC1002F0590 /* transport@2x.png in Resources */,
 				2D8E00D417642EC1002F0590 /* ytweather@2x.png in Resources */,
 				2D8E010317647B22002F0590 /* top_navigation_background.png in Resources */,
-				2D8E010617647C82002F0590 /* top_navigation_back_highlighted.png in Resources */,
-				2D8E010717647C82002F0590 /* top_navigation_back.png in Resources */,
 				2D8E010917647D71002F0590 /* right_menu.png in Resources */,
 				2D8D85DB1767386B00D7D34F /* review_item.png in Resources */,
 				2D944A8517698B7500CEC12F /* JDOShareViewController.xib in Resources */,
@@ -1367,6 +1563,70 @@
 				2D98C8F8177018D300061E2E /* sina.png in Resources */,
 				2D98C8F9177018D300061E2E /* sina01.png in Resources */,
 				2D98C8FB177018F200061E2E /* huixingzhen.png in Resources */,
+				2D8AABC6177203720049E730 /* menu_background.png in Resources */,
+				2D8AABC7177203720049E730 /* menu_convenience_selected.png in Resources */,
+				2D8AABC8177203720049E730 /* menu_convenience.png in Resources */,
+				2D8AABC9177203720049E730 /* menu_separator.png in Resources */,
+				2D8AABCA177203720049E730 /* guanyu01.png in Resources */,
+				2D8AABCB177203720049E730 /* guanyu02.png in Resources */,
+				2D8AABCC177203720049E730 /* menu_news_selected.png in Resources */,
+				2D8AABCD177203720049E730 /* menu_news.png in Resources */,
+				2D8AABCE177203720049E730 /* menu_picture_selected.png in Resources */,
+				2D8AABCF177203720049E730 /* menu_picture.png in Resources */,
+				2D8AABD0177203720049E730 /* menu_topic_selected.png in Resources */,
+				2D8AABD1177203720049E730 /* menu_topic.png in Resources */,
+				2D8AABD2177203720049E730 /* shezhi01.png in Resources */,
+				2D8AABD3177203720049E730 /* shezhi02.png in Resources */,
+				2D8AABD4177203720049E730 /* shoucang01.png in Resources */,
+				2D8AABD5177203720049E730 /* shoucang02.png in Resources */,
+				2D8AABD6177203720049E730 /* tianqi.png in Resources */,
+				2D8AABD7177203720049E730 /* menu_livehood_selected.png in Resources */,
+				2D8AABD8177203720049E730 /* menu_livehood.png in Resources */,
+				2D8AABD9177203720049E730 /* menu_row_selected.png in Resources */,
+				2D8AABDA177203720049E730 /* yijianfankui01.png in Resources */,
+				2D8AABDB177203720049E730 /* yijianfankui02.png in Resources */,
+				2D8C0C6817728C1900BAD9D4 /* Default.png in Resources */,
+				2D8C0C6C17728C4600BAD9D4 /* right_menu_btn.png in Resources */,
+				2D8C0C6E17728CE700BAD9D4 /* left_ment_btn_clicked.png in Resources */,
+				2D8C0C7017728DBB00BAD9D4 /* right_menu_btn_clicked.png in Resources */,
+				2D8C0C7317728FAE00BAD9D4 /* navbar_selected.png in Resources */,
+				2D8C0C7417728FAE00BAD9D4 /* navbar_background.png in Resources */,
+				2D8C0C771772976200BAD9D4 /* top_navigation_back_highlighted.png in Resources */,
+				2D8C0C781772976200BAD9D4 /* top_navigation_back.png in Resources */,
+				2D8C0C7A17729B0600BAD9D4 /* left_menu_btn.png in Resources */,
+				2DE931E81772E3E500A87ACC /* 暴雪.png in Resources */,
+				2DE931E91772E3E500A87ACC /* 暴雨.png in Resources */,
+				2DE931EA1772E3E500A87ACC /* 大暴雨.png in Resources */,
+				2DE931EB1772E3E500A87ACC /* 大雪.png in Resources */,
+				2DE931EC1772E3E500A87ACC /* 大雨.png in Resources */,
+				2DE931ED1772E3E500A87ACC /* 冻雨.png in Resources */,
+				2DE931EE1772E3E500A87ACC /* 多云.png in Resources */,
+				2DE931EF1772E3E500A87ACC /* 多云转晴.png in Resources */,
+				2DE931F01772E3E500A87ACC /* 浮尘.png in Resources */,
+				2DE931F11772E3E500A87ACC /* 雷阵雨 伴有冰雹.png in Resources */,
+				2DE931F21772E3E500A87ACC /* 雷阵雨.png in Resources */,
+				2DE931F31772E3E500A87ACC /* 默认.png in Resources */,
+				2DE931F41772E3E500A87ACC /* 晴.png in Resources */,
+				2DE931F51772E3E500A87ACC /* 晴转多云.png in Resources */,
+				2DE931F61772E3E500A87ACC /* 晴转小雪.png in Resources */,
+				2DE931F71772E3E500A87ACC /* 晴转小雨.png in Resources */,
+				2DE931F81772E3E500A87ACC /* 晴转阴.png in Resources */,
+				2DE931F91772E3E500A87ACC /* 沙尘暴.png in Resources */,
+				2DE931FA1772E3E500A87ACC /* 特大暴雨.png in Resources */,
+				2DE931FB1772E3E500A87ACC /* 雾.png in Resources */,
+				2DE931FC1772E3E500A87ACC /* 小雪.png in Resources */,
+				2DE931FD1772E3E500A87ACC /* 小雪转晴.png in Resources */,
+				2DE931FE1772E3E500A87ACC /* 小雨 转晴.png in Resources */,
+				2DE931FF1772E3E500A87ACC /* 小雨.png in Resources */,
+				2DE932001772E3E500A87ACC /* 扬沙.png in Resources */,
+				2DE932011772E3E500A87ACC /* 阴.png in Resources */,
+				2DE932021772E3E500A87ACC /* 阴转晴.png in Resources */,
+				2DE932031772E3E500A87ACC /* 雨夹雪.png in Resources */,
+				2DE932041772E3E500A87ACC /* 阵雪.png in Resources */,
+				2DE932051772E3E500A87ACC /* 阵雨.png in Resources */,
+				2DE932061772E3E500A87ACC /* 中雪.png in Resources */,
+				2DE932071772E3E500A87ACC /* 中雨.png in Resources */,
+				2DE932091772E99D00A87ACC /* weather.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1518,6 +1778,10 @@
 				2D8D231817712A770012D6FD /* AGShareCell.m in Sources */,
 				2D8D231B17712AE40012D6FD /* JDOShareAuthController.m in Sources */,
 				2D8D231E1771313F0012D6FD /* JDONavigationController.m in Sources */,
+				2DE931BD1772A86900A87ACC /* JDOLeftMenuCell.m in Sources */,
+				2DE931C01772C17600A87ACC /* JDOXmlClient.m in Sources */,
+				2DE931C31772D56B00A87ACC /* JDOWeatherForcast.m in Sources */,
+				2DE931C61772D57700A87ACC /* JDOWeather.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,7 +15,7 @@
 #define slider_top_margin 5
 #define slider_left_margin 5
 #define title_label_tag 100
-#define title_normal_color [UIColor blackColor]
+#define title_normal_color [UIColor colorWithWhite:85.0/255.0 alpha:1.0]
 #define title_highlight_color [UIColor whiteColor]
 
 @implementation JDOPageControl

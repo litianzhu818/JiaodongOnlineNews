@@ -42,6 +42,7 @@
 #define Max_Alpah 0.8f
 #define Transition_Window_Right CGRectMake(320, 20, 320, App_Height)
 #define Transition_Window_Center CGRectMake(0, 20, 320, App_Height)
+#define Transition_Window_Bottom CGRectMake(0, 20+App_Height, 320, App_Height)
 #define Transition_View_Right CGRectMake(320, 0, 320, App_Height)
 #define Transition_View_Center CGRectMake(0, 0, 320, App_Height)
 #define Transition_View_Bottom CGRectMake(0, App_Height, 320, App_Height)

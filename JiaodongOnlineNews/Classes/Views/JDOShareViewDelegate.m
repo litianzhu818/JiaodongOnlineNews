@@ -12,6 +12,8 @@
 @interface JDOShareViewDelegate ()
 
 @property (strong, nonatomic) UIButton *backBtn;
+@property (strong, nonatomic) UIView *presentView;
+@property (strong, nonatomic) UIView *cloneView;
 
 @end
 
@@ -21,18 +23,18 @@ static JDOShareViewDelegate* sharedDelegate;
     void (^_backBlock)();
     void (^_completeBlock)();
     BOOL viewClosedByBack;
-    UIView *cloneView;
 }
 
 + (JDOShareViewDelegate*) sharedDelegate{
     if(sharedDelegate == nil){
-        sharedDelegate = [[JDOShareViewDelegate alloc] initWithBackBlock:nil completeBlock:nil];
+        sharedDelegate = [[JDOShareViewDelegate alloc] initWithPresentView:nil backBlock:nil completeBlock:nil];
     }
     return sharedDelegate;
 }
 
-- (id) initWithBackBlock:(void (^)()) backBlock completeBlock:(void (^)()) completeBlock{
+- (id) initWithPresentView:(UIView *)presentView backBlock:(void (^)()) backBlock completeBlock:(void (^)()) completeBlock{
     if(self = [super init]){
+        _presentView= presentView;
         _backBlock = backBlock;
         _completeBlock = completeBlock;
     }
@@ -56,29 +58,23 @@ static JDOShareViewDelegate* sharedDelegate;
     [navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
     [navigationView setTitle:[ShareSDK getClientNameWithType:shareType]];
     
-    if(_authController){
-        cloneView = [[UIView alloc] initWithFrame:Transition_Window_Center];
+    if(_presentView){
+        _cloneView = [[UIView alloc] initWithFrame:Transition_Window_Center];
         for(UIView *subView in [viewController.view subviews]){
             [subView removeFromSuperview];
-            [cloneView addSubview:subView];
+            [_cloneView addSubview:subView];
         }
-        [cloneView addSubview:navigationView];
-        [_authController.view pushView:cloneView startFrame:Transition_Window_Right endFrame:Transition_Window_Center complete:nil];
-        
-        [self performSelector:@selector(autoCloseUnusedView) withObject:nil afterDelay:1];
+        [_cloneView addSubview:navigationView];
+        [_presentView pushView:_cloneView startFrame:Transition_Window_Bottom endFrame:Transition_Window_Center complete:nil];
     }else{
         [viewController.view addSubview:navigationView];
     }
 }
 
-- (void) autoCloseUnusedView{
-    
-}
-
 - (void)viewOnWillDismiss:(UIViewController *)viewController shareType:(ShareType)shareType{
     if(viewClosedByBack == false){ //授权完成返回
-        if(_authController){
-            [cloneView popView:_authController.view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:nil];
+        if(_presentView){
+            [_cloneView popView:_presentView startFrame:Transition_Window_Center endFrame:Transition_Window_Bottom complete:nil];
         }
         if(_completeBlock) _completeBlock();
     }
@@ -86,8 +82,8 @@ static JDOShareViewDelegate* sharedDelegate;
 
 - (void) backToParent{
     viewClosedByBack = true;
-    if(_authController){
-        [cloneView popView:_authController.view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:^{
+    if(_presentView){
+        [_cloneView popView:_presentView startFrame:Transition_Window_Center endFrame:Transition_Window_Bottom complete:^{
             [_backBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
         }];
     }else{

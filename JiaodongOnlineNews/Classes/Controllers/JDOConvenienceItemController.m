@@ -20,8 +20,6 @@
 #define Font_Tag    102
 #define Collect_Tag 103
 
-#define Toolbar_Btn_Size 32
-#define Toolbar_Height   40
 #define Textfield_Height 40
 
 @interface JDOConvenienceItemController ()
@@ -48,7 +46,7 @@
     [self.view addSubview:_navigationView];
     
     self.view.backgroundColor = [UIColor colorWithHex:@"f6f6f6"];// 与html的body背景色相同
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-Toolbar_Height)]; // 去掉导航栏和工具栏
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;

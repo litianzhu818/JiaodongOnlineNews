@@ -141,30 +141,31 @@
             //用户用户信息
             ShareType type = [[item objectForKey:@"type"] integerValue];
 #warning 是显示用户名还是"已授权"?
-            sharedDelegate = [[JDOShareViewDelegate alloc] initWithBackBlock:^{
+            sharedDelegate = [[JDOShareViewDelegate alloc] initWithPresentView:self.view backBlock:^{
                 sender.on = false;
             } completeBlock:nil];
-            sharedDelegate.authController = self;
-            [ShareSDK authWithType:type options:JDOGetOauthOptions(sharedDelegate) result:^(SSAuthState state, id<ICMErrorInfo> error) {
-                if (state == SSAuthStateSuccess){
-                    [_tableView reloadData];
-                }else if(state == SSAuthStateCancel){
-                    sender.on = false;
-                }else if(state == SSAuthStateFail){
-                    sender.on = false;
-                    NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
-                }
-            }];
-//            [ShareSDK getUserInfoWithType:type
-//                              authOptions:JDOGetOauthOptions(nil)
-//                                   result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
-//                                       if (result){
-//                                           [item setObject:[userInfo nickname] forKey:@"username"];
-//                                           [_shareTypeArray writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
-//                                       }
-//                                       NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
-//                                       [_tableView reloadData];
-//                                   }];
+//            [ShareSDK authWithType:type options:JDOGetOauthOptions(sharedDelegate) result:^(SSAuthState state, id<ICMErrorInfo> error) {
+//                if (state == SSAuthStateSuccess){
+//                    [_tableView reloadData];
+//                }else if(state == SSAuthStateCancel){
+//                    sender.on = false;
+//                }else if(state == SSAuthStateFail){
+//                    sender.on = false;
+//                    NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
+//                }
+//            }];
+            [ShareSDK getUserInfoWithType:type
+                              authOptions:JDOGetOauthOptions(sharedDelegate)
+                                   result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
+                                       if (result){
+                                           [item setObject:[userInfo nickname] forKey:@"username"];
+                                           [_shareTypeArray writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
+                                           [_tableView reloadData];
+                                       }else if ([error errorCode] != -103){
+                                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+                                           [alertView show];
+                                       }
+                                   }];
         }else{
             //取消授权
             [ShareSDK cancelAuthWithType:[[item objectForKey:@"type"] integerValue]];
@@ -201,7 +202,7 @@
         accessoryView.tag = BASE_TAG + indexPath.row;
         
         if (accessoryView.on){
-            cell.textLabel.text = @"已授权";//[item objectForKey:@"username"];
+            cell.textLabel.text = [item objectForKey:@"username"];
         }else{
             cell.textLabel.text = @"未授权";
         }

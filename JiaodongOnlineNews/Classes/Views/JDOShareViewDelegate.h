@@ -12,9 +12,8 @@
 
 @interface JDOShareViewDelegate : NSObject <ISSViewDelegate>
 
-- (id) initWithBackBlock:(void (^)()) backBlock completeBlock:(void (^)()) completeBlock;
+- (id) initWithPresentView:(UIView *)presentView backBlock:(void (^)()) backBlock completeBlock:(void (^)()) completeBlock;
 
 + (JDOShareViewDelegate*) sharedDelegate;
-@property (strong) JDOShareAuthController *authController;
 
 @end
