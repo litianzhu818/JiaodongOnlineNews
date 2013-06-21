@@ -164,25 +164,59 @@ BOOL pageControlUsed;
 
 
 - (void) changeNewPageStatus{
-    NSString *reuseIdentifier=[(JDONewsCategoryInfo *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex] reuseId];
-    JDONewsCategoryView *page = (JDONewsCategoryView *)[_pageCache objectForKey:reuseIdentifier];
+    JDONewsCategoryInfo *pageInfo = (JDONewsCategoryInfo *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
+    JDONewsCategoryView *page = (JDONewsCategoryView *)[_pageCache objectForKey:pageInfo.reuseId];
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
     
 //    NSLog(@"page index:%d category:%@,status:%d",tmpPageIndex,page.info.title,page.status);
     if(page.status == ViewStatusNormal){
-//        if(){   // 上次加载时间离现在超过5分钟 或者是从本地数据库加载，则重新加载
-//            
-//        }
+        if([Reachability isEnableNetwork]){
+#warning 上次从本地数据库加载，则重新加载
+            if(false){
+                
+            }else{
+                NSMutableDictionary *updateTimes = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:News_Update_Time] mutableCopy];
+                if( updateTimes == nil){
+                    updateTimes = [[NSMutableDictionary alloc] initWithCapacity:_pageInfos.count];
+                    [self saveLastUpdateTime:updateTimes withKey:pageInfo.title];
+                }else{
+                    NSNumber *itemLastUpdateValue = [updateTimes objectForKey:pageInfo.title];
+                    if( itemLastUpdateValue == nil ){
+                        [self saveLastUpdateTime:updateTimes withKey:pageInfo.title];
+                    }else{
+                        double lastUpdateTime = [itemLastUpdateValue doubleValue];
+                        // 上次加载时间离现在超过时间间隔
+                        if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > News_Update_Interval ){
+                            [self saveLastUpdateTime:updateTimes withKey:pageInfo.title];
+#warning 自动刷新应该有提示,最好不要用下拉刷新的样式,可以用progresshud来提示
+                            [page loadDataFromNetwork];
+                        }
+                    }
+                }
+            } 
+        }
     }else if(page.status == ViewStatusLoading){
         return;
     }else{
-        if(![Reachability isEnableNetwork]){   // 若无网络，显示无网络界面，应监听网络通知，若有网络则自动加载
-            [page setCurrentState:ViewStatusNoNetwork];
+        if(![Reachability isEnableNetwork]){   
+#warning 若有本地数据，则从本地加载
+            if(false){
+                
+            }else{
+#warning 若无本地数据，显示无网络界面，应监听网络通知，若有网络则自动加载
+                [page setCurrentState:ViewStatusNoNetwork];
+            }
         }else{  // 从网络加载数据，切换到loading状态
             [page setCurrentState:ViewStatusLoading];
             [page loadDataFromNetwork];
         }
     }
+}
+
+- (void) saveLastUpdateTime:(NSMutableDictionary *)updateTimes withKey:(NSString *) key{
+    [updateTimes setObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]] forKey:key];
+    [[NSUserDefaults standardUserDefaults] setObject:updateTimes forKey:News_Update_Time];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

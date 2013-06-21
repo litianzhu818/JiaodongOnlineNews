@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDOWeather : NSObject
+@interface JDOWeather : NSObject <NSCoding,NSXMLParserDelegate>
 
 @property (nonatomic,assign) BOOL success;
 @property (nonatomic,strong) NSMutableString *province;
@@ -29,6 +29,13 @@
 @property (nonatomic,strong) NSMutableString *tempWindAndHum;
 @property (nonatomic,strong) NSMutableString *airAndZiwaixian;
 
+@property (nonatomic,strong) NSXMLParser *parser;
+
+- (id) initWithParser:(NSXMLParser *) parser;
 - (void)analysis;
+- (BOOL)parse;
+
++ (void) saveToFile:(JDOWeather *) weather;
++ (JDOWeather *) readFromFile;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDOWeatherForcast : NSObject
+@interface JDOWeatherForcast : NSObject <NSCoding>
 
 @property (nonatomic,strong) NSMutableString *date;/**哪一天的天气*/
 @property (nonatomic,strong) NSMutableString *weatherDetail;/**天气概况 例如晴转多云 */

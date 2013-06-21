@@ -4,7 +4,7 @@
 //
 
 
-@interface JDOLeftViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,NSXMLParserDelegate>
+@interface JDOLeftViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
 

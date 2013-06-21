@@ -140,7 +140,6 @@
         if (sender.on){
             //用户用户信息
             ShareType type = [[item objectForKey:@"type"] integerValue];
-#warning 是显示用户名还是"已授权"?
             sharedDelegate = [[JDOShareViewDelegate alloc] initWithPresentView:self.view backBlock:^{
                 sender.on = false;
             } completeBlock:nil];
@@ -161,9 +160,12 @@
                                            [item setObject:[userInfo nickname] forKey:@"username"];
                                            [_shareTypeArray writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
                                            [_tableView reloadData];
-                                       }else if ([error errorCode] != -103){
-                                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-                                           [alertView show];
+                                       }else{
+                                           sender.on = false;   // 从SSO点取消返回时
+                                           if ([error errorCode] != -103){
+                                               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+                                               [alertView show];
+                                           }
                                        }
                                    }];
         }else{
@@ -202,7 +204,8 @@
         accessoryView.tag = BASE_TAG + indexPath.row;
         
         if (accessoryView.on){
-            cell.textLabel.text = [item objectForKey:@"username"];
+#warning 是显示用户名还是"已授权"?若显示用户名，则需要在所有授权返回的位置都向authListCache.plist文件保存用户名信息
+            cell.textLabel.text = @"已授权";//[item objectForKey:@"username"];
         }else{
             cell.textLabel.text = @"未授权";
         }

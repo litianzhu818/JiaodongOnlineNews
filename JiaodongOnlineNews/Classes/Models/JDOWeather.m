@@ -7,11 +7,26 @@
 //
 
 #import "JDOWeather.h"
+#import "JDOWeatherForcast.h"
 
-@implementation JDOWeather
+#define Weather_Cache_Path [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"WeatherCache"]
 
-- (id) init{
+@interface JDOWeather ()
+
+@property (strong) JDOWeatherForcast *forcast;
+
+@end
+
+@implementation JDOWeather{
+    int xmlIndex;
+}
+
+- (id) initWithParser:(NSXMLParser *) parser{
     if(self = [super init]){
+        self.parser = parser;
+        self.parser.delegate = self;
+        self.parser.shouldProcessNamespaces = true;
+        
         self.province = [[NSMutableString alloc] init];
         self.city = [[NSMutableString alloc] init];
         self.district = [[NSMutableString alloc] init];
@@ -31,6 +46,33 @@
         self.airAndZiwaixian = [[NSMutableString alloc] init];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        self.city = [aDecoder decodeObjectForKey:@"city"];
+        self.updateTime = [aDecoder decodeObjectForKey:@"updateTime"];
+        self.date = [aDecoder decodeObjectForKey:@"date"];
+        self.currentTemperature = [aDecoder decodeObjectForKey:@"currentTemperature"];
+        self.currentWind = [aDecoder decodeObjectForKey:@"currentWind"];
+        self.currentHumidity = [aDecoder decodeObjectForKey:@"currentHumidity"];
+        self.forecast = [aDecoder decodeObjectForKey:@"forecast"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.city forKey:@"city"];
+    [aCoder encodeObject:self.updateTime forKey:@"updateTime"];
+    [aCoder encodeObject:self.date forKey:@"date"];
+    [aCoder encodeObject:self.currentTemperature forKey:@"currentTemperature"];
+    [aCoder encodeObject:self.currentWind forKey:@"currentWind"];
+    [aCoder encodeObject:self.currentHumidity forKey:@"currentHumidity"];
+    [aCoder encodeObject:self.forecast forKey:@"forecast"];
+}
+
+- (BOOL)parse{
+    return [self.parser parse];
 }
 
 - (void)analysis{
@@ -58,7 +100,103 @@
     NSArray *_aa = [_airAndZiwaixian componentsSeparatedByString:@"；"];
     [self.airQuality appendString: [[[_aa objectAtIndex:0] componentsSeparatedByString:@"："] lastObject]];
     [self.ziwaixian appendString: [[[_aa objectAtIndex:1] componentsSeparatedByString:@"："] lastObject]];
+}
 
++ (void) saveToFile:(JDOWeather *) weather{
+    [NSKeyedArchiver archiveRootObject:weather toFile:Weather_Cache_Path];
+}
+
++ (JDOWeather *) readFromFile{
+    return [NSKeyedUnarchiver unarchiveObjectWithFile: Weather_Cache_Path];
+}
+
+
+#pragma mark - NSXMLParserDelegate
+
+- (void)parserDidStartDocument:(NSXMLParser *)parser{
+    xmlIndex = 0;
+}
+
+- (void)parserDidEndDocument:(NSXMLParser *)parser{
+    [self.forecast enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [(JDOWeatherForcast *)obj analysis];
+    }];
+    [self analysis];
+    if(self.success){
+        [JDOWeather saveToFile:self];
+    }
+}
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
+    if([elementName isEqualToString:@"ArrayOfString"]){
+        self.success = true;
+        [self.date appendString:[[NSDate date] description]];
+    }
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
+    if([elementName isEqualToString:@"string"]){
+        xmlIndex++;
+        if((xmlIndex - 7) % 5 == 0){
+            _forcast = [[JDOWeatherForcast alloc] init];
+        }else if((xmlIndex - 7) % 5 == 4){
+            [self.forecast addObject:_forcast];
+        }
+    }
+}
+
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
+    if([string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length==0) {
+        return ;
+    }
+    switch (xmlIndex) {
+        case 0:// Array(0) = "省份 地区/洲 国家名（国外）"
+            [self.provinceAndCity appendString:string];
+            break;
+        case 1:// Array(1) = "查询的天气预报地区名称"
+            [self.district appendString:string];
+            break;
+        case 2:// Array(2) = "查询的天气预报地区ID"
+            [self.cityCode appendString:string];
+            break;
+        case 3:// Array(3) = "最后更新时间 格式：yyyy-MM-dd HH:mm:ss"
+            [self.updateTime appendString:string];;
+            break;
+        case 4:{// Array(4) = "当前天气实况：气温、风向/风力、湿度"
+            [self.tempWindAndHum appendString:string];
+            break;
+        }
+        case 5:{// Array(5) = "当前 空气质量、紫外线强度"
+            [self.airAndZiwaixian appendString:string];
+            break;
+        }
+        case 6:// Array(6) = "当前 天气和生活指数"
+            [self.lifeSuggestion appendString:string];
+            break;
+        default:
+            switch ((xmlIndex - 7) % 5) {
+                case 0:// Array(n-4) = "第二天 概况 格式：M月d日 天气概况"
+                    [_forcast.status appendString:string];
+                    break;
+                case 1:// Array(n-3) = "第二天 气温"
+                    [_forcast.temperature appendString:string];
+                    break;
+                case 2:// Array(n-2) = "第二天 风力/风向"
+                    [_forcast.wind appendString:string];
+                    break;
+                default:
+                    break;
+            }
+    }
+}
+
+- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError{
+    NSLog(@"%@",parseError.localizedDescription);
+}
+
+- (void)parser:(NSXMLParser *)parser validationErrorOccurred:(NSError *)validationError{
+    NSLog(@"%@",validationError.localizedDescription);
 }
 
 

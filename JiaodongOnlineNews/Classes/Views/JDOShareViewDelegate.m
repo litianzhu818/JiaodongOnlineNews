@@ -57,7 +57,7 @@ static JDOShareViewDelegate* sharedDelegate;
     JDONavigationView *navigationView = [[JDONavigationView alloc] init];
     [navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
     [navigationView setTitle:[ShareSDK getClientNameWithType:shareType]];
-    
+
     if(_presentView){
         _cloneView = [[UIView alloc] initWithFrame:Transition_Window_Center];
         for(UIView *subView in [viewController.view subviews]){

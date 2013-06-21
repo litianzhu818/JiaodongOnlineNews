@@ -64,6 +64,7 @@
     
     _scrollView.contentSize = CGSizeMake(models.count *width, height);
     for (int i=0; i<models.count; i++) {
+#warning imageView右下方增加阴影效果
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i*width, 0, width, height)];
         imageView.userInteractionEnabled = true;
         [self.imageViews addObject:imageView];
@@ -71,7 +72,7 @@
         
         JDONewsModel *newsModel = (JDONewsModel *)[models objectAtIndex:i];
         if( i==0){
-            _titleLabel.text = newsModel.title;
+            _titleLabel.text = [NSString stringWithFormat:@" %@",newsModel.title ];
         }
             
         __block UIImageView *blockImageView = imageView;
@@ -99,7 +100,7 @@
     int page = _scrollView.contentOffset.x / width;
     _pageControl.currentPage = page;
     JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:page];
-    _titleLabel.text = newsModel.title;
+    _titleLabel.text = [NSString stringWithFormat:@" %@",newsModel.title ];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

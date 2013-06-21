@@ -32,11 +32,11 @@
     NSArray *iconSelectedNames;
     NSArray *iconTitles;
     int lastSelectedRow;
+    UILabel *cityLabel;
     UIImageView *weatherIcon;
     UILabel *temperatureLabel;
     UILabel *weatherLabel;
     UILabel *dateLabel;
-    int xmlIndex;
     NSArray *weekDayNames;
 }
 
@@ -77,7 +77,7 @@
     
     // 天气部分
     float topMargin = _tableView.bounds.size.height+Top_Margin;
-    UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 40, 30)];
+    cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 40, 30)];
     cityLabel.text = @"烟台";
     cityLabel.font = [UIFont boldSystemFontOfSize:18];
     cityLabel.textColor = [UIColor whiteColor];
@@ -90,7 +90,7 @@
     [self.view addSubview:weatherIcon];
     
     temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height+Padding, 0, 0)];
-    temperatureLabel.text = @"无法获取温度";
+    temperatureLabel.text = @" ";
     temperatureLabel.font = [UIFont boldSystemFontOfSize:14];
     temperatureLabel.textColor = [UIColor whiteColor];
     temperatureLabel.backgroundColor = [UIColor clearColor];
@@ -98,16 +98,16 @@
     [self.view addSubview:temperatureLabel];
     
     weatherLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height+temperatureLabel.height + 2*Padding, 0, 0)];
-    weatherLabel.text = @"无法获取天气";
-    weatherLabel.font = [UIFont systemFontOfSize:14];
+    weatherLabel.text = @" ";
+    weatherLabel.font = [UIFont systemFontOfSize:12];
     weatherLabel.textColor = [UIColor whiteColor];
     weatherLabel.backgroundColor = [UIColor clearColor];
     [weatherLabel sizeToFit];
     [self.view addSubview:weatherLabel];
     
     dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin,  topMargin+Weather_Icon_Height+temperatureLabel.height +weatherLabel.height+ 3*Padding, 0, 0)];
-    dateLabel.text = @"无法获取日期";
-    dateLabel.font = [UIFont systemFontOfSize:13];
+    dateLabel.text = @" ";
+    dateLabel.font = [UIFont systemFontOfSize:12];
     dateLabel.textColor = [UIColor whiteColor];
     dateLabel.backgroundColor = [UIColor clearColor];
     [dateLabel sizeToFit];
@@ -116,37 +116,64 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    // 加载天气信息
+#warning 天气增加"更新时间"字段,提供两个按钮分别显示预报和详情,预报可以用Flip+Scrollview
+    // 天气信息最小刷新间隔
+    double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Weather_Update_Time];
+    if (lastUpdateTime == 0 || [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Weather_Update_Interval){
+        [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:Weather_Update_Time];
+        [self loadWeatherFromNetwork];
+    }else{
+        [self readWeatherFromLocalCache];
+    }
+
+}
+
+// 加载天气信息
+- (void) loadWeatherFromNetwork{
     JDOXmlClient *xmlClient = [[JDOXmlClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://webservice.webxml.com.cn"]];
     [xmlClient getXMLByServiceName:@"/WebServices/WeatherWS.asmx/getWeather" params:@{@"theCityCode":@"909",@"theUserID":@""} success:^(NSXMLParser *xmlParser) {
-        xmlParser.delegate = self;
-        xmlParser.shouldProcessNamespaces = true;
-        if([xmlParser parse]){
+        _weather = [[JDOWeather alloc] initWithParser:xmlParser];
+        if([_weather parse]){
             if(_weather.success){
                 [self refreshWeather];
             }else{
-                NSLog(@"天气webservice超出访问次数限制,从文件获取");
-#warning 本地xml仅供测试用
-                NSString *xmlPath = [[NSBundle mainBundle] pathForResource:@"weather" ofType:@"xml"];
-                NSData *xmlData = [NSData dataWithContentsOfFile:xmlPath];
-                NSXMLParser *_parser = [[NSXMLParser alloc] initWithData:xmlData];
-                _parser.delegate = self;
-                _parser.shouldProcessNamespaces = true;
-                if([_parser parse]){
-                    [self refreshWeather];
-                }
+                NSLog(@"天气webservice超出访问次数限制,从本地缓存获取");
+                [self readWeatherFromLocalCache];
             }
         }else{
             NSLog(@"解析天气XML失败");
         }
     } failure:^(NSString *errorStr) {
         NSLog(@"%@",errorStr);
+        [self readWeatherFromLocalCache];
     }];
+}
+
+// 本地xml仅供测试用
+- (void) readWeatherFromXML{
+    NSString *xmlPath = [[NSBundle mainBundle] pathForResource:@"weather" ofType:@"xml"];
+    NSData *xmlData = [NSData dataWithContentsOfFile:xmlPath];
+    NSXMLParser *_parser = [[NSXMLParser alloc] initWithData:xmlData];
+    _weather = [[JDOWeather alloc] initWithParser:_parser];
+    if([_weather parse]){
+        [self refreshWeather];
+    }
+}
+
+- (void) readWeatherFromLocalCache{
+    if((_weather = [JDOWeather readFromFile])){
+        [self refreshWeather];
+    }else{
+        temperatureLabel.text = @"无法获取天气信息";
+        [temperatureLabel sizeToFit];
+    }
 }
 
 - (void) refreshWeather{
 #warning 天气预报的第一天并不一定是当天，是否要加判断？
     _forcast = [_weather.forecast objectAtIndex:0];
+    cityLabel.text = _weather.city;
+    [cityLabel sizeToFit];
     weatherIcon.image = [UIImage imageNamed:[_forcast.weatherDetail stringByAppendingPathExtension:@"png"] ];
     temperatureLabel.text = _forcast.temperature;
     [temperatureLabel sizeToFit];
@@ -170,92 +197,6 @@
     
     dateLabel.text = [NSString stringWithFormat:@"%@ %@ 农历%@",dateString,weekDay,[[JDOCommonUtil getChineseCalendarWithDate:aDate] substringFromIndex:2] ]; //阴历不显示年份
     [dateLabel sizeToFit];
-}
-
-#pragma mark - NSXMLParserDelegate
-
-- (void)parserDidStartDocument:(NSXMLParser *)parser{
-    xmlIndex = 0;
-}
-
-- (void)parserDidEndDocument:(NSXMLParser *)parser{
-    [_weather analysis];
-    [_weather.forecast enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(JDOWeatherForcast *)obj analysis];
-    }];
-}
-
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
-    if([elementName isEqualToString:@"ArrayOfString"]){
-        _weather = [[JDOWeather alloc] init];
-        _weather.success = true;
-        [_weather.date appendString:[[NSDate date] description]];
-    } 
-}
-
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
-    if([elementName isEqualToString:@"string"]){
-        xmlIndex++;
-        if((xmlIndex - 7) % 5 == 0){
-            _forcast = [[JDOWeatherForcast alloc] init];
-        }else if((xmlIndex - 7) % 5 == 4){
-            [_weather.forecast addObject:_forcast];
-        }
-    }
-}
-
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
-    if([string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length==0) {
-        return ;
-    }
-    switch (xmlIndex) {
-        case 0:// Array(0) = "省份 地区/洲 国家名（国外）"
-            [_weather.provinceAndCity appendString:string];
-            break;
-        case 1:// Array(1) = "查询的天气预报地区名称"
-            [_weather.district appendString:string];
-            break;
-        case 2:// Array(2) = "查询的天气预报地区ID"
-            [_weather.cityCode appendString:string];
-            break;
-        case 3:// Array(3) = "最后更新时间 格式：yyyy-MM-dd HH:mm:ss"
-            [_weather.updateTime appendString:string];;
-            break;
-        case 4:{// Array(4) = "当前天气实况：气温、风向/风力、湿度"
-            [_weather.tempWindAndHum appendString:string];
-            break;
-        }
-        case 5:{// Array(5) = "当前 空气质量、紫外线强度"
-            [_weather.airAndZiwaixian appendString:string];
-            break;
-        }
-        case 6:// Array(6) = "当前 天气和生活指数"
-            [_weather.lifeSuggestion appendString:string];
-            break;
-        default:
-            switch ((xmlIndex - 7) % 5) {
-                case 0:// Array(n-4) = "第二天 概况 格式：M月d日 天气概况"
-                    [_forcast.status appendString:string];
-                    break;
-                case 1:// Array(n-3) = "第二天 气温"
-                    [_forcast.temperature appendString:string];
-                    break;
-                case 2:// Array(n-2) = "第二天 风力/风向"
-                    [_forcast.wind appendString:string];
-                    break;
-                default:
-                    break;
-            }
-    }
-}
-
-- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError{
-    NSLog(@"%@",parseError.localizedDescription);
-}
-
-- (void)parser:(NSXMLParser *)parser validationErrorOccurred:(NSError *)validationError{
-    NSLog(@"%@",validationError.localizedDescription);
 }
 
 

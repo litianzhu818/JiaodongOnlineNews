@@ -172,6 +172,7 @@
 
 - (void) updateLastRefreshTime{
     self.lastUpdateTime = [NSDate date];
+#warning 使用NSDate+SSToolkitAdditions来表示文字描述的刷新时间
     NSString *updateTimeStr = [JDOCommonUtil formatDate:self.lastUpdateTime withFormatter:DateFormatYMDHM];
     [self.tableView.pullToRefreshView setSubtitle:[NSString stringWithFormat:@"上次刷新于:%@",updateTimeStr] forState:SVPullToRefreshStateAll];
 }

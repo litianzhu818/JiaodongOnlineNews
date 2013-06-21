@@ -22,6 +22,23 @@
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        self.date = [aDecoder decodeObjectForKey:@"date"];
+        self.weatherDetail = [aDecoder decodeObjectForKey:@"weatherDetail"];
+        self.temperature = [aDecoder decodeObjectForKey:@"temperature"];
+        self.wind = [aDecoder decodeObjectForKey:@"wind"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.date forKey:@"date"];
+    [aCoder encodeObject:self.weatherDetail forKey:@"weatherDetail"];
+    [aCoder encodeObject:self.temperature forKey:@"temperature"];
+    [aCoder encodeObject:self.wind forKey:@"wind"];
+}
+
 - (void)analysis{
     [self.date appendString: [[self.status componentsSeparatedByString:@" "] objectAtIndex:0]];
     [self.weatherDetail appendString: [[self.status componentsSeparatedByString:@" "] lastObject]];

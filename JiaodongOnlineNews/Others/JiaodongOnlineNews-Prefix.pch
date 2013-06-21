@@ -52,6 +52,13 @@
 #define News_Cell_Height 70
 #define Review_Font_Size 14
 
+// 刷新时间间隔
+#define Weather_Update_Time @"Weather_Update_Time"
+#define Weather_Update_Interval 60*60   //一小时
+#define News_Update_Time @"News_Update_Time"
+#define News_Update_Interval 30*60
+
+
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"
 #define IMAGE_SERVICE @"Data/getImages"

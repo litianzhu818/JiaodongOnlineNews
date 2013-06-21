@@ -7,6 +7,7 @@
 //
 
 #import "JDOAppDelegate.h"
+#import <objc/runtime.h>
 
 #import "JDONewsViewController.h"
 #import "Reachability.h"
@@ -154,11 +155,12 @@
     return deckController;
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    
     [ShareSDK registerApp:@"4991b66e0ae"];
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
+    [ShareSDK setInterfaceOrientationMask:SSInterfaceOrientationMaskPortrait];
     [self initializePlatform];
     
     //监听用户信息变更
@@ -350,5 +352,6 @@
 {
     
 }
+
 
 @end
