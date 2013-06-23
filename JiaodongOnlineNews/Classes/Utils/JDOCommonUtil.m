@@ -25,7 +25,7 @@ static NSDateFormatter *dateFormatter;
 + (NSString *) formatErrorWithOperation:(AFHTTPRequestOperation *)operation error:(NSError *)error{
     NSString *errorStr ;
     if(operation.response.statusCode != 200){
-        errorStr = [@"服务器端错误:" stringByAppendingString:[NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode]];
+        errorStr = [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode];
     }else{
         errorStr = error.domain;
     }
@@ -195,6 +195,18 @@ static NSDateFormatter *dateFormatter;
 
 + (NSURL *)applicationSupportDirectoryURL {
 	return [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+#pragma mark - 提示窗口
+
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = content;
+    hud.margin = 10.f;
+    hud.yOffset = 150.f;
+    hud.removeFromSuperViewOnHide = YES;
+    [hud hide:YES afterDelay:1];
 }
 
 @end

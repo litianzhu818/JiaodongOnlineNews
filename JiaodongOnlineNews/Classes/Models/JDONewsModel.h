@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDONewsModel : NSObject
+@interface JDONewsModel : NSObject <NSCoding>
 
 @property (nonatomic,copy) NSString *atype;
 @property (nonatomic,copy) NSString *clicknum;

@@ -33,6 +33,8 @@ typedef enum {
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
 
+@property (nonatomic,assign) BOOL isShowingLocalCache;
+
 - (void)loadDataFromNetwork;
 
 @end

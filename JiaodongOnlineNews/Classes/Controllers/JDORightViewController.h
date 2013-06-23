@@ -3,12 +3,9 @@
 //  ViewDeckExample
 //
 
-@interface JDORightViewController : UIViewController
+@interface JDORightViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
 
-- (IBAction)onAboutClick:(id)sender;
-
-- (IBAction)onSettingClick:(id)sender;
-- (IBAction)OnFeedbackClick:(id)sender;
+@property (nonatomic,strong) UITableView *tableView;
 
 - (void) transitionToAlpha:(float) alpha Scale:(float) scale;
 

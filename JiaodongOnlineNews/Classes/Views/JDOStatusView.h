@@ -16,6 +16,8 @@ typedef enum {
     ViewStatusRetry,        //服务器错误,点击重试
 } ViewStatusType;   //需要从网络加载的视图的几种状态变化
 
+@protocol JDOStatusViewDelegate;
+
 @interface JDOStatusView : UIView
 
 @property (nonatomic,strong) UIImageView *noNetWorkView;
@@ -24,15 +26,24 @@ typedef enum {
 @property (nonatomic,strong) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic,assign) ViewStatusType status;
-
-- (void) setReloadTarget:(id)target selector:(SEL)selector;
+@property (nonatomic,assign) id<JDOStatusViewDelegate> delegate;
 
 @end
 
-@protocol JDOStatusView
+@protocol JDOStatusView <NSObject>
 
 @required
 @property (strong,nonatomic) JDOStatusView *statusView;
 - (void) setCurrentState:(ViewStatusType)status;
 
 @end
+
+@protocol JDOStatusViewDelegate <NSObject>
+
+@optional
+- (void) onRetryClicked:(JDOStatusView *) statusView;
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView;
+
+@end
+
+

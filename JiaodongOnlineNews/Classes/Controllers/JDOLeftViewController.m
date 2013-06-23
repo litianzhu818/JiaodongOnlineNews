@@ -206,7 +206,7 @@
 
 - (void) transitionToAlpha:(float) alpha Scale:(float) scale{
     self.blackMask.alpha = alpha;
-//    self.view.transform = CGAffineTransformMakeScale(scale, scale);
+    self.view.transform = CGAffineTransformMakeScale(scale, scale);
 }
 
 - (void)viewDidUnload{
@@ -274,17 +274,25 @@
 //        lastSelectedCell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:lastSelectedRow]];
 //        lastSelectedCell.backgroundView = nil;
 //    }
-    [tableView reloadData];
     lastSelectedRow = indexPath.row;
+    [tableView reloadData];
     
-    [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
-        if ([controller.centerController isKindOfClass:[JDOCenterViewController class]]) {
-            JDOCenterViewController *centerController = (JDOCenterViewController *)controller.centerController;
-            [centerController setRootViewControllerType:indexPath.row];
-        }
-    } completion:^(IIViewDeckController *controller, BOOL success) {
-        
-    }];
+    // 使用slide动画关闭左菜单
+    if ([self.viewDeckController.centerController isKindOfClass:[JDOCenterViewController class]]) {
+        JDOCenterViewController *centerController = (JDOCenterViewController *)self.viewDeckController.centerController;
+        [centerController setRootViewControllerType:indexPath.row];
+    }
+    [self.viewDeckController closeLeftViewAnimated:true];
+    
+    // 使用Bouncing动画关闭左菜单
+//    [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
+//        if ([controller.centerController isKindOfClass:[JDOCenterViewController class]]) {
+//            JDOCenterViewController *centerController = (JDOCenterViewController *)controller.centerController;
+//            [centerController setRootViewControllerType:indexPath.row];
+//        }
+//    } completion:^(IIViewDeckController *controller, BOOL success) {
+//        
+//    }];
 }
 
 @end

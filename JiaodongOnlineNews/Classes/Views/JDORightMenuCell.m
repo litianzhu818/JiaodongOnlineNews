@@ -1,18 +1,18 @@
 //
-//  JDOLeftMenuCell.m
+//  JDORightMenuCell.m
 //  JiaodongOnlineNews
 //
-//  Created by zhang yi on 13-6-20.
+//  Created by zhang yi on 13-6-21.
 //  Copyright (c) 2013年 胶东在线. All rights reserved.
 //
 
-#import "JDOLeftMenuCell.h"
+#import "JDORightMenuCell.h"
 
 #define icon_size 42.0f
 #define label_width 80.0f
 #define padding 20.0f
 
-@implementation JDOLeftMenuCell
+@implementation JDORightMenuCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -35,10 +35,11 @@
     [super layoutSubviews];
     
     float cellHeight = self.frame.size.height;
-    self.imageView.frame = CGRectMake(padding,(cellHeight-icon_size)/2,icon_size,icon_size);
+    float cellWidth = self.frame.size.width;
+    self.imageView.frame = CGRectMake(cellWidth-1.3*padding-label_width-icon_size,(cellHeight-icon_size)/2,icon_size,icon_size);
     
     CGRect frame = self.textLabel.frame;
-    self.textLabel.frame = CGRectMake(1.5*padding+icon_size,CGRectGetMinY(frame),label_width,CGRectGetHeight(frame));
+    self.textLabel.frame = CGRectMake(cellWidth-padding-label_width,CGRectGetMinY(frame),label_width,CGRectGetHeight(frame));
 }
 
 @end

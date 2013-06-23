@@ -31,15 +31,29 @@
         [self.logoView addSubview:self.activityIndicator];
         self.logoView.center = self.center;
         [self addSubview:self.logoView];
+        
+        [self.retryView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRetryClicked)]];
+        [self.noNetWorkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNoNetworkClicked)]];
     }
     return self;
 }
 
-- (void) setReloadTarget:(id)target selector:(SEL)selector{
-    [self.retryView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:target action:selector]];
-    [self.noNetWorkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:target action:selector]];
+- (void) onRetryClicked{
+    self.status = ViewStatusLoading;
+    if([self.delegate respondsToSelector:@selector(onRetryClicked:)]){
+        [self.delegate onRetryClicked:self];
+    }
 }
 
+- (void) onNoNetworkClicked{
+    if(![Reachability isEnableNetwork]){
+        return;
+    }
+    self.status = ViewStatusLoading;
+    if([self.delegate respondsToSelector:@selector(onNoNetworkClicked:)]){
+        [self.delegate onNoNetworkClicked:self];
+    }
+}
 
 
 - (void) setStatus:(ViewStatusType)status{

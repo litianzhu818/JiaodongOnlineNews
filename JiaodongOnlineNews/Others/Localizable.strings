@@ -1,6 +1,7 @@
 "Pull to refresh..."="下拉可以刷新";
 "Release to refresh..."="松开立即刷新";
 "Loading..."="加载中,请稍后...";
+"Last Updated: %@" = "上次更新于:%@";
 
 "1s" = "1秒";   // one second
 "%ds" = "%d秒";   // several seconds
@@ -11,11 +12,11 @@
 "1d" = "1天";   // one day
 "%@d" = "%@天";   // several days
 
-"1 minute" = "1 分钟";
-"%d minutes" = "少于 %d 秒";
-"half a minute" = "半分钟";
-"less than a minute" = "少于一分钟";
-"%d minutes" = "%d 分钟";
+"1 minute" = "1分钟前";
+"less than %d seconds" = "%d秒前";
+"half a minute" = "半分钟前";
+"less than a minute" = "一分钟前";
+"%d minutes" = "%d分钟前";
 "about 1 hour" = "大约1小时";
 "about %d hours" = "大约%d 小时";
 "1 day" = "1 天";

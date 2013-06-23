@@ -40,6 +40,8 @@ typedef enum{
 + (NSURL *)libraryDirectoryURL;
 + (NSURL *)applicationSupportDirectoryURL;
 
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view;
+
 @end
 
 BOOL JDOIsEmptyString(NSString *string);

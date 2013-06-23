@@ -18,9 +18,10 @@
 
 @end
 
-@implementation JDONewsViewController
-
-BOOL pageControlUsed;
+@implementation JDONewsViewController{
+    BOOL pageControlUsed;
+    int lastCenterPageIndex;
+}
 
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
@@ -35,7 +36,7 @@ BOOL pageControlUsed;
            [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
            [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"],
            ];
-        _pageCache = [[NSMutableDictionary alloc] initWithCapacity:5];
+//        _pageCache = [[NSMutableDictionary alloc] initWithCapacity:5];
     }
     return self;
 }
@@ -48,7 +49,7 @@ BOOL pageControlUsed;
     [self.view addSubview:_pageControl];
     
     _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,44+37,[self.view bounds].size.width,[self.view bounds].size.height -44- 37)];
-    _scrollView.backgroundColor = [UIColor whiteColor];
+    _scrollView.backgroundColor = [UIColor grayColor];
     _scrollView.delegate = self;
     _scrollView.dataSource = self;
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
@@ -67,7 +68,7 @@ BOOL pageControlUsed;
     [_scrollView reloadData];
     [_scrollView moveToPageAtIndex:0 animated:false];
     
-    [self changeNewPageStatus];
+    [self changeCenterPageStatus];
 }
 
 - (void)viewDidUnload{
@@ -101,10 +102,19 @@ BOOL pageControlUsed;
     
     if (nil == page) {
         page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds info:newsCategoryInfo];
+        page.statusView.delegate = self;
     }
-    [_pageCache setObject:page forKey:newsCategoryInfo.reuseId];
+//    [_pageCache setObject:page forKey:newsCategoryInfo.reuseId];
     
     return page;
+}
+
+- (void) onRetryClicked:(JDOStatusView *) statusView{
+    [(JDONewsCategoryView *)statusView.superview loadDataFromNetwork];
+}
+
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
+    [(JDONewsCategoryView *)statusView.superview loadDataFromNetwork];
 }
 
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{
@@ -118,16 +128,20 @@ BOOL pageControlUsed;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    if (!decelerate){
-        pageControlUsed = NO;
-        [self changeNewPageStatus];
-    }
+    // 在最左和最右页面拖动完成时不会有加速度
+//    if (!decelerate){
+//        pageControlUsed = NO;
+//        [self changeCenterPageStatus];
+//    }
 }
 
 // 拖动scrollview换页完成时执行该回调
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
 	pageControlUsed = NO;
-    [self changeNewPageStatus];
+    // 拖动可能反向回到原来的页面，而点pagecontrol换页不会
+    if(lastCenterPageIndex != _scrollView.centerPageIndex){
+        [self changeCenterPageStatus];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -142,7 +156,7 @@ BOOL pageControlUsed;
 // 点击pagecontrol换页完成时执行该回调
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView_{
 	pageControlUsed = NO;
-    [self changeNewPageStatus];
+    [self changeCenterPageStatus];
 }
 
 - (void)onPageChangedByPageControl:(id)sender{
@@ -162,56 +176,40 @@ BOOL pageControlUsed;
     
 }
 
-
-- (void) changeNewPageStatus{
-    JDONewsCategoryInfo *pageInfo = (JDONewsCategoryInfo *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
-    JDONewsCategoryView *page = (JDONewsCategoryView *)[_pageCache objectForKey:pageInfo.reuseId];
+- (void) changeCenterPageStatus{
+    lastCenterPageIndex = _scrollView.centerPageIndex;
+    JDONewsCategoryView *page = (JDONewsCategoryView *)_scrollView.centerPageView;
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
+    JDONewsCategoryInfo *pageInfo = (JDONewsCategoryInfo *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
     
-//    NSLog(@"page index:%d category:%@,status:%d",tmpPageIndex,page.info.title,page.status);
+    // 页面初始化完成时只可能有两个状态 ViewStatusLogo(无缓存)/ViewStatusNormal(显示缓存),其他状态只可能在重新导航会该页面时产生
     if(page.status == ViewStatusNormal){
         if([Reachability isEnableNetwork]){
-#warning 上次从本地数据库加载，则重新加载
-            if(false){
-                
+            //显示的数据是从本地缓存加载，则重新加载，也就是说初始化页面的时候始终认为本地缓存是过期的数据
+            if(page.isShowingLocalCache){
+                [page loadDataFromNetwork];
             }else{
                 NSMutableDictionary *updateTimes = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:News_Update_Time] mutableCopy];
-                if( updateTimes == nil){
-                    updateTimes = [[NSMutableDictionary alloc] initWithCapacity:_pageInfos.count];
-                    [self saveLastUpdateTime:updateTimes withKey:pageInfo.title];
-                }else{
-                    NSNumber *itemLastUpdateValue = [updateTimes objectForKey:pageInfo.title];
-                    if( itemLastUpdateValue == nil ){
-                        [self saveLastUpdateTime:updateTimes withKey:pageInfo.title];
-                    }else{
-                        double lastUpdateTime = [itemLastUpdateValue doubleValue];
-                        // 上次加载时间离现在超过时间间隔
-                        if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > News_Update_Interval ){
-                            [self saveLastUpdateTime:updateTimes withKey:pageInfo.title];
-#warning 自动刷新应该有提示,最好不要用下拉刷新的样式,可以用progresshud来提示
-                            [page loadDataFromNetwork];
-                        }
+                if( updateTimes && [updateTimes objectForKey:pageInfo.title]){
+                    double lastUpdateTime = [(NSNumber *)[updateTimes objectForKey:pageInfo.title] doubleValue];
+                    // 上次加载时间离现在超过时间间隔
+                    if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > News_Update_Interval/**/ ){
+                        [page loadDataFromNetwork];
                     }
                 }
-            } 
-        }
-    }else if(page.status == ViewStatusLoading){
-        return;
-    }else{
-        if(![Reachability isEnableNetwork]){   
-#warning 若有本地数据，则从本地加载
-            if(false){
-                
-            }else{
-#warning 若无本地数据，显示无网络界面，应监听网络通知，若有网络则自动加载
-                [page setCurrentState:ViewStatusNoNetwork];
             }
+        }
+    }else if(page.status != ViewStatusLoading){
+        if(![Reachability isEnableNetwork]){
+#warning 显示无网络界面，应监听网络通知，若有网络则自动加载
+            [page setCurrentState:ViewStatusNoNetwork];
         }else{  // 从网络加载数据，切换到loading状态
             [page setCurrentState:ViewStatusLoading];
             [page loadDataFromNetwork];
         }
     }
 }
+
 
 - (void) saveLastUpdateTime:(NSMutableDictionary *)updateTimes withKey:(NSString *) key{
     [updateTimes setObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]] forKey:key];

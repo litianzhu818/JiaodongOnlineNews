@@ -196,23 +196,23 @@
     NSLog(@"%@",line);
 }
 
-//- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-//    shadowLayer.masksToBounds = NO;
-//    shadowLayer.shadowRadius = 30;  //10
-//    shadowLayer.shadowOpacity = 1;  //0.5
-//    shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
-//    shadowLayer.shadowOffset = CGSizeZero;
-//    shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
-//}
+- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowRadius = 20;  //10
+    shadowLayer.shadowOpacity = 0.7;  //0.5
+    shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
+    shadowLayer.shadowOffset = CGSizeZero;
+    shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
+}
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController didChangeOffset:(CGFloat)offset orientation:(IIViewDeckOffsetOrientation)orientation panning:(BOOL)panning {
     
     if(orientation == IIViewDeckHorizontalOrientation){
         if(offset != 0){
             float _offset = offset>0 ? viewDeckController.leftSize+offset : viewDeckController.rightSize-offset;
-            float scale = _offset/6400+Min_Scale;
-            float alpha = Max_Alpah - (_offset/400);
-            if( _offset >= 320 ){
+            float scale = _offset/320*(1.0-Min_Scale)+Min_Scale;
+            float alpha = Max_Alpah - (_offset/320*Max_Alpah);
+            if( _offset > 320 ){
                 scale = 1.0f;
                 alpha = 0;
             }

@@ -11,8 +11,9 @@
 
 @class JDOPageControl;
 @class NIPagingScrollView;
+@protocol JDOStatusViewDelegate;
 
-@interface JDONewsViewController : JDONavigationController <UIScrollViewDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource>
+@interface JDONewsViewController : JDONavigationController <UIScrollViewDelegate,NIPagingScrollViewDelegate,NIPagingScrollViewDataSource,JDOStatusViewDelegate>
 
 /**
  存放内容的控件

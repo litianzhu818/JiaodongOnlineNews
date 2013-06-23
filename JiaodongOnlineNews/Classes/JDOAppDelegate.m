@@ -140,14 +140,14 @@
 
 - (IIViewDeckController *)generateControllerStack {
     JDOLeftViewController *leftController = [[JDOLeftViewController alloc] init];
-    JDORightViewController *rightController = [[JDORightViewController alloc] initWithNibName:@"JDORightViewController" bundle:nil];
+    JDORightViewController *rightController = [[JDORightViewController alloc] init];
     
     JDOCenterViewController *centerController = [[JDOCenterViewController alloc] init];
     [centerController setRootViewControllerType:MenuItemNews];
 
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
     deckController.leftSize = 120;
-    deckController.rightSize = 100;
+    deckController.rightSize = 140;
     deckController.panningGestureDelegate = centerController;
     deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
     deckController.delegate = centerController;

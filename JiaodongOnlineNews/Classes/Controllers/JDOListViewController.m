@@ -66,8 +66,16 @@
     }
     
     self.statusView = [[JDOStatusView alloc] initWithFrame:frame];
-    [self.statusView setReloadTarget:self selector:@selector(loadDataFromNetwork)];
+    self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
+}
+
+- (void) onRetryClicked{
+    [self loadDataFromNetwork];
+}
+
+- (void) onNoNetworkClicked{
+    [self loadDataFromNetwork];
 }
 
 - (void)viewDidLoad

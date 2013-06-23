@@ -31,14 +31,15 @@
 #import "UIColor+SSToolkitAdditions.h"
 #import "NSString+SSToolkitAdditions.h"
 #import "JDONavigationController.h"
+#import "MBProgressHUD.h"
 
 #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
-#define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageCacheMemoryOnly
+#define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload//|SDWebImageCacheMemoryOnly
 #define USE_JSONKIT
 #define App_Height [[UIScreen mainScreen] applicationFrame].size.height
 
 // 视图转换
-#define Min_Scale 0.98f
+#define Min_Scale 0.96f
 #define Max_Alpah 0.8f
 #define Transition_Window_Right CGRectMake(320, 20, 320, App_Height)
 #define Transition_Window_Center CGRectMake(0, 20, 320, App_Height)
