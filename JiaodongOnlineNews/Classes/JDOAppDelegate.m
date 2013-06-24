@@ -147,7 +147,7 @@
 
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
     deckController.leftSize = 120;
-    deckController.rightSize = 140;
+    deckController.rightSize = 150;
     deckController.panningGestureDelegate = centerController;
     deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
     deckController.delegate = centerController;

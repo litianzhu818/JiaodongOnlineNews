@@ -8,6 +8,7 @@
 
 #import "JDONewsTableCell.h"
 #import "JDONewsModel.h"
+#import "SSGradientView.h"
 
 #define Default_Image @"default_icon.png"
 
@@ -27,9 +28,25 @@
         self.textLabel.font = [UIFont boldSystemFontOfSize:16];
         self.detailTextLabel.font = [UIFont systemFontOfSize:13];
         self.detailTextLabel.numberOfLines = 2;
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.imageView.layer.cornerRadius = 5;
         self.imageView.layer.masksToBounds = true;
+        
+        self.textLabel.textColor = [UIColor blackColor];
+        self.textLabel.highlightedTextColor = [UIColor blackColor];
+        self.textLabel.backgroundColor = [UIColor clearColor];
+        
+        self.detailTextLabel.textColor = [UIColor colorWithRed:99.0/255.0 green:99.0/255.0 blue:99.0/255.0 alpha:1.0];
+        self.detailTextLabel.highlightedTextColor = [UIColor colorWithRed:99.0/255.0 green:99.0/255.0 blue:99.0/255.0 alpha:1.0];
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];
+        
+        self.contentView.backgroundColor = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0];
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        SSGradientView *backgroundView = [[SSGradientView alloc] initWithFrame:self.bounds];
+        backgroundView.topColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0];
+        backgroundView.bottomColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0];
+        backgroundView.topBorderColor = [UIColor colorWithRed:166.0/255.0 green:166.0/255.0 blue:166.0/255.0 alpha:1.0];
+        backgroundView.bottomBorderColor = [UIColor colorWithRed:166.0/255.0 green:166.0/255.0 blue:166.0/255.0 alpha:1.0];
+        self.selectedBackgroundView = backgroundView;
     }
     return self;
 }

@@ -122,7 +122,7 @@
     HUDShowTime = [NSDate date];
     
     // 加载头条
-    [[JDOJsonClient sharedClient] getJSONByServiceName:@"b" modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -137,7 +137,7 @@
     }];
     
     // 加载列表
-    [[JDOHttpClient sharedClient] getJSONByServiceName:@"b" modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
         if(dataList == nil){
             // 数据加载完成
         }else if(dataList.count >0){
@@ -164,10 +164,11 @@
             usleep((Hint_Min_Show_Time-delay)*1000*1000);
 //            NSLog(@"%g",[[NSDate date] timeIntervalSinceDate:a]);
         }
-        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
-        HUD.mode = MBProgressHUDModeCustomView;
-        HUD.labelText = @"更新成功";
-        [HUD hide:true afterDelay:1.0];
+        [HUD hide:true];
+//        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+//        HUD.mode = MBProgressHUDModeCustomView;
+//        HUD.labelText = @"更新成功";
+//        [HUD hide:true afterDelay:1.0];
         HUDShowTime = nil;
     }
 }
@@ -179,6 +180,7 @@
         if(delay < Hint_Min_Show_Time){
             usleep(Hint_Min_Show_Time-delay*1000*1000);
         }
+#warning 替换服务器错误的提示内容和图片
         HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.labelText = errorStr;
@@ -408,6 +410,7 @@
         JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         [centerController pushViewController:detailController animated:true];
+        [tableView deselectRowAtIndexPath:indexPath animated:true];
     }
 }
 
