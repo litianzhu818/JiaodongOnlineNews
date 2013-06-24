@@ -15,21 +15,24 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.noNetWorkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bad_net"]];
-        self.noNetWorkView.center = self.center;
+        self.noNetWorkView.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+//        self.noNetWorkView.center = self.center;
         self.noNetWorkView.userInteractionEnabled = true;
         [self addSubview:self.noNetWorkView];
         
         self.retryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"retry"]];
-        self.retryView.center = self.center;
+        self.retryView.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+//        self.retryView.center = self.center;
         self.retryView.userInteractionEnabled = true;
         [self addSubview:self.retryView];
         
         self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"progressbar_logo"]];
+        self.logoView.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+//        self.logoView.center = self.center;
         self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.activityIndicator sizeToFit];
         self.activityIndicator.center = CGPointMake(self.logoView.center.x,self.logoView.center.y-50);
         [self.logoView addSubview:self.activityIndicator];
-        self.logoView.center = self.center;
         [self addSubview:self.logoView];
         
         [self.retryView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRetryClicked)]];

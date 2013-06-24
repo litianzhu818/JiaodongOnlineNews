@@ -38,13 +38,11 @@ typedef enum {
     NSArray *iconNames;
     NSArray *iconSelectedNames;
     NSArray *iconTitles;
-    int lastSelectedRow;
 }
 
 - (id)init{
     self = [super init];
     if (self) {
-        lastSelectedRow = -1;
         iconNames = @[@"menu_setting",@"menu_collect",@"menu_feedback",@"menu_about",@"menu_about",@"menu_about",@"menu_about"];
         iconSelectedNames = @[@"menu_setting_selected",@"menu_collect_selected",@"menu_feedback_selected",@"menu_about_selected",@"menu_about_selected",@"menu_about_selected",@"menu_about_selected"];
 #warning 评价一下,检查更新,分享绑定
@@ -80,10 +78,6 @@ typedef enum {
     IIViewDeckController *deckController = [SharedAppDelegate deckController];
     _controllerStack = [[NSMutableArray alloc] init];
     [_controllerStack addObject:deckController];
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    lastSelectedRow = -1;
 }
 
 - (void) transitionToAlpha:(float) alpha Scale:(float) scale{
@@ -128,17 +122,13 @@ typedef enum {
     JDORightMenuCell *cell = (JDORightMenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[JDORightMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-    
-    if(indexPath.row == lastSelectedRow){
-        cell.imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
-        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
-    }else{
-        cell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
-        cell.backgroundView = nil;
-        cell.textLabel.textColor = [UIColor whiteColor];
-    }
+    cell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
+    cell.imageView.highlightedImage = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
+    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.highlightedTextColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
     cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
     
     return cell;
@@ -152,8 +142,6 @@ typedef enum {
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    lastSelectedRow = indexPath.row;
-    [tableView reloadData];
     
     switch (indexPath.row) {
         case RightMenuItemSetting:
@@ -180,6 +168,8 @@ typedef enum {
         default:
             break;
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
 

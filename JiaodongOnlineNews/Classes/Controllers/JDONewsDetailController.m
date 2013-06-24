@@ -73,7 +73,7 @@
 - (void)loadView{
     [super loadView];
     // 内容
-    self.view.backgroundColor = [UIColor colorWithHex:@"f6f6f6"];// 与html的body背景色相同
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-Toolbar_Height)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;

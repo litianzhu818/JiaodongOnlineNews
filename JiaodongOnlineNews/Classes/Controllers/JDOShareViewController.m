@@ -52,6 +52,10 @@
     
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;
+//    self.imageView.layer.shadowColor = [UIColor blackColor].CGColor;
+//    self.imageView.layer.shadowOffset = CGSizeMake(2, 2);
+//    self.imageView.layer.shadowOpacity = 0.8;
+//    self.imageView.layer.shadowRadius = 1.8;
     [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:self.newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
 
     } failure:^(NSError *error) {

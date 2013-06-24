@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOListViewController : JDONavigationController<JDOStatusView>
+@interface JDOListViewController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,strong) UITableView *tableView;

@@ -30,6 +30,9 @@
         self.modelClass = modelClass;
         self.title = title;
         self.listParam = listParam;
+        if( self.listParam == nil){
+            self.listParam = [[NSMutableDictionary alloc] init];
+        }
         NSNumber *__currentPage = [self.listParam objectForKey:@"p"];
         NSNumber *__pageSize = [self.listParam objectForKey:@"pageSize"];
         
@@ -51,6 +54,7 @@
 }
 -(void)loadView{
     [super loadView];
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     CGRect frame = CGRectMake(0, 44, 320, App_Height-44);
     _tableView = [[UITableView alloc] initWithFrame:frame];
@@ -70,11 +74,11 @@
     [self.view addSubview:self.statusView];
 }
 
-- (void) onRetryClicked{
+- (void) onRetryClicked:(JDOStatusView *) statusView{
     [self loadDataFromNetwork];
 }
 
-- (void) onNoNetworkClicked{
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
     [self loadDataFromNetwork];
 }
 
@@ -82,12 +86,11 @@
 {
     [super viewDidLoad];
     
-    [self setCurrentState:ViewStatusLogo];
+    [self setCurrentState:ViewStatusLoading];
 	[self loadDataFromNetwork];
 }
 
 - (void) setCurrentState:(ViewStatusType)status{
-    if(_status == status)   return;
     _status = status;
     
     self.statusView.status = status;

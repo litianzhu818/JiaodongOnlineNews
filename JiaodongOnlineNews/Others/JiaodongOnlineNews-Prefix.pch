@@ -59,6 +59,9 @@
 #define News_Update_Time @"News_Update_Time"
 #define News_Update_Interval 30*60
 
+// 颜色
+#define Main_Background_Color @"ececec"
+
 
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
 #define ADV_SERVICE @"Data/getAdv"

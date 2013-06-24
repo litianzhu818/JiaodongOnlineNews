@@ -22,6 +22,7 @@
 		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
 		2D141460176324E400A6A50A /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D14145D176324E400A6A50A /* UIDevice+IdentifierAddition.m */; };
 		2D141461176324E400A6A50A /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D14145F176324E400A6A50A /* NSString+MD5Addition.m */; };
+		2D14665017782A13002BC44B /* JDOImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D14664F17782A13002BC44B /* JDOImageCell.m */; };
 		2D19CFE9174A3F8700BDAE39 /* JDOLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */; };
 		2D19CFEB174A3F8700BDAE39 /* JDORightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */; };
 		2D1DDB55175E21870048F7A7 /* news_template.html in Resources */ = {isa = PBXBuildFile; fileRef = 2D1DDB54175E21870048F7A7 /* news_template.html */; };
@@ -233,7 +234,6 @@
 		2D9FDC0A175D6B37003EAF78 /* JDOHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */; };
 		2D9FDC0E175D7922003EAF78 /* JDOJsonClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
-		2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */; };
 		2DE0845F175B872800A1A6BC /* JDONewsHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */; };
 		2DE931BD1772A86900A87ACC /* JDOLeftMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931BC1772A86900A87ACC /* JDOLeftMenuCell.m */; };
 		2DE931C01772C17600A87ACC /* JDOXmlClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931BF1772C17600A87ACC /* JDOXmlClient.m */; };
@@ -322,6 +322,8 @@
 		2D14145D176324E400A6A50A /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		2D14145E176324E400A6A50A /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		2D14145F176324E400A6A50A /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
+		2D14664E17782A12002BC44B /* JDOImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageCell.h; sourceTree = "<group>"; };
+		2D14664F17782A13002BC44B /* JDOImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageCell.m; sourceTree = "<group>"; };
 		2D19CFE3174A3F8700BDAE39 /* JDOLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLeftViewController.h; sourceTree = "<group>"; };
 		2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLeftViewController.m; sourceTree = "<group>"; };
 		2D19CFE6174A3F8700BDAE39 /* JDORightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDORightViewController.h; sourceTree = "<group>"; };
@@ -647,7 +649,6 @@
 		2D9FDC0F175D7980003EAF78 /* JDOWebClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWebClient.h; sourceTree = "<group>"; };
 		2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOSettingViewController.h; sourceTree = "<group>"; };
 		2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOSettingViewController.m; sourceTree = "<group>"; };
-		2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOSettingViewController.xib; sourceTree = "<group>"; };
 		2DE0845D175B872700A1A6BC /* JDONewsHeadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsHeadCell.h; sourceTree = "<group>"; };
 		2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsHeadCell.m; sourceTree = "<group>"; };
 		2DE931BB1772A86900A87ACC /* JDOLeftMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLeftMenuCell.h; sourceTree = "<group>"; };
@@ -1028,6 +1029,8 @@
 				2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */,
 				2D8E00D517643F1E002F0590 /* JDONewsReviewCell.h */,
 				2D8E00D617643F1E002F0590 /* JDONewsReviewCell.m */,
+				2D14664E17782A12002BC44B /* JDOImageCell.h */,
+				2D14664F17782A13002BC44B /* JDOImageCell.m */,
 				2D93122917600A2500C73802 /* UIView+Transition.h */,
 				2D93122A17600A2500C73802 /* UIView+Transition.m */,
 				2D8DB0B21760D67400DB3EF0 /* BadgedLauncherButtonView.h */,
@@ -1373,7 +1376,6 @@
 				2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */,
 				2DDFCCDF174D167D007E89F9 /* JDOSettingViewController.h */,
 				2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */,
-				2DDFCCE1174D167D007E89F9 /* JDOSettingViewController.xib */,
 				FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */,
 				FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */,
 				D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */,
@@ -1506,7 +1508,6 @@
 				2D01E6791748C81900B81568 /* InfoPlist.strings in Resources */,
 				2D8FAC20174896220071A601 /* icon.png in Resources */,
 				2D01E6811748DB2F00B81568 /* default_adv.jpg in Resources */,
-				2DDFCCE3174D167D007E89F9 /* JDOSettingViewController.xib in Resources */,
 				2D8ED76E1754F3B40093A574 /* progressbar_logo.png in Resources */,
 				2D8ED7701754F4270093A574 /* default_icon.png in Resources */,
 				2D8ED7721754F43A0093A574 /* bad_net.png in Resources */,
@@ -1788,6 +1789,7 @@
 				2DE931C31772D56B00A87ACC /* JDOWeatherForcast.m in Sources */,
 				2DE931C61772D57700A87ACC /* JDOWeather.m in Sources */,
 				2D8DA2B21774A55F0021F482 /* JDORightMenuCell.m in Sources */,
+				2D14665017782A13002BC44B /* JDOImageCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

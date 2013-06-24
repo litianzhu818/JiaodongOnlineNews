@@ -50,6 +50,7 @@
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
+        self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
         [self addSubview:self.tableView];
         
         __block JDONewsCategoryView *blockSelf = self;
@@ -111,15 +112,17 @@
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
     
-    HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
-	[SharedAppDelegate.window addSubview:HUD];
-//    HUD.color = [UIColor colorWithRed:0.23 green:0.50 blue:0.82 alpha:0.90];
-//    HUD.minShowTime = Hint_Min_Show_Time;
-    HUD.dimBackground = true;
-    HUD.labelText = @"更新数据";
-    HUD.removeFromSuperViewOnHide = true;
-    [HUD show:true];
-    HUDShowTime = [NSDate date];
+    if(self.status != ViewStatusLoading){   // 已经是loading状态就不需要HUD了，在没有缓存数据的时候发生
+        HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+        [SharedAppDelegate.window addSubview:HUD];
+//        HUD.color = [UIColor colorWithRed:0.23 green:0.50 blue:0.82 alpha:0.90];
+//        HUD.minShowTime = Hint_Min_Show_Time;
+//        HUD.dimBackground = true;
+        HUD.labelText = @"更新数据";
+        HUD.removeFromSuperViewOnHide = true;
+        [HUD show:true];
+        HUDShowTime = [NSDate date];
+    }
     
     // 加载头条
     [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
@@ -155,7 +158,7 @@
 }
 
 - (void)dismissHUDOnLoadFinished{
-    if(HUDShowTime){
+    if(HUD && HUDShowTime){
         // 防止加载提示消失的太快
         double delay = [[NSDate date] timeIntervalSinceDate:HUDShowTime];
         if(delay < Hint_Min_Show_Time){
@@ -165,6 +168,7 @@
 //            NSLog(@"%g",[[NSDate date] timeIntervalSinceDate:a]);
         }
         [HUD hide:true];
+        // 更新成功就不需要在提示了,只需要在错误的时候提示
 //        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
 //        HUD.mode = MBProgressHUDModeCustomView;
 //        HUD.labelText = @"更新成功";
@@ -174,7 +178,7 @@
 }
 
 - (void)dismissHUDOnLoadFailed:(NSString *)errorStr{
-    if(HUDShowTime){
+    if(HUD && HUDShowTime){
         // 防止加载提示消失的太快
         double delay = [[NSDate date] timeIntervalSinceDate:HUDShowTime];
         if(delay < Hint_Min_Show_Time){

@@ -49,7 +49,7 @@
     [self.view addSubview:_pageControl];
     
     _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,44+37,[self.view bounds].size.width,[self.view bounds].size.height -44- 37)];
-    _scrollView.backgroundColor = [UIColor grayColor];
+    _scrollView.backgroundColor = [UIColor whiteColor];
     _scrollView.delegate = self;
     _scrollView.dataSource = self;
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;

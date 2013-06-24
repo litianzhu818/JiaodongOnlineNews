@@ -9,13 +9,12 @@
 #import "JDOImageViewController.h"
 #import "JDOImageModel.h"
 #import "UIImageView+WebCache.h"
+#import "JDOImageCell.h"
 
 #define ImageList_Page_Size 20
 #define Default_Image @"default_icon.png"
 
 @interface JDOImageViewController ()
-
-@property(strong,nonatomic)UITableView* tableView;
 
 @property (nonatomic,strong) NSDate *lastUpdateTime;
 @property (nonatomic,assign) int currentPage;
@@ -38,51 +37,47 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.rowHeight = 197.0f;
+	self.tableView.rowHeight = 200.0f;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
 }
 
 - (void) setupNavigationView{
-    [self.navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
-    [self.navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
+    [self.navigationView addLeftButtonImage:@"left_menu_btn" highlightImage:@"left_menu_btn_clicked" target:self.viewDeckController action:@selector(toggleLeftView)];
+    [self.navigationView addRightButtonImage:@"right_menu_btn" highlightImage:@"right_menu_btn_clicked" target:self.viewDeckController action:@selector(toggleRightView)];
     [self.navigationView setTitle:@"精选图片"];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.listArray.count;//_tableView.listArray.count==0 ? 5:_tableView.listArray.count;
 }
 
+// 加了高度为10的空section，为了补齐上边距
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 10)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCell"];
+    static NSString *reuseId = @"ImageCell";
+    JDOImageCell* cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
     if(cell == nil){
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ImageTableCell" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
+        cell = [[JDOImageCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseId];
     }
-    UILabel *label = (UILabel*)[cell viewWithTag:1];
-    NSInteger row = [indexPath row];
-    NSArray *list = self.listArray;
-    JDOImageModel *image = [list objectAtIndex:row];
-    [label setText:image.title];
-    __block  UIImageView *blockImageView = (UIImage*)[cell viewWithTag:2];
-    [blockImageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:image.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-        if(!cached){    // 非缓存加载时使用渐变动画
-            CATransition *transition = [CATransition animation];
-            transition.duration = 0.3;
-            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            transition.type = kCATransitionFade;
-            [blockImageView.layer addAnimation:transition forKey:nil];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
-        return cell;
+    JDOImageModel *imageModel = [self.listArray objectAtIndex:indexPath.row];
+    [cell setModel:imageModel];
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

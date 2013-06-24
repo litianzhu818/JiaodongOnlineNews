@@ -18,7 +18,6 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        self.title = @"Badges";
         
         NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"ytweather"];
         NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"烟台天气"];
@@ -50,18 +49,20 @@
     [self setupNavigationView];
     [self.view addSubview:_navigationView];
     
-    self.launcherView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    self.launcherView.backgroundColor = [UIColor colorWithHex:Main_Background_Color]; // 236.0
     self.launcherView.delegate = self;
     self.launcherView.dataSource = self.model;
-    [self.launcherView setContentInsetForPages:UIEdgeInsetsMake(40,20,40,20)];
+//    self.launcherView.numberOfRows = 3;
+//    self.launcherView.numberOfColumns = 3;
+    self.launcherView.buttonSize = CGSizeMake(70, 90);  //  16号字行高20
+    [self.launcherView setContentInsetForPages:UIEdgeInsetsMake(30,5,30,5)];
     [self.launcherView reloadData];
 }
 
 - (void)setupNavigationView{
-    [_navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(toggleLeftView)];
-    [_navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(toggleRightView)];
+    [self.navigationView addLeftButtonImage:@"left_menu_btn" highlightImage:@"left_menu_btn_clicked" target:self.viewDeckController action:@selector(toggleLeftView)];
+    [self.navigationView addRightButtonImage:@"right_menu_btn" highlightImage:@"right_menu_btn_clicked" target:self.viewDeckController action:@selector(toggleRightView)];
     [_navigationView setTitle:@"便民查询"];
-    
 }
 
 - (void)launcherViewModel:(NILauncherViewModel *)launcherViewModel
@@ -71,10 +72,19 @@
               buttonIndex:(NSInteger)buttonIndex
                    object:(id<NILauncherViewObject>)object {
     NILauncherButtonView* launcherButtonView = (NILauncherButtonView *)buttonView;
-    launcherButtonView.label.layer.shadowColor = [UIColor blackColor].CGColor;
-    launcherButtonView.label.layer.shadowOffset = CGSizeMake(0, 1);
-    launcherButtonView.label.layer.shadowOpacity = 1;
-    launcherButtonView.label.layer.shadowRadius = 1;
+    
+    // UIButton的image默认有padding,backgroundImage没有
+    launcherButtonView.button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    launcherButtonView.button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+    
+    // 在NILauncherButtonView被设置为UIViewContentModeCenter:image不会被缩放到和imageView相同大小
+    launcherButtonView.button.imageView.contentMode = UIViewContentModeScaleToFill;
+    launcherButtonView.label.font = [UIFont boldSystemFontOfSize:16];
+    launcherButtonView.label.textColor = [UIColor blackColor];
+//    launcherButtonView.label.layer.shadowColor = [UIColor blackColor].CGColor;
+//    launcherButtonView.label.layer.shadowOffset = CGSizeMake(0, 1);
+//    launcherButtonView.label.layer.shadowOpacity = 1;
+//    launcherButtonView.label.layer.shadowRadius = 1;
 }
 
 #pragma mark - NILauncherDelegate
@@ -123,7 +133,6 @@
             break;
     }
     [self.navigationController pushViewController:controller animated:YES];
-    controller = nil;
 
 }
 
