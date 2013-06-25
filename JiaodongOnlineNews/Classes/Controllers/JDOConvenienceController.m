@@ -81,6 +81,7 @@
     launcherButtonView.button.imageView.contentMode = UIViewContentModeScaleToFill;
     launcherButtonView.label.font = [UIFont boldSystemFontOfSize:16];
     launcherButtonView.label.textColor = [UIColor blackColor];
+//    launcherButtonView.label.layer.shadowPath = [UIBezierPath bezierPathWithRect:launcherButtonView.label.bounds].CGPath;
 //    launcherButtonView.label.layer.shadowColor = [UIColor blackColor].CGColor;
 //    launcherButtonView.label.layer.shadowOffset = CGSizeMake(0, 1);
 //    launcherButtonView.label.layer.shadowOpacity = 1;

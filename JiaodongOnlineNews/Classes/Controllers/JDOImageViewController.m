@@ -11,7 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import "JDOImageCell.h"
 
-#define ImageList_Page_Size 20
+#define ImageList_Page_Size 10
 #define Default_Image @"default_icon.png"
 
 @interface JDOImageViewController ()
@@ -26,7 +26,9 @@
 
 
 -(id)init{
-    self = [super initWithServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" title:@"精选图片" params:nil needRefreshControl:true];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:@ImageList_Page_Size forKey:@"pageSize"];
+    self = [super initWithServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" title:@"精选图片" params:params needRefreshControl:true];
     if(self){
         
     }
@@ -59,12 +61,12 @@
     return self.listArray.count;//_tableView.listArray.count==0 ? 5:_tableView.listArray.count;
 }
 
-// 加了高度为10的空section，为了补齐上边距
+// 加了空section，为了补齐上边距
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 10;
+    return 9;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 10)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 9)];
     view.backgroundColor = [UIColor clearColor];
     return view;
 }

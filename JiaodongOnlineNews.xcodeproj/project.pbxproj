@@ -100,7 +100,7 @@
 		2D8B4097175A495600C8B04F /* NSString+NimbusCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B4080175A495500C8B04F /* NSString+NimbusCore.m */; };
 		2D8B40A1175A496200C8B04F /* NIPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B409A175A496200C8B04F /* NIPageView.m */; };
 		2D8B40A2175A496200C8B04F /* NIPagingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B409C175A496200C8B04F /* NIPagingScrollView.m */; };
-		2D8C0C6817728C1900BAD9D4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6717728C1900BAD9D4 /* Default.png */; };
+		2D8C0C6817728C1900BAD9D4 /* Default_backup.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6717728C1900BAD9D4 /* Default_backup.png */; };
 		2D8C0C6C17728C4600BAD9D4 /* right_menu_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6A17728C4600BAD9D4 /* right_menu_btn.png */; };
 		2D8C0C6E17728CE700BAD9D4 /* left_ment_btn_clicked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6D17728CE700BAD9D4 /* left_ment_btn_clicked.png */; };
 		2D8C0C7017728DBB00BAD9D4 /* right_menu_btn_clicked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C0C6F17728DBB00BAD9D4 /* right_menu_btn_clicked.png */; };
@@ -231,6 +231,7 @@
 		2D9BCED5176D820C0040DDA0 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D9BCE8F176D820B0040DDA0 /* libWeiboSDK.a */; };
 		2D9BCED7176D820C0040DDA0 /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D9BCE92176D820B0040DDA0 /* ShareSDK.framework */; };
 		2D9C7494175C87EC00B74ACE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D9C7493175C87EC00B74ACE /* Localizable.strings */; };
+		2D9D8F2A17791ADE00CF9C3B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9D8F2917791ADE00CF9C3B /* Default.png */; };
 		2D9FDC0A175D6B37003EAF78 /* JDOHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */; };
 		2D9FDC0E175D7922003EAF78 /* JDOJsonClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
@@ -462,7 +463,7 @@
 		2D8B409E175A496200C8B04F /* NIPagingScrollViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPagingScrollViewDataSource.h; sourceTree = "<group>"; };
 		2D8B409F175A496200C8B04F /* NIPagingScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPagingScrollViewDelegate.h; sourceTree = "<group>"; };
 		2D8B40A0175A496200C8B04F /* NIPagingScrollViewPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPagingScrollViewPage.h; sourceTree = "<group>"; };
-		2D8C0C6717728C1900BAD9D4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		2D8C0C6717728C1900BAD9D4 /* Default_backup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default_backup.png; sourceTree = "<group>"; };
 		2D8C0C6A17728C4600BAD9D4 /* right_menu_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_menu_btn.png; sourceTree = "<group>"; };
 		2D8C0C6D17728CE700BAD9D4 /* left_ment_btn_clicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_ment_btn_clicked.png; sourceTree = "<group>"; };
 		2D8C0C6F17728DBB00BAD9D4 /* right_menu_btn_clicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_menu_btn_clicked.png; sourceTree = "<group>"; };
@@ -642,6 +643,7 @@
 		2D9BCE91176D820B0040DDA0 /* WBApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBApiObject.h; sourceTree = "<group>"; };
 		2D9BCE92176D820B0040DDA0 /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDK.framework; sourceTree = "<group>"; };
 		2D9C7493175C87EC00B74ACE /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		2D9D8F2917791ADE00CF9C3B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		2D9FDC08175D6B37003EAF78 /* JDOHttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOHttpClient.h; sourceTree = "<group>"; };
 		2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOHttpClient.m; sourceTree = "<group>"; };
 		2D9FDC0C175D7922003EAF78 /* JDOJsonClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOJsonClient.h; sourceTree = "<group>"; };
@@ -1140,7 +1142,8 @@
 				2D8AABAF177203410049E730 /* Menu */,
 				2D98C8DB177017C900061E2E /* Share */,
 				2D58AE19176EDB46003B843F /* icon50*50.png */,
-				2D8C0C6717728C1900BAD9D4 /* Default.png */,
+				2D9D8F2917791ADE00CF9C3B /* Default.png */,
+				2D8C0C6717728C1900BAD9D4 /* Default_backup.png */,
 				2D8C0C7917729B0600BAD9D4 /* left_menu_btn.png */,
 				2D8C0C6D17728CE700BAD9D4 /* left_ment_btn_clicked.png */,
 				2D8C0C6A17728C4600BAD9D4 /* right_menu_btn.png */,
@@ -1590,7 +1593,7 @@
 				2D8AABD9177203720049E730 /* menu_row_selected.png in Resources */,
 				2D8AABDA177203720049E730 /* menu_feedback_selected.png in Resources */,
 				2D8AABDB177203720049E730 /* menu_feedback.png in Resources */,
-				2D8C0C6817728C1900BAD9D4 /* Default.png in Resources */,
+				2D8C0C6817728C1900BAD9D4 /* Default_backup.png in Resources */,
 				2D8C0C6C17728C4600BAD9D4 /* right_menu_btn.png in Resources */,
 				2D8C0C6E17728CE700BAD9D4 /* left_ment_btn_clicked.png in Resources */,
 				2D8C0C7017728DBB00BAD9D4 /* right_menu_btn_clicked.png in Resources */,
@@ -1633,6 +1636,7 @@
 				2DE932071772E3E500A87ACC /* 中雨.png in Resources */,
 				2DE932091772E99D00A87ACC /* weather.xml in Resources */,
 				2D971DE11776A2E10013C229 /* 37x-Checkmark@2x.png in Resources */,
+				2D9D8F2A17791ADE00CF9C3B /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

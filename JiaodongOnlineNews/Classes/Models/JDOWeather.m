@@ -77,7 +77,7 @@
 
 - (void)analysis{
     // 解析省市
-    if ([_provinceAndCity hasPrefix:@"查询结果为空"] || [_provinceAndCity hasPrefix:@"发现错误"]) {
+    if ([_provinceAndCity hasPrefix:@"查询结果为空"] || [_provinceAndCity hasPrefix:@"发现错误"] || [_provinceAndCity hasPrefix:@"系统维护"]) {
         self.success = false;
         return ;
     }else{

@@ -52,6 +52,7 @@
     
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;
+//    self.imageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.imageView.bounds].CGPath;
 //    self.imageView.layer.shadowColor = [UIColor blackColor].CGColor;
 //    self.imageView.layer.shadowOffset = CGSizeMake(2, 2);
 //    self.imageView.layer.shadowOpacity = 0.8;

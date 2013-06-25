@@ -28,8 +28,8 @@
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.textLabel.font = [UIFont boldSystemFontOfSize:14];
-        
+        self.textLabel.font = [UIFont boldSystemFontOfSize:16];
+        self.textLabel.adjustsFontSizeToFitWidth = true;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
         self.textLabel.minimumFontSize = 12;
 #else
@@ -61,10 +61,11 @@
     self.contentView.layer.borderColor = [UIColor grayColor].CGColor;
     self.contentView.layer.borderWidth = 1.0f;
     
+    self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.contentView.bounds].CGPath;
     self.contentView.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.contentView.layer.shadowOffset = CGSizeMake(2, 2);
+    self.contentView.layer.shadowOffset = CGSizeMake(3, 3);
     self.contentView.layer.shadowOpacity = 0.8;
-    self.contentView.layer.shadowRadius = 1.8;
+    self.contentView.layer.shadowRadius = 3;
     
     float titleLineHeight = self.textLabel.font.lineHeight;
     self.textLabel.frame = CGRectMake(Padding,Padding,Title_Width,titleLineHeight);
@@ -79,15 +80,15 @@
 
 - (void)setModel:(JDOImageModel *)imageModel{
     __block UIImageView *blockImageView = self.imageView;
-    
+    self.imageView.image = nil;
     [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:imageModel.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-        if(!cached){    // 非缓存加载时使用渐变动画
+//        if(!cached){    // 非缓存加载时使用渐变动画
             CATransition *transition = [CATransition animation];
             transition.duration = 0.3;
             transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
             transition.type = kCATransitionFade;
             [blockImageView.layer addAnimation:transition forKey:nil];
-        }
+//        }
     } failure:^(NSError *error) {
         
     }];

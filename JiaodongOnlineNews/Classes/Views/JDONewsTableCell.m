@@ -15,6 +15,7 @@
 @interface JDONewsTableCell ()
 
 @property (nonatomic,assign) UITableViewCellStyle style;
+@property (nonatomic,strong) UIView *shadowView;
 
 @end
 
@@ -28,14 +29,6 @@
         self.textLabel.font = [UIFont boldSystemFontOfSize:16];
         self.detailTextLabel.font = [UIFont systemFontOfSize:13];
         self.detailTextLabel.numberOfLines = 2;
-#warning 修改layer会导致视图切换的时候稍微有点卡,可以考虑用背景图片来替换
-//        self.imageView.layer.cornerRadius = 5;
-//        self.imageView.layer.masksToBounds = true;
-        // 图片增加阴影,阴影与圆角不能共存
-//        self.imageView.layer.shadowColor = [UIColor blackColor].CGColor;
-//        self.imageView.layer.shadowOffset = CGSizeMake(2, 2);
-//        self.imageView.layer.shadowOpacity = 0.8;
-//        self.imageView.layer.shadowRadius = 1.8;
         
         self.textLabel.textColor = [UIColor blackColor];
         self.textLabel.highlightedTextColor = [UIColor blackColor];
@@ -53,6 +46,10 @@
         backgroundView.topBorderColor = [UIColor colorWithRed:166.0/255.0 green:166.0/255.0 blue:166.0/255.0 alpha:1.0];
         backgroundView.bottomBorderColor = [UIColor colorWithRed:166.0/255.0 green:166.0/255.0 blue:166.0/255.0 alpha:1.0];
         self.selectedBackgroundView = backgroundView;
+        
+        _shadowView = [[UIView alloc] initWithFrame:CGRectZero];
+        _shadowView.backgroundColor =[UIColor clearColor];
+        [self.contentView insertSubview:_shadowView belowSubview:self.imageView];
     }
     return self;
 }
@@ -67,19 +64,28 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    if(self.style == UITableViewCellStyleSubtitle){
-        self.imageView.frame = CGRectMake(7,7,72,55);
+    self.imageView.frame = CGRectMake(7,7,72,55);
+    _shadowView.frame = self.imageView.frame;
+    self.imageView.layer.cornerRadius = 5;
+    self.imageView.layer.masksToBounds = true;
+    
+    // 阴影与圆角共存
+    self.shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.shadowView.bounds cornerRadius:5].CGPath;
+    self.shadowView.layer.masksToBounds = false;
+    self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.shadowView.layer.shadowOffset = CGSizeMake(2, 2);
+    self.shadowView.layer.shadowOpacity = 0.8;
+    self.shadowView.layer.shadowRadius = 1.8;
+    
+    float limgW =  self.imageView.image.size.width;
+    if(limgW > 0) {
+        float cellWidth = self.frame.size.width;
+        float labelWdith = cellWidth - 89 - 7;
+        CGRect frame = self.textLabel.frame;
+        self.textLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
+        frame = self.detailTextLabel.frame;
+        self.detailTextLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
         
-        float limgW =  self.imageView.image.size.width;
-        if(limgW > 0) {
-            float cellWidth = self.frame.size.width;
-            float labelWdith = cellWidth - 89 - 7;
-            CGRect frame = self.textLabel.frame;
-            self.textLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
-            frame = self.detailTextLabel.frame;
-            self.detailTextLabel.frame = CGRectMake(89,CGRectGetMinY(frame),labelWdith,CGRectGetHeight(frame));
-            
-        }
     }
 }
 
