@@ -10,13 +10,15 @@
 #import "HPGrowingTextView.h"
 #import <AGCommon/CMHTableView.h>
 #import "JDONewsDetailController.h"
+#import "JDOToolBar.h"
 
 @interface JDONewsReviewView : UIView <HPGrowingTextViewDelegate,CMHTableViewDataSource,CMHTableViewDelegate>
 
 @property (strong, nonatomic) HPGrowingTextView *textView;
 @property (strong, nonatomic) UILabel *remainWordNum;
+@property (strong, nonatomic) id<JDOReviewTargetDelegate> target;
 
-- (id)initWithController:(JDONewsDetailController *)controller;
+- (id)initWithTarget:(id<JDOReviewTargetDelegate>)target;
 - (NSArray *)selectedClients;
 - (CGRect) initialFrame;
 

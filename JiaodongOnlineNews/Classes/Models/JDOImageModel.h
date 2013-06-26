@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JDOToolbarModel.h"
 
-@interface JDOImageModel : NSObject
+@interface JDOImageModel : NSObject <JDOToolbarModel>
 @property (nonatomic,copy) NSString *id;
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,copy) NSString *follownums;

@@ -35,14 +35,14 @@
     NSArray *disableImageNames;
 }
 
-- (id) initWithNewsModel:(JDONewsModel *)newsModel{
+- (id) initWithModel:(id<JDOToolbarModel>) model{
     self = [super initWithNibName:nil  bundle:nil];
     if (self) {
         shareTypes[0] = ShareTypeSinaWeibo;
         shareTypes[1] = ShareTypeTencentWeibo;
         shareTypes[2] = ShareTypeQQSpace;
         shareTypes[3] = ShareTypeRenren;
-        self.newsModel = newsModel;
+        self.model = model;
     }
     return self;
 }
@@ -57,7 +57,7 @@
 //    self.imageView.layer.shadowOffset = CGSizeMake(2, 2);
 //    self.imageView.layer.shadowOpacity = 0.8;
 //    self.imageView.layer.shadowRadius = 1.8;
-    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:self.newsModel.mpic]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
 
     } failure:^(NSError *error) {
         
@@ -156,11 +156,11 @@
 }
 
 - (NSString *) getShareTitle{
-    return [NSString stringWithFormat:@"//分享胶东在线新闻:「%@」",self.newsModel.title];
+    return [NSString stringWithFormat:@"//分享胶东在线新闻:「%@」",[self.model title]];
 }
 
 - (NSString *) getShareTitleAndContent{
-    return [NSString stringWithFormat:@"//分享胶东在线新闻:「%@」%@",self.newsModel.title,self.newsModel.summary];
+    return [NSString stringWithFormat:@"//分享胶东在线新闻:「%@」%@",[self.model title],[self.model summary]];
 }
 
 - (IBAction)onQQClicked:(UIButton *)sender {
@@ -176,10 +176,10 @@
 }
 
 - (void) sendShareMessage:(ShareType) shareType{
-    id<ISSContent> content = [ShareSDK content:self.newsModel.summary
+    id<ISSContent> content = [ShareSDK content:[self.model summary]
                                 defaultContent:nil
                                          image:[ShareSDK jpegImageWithImage:_imageView.image quality:1]
-                                         title:self.newsModel.title
+                                         title:[self.model title]
                                            url:@"http://m.jiaodong.net"
                                    description:nil
                                      mediaType:SSPublishContentMediaTypeNews];
@@ -215,9 +215,9 @@
     id<ISSContent> publishContent = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingString:@" http://m.jiaodong.net"]
                                        defaultContent:nil
                                                 image:[ShareSDK jpegImageWithImage:_imageView.image quality:1]
-                                                title:self.newsModel.title
+                                                title:[self.model title]
                                                   url:@"http://m.jiaodong.net"
-                                          description:self.newsModel.summary
+                                          description:[self.model summary]
                                             mediaType:SSPublishContentMediaTypeNews];
     
     [ShareSDK oneKeyShareContent:publishContent

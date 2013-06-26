@@ -177,7 +177,13 @@
 		2D944ACE1769BC3D00CEC12F /* MessageEntryInputField.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D944AC01769BC3D00CEC12F /* MessageEntryInputField.png */; };
 		2D944AD01769BC3D00CEC12F /* MessageEntryInputField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D944AC11769BC3D00CEC12F /* MessageEntryInputField@2x.png */; };
 		2D953DEA177A73FD00DF166B /* JDOToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DE9177A73FD00DF166B /* JDOToolBar.m */; };
-		2D953DED177A753800DF166B /* JDOToolBarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DEC177A753800DF166B /* JDOToolBarModel.m */; };
+		2D953DFD177AAC7700DF166B /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF1177AAC7700DF166B /* MWCaptionView.m */; };
+		2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF3177AAC7700DF166B /* MWPhoto.m */; };
+		2D953DFF177AAC7700DF166B /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF5177AAC7700DF166B /* MWPhotoBrowser.m */; };
+		2D953E00177AAC7700DF166B /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF8177AAC7700DF166B /* MWTapDetectingImageView.m */; };
+		2D953E01177AAC7700DF166B /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DFA177AAC7700DF166B /* MWTapDetectingView.m */; };
+		2D953E02177AAC7700DF166B /* MWZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DFC177AAC7700DF166B /* MWZoomingScrollView.m */; };
+		2D953E04177AAC9900DF166B /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D953E03177AAC9900DF166B /* MWPhotoBrowser.bundle */; };
 		2D95858A176DFFBA009F5AE4 /* JDONewsReviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D958589176DFFBA009F5AE4 /* JDONewsReviewView.m */; };
 		2D95858C176E07C7009F5AE4 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D95858B176E07C7009F5AE4 /* libz.1.2.5.dylib */; };
 		2D95858E176E07D8009F5AE4 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D95858D176E07D8009F5AE4 /* libstdc++.dylib */; };
@@ -590,8 +596,21 @@
 		2D944AC11769BC3D00CEC12F /* MessageEntryInputField@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MessageEntryInputField@2x.png"; sourceTree = "<group>"; };
 		2D953DE8177A73FD00DF166B /* JDOToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOToolBar.h; sourceTree = "<group>"; };
 		2D953DE9177A73FD00DF166B /* JDOToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOToolBar.m; sourceTree = "<group>"; };
-		2D953DEB177A753800DF166B /* JDOToolBarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOToolBarModel.h; sourceTree = "<group>"; };
-		2D953DEC177A753800DF166B /* JDOToolBarModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOToolBarModel.m; sourceTree = "<group>"; };
+		2D953DEE177A8D8700DF166B /* JDOToolbarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JDOToolbarModel.h; sourceTree = "<group>"; };
+		2D953DF0177AAC7700DF166B /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
+		2D953DF1177AAC7700DF166B /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
+		2D953DF2177AAC7700DF166B /* MWPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhoto.h; sourceTree = "<group>"; };
+		2D953DF3177AAC7700DF166B /* MWPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPhoto.m; sourceTree = "<group>"; };
+		2D953DF4177AAC7700DF166B /* MWPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoBrowser.h; sourceTree = "<group>"; };
+		2D953DF5177AAC7700DF166B /* MWPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPhotoBrowser.m; sourceTree = "<group>"; };
+		2D953DF6177AAC7700DF166B /* MWPhotoProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoProtocol.h; sourceTree = "<group>"; };
+		2D953DF7177AAC7700DF166B /* MWTapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingImageView.h; sourceTree = "<group>"; };
+		2D953DF8177AAC7700DF166B /* MWTapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingImageView.m; sourceTree = "<group>"; };
+		2D953DF9177AAC7700DF166B /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
+		2D953DFA177AAC7700DF166B /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
+		2D953DFB177AAC7700DF166B /* MWZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZoomingScrollView.h; sourceTree = "<group>"; };
+		2D953DFC177AAC7700DF166B /* MWZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZoomingScrollView.m; sourceTree = "<group>"; };
+		2D953E03177AAC9900DF166B /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MWPhotoBrowser.bundle; sourceTree = "<group>"; };
 		2D958588176DFFBA009F5AE4 /* JDONewsReviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsReviewView.h; sourceTree = "<group>"; };
 		2D958589176DFFBA009F5AE4 /* JDONewsReviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsReviewView.m; sourceTree = "<group>"; };
 		2D95858B176E07C7009F5AE4 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
@@ -911,8 +930,7 @@
 				2DE931C21772D56B00A87ACC /* JDOWeatherForcast.m */,
 				2DE931C41772D57600A87ACC /* JDOWeather.h */,
 				2DE931C51772D57600A87ACC /* JDOWeather.m */,
-				2D953DEB177A753800DF166B /* JDOToolBarModel.h */,
-				2D953DEC177A753800DF166B /* JDOToolBarModel.m */,
+				2D953DEE177A8D8700DF166B /* JDOToolbarModel.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -949,6 +967,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2D953DEF177AAC5700DF166B /* MWPhotoBrowser */,
 				2D9BCE6A176D820B0040DDA0 /* ShareSDK_v2.2.2 */,
 				2D8D8FF2176AD40800BC9126 /* NJKWebViewProgress */,
 				2D944AB11769B9A900CEC12F /* HPGrowingTextView */,
@@ -1228,6 +1247,7 @@
 				2DDC4D6C17798F5D007CF9E0 /* leftside_shadow_bg@2x.png */,
 				2D8ED76D1754F3B40093A574 /* progressbar_logo.png */,
 				2D8ED7731754FD910093A574 /* retry.png */,
+				2D953E03177AAC9900DF166B /* MWPhotoBrowser.bundle */,
 			);
 			name = Resources;
 			path = JiaodongOnlineNews/Resources;
@@ -1261,6 +1281,26 @@
 				2D944AB51769B9D300CEC12F /* HPTextViewInternal.m */,
 			);
 			path = HPGrowingTextView;
+			sourceTree = "<group>";
+		};
+		2D953DEF177AAC5700DF166B /* MWPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				2D953DF0177AAC7700DF166B /* MWCaptionView.h */,
+				2D953DF1177AAC7700DF166B /* MWCaptionView.m */,
+				2D953DF2177AAC7700DF166B /* MWPhoto.h */,
+				2D953DF3177AAC7700DF166B /* MWPhoto.m */,
+				2D953DF4177AAC7700DF166B /* MWPhotoBrowser.h */,
+				2D953DF5177AAC7700DF166B /* MWPhotoBrowser.m */,
+				2D953DF6177AAC7700DF166B /* MWPhotoProtocol.h */,
+				2D953DF7177AAC7700DF166B /* MWTapDetectingImageView.h */,
+				2D953DF8177AAC7700DF166B /* MWTapDetectingImageView.m */,
+				2D953DF9177AAC7700DF166B /* MWTapDetectingView.h */,
+				2D953DFA177AAC7700DF166B /* MWTapDetectingView.m */,
+				2D953DFB177AAC7700DF166B /* MWZoomingScrollView.h */,
+				2D953DFC177AAC7700DF166B /* MWZoomingScrollView.m */,
+			);
+			path = MWPhotoBrowser;
 			sourceTree = "<group>";
 		};
 		2D96C98E1761660800D88EBA /* TPKeyboardAvoiding */ = {
@@ -1708,6 +1748,7 @@
 				2DDC4D6D17798F5E007CF9E0 /* leftside_shadow_bg@2x.png in Resources */,
 				2DDC4D7017798F9C007CF9E0 /* toolbar_black_background.png in Resources */,
 				2DDC4D7117798F9C007CF9E0 /* content_black_background.png in Resources */,
+				2D953E04177AAC9900DF166B /* MWPhotoBrowser.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1868,7 +1909,12 @@
 				2DDC4D3E177927A0007CF9E0 /* JDOImageDetailController.m in Sources */,
 				2DDC4D4717792F7C007CF9E0 /* JDOImageDetailModel.m in Sources */,
 				2D953DEA177A73FD00DF166B /* JDOToolBar.m in Sources */,
-				2D953DED177A753800DF166B /* JDOToolBarModel.m in Sources */,
+				2D953DFD177AAC7700DF166B /* MWCaptionView.m in Sources */,
+				2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */,
+				2D953DFF177AAC7700DF166B /* MWPhotoBrowser.m in Sources */,
+				2D953E00177AAC7700DF166B /* MWTapDetectingImageView.m in Sources */,
+				2D953E01177AAC7700DF166B /* MWTapDetectingView.m in Sources */,
+				2D953E02177AAC7700DF166B /* MWZoomingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

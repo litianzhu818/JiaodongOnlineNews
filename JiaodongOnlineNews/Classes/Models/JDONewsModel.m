@@ -38,4 +38,12 @@
     [aCoder encodeObject:self.modifytime forKey:@"modifytime"];
 }
 
+- (NSString *) imageurl{
+    return self.mpic;
+}
+
+- (NSString *) reviewService{
+    return COMMIT_COMMENT_SERVICE;
+}
+
 @end

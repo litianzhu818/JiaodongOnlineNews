@@ -1,5 +1,5 @@
 //
-//  JDOToolBarModel.h
+//  JDOShareModel.h
 //  JiaodongOnlineNews
 //
 //  Created by zhang yi on 13-6-26.
@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDOToolBarModel : NSObject
+@protocol JDOToolbarModel <NSObject>
+
+@required
+- (NSString *)id;
+- (NSString *)title;
+- (NSString *)summary;
+- (NSString *)imageurl;
+- (NSString *)reviewService;
 
 @end

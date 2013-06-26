@@ -23,6 +23,10 @@
     [self.view addSubview:_navigationView];
 }
 
+- (void)viewDidUnload{
+    self.navigationView = nil;
+}
+
 - (void) setupNavigationView{
     NSLog(@"%@类应该实现%@",NSStringFromClass([self class]),NSStringFromSelector(_cmd));
 }

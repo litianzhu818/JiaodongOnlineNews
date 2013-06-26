@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JDOToolbarModel.h"
 
-@interface JDONewsModel : NSObject <NSCoding>
+@interface JDONewsModel : NSObject <NSCoding,JDOToolbarModel>
 
 @property (nonatomic,copy) NSString *atype;
 @property (nonatomic,copy) NSString *clicknum;

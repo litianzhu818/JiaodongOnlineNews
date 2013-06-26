@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JDONewsModel.h"
+#import "JDOToolbarModel.h"
 
 @interface JDOShareViewController : JDONavigationController
 
-@property (strong,nonatomic) JDONewsModel *newsModel;
+@property (strong,nonatomic) id<JDOToolbarModel> model;
 
-- (id) initWithNewsModel:(JDONewsModel *)newsModel;
+- (id) initWithModel:(id<JDOToolbarModel>) model;
 
 @end
