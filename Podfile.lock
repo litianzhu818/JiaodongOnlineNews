@@ -4,9 +4,6 @@ PODS:
   - DCIntrospect (0.0.2)
   - JSONKit (1.5pre)
   - MBProgressHUD (0.6)
-  - MWPhotoBrowser (1.0.1):
-    - MBProgressHUD
-    - SDWebImage (< 3.0.0)
   - SDURLCache (1.2)
   - SDWebImage (2.7.4):
     - SDWebImage/Main
@@ -21,7 +18,6 @@ DEPENDENCIES:
   - DCIntrospect
   - JSONKit
   - MBProgressHUD
-  - MWPhotoBrowser
   - SDURLCache
   - SDWebImage (= 2.7.4)
   - ViewDeck
@@ -33,7 +29,6 @@ SPEC CHECKSUMS:
   DCIntrospect: 2f5cab0b58b170459ebcb200f59042306fcb0c0d
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
   MBProgressHUD: 9b55a90566fb5d07df0602f6fd9fa04510ad5d52
-  MWPhotoBrowser: e54233d4c88e951a3b6b8f136393614cf319ac47
   SDURLCache: cf4dcdd0d01473c334e9338e82a8733de156ef15
   SDWebImage: 06f076026fe7867ab0100fce95d943f7bff981eb
   ViewDeck: b5eddc8559b0e47259ab7addbf2de6768061f139
