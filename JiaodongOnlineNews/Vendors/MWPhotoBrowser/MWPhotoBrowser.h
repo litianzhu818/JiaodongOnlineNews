@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MessageUI/MessageUI.h>
 #import "MWPhoto.h"
 #import "MWPhotoProtocol.h"
 #import "MWCaptionView.h"
+#import "JDOToolBar.h"
 
 // Debug Logging
 #if 0 // Set to 1 to enable debug logging
@@ -29,12 +29,14 @@
 @end
 
 // MWPhotoBrowser
-@interface MWPhotoBrowser : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> 
+@interface MWPhotoBrowser : UIViewController <UIScrollViewDelegate> 
 
 // Properties
 @property (nonatomic) BOOL displayActionButton;
 @property (nonatomic,assign,getter = isCollected) BOOL collected;
 @property (nonatomic,strong) UIView *navigationView;
+@property (nonatomic,assign) NSUInteger currentPageIndex;
+@property (nonatomic,strong) JDOToolBar *toolbar;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated
@@ -42,9 +44,6 @@
 
 // Reloads the photo browser and refetches data
 - (void)reloadData;
-
-// Set page that photo browser starts on
-- (void)setInitialPageIndex:(NSUInteger)index;
 
 @end
 

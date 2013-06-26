@@ -11,14 +11,17 @@
 
 @interface JDONewsModel : NSObject <NSCoding,JDOToolbarModel>
 
-@property (nonatomic,copy) NSString *atype;
-@property (nonatomic,copy) NSString *clicknum;
-@property (nonatomic,copy) NSString *id;
-@property (nonatomic,copy) NSString *mpic;
-@property (nonatomic,copy) NSString *pubtime;
-@property (nonatomic,copy) NSString *summary;
-@property (nonatomic,copy) NSString *title;
-@property (nonatomic,copy) NSString *spic;
-@property (nonatomic,copy) NSString *modifytime;
+@property (nonatomic,strong) NSString *atype;
+@property (nonatomic,strong) NSString *clicknum;
+@property (nonatomic,strong) NSString *id;
+@property (nonatomic,strong) NSString *mpic;
+@property (nonatomic,strong) NSString *pubtime;
+@property (nonatomic,strong) NSString *summary;
+@property (nonatomic,strong) NSString *title;
+@property (nonatomic,strong) NSString *spic;
+@property (nonatomic,strong) NSString *modifytime;
+
+@property (nonatomic,strong) NSString *imageurl;
+@property (nonatomic,strong) NSString *reviewService;
 
 @end

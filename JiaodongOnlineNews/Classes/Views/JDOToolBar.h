@@ -34,6 +34,23 @@ typedef enum {
 
 @end
 
+@protocol JDOShareTargetDelegate <NSObject>
+
+@required
+- (void) onSharedClicked;
+
+@end
+
+@protocol JDODownloadTargetDelegate <NSObject>
+
+@required
+- (id) getDownloadObject;
+@optional
+- (void) addObserver:(id)observer selector:(SEL)selector;
+- (void) removeObserver:(id)observer;
+
+@end
+
 
 @interface JDOToolBar : UIView <JDOReviewTargetDelegate>
 
@@ -44,6 +61,8 @@ typedef enum {
 @property (assign, nonatomic) CGFloat frameHeight;
 @property (assign, nonatomic) ToolBarTheme theme;
 @property (strong,nonatomic) WebViewJavascriptBridge *bridge;
+@property (strong,nonatomic) id<JDOShareTargetDelegate> shareTarget;
+@property (strong,nonatomic) id<JDODownloadTargetDelegate> downloadTarget;
 
 
 - (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView config:(NSArray *)btnConfig height:(CGFloat) toolbarHeight theme:(ToolBarTheme)theme;

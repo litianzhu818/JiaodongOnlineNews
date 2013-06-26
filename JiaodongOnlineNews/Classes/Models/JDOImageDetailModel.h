@@ -10,7 +10,7 @@
 
 @interface JDOImageDetailModel : NSObject
 
-@property (nonatomic,copy) NSString *imageurl;
-@property (nonatomic,copy) NSString *imagecontent;
+@property (nonatomic,strong) NSString *imageurl;
+@property (nonatomic,strong) NSString *imagecontent;
 
 @end

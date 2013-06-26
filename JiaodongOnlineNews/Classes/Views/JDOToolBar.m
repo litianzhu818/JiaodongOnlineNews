@@ -15,6 +15,7 @@
 #import "JDOShareViewDelegate.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "JDOImageModel.h"
+#import "MBProgressHUD.h"
 
 #define Toolbar_Btn_Size 47
 #define Toolbar_Height   44
@@ -34,6 +35,7 @@
 @property (strong, nonatomic) CMPopTipView *collectPopTipView;
 @property (strong, nonatomic) JDOShareViewController *shareViewController;
 @property (strong, nonatomic) JDONewsReviewView *reviewPanel;
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 
 @end
 
@@ -273,6 +275,9 @@
 
 - (void) onShare{
     [self setupSharePanel];
+    if(self.shareTarget && [self.shareTarget respondsToSelector:@selector(onSharedClicked)]){
+        [self.shareTarget onSharedClicked];
+    }
     [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController  pushViewController:_shareViewController orientation:JDOTransitionFromBottom animated:true];
 }
 
@@ -354,6 +359,72 @@
     }
     [_collectPopTipView presentPointingAtView:sender inView:self.parentView animated:YES];
     [_collectPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];
+}
+
+- (void) onDownload:(UIButton *)sender{
+    if(self.downloadTarget && [self.downloadTarget respondsToSelector:@selector(getDownloadObject)]){
+        id downloadObject = [self.downloadTarget getDownloadObject];
+        if(downloadObject){
+            [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , @"保存中"]];
+            [self performSelector:@selector(actuallyDownload:) withObject:downloadObject afterDelay:0];
+        }else{
+            // 重新异步加载需要下载的对象
+            if( [self.downloadTarget respondsToSelector:@selector(addObserver:selector:)]){
+                [self.downloadTarget addObserver:self selector:@selector(onDownloadObjectFinished)];
+            }
+        }
+    }
+}
+
+- (void) onDownloadObjectFinished{
+    id downloadObject = [self.downloadTarget getDownloadObject];
+    if(downloadObject){
+        [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , @"保存中"]];
+        [self performSelector:@selector(actuallyDownload:) withObject:downloadObject afterDelay:0];
+    }
+    if( [self.downloadTarget respondsToSelector:@selector(removeObserver:)]){
+        [self.downloadTarget removeObserver:self];
+    }
+}
+
+- (void)actuallyDownload:(id)downloadObject {
+    // 保存图片
+    if([downloadObject isKindOfClass:[UIImage class]]){
+        UIImageWriteToSavedPhotosAlbum((UIImage *)downloadObject, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    [self showProgressHUDCompleteMessage: error ? @"保存失败" : @"保存成功"];
+}
+
+- (MBProgressHUD *)progressHUD {
+    if (!_progressHUD) {
+        _progressHUD = [[MBProgressHUD alloc] initWithView:self.parentView];
+        _progressHUD.minSize = CGSizeMake(120, 120);
+        _progressHUD.minShowTime = 1;
+
+        self.progressHUD.customView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/Checkmark.png"]];
+        [self.parentView addSubview:_progressHUD];
+    }
+    return _progressHUD;
+}
+
+- (void)showProgressHUDWithMessage:(NSString *)message {
+    self.progressHUD.labelText = message;
+    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    [self.progressHUD show:YES];
+}
+
+- (void)showProgressHUDCompleteMessage:(NSString *)message {
+    if (message) {
+        if (self.progressHUD.isHidden) [self.progressHUD show:YES];
+        self.progressHUD.labelText = message;
+        self.progressHUD.mode = MBProgressHUDModeCustomView;
+        [self.progressHUD hide:YES afterDelay:1.5];
+    } else {
+        [self.progressHUD hide:YES];
+    }
 }
 
 @end

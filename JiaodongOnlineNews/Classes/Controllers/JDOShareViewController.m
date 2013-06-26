@@ -52,16 +52,23 @@
     
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;
+    if( [self.model isKindOfClass:NSClassFromString(@"JDOImageModel")] ){
+        // 图集的图片尺寸不可控,UIViewContentModeScaleToFill模式比例失调太严重
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    
 //    self.imageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.imageView.bounds].CGPath;
 //    self.imageView.layer.shadowColor = [UIColor blackColor].CGColor;
 //    self.imageView.layer.shadowOffset = CGSizeMake(2, 2);
 //    self.imageView.layer.shadowOpacity = 0.8;
 //    self.imageView.layer.shadowRadius = 1.8;
-    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-
-    } failure:^(NSError *error) {
-        
-    }];
+    
+    // 图集中切换图片内容会跟着变,放到viewWillAppear中
+//    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+//
+//    } failure:^(NSError *error) {
+//        
+//    }];
     
     self.reviewPanel.layer.borderColor = [UIColor colorWithHex:@"969696"].CGColor;
     self.reviewPanel.layer.borderWidth = 1.0;
@@ -69,7 +76,8 @@
     self.textView2.layer.borderWidth = 1.0;
     [self.textView2 setPlaceholder:@"说点什么吧"];
     self.textView2.backgroundColor = [UIColor colorWithHex:@"E6E6E6"];
-    self.titleLabel.text = [self getShareTitleAndContent];
+    // 图集中切换图片内容会跟着变,放到viewWillAppear中
+//    self.titleLabel.text = [self getShareTitleAndContent];
     self.titleLabel.textColor = [UIColor colorWithHex:@"505050"];
     self.remainWordLabel.textColor = [UIColor colorWithHex:@"969696"];
     
@@ -115,6 +123,16 @@
         }
         
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.titleLabel.text = [self getShareTitleAndContent];
+    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 - (void) getAuth:(UIButton *)sender{

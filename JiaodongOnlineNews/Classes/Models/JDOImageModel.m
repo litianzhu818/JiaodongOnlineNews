@@ -10,10 +10,6 @@
 
 @implementation JDOImageModel
 
-- (NSString *) summary{
-    return @"";
-}
-
 - (NSString *) reviewService{
     return @"";
 }

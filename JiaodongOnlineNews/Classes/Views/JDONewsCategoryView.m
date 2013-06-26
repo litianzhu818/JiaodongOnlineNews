@@ -14,6 +14,7 @@
 #import "JDONewsDetailController.h"
 #import "JDOCenterViewController.h"
 #import "NSDate+SSToolkitAdditions.h"
+#import "SDImageCache.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -86,6 +87,10 @@
         }
     }
     return self;
+}
+
+- (void)dealloc{
+    [[SDImageCache sharedImageCache] clearMemory];
 }
 
 - (void) setCurrentState:(ViewStatusType)status{

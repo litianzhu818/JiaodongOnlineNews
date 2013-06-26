@@ -8,13 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
+#import "JDOToolBar.h"
 
 @class JDOImageModel;
 
-@interface JDOImageDetailController : JDONavigationController <MWPhotoBrowserDelegate>
+@interface JDOImageDetailController : UIViewController <JDONavigationView,MWPhotoBrowserDelegate,JDOShareTargetDelegate,JDODownloadTargetDelegate>
 
 @property (nonatomic,strong) JDOImageModel *imageModel;
+@property (strong,nonatomic) JDONavigationView *navigationView;
+@property (strong,nonatomic) JDOToolBar *toolbar;
 
+- (void) setupNavigationView;
 - (id)initWithImageModel:(JDOImageModel *)imageModel;
 
 @end

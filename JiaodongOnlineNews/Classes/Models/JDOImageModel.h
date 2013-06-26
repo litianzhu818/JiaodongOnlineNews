@@ -10,9 +10,13 @@
 #import "JDOToolbarModel.h"
 
 @interface JDOImageModel : NSObject <JDOToolbarModel>
-@property (nonatomic,copy) NSString *id;
-@property (nonatomic,copy) NSString *title;
-@property (nonatomic,copy) NSString *follownums;
-@property (nonatomic,copy) NSString *imageurl;
-@property (nonatomic,copy) NSString *pubtime;
+@property (nonatomic,strong) NSString *id;
+@property (nonatomic,strong) NSString *title;
+@property (nonatomic,strong) NSString *follownums;
+@property (nonatomic,strong) NSString *imageurl;
+@property (nonatomic,strong) NSString *pubtime;
+
+// protocol
+@property (nonatomic,strong) NSString *summary;
+@property (nonatomic,strong) NSString *reviewService;
 @end

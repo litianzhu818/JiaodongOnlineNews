@@ -22,9 +22,6 @@
 #define PAGE_INDEX_TAG_OFFSET   1000
 #define PAGE_INDEX(page)        ([(page) tag] - PAGE_INDEX_TAG_OFFSET)
 
-#define Toolbar_Btn_Size 47
-#define Toolbar_Btn_Tag 100
-
 // Private
 @interface MWPhotoBrowser () {
     
@@ -39,15 +36,11 @@
 	
 	// Paging
 	NSMutableSet *_visiblePages, *_recycledPages;
-	NSUInteger _currentPageIndex;
 	NSUInteger _pageIndexBeforeRotation;
 	
 	// Navigation & controls
-	UIView *_toolbar;
 	NSTimer *_controlVisibilityTimer;
-	UIBarButtonItem *_previousButton, *_nextButton, *_actionButton;
     UIActionSheet *_actionsSheet;
-    MBProgressHUD *_progressHUD;
     
     // Appearance
     UIImage *_navigationBarBackgroundImageDefault, 
@@ -70,8 +63,6 @@
 @property (nonatomic, retain) UIColor *previousNavBarTintColor;
 @property (nonatomic, retain) UIBarButtonItem *previousViewControllerBackButton;
 @property (nonatomic, retain) UIImage *navigationBarBackgroundImageDefault, *navigationBarBackgroundImageLandscapePhone;
-@property (nonatomic, retain) UIActionSheet *actionsSheet;
-@property (nonatomic, retain) MBProgressHUD *progressHUD;
 
 // Private Methods
 
@@ -102,13 +93,9 @@
 
 // Navigation
 - (void)updateNavigation;
-- (void)jumpToPageAtIndex:(NSUInteger)index;
-- (void)gotoPreviousPage;
-- (void)gotoNextPage;
 
 // Controls
 - (void)cancelControlHiding;
-- (void)hideControlsAfterDelay;
 - (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent;
 - (void)toggleControls;
 - (BOOL)areControlsHidden;
@@ -122,8 +109,6 @@
 
 // Actions
 - (void)savePhoto;
-- (void)copyPhoto;
-- (void)emailPhoto;
 
 @end
 
@@ -139,8 +124,7 @@
 @synthesize previousNavBarTintColor = _previousNavBarTintColor;
 @synthesize navigationBarBackgroundImageDefault = _navigationBarBackgroundImageDefault,
 navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandscapePhone;
-@synthesize displayActionButton = _displayActionButton, actionsSheet = _actionsSheet;
-@synthesize progressHUD = _progressHUD;
+@synthesize displayActionButton = _displayActionButton;
 @synthesize previousViewControllerBackButton = _previousViewControllerBackButton;
 
 #pragma mark - NSObject
@@ -195,14 +179,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	[_visiblePages release];
 	[_recycledPages release];
 	[_toolbar release];
-	[_previousButton release];
-	[_nextButton release];
-    [_actionButton release];
   	[_depreciatedPhotoData release];
     [self releaseAllUnderlyingPhotos];
     [[SDImageCache sharedImageCache] clearMemory]; // clear memory
     [_photos release];
-    [_progressHUD release];
     [super dealloc];
 }
 
@@ -240,34 +220,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	_pagingScrollView.backgroundColor = [UIColor blackColor];
     _pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
 	[self.view addSubview:_pagingScrollView];
-	
-
-    _toolbar = [[UIView alloc] initWithFrame:[self frameForToolbarAtOrientation:self.interfaceOrientation]];
-    _toolbar.backgroundColor = [UIColor clearColor];
-    _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    UIImageView *toolBackground = [[UIImageView alloc] initWithFrame:_toolbar.bounds];
-    toolBackground.image = [UIImage imageNamed:@"toolbar_black_background.png"];
-    [_toolbar addSubview:toolBackground];
-    [self.view addSubview:_toolbar];
-    
-    NSArray *icons = @[@"review",@"share",@"font",@"collect"];
-    for(int i =0;i<4;i++ ){
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, (44-Toolbar_Btn_Size)/2.0, Toolbar_Btn_Size, Toolbar_Btn_Size)];
-        btn.tag = Toolbar_Btn_Tag+i;
-        if( i==3 && self.isCollected){
-#warning 替换收藏过的图片
-            [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
-        }else{
-            [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal];
-        }
-        [btn addTarget:self action:@selector(toolbarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [_toolbar addSubview:btn];
-    }
-    
-    // Toolbar Items
-//    _previousButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/UIBarButtonItemArrowLeft.png"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoPreviousPage)];
-//    _nextButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/UIBarButtonItemArrowRight.png"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoNextPage)];
-//    _actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed:)];
     
     // Update
     [self reloadData];
@@ -335,9 +287,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     [_visiblePages release], _visiblePages = nil;
     [_recycledPages release], _recycledPages = nil;
     [_toolbar release], _toolbar = nil;
-    [_previousButton release], _previousButton = nil;
-    [_nextButton release], _nextButton = nil;
-    self.progressHUD = nil;
     [super viewDidUnload];
 }
 
@@ -362,9 +311,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 //        [self storePreviousNavBarAppearance];
 //    }
 //    [self setNavBarAppearance:animated];
-    
-    // Update UI
-	[self hideControlsAfterDelay];
     
 }
 
@@ -451,7 +397,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	_performingLayout = YES;
 	
 	// Toolbar
-	_toolbar.frame = [self frameForToolbarAtOrientation:self.interfaceOrientation];
+//	_toolbar.frame = [self frameForToolbarAtOrientation:self.interfaceOrientation];
 	
 	// Remember index
 	NSUInteger indexPriorToLayout = _currentPageIndex;
@@ -504,9 +450,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     
 	// Layout manually (iOS < 5)
     if (SYSTEM_VERSION_LESS_THAN(@"5")) [self viewWillLayoutSubviews];
-	
-	// Delay control holding
-	[self hideControlsAfterDelay];
 	
 }
 
@@ -841,7 +784,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	// Hide controls when dragging begins
-	[self setControlsHidden:YES animated:YES permanent:NO];
+//	[self setControlsHidden:YES animated:YES permanent:NO];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -860,28 +803,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 		self.title = nil;
 	}
 	
-	// Buttons
-	_previousButton.enabled = (_currentPageIndex > 0);
-	_nextButton.enabled = (_currentPageIndex < [self numberOfPhotos]-1);
-	
 }
-
-- (void)jumpToPageAtIndex:(NSUInteger)index {
-	
-	// Change page
-	if (index < [self numberOfPhotos]) {
-		CGRect pageFrame = [self frameForPageAtIndex:index];
-		_pagingScrollView.contentOffset = CGPointMake(pageFrame.origin.x - PADDING, 0);
-		[self updateNavigation];
-	}
-	
-	// Update timer to give more time
-	[self hideControlsAfterDelay];
-	
-}
-
-- (void)gotoPreviousPage { [self jumpToPageAtIndex:_currentPageIndex-1]; }
-- (void)gotoNextPage { [self jumpToPageAtIndex:_currentPageIndex+1]; }
 
 #pragma mark - Control Hiding / Showing
 
@@ -939,11 +861,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     for (UIView *v in captionViews) v.alpha = alpha;
 	if (animated) [UIView commitAnimations];
 	
-	// Control hiding timer
-	// Will cancel existing timer but only begin hiding if
-	// they are visible
-	if (!permanent) [self hideControlsAfterDelay];
-	
 }
 
 - (void)cancelControlHiding {
@@ -955,199 +872,12 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	}
 }
 
-// Enable/disable control visiblity timer
-- (void)hideControlsAfterDelay {
-	if (![self areControlsHidden]) {
-        [self cancelControlHiding];
-		_controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
-	}
-}
-
 - (BOOL)areControlsHidden { return (_toolbar.alpha == 0); /* [UIApplication sharedApplication].isStatusBarHidden; */ }
 - (void)hideControls { [self setControlsHidden:YES animated:YES permanent:NO]; }
 - (void)toggleControls { [self setControlsHidden:![self areControlsHidden] animated:YES permanent:NO]; }
 
-#pragma mark - Properties
 
-- (void)setInitialPageIndex:(NSUInteger)index {
-    // Validate
-    if (index >= [self numberOfPhotos]) index = [self numberOfPhotos]-1;
-    _currentPageIndex = index;
-	if ([self isViewLoaded]) {
-        [self jumpToPageAtIndex:index];
-        if (!_viewIsActive) [self tilePages]; // Force tiling if view is not visible
-    }
-}
 
-#pragma mark - Misc
 
-- (void)doneButtonPressed:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)actionButtonPressed:(id)sender {
-    if (_actionsSheet) {
-        // Dismiss
-        [_actionsSheet dismissWithClickedButtonIndex:_actionsSheet.cancelButtonIndex animated:YES];
-    } else {
-        id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
-        if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
-            
-            // Keep controls hidden
-            [self setControlsHidden:NO animated:YES permanent:YES];
-            
-            // Sheet
-            if ([MFMailComposeViewController canSendMail]) {
-                self.actionsSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"Save", nil), NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Email", nil), nil] autorelease];
-            } else {
-                self.actionsSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"Save", nil), NSLocalizedString(@"Copy", nil), nil] autorelease];
-            }
-            _actionsSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                [_actionsSheet showFromBarButtonItem:sender animated:YES];
-            } else {
-                [_actionsSheet showInView:self.view];
-            }
-            
-        }
-    }
-}
-
-#pragma mark - Action Sheet Delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == _actionsSheet) {           
-        // Actions 
-        self.actionsSheet = nil;
-        if (buttonIndex != actionSheet.cancelButtonIndex) {
-            if (buttonIndex == actionSheet.firstOtherButtonIndex) {
-                [self savePhoto]; return;
-            } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
-                [self copyPhoto]; return;	
-            } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 2) {
-                [self emailPhoto]; return;
-            }
-        }
-    }
-    [self hideControlsAfterDelay]; // Continue as normal...
-}
-
-#pragma mark - MBProgressHUD
-
-- (MBProgressHUD *)progressHUD {
-    if (!_progressHUD) {
-        _progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-        _progressHUD.minSize = CGSizeMake(120, 120);
-        _progressHUD.minShowTime = 1;
-        // The sample image is based on the
-        // work by: http://www.pixelpressicons.com
-        // licence: http://creativecommons.org/licenses/by/2.5/ca/
-        self.progressHUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/Checkmark.png"]] autorelease];
-        [self.view addSubview:_progressHUD];
-    }
-    return _progressHUD;
-}
-
-- (void)showProgressHUDWithMessage:(NSString *)message {
-    self.progressHUD.labelText = message;
-    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
-    [self.progressHUD show:YES];
-    self.navigationController.navigationBar.userInteractionEnabled = NO;
-}
-
-- (void)hideProgressHUD:(BOOL)animated {
-    [self.progressHUD hide:animated];
-    self.navigationController.navigationBar.userInteractionEnabled = YES;
-}
-
-- (void)showProgressHUDCompleteMessage:(NSString *)message {
-    if (message) {
-        if (self.progressHUD.isHidden) [self.progressHUD show:YES];
-        self.progressHUD.labelText = message;
-        self.progressHUD.mode = MBProgressHUDModeCustomView;
-        [self.progressHUD hide:YES afterDelay:1.5];
-    } else {
-        [self.progressHUD hide:YES];
-    }
-    self.navigationController.navigationBar.userInteractionEnabled = YES;
-}
-
-#pragma mark - Actions
-
-- (void)savePhoto {
-    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
-    if ([photo underlyingImage]) {
-        [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , NSLocalizedString(@"Saving", @"Displayed with ellipsis as 'Saving...' when an item is in the process of being saved")]];
-        [self performSelector:@selector(actuallySavePhoto:) withObject:photo afterDelay:0];
-    }
-}
-
-- (void)actuallySavePhoto:(id<MWPhoto>)photo {
-    if ([photo underlyingImage]) {
-        UIImageWriteToSavedPhotosAlbum([photo underlyingImage], self, 
-                                       @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    }
-}
-
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-    [self showProgressHUDCompleteMessage: error ? NSLocalizedString(@"Failed", @"Informing the user a process has failed") : NSLocalizedString(@"Saved", @"Informing the user an item has been saved")];
-    [self hideControlsAfterDelay]; // Continue as normal...
-}
-
-- (void)copyPhoto {
-    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
-    if ([photo underlyingImage]) {
-        [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , NSLocalizedString(@"Copying", @"Displayed with ellipsis as 'Copying...' when an item is in the process of being copied")]];
-        [self performSelector:@selector(actuallyCopyPhoto:) withObject:photo afterDelay:0];
-    }
-}
-
-- (void)actuallyCopyPhoto:(id<MWPhoto>)photo {
-    if ([photo underlyingImage]) {
-        [[UIPasteboard generalPasteboard] setData:UIImagePNGRepresentation([photo underlyingImage])
-                                forPasteboardType:@"public.png"];
-        [self showProgressHUDCompleteMessage:NSLocalizedString(@"Copied", @"Informing the user an item has finished copying")];
-        [self hideControlsAfterDelay]; // Continue as normal...
-    }
-}
-
-- (void)emailPhoto {
-    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
-    if ([photo underlyingImage]) {
-        [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , NSLocalizedString(@"Preparing", @"Displayed with ellipsis as 'Preparing...' when an item is in the process of being prepared")]];
-        [self performSelector:@selector(actuallyEmailPhoto:) withObject:photo afterDelay:0];
-    }
-}
-
-- (void)actuallyEmailPhoto:(id<MWPhoto>)photo {
-    if ([photo underlyingImage]) {
-        MFMailComposeViewController *emailer = [[MFMailComposeViewController alloc] init];
-        emailer.mailComposeDelegate = self;
-        [emailer setSubject:NSLocalizedString(@"Photo", nil)];
-        [emailer addAttachmentData:UIImagePNGRepresentation([photo underlyingImage]) mimeType:@"png" fileName:@"Photo.png"];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            emailer.modalPresentationStyle = UIModalPresentationPageSheet;
-        }
-        [self presentModalViewController:emailer animated:YES];
-        [emailer release];
-        [self hideProgressHUD:NO];
-    }
-}
-
-#pragma mark Mail Compose Delegate
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-    if (result == MFMailComposeResultFailed) {
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Email", nil)
-                                                         message:NSLocalizedString(@"Email failed to send. Please try again.", nil)
-                                                        delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil] autorelease];
-		[alert show];
-    }
-	[self dismissModalViewControllerAnimated:YES];
-}
 
 @end
