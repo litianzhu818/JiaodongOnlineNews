@@ -10,6 +10,7 @@
 #import "JDOImageModel.h"
 #import "UIImageView+WebCache.h"
 #import "JDOImageCell.h"
+#import "JDOImageDetailController.h"
 
 #define ImageList_Page_Size 10
 #define Default_Image @"default_icon.png"
@@ -18,7 +19,6 @@
 
 @property (nonatomic,strong) NSDate *lastUpdateTime;
 @property (nonatomic,assign) int currentPage;
-@property (nonatomic,strong) NSMutableArray *listArray;
 
 @end
 
@@ -58,7 +58,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.listArray.count;//_tableView.listArray.count==0 ? 5:_tableView.listArray.count;
+    return self.listArray.count==0 ? 10:self.listArray.count;
 }
 
 // 加了空section，为了补齐上边距
@@ -77,13 +77,18 @@
     if(cell == nil){
         cell = [[JDOImageCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseId];
     }
-    JDOImageModel *imageModel = [self.listArray objectAtIndex:indexPath.row];
-    [cell setModel:imageModel];
+    if(self.listArray.count > 0){
+        JDOImageModel *imageModel = [self.listArray objectAtIndex:indexPath.row];
+        [cell setModel:imageModel];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[self.listArray objectAtIndex:indexPath.row]];
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+    [centerController pushViewController:detailController animated:true];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
 

@@ -136,7 +136,6 @@
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
     [self.navigationView setTitle:@"分享"];
-    [self.navigationView addCustomButtonWithTarget:self action:@selector(backToParent)];
 }
 
 - (void) backToParent{

@@ -33,6 +33,8 @@
 
 // Properties
 @property (nonatomic) BOOL displayActionButton;
+@property (nonatomic,assign,getter = isCollected) BOOL collected;
+@property (nonatomic,strong) UIView *navigationView;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated

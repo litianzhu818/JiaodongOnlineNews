@@ -358,9 +358,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(section == 0){
-        return self.headArray.count==0 ? 0:1;
+        return 1;
     }else{
-        return self.listArray.count==0 ? 5:self.listArray.count;
+        return self.listArray.count==0 ? 20:self.listArray.count;
     }
 }
 
@@ -374,9 +374,11 @@
         if(cell == nil){
             cell = [[JDONewsHeadCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headlineIdentifier];
         }
-        [cell setModels:self.headArray];
-        for(int i=0; i<cell.imageViews.count; i++){
-            [[cell.imageViews objectAtIndex:i] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(galleryImageClicked:)]];
+        if(self.headArray.count > 0){
+            [cell setModels:self.headArray];
+            for(int i=0; i<cell.imageViews.count; i++){
+                [[cell.imageViews objectAtIndex:i] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(galleryImageClicked:)]];
+            }
         }
         return cell;
     }else{

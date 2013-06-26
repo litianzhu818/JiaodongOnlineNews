@@ -13,6 +13,7 @@
 #import "JDOConvenienceController.h"
 #import "JDOLeftViewController.h"
 #import "JDORightViewController.h"
+#import "JDOImageDetailController.h"
 
 @interface JDOCenterViewController ()
 
@@ -178,17 +179,34 @@
     [super didReceiveMemoryWarning];
 }
 
-- (BOOL)shouldAutorotate{
-    return false;
-}
-
+// 图片详情允许转屏
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return true;
+    }
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
-
-- (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskPortrait;
+- (BOOL)shouldAutorotate{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return true;
+    }
+    return false;
 }
+- (NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskAll;
+}
+
+//- (BOOL)shouldAutorotate{
+//    return false;
+//}
+//
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+//    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+//}
+//
+//- (NSUInteger)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
 
 #pragma mark - IIViewDeckControllerDelegate
 

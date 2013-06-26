@@ -21,24 +21,28 @@ static const CGFloat labelPadding = 10;
 @implementation MWCaptionView
 
 - (id)initWithPhoto:(id<MWPhoto>)photo {
-    self = [super initWithFrame:CGRectMake(0, 0, 320, 44)]; // Random initial frame
+    self = [super initWithFrame:CGRectMake(0, 0, 320, 86.0)]; // Random initial frame
     if (self) {
         _photo = [photo retain];
         self.opaque = NO;
-        self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+        self.backgroundColor = [UIColor clearColor];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+        UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"content_black_background.png"]];
+        backgroundView.frame = self.bounds;
+        [self addSubview:backgroundView];
         [self setupCaption];
     }
     return self;
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
-    CGFloat maxHeight = 9999;
-    if (_label.numberOfLines > 0) maxHeight = _label.font.leading*_label.numberOfLines;
-    CGSize textSize = [_label.text sizeWithFont:_label.font 
-                              constrainedToSize:CGSizeMake(size.width - labelPadding*2, maxHeight)
-                                  lineBreakMode:_label.lineBreakMode];
-    return CGSizeMake(size.width, textSize.height + labelPadding * 2);
+//    CGFloat maxHeight = 9999;
+//    if (_label.numberOfLines > 0) maxHeight = _label.font.leading*_label.numberOfLines;
+//    CGSize textSize = [_label.text sizeWithFont:_label.font 
+//                              constrainedToSize:CGSizeMake(size.width - labelPadding*2, maxHeight)
+//                                  lineBreakMode:_label.lineBreakMode];
+//    return CGSizeMake(size.width, textSize.height + labelPadding * 2);
+    return CGSizeMake(size.width, 86.0);
 }
 
 - (void)setupCaption {

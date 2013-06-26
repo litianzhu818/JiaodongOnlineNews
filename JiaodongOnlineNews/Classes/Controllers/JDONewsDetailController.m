@@ -28,8 +28,8 @@
 #define Font_Tag    102
 #define Collect_Tag 103
 
-#define Toolbar_Btn_Size 32
-#define Toolbar_Height   40
+#define Toolbar_Btn_Size 47
+#define Toolbar_Height   44
 
 #define Font_Selected_Color [UIColor blueColor]
 #define Font_Unselected_Color [UIColor whiteColor]
@@ -152,21 +152,28 @@
 
 - (void) setupToolBar{
     NSArray *icons = @[@"review",@"share",@"font",@"collect"];
-    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-Toolbar_Height, 320, Toolbar_Height)];
+    NSArray *iconsHighlight = @[@"review_highlight",@"share_highlight",@"font_highlight",@"collect_highlight"];
+    // 背景有透明渐变,高度是56不是44
+    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-56, 320, 56)];
+    toolView.backgroundColor = [UIColor clearColor];
+    UIImageView *toolBackground = [[UIImageView alloc] initWithFrame:toolView.bounds];
+    toolBackground.image = [UIImage imageNamed:@"toolbar_white_background.png"];
+    [toolView addSubview:toolBackground];
+    [self.view addSubview:toolView];
+    
     for(int i =0;i<4;i++ ){
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, 4, Toolbar_Btn_Size, Toolbar_Btn_Size)];
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, 56-Toolbar_Height + (Toolbar_Height-Toolbar_Btn_Size)/2.0, Toolbar_Btn_Size, Toolbar_Btn_Size)];
         if( i==3 && self.isCollected){
 #warning 替换收藏过的图片
             [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
         }else{
-            [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal]; 
+            [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal];
+            [btn setBackgroundImage:[UIImage imageNamed:[iconsHighlight objectAtIndex:i]] forState:UIControlStateHighlighted];
         }
-        
         [btn setTag:Toolbar_Tag+i];
         [btn addTarget:self action:@selector(toolbarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [toolView addSubview:btn];
     }
-    [self.view addSubview:toolView];
 }
 
 - (void) toolbarBtnClicked:(UIButton *)sender{
