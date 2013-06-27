@@ -21,6 +21,7 @@
     
 }
 
+@property (nonatomic, strong)SBTableAlert *alert;
 - (IBAction)selectCarType:(id)sender;
 
 @end

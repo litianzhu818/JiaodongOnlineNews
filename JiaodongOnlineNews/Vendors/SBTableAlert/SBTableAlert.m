@@ -398,15 +398,9 @@
 	[self increaseHeightBy:resultHeigh];
 	
 	
-	[_tableView setFrame:CGRectMake(12,
-																	_alertView.frame.size.height - resultHeigh - 65,
-																	_alertView.frame.size.width - 24,
-																	resultHeigh)];
+	[_tableView setFrame:CGRectMake(12,	_alertView.frame.size.height - resultHeigh - 65, _alertView.frame.size.width - 24, resultHeigh)];
 	
-	[_shadow setFrame:CGRectMake(_tableView.frame.origin.x,
-															 _tableView.frame.origin.y,
-															 _tableView.frame.size.width,
-															 8)];
+	[_shadow setFrame:CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, _tableView.frame.size.width, 8)];
 }
 
 - (void)layoutAfterSomeTime{

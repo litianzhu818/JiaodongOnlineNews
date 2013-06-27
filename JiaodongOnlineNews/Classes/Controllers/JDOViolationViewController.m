@@ -47,13 +47,12 @@
 
 - (IBAction)selectCarType:(id)sender
 {
-    SBTableAlert *alert = [[SBTableAlert alloc] initWithTitle:@"Single Select" cancelButtonTitle:@"Cancel" messageFormat:nil];
-    [alert.view setTag:1];
-    alert.type  = SBTableAlertTypeSingleSelect;
-    [alert setDelegate:self];
-	[alert setDataSource:self];
+    self.alert = [[SBTableAlert alloc] initWithTitle:@"Single Select" cancelButtonTitle:@"Cancel" messageFormat:nil];
+    [self.alert.view setTag:1];
+    [self.alert setDelegate:self];
+	[self.alert setDataSource:self];
 
-	[alert show];
+	[self.alert show];
 }
 
 
