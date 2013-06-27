@@ -9,6 +9,7 @@
 #import "JDOConvenienceController.h"
 #import "BadgedLauncherButtonView.h"
 #import "JDOConvenienceViewModel.h"
+#import "JDOViolationViewController.h"
 
 @interface JDOConvenienceController () <NILauncherViewModelDelegate>
 @property (nonatomic, readwrite, retain) JDOConvenienceViewModel* model;
@@ -93,48 +94,53 @@
 - (void)launcherView:(NILauncherView *)launcher didSelectItemOnPage:(NSInteger)page atIndex:(NSInteger)index {
     id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
     
-    static JDOConvenienceItemController *controller = nil;
-    controller = [[JDOConvenienceItemController alloc] initWithNibName:nil bundle:nil];
+    if (index == 4){
+        static JDOViolationViewController *violation = nil;
+        violation = [[JDOViolationViewController alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:violation animated:YES];
+    } else {
+        static JDOConvenienceItemController *controller = nil;
+        controller = [[JDOConvenienceItemController alloc] initWithNibName:nil bundle:nil];
 
-    switch (index) {
-        case 0:
-            controller.title = @"公交班次";
-            controller.channelid = @"19";
-            break;
-        case 1:
-            controller.title = @"客运时刻";
-            controller.channelid = @"22";
-            break;
-        case 2:
-            controller.title = @"火车时刻";
-            controller.channelid = @"23";
-            break;
-        case 3:
-            controller.title = @"船运时刻";
-            controller.channelid = @"24";
-            break;
-        case 4:
-            controller.title = @"违章查询";
-            break;
-        case 5:
-            controller.title = @"航空时刻";
-            controller.channelid = @"25";
-            break;
-        case 6:
-            controller.title = @"常用电话";
-            controller.channelid = @"26";
-            break;
-        case 7:
-            controller.title = @"生活常识";
-            controller.channelid = @"27";
-            break;
-        case 8:
-            controller.title = @"烟台天气";
-            controller.channelid = @"21";
-            break;
+        switch (index) {
+            case 0:
+                controller.title = @"公交班次";
+                controller.channelid = @"19";
+                break;
+            case 1:
+                controller.title = @"客运时刻";
+                controller.channelid = @"22";
+                break;
+            case 2:
+                controller.title = @"火车时刻";
+                controller.channelid = @"23";
+                break;
+            case 3:
+                controller.title = @"船运时刻";
+                controller.channelid = @"24";
+                break;
+            case 4:
+                controller.title = @"违章查询";
+                break;
+            case 5:
+                controller.title = @"航空时刻";
+                controller.channelid = @"25";
+                break;
+            case 6:
+                controller.title = @"常用电话";
+                controller.channelid = @"26";
+                break;
+            case 7:
+                controller.title = @"生活常识";
+                controller.channelid = @"27";
+                break;
+            case 8:
+                controller.title = @"烟台天气";
+                controller.channelid = @"21";
+                break;
+        }
+        [self.navigationController pushViewController:controller animated:YES];
     }
-    [self.navigationController pushViewController:controller animated:YES];
-
 }
 
 @end

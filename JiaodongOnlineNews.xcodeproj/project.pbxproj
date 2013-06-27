@@ -275,6 +275,9 @@
 		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
+		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
+		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
+		D82D7C10177975F40090E5C1 /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C0F177975F40090E5C1 /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
@@ -698,6 +701,11 @@
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D823DBC11762B88B0006F80B /* JDOConvenienceItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceItemController.h; sourceTree = "<group>"; };
 		D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOConvenienceItemController.m; sourceTree = "<group>"; };
+		D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationViewController.h; sourceTree = "<group>"; };
+		D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationViewController.m; sourceTree = "<group>"; };
+		D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOViolationViewController.xib; sourceTree = "<group>"; };
+		D82D7C0E177975F40090E5C1 /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
+		D82D7C0F177975F40090E5C1 /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
@@ -911,6 +919,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				D82D7C0D177975CC0090E5C1 /* SBTableAlert */,
 				2D9BCE6A176D820B0040DDA0 /* ShareSDK_v2.2.2 */,
 				2D8D8FF2176AD40800BC9126 /* NJKWebViewProgress */,
 				2D944AB11769B9A900CEC12F /* HPGrowingTextView */,
@@ -1360,6 +1369,9 @@
 		2D9BCEEB176D88580040DDA0 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */,
+				D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */,
+				D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */,
 				2D86D5AC175894970000AA6A /* JDOCenterViewController.h */,
 				2D86D5AD175894980000AA6A /* JDOCenterViewController.m */,
 				2D080CED173CE4D9005653A7 /* JDONewsViewController.h */,
@@ -1450,6 +1462,15 @@
 				2DE931E71772E3E500A87ACC /* 中雨.png */,
 			);
 			path = Weather;
+			sourceTree = "<group>";
+		};
+		D82D7C0D177975CC0090E5C1 /* SBTableAlert */ = {
+			isa = PBXGroup;
+			children = (
+				D82D7C0E177975F40090E5C1 /* SBTableAlert.h */,
+				D82D7C0F177975F40090E5C1 /* SBTableAlert.m */,
+			);
+			path = SBTableAlert;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1637,6 +1658,7 @@
 				2DE932091772E99D00A87ACC /* weather.xml in Resources */,
 				2D971DE11776A2E10013C229 /* 37x-Checkmark@2x.png in Resources */,
 				2D9D8F2A17791ADE00CF9C3B /* Default.png in Resources */,
+				D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1794,6 +1816,8 @@
 				2DE931C61772D57700A87ACC /* JDOWeather.m in Sources */,
 				2D8DA2B21774A55F0021F482 /* JDORightMenuCell.m in Sources */,
 				2D14665017782A13002BC44B /* JDOImageCell.m in Sources */,
+				D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */,
+				D82D7C10177975F40090E5C1 /* SBTableAlert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
