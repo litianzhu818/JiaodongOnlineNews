@@ -14,7 +14,6 @@
 @interface MWPhotoBrowser ()
 - (UIImage *)imageForPhoto:(id<MWPhoto>)photo;
 - (void)cancelControlHiding;
-- (void)hideControlsAfterDelay;
 @end
 
 // Private methods and properties
@@ -239,7 +238,7 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-	[_photoBrowser hideControlsAfterDelay];
+
 }
 
 #pragma mark - Tap Detection
@@ -265,9 +264,6 @@
 		[self zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 1, 1) animated:YES];
 		
 	}
-	
-	// Delay controls
-	[_photoBrowser hideControlsAfterDelay];
 	
 }
 

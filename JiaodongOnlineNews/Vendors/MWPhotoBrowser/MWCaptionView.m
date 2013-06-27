@@ -9,12 +9,12 @@
 #import "MWCaptionView.h"
 #import "MWPhoto.h"
 
-static const CGFloat labelPadding = 10;
+static const CGFloat labelPadding = 5;
 
 // Private
 @interface MWCaptionView () {
     id<MWPhoto> _photo;
-    UILabel *_label;    
+    UITextView *_label;
 }
 @end
 
@@ -29,6 +29,7 @@ static const CGFloat labelPadding = 10;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
         UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"content_black_background.png"]];
         backgroundView.frame = self.bounds;
+        backgroundView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
         [self addSubview:backgroundView];
         [self setupCaption];
     }
@@ -46,23 +47,19 @@ static const CGFloat labelPadding = 10;
 }
 
 - (void)setupCaption {
-    _label = [[UILabel alloc] initWithFrame:CGRectMake(labelPadding, 0, 
+    _label = [[UITextView alloc] initWithFrame:CGRectMake(labelPadding, 0,
                                                        self.bounds.size.width-labelPadding*2,
                                                        self.bounds.size.height)];
     _label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     _label.opaque = NO;
     _label.backgroundColor = [UIColor clearColor];
-    _label.textAlignment = UITextAlignmentCenter;
-    _label.lineBreakMode = UILineBreakModeWordWrap;
-    _label.numberOfLines = 3;
+    _label.textAlignment = UITextAlignmentLeft;
+    _label.editable = false;
     _label.textColor = [UIColor whiteColor];
-    _label.shadowColor = [UIColor blackColor];
-    _label.shadowOffset = CGSizeMake(1, 1);
-    _label.font = [UIFont systemFontOfSize:17];
+    _label.font = [UIFont systemFontOfSize:14];
     if ([_photo respondsToSelector:@selector(caption)]) {
         _label.text = [_photo caption] ? [_photo caption] : @" ";
     }
-    
     [self addSubview:_label];
 }
 

@@ -401,7 +401,7 @@
 - (MBProgressHUD *)progressHUD {
     if (!_progressHUD) {
         _progressHUD = [[MBProgressHUD alloc] initWithView:self.parentView];
-        _progressHUD.minSize = CGSizeMake(120, 120);
+//        _progressHUD.minSize = CGSizeMake(120, 120);
         _progressHUD.minShowTime = 1;
 
         self.progressHUD.customView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/Checkmark.png"]];

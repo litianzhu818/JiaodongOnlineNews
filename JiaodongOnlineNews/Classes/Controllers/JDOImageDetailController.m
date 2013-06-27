@@ -29,22 +29,54 @@
         self.collected = false;
         self.photos = [[NSMutableArray alloc] init];
         self.models = [[NSMutableArray alloc] init];
+        
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
     }
     return self;
 }
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+}
+
+- (void) orientationChanged:(NSNotification *)notif{
+//    UIDeviceOrientation orientation = [[notif object] orientation];
+//    
+//    if (orientation == UIDeviceOrientationUnknown ||
+//        orientation == UIDeviceOrientationFaceUp  ||
+//        orientation == UIDeviceOrientationFaceDown){
+//        return;
+//    }
+//    
+//    if ( UIDeviceOrientationIsPortrait(orientation) ){
+//        if(orientation == UIDeviceOrientationPortrait){
+//            [self.view addSubview:self.navigationView];
+//            [self.view addSubview:self.toolbar];
+//        }else{
+//            [self.navigationView removeFromSuperview];
+//            [self.toolbar removeFromSuperview];
+//        }
+//    }else{
+//        [self.navigationView removeFromSuperview];
+//        [self.toolbar removeFromSuperview];
+//    }
+}
+
 - (void) setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44+43)];
-    self.navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+    self.navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 480, 44+43)];
+    self.navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth ;
     
-    UIImageView *topView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *topView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
     topView.image = [UIImage imageNamed:@"top_navigation_background_black.png"];
-    topView.autoresizingMask =  UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+//    topView.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
     [self.navigationView addSubview:topView];
     // 导航栏下面的渐变色
-    UIImageView *gradientTopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, 43)];
+    UIImageView *gradientTopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 480, 43)];
     gradientTopView.image = [UIImage imageNamed:@"top_navigation_gradient_background.png"];
-    gradientTopView.autoresizingMask =  UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+//    gradientTopView.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
     [self.navigationView addSubview:gradientTopView];
     
     [self.navigationView addLeftButtonImage:@"top_navigation_back_black" highlightImage:@"top_navigation_back_black" target:self action:@selector(backToViewList)];
@@ -71,14 +103,75 @@
     [self.view addSubview:_browser.view];
 }
 
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
-//    return true;
-//}
-//- (BOOL)shouldAutorotate{
-//    return true;
-//}
-//- (NSUInteger)supportedInterfaceOrientations{
-//    return UIInterfaceOrientationMaskAll;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return true;
+}
+- (BOOL)shouldAutorotate{
+    return true;
+}
+- (NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskAll;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    if(toInterfaceOrientation == UIInterfaceOrientationPortrait){
+        _browser.showToolbar = true;
+    }else{
+        _browser.showToolbar = false;
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+//    if(_browser.showToolbar){
+//        self.navigationView.alpha = 1.0;
+//        self.toolbar.alpha = 1.0;
+//    }else{
+//        self.navigationView.alpha = 0;
+//        self.toolbar.alpha = 0;
+//    }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    if(toInterfaceOrientation == UIInterfaceOrientationPortrait){
+        [UIView animateWithDuration:duration animations:^{
+            self.navigationView.alpha = 1.0;
+            self.toolbar.alpha = 1.0;
+        }];
+    }else{
+        [UIView animateWithDuration:duration animations:^{
+            self.navigationView.alpha = 0;
+            self.toolbar.alpha = 0;
+        }];
+    }
+    
+}
+
+// iOS5以上有viewWillLayoutSubviews方法,屏幕转向的时候先执行该方法,早于controller的回调和UIDevice的通知
+//- (void)viewWillLayoutSubviews{
+//    if([[[UIDevice currentDevice] systemVersion] compare:@"5" options:NSNumericSearch] != NSOrderedAscending){
+//        [super viewWillLayoutSubviews];
+//    }
+//    // iOS5下未开启beginGeneratingDeviceOrientationNotifications也能接收到正确的方向
+//    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+//    
+//    if (orientation == UIDeviceOrientationUnknown ||
+//        orientation == UIDeviceOrientationFaceUp  ||
+//        orientation == UIDeviceOrientationFaceDown){
+//        return;
+//    }
+//    
+//    if ( UIDeviceOrientationIsPortrait(orientation) ){
+//        if(orientation == UIDeviceOrientationPortrait){
+//            [self.view addSubview:self.navigationView];
+//            [self.view addSubview:self.toolbar];
+//        }else{
+//            [self.navigationView removeFromSuperview];
+//            [self.toolbar removeFromSuperview];
+//        }
+//    }else{
+//        [self.navigationView removeFromSuperview];
+//        [self.toolbar removeFromSuperview];
+//    }
 //}
 
 - (void)viewDidLoad{
@@ -116,7 +209,6 @@
         [NSNumber numberWithInt:ToolBarButtonCollect]
     ];
     _toolbar = [[JDOToolBar alloc] initWithModel:self.imageModel parentView:self.view config:toolbarBtnConfig height:44 theme:ToolBarThemeBlack];
-    _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     _toolbar.shareTarget = self;
     _toolbar.downloadTarget = self;
     [self.view addSubview:_toolbar];

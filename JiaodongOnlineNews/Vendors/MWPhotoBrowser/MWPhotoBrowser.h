@@ -37,6 +37,7 @@
 @property (nonatomic,strong) UIView *navigationView;
 @property (nonatomic,assign) NSUInteger currentPageIndex;
 @property (nonatomic,strong) JDOToolBar *toolbar;
+@property (nonatomic,assign) BOOL showToolbar;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated
