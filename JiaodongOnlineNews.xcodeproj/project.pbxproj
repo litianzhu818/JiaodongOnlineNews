@@ -297,7 +297,10 @@
 		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
+		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
+		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
+		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
@@ -752,9 +755,14 @@
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D823DBC11762B88B0006F80B /* JDOConvenienceItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceItemController.h; sourceTree = "<group>"; };
 		D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOConvenienceItemController.m; sourceTree = "<group>"; };
+		D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationViewController.h; sourceTree = "<group>"; };
+		D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationViewController.m; sourceTree = "<group>"; };
+		D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOViolationViewController.xib; sourceTree = "<group>"; };
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
+		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
+		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		FF1234C117631E5D00832AD2 /* JDOListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListViewController.h; sourceTree = "<group>"; };
 		FF1234C217631E5D00832AD2 /* JDOListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListViewController.m; sourceTree = "<group>"; };
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
@@ -968,6 +976,7 @@
 			isa = PBXGroup;
 			children = (
 				2D953DEF177AAC5700DF166B /* MWPhotoBrowser */,
+				D8F10184177BB9620024A93A /* SBTableAlert */,
 				2D9BCE6A176D820B0040DDA0 /* ShareSDK_v2.2.2 */,
 				2D8D8FF2176AD40800BC9126 /* NJKWebViewProgress */,
 				2D944AB11769B9A900CEC12F /* HPGrowingTextView */,
@@ -1436,6 +1445,9 @@
 		2D9BCEEB176D88580040DDA0 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */,
+				D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */,
+				D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */,
 				2D86D5AC175894970000AA6A /* JDOCenterViewController.h */,
 				2D86D5AD175894980000AA6A /* JDOCenterViewController.m */,
 				2D080CED173CE4D9005653A7 /* JDONewsViewController.h */,
@@ -1550,6 +1562,15 @@
 				2DE931E71772E3E500A87ACC /* 中雨.png */,
 			);
 			path = Weather;
+			sourceTree = "<group>";
+		};
+		D8F10184177BB9620024A93A /* SBTableAlert */ = {
+			isa = PBXGroup;
+			children = (
+				D8F10185177BB9890024A93A /* SBTableAlert.h */,
+				D8F10186177BB9890024A93A /* SBTableAlert.m */,
+			);
+			path = SBTableAlert;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1749,6 +1770,7 @@
 				2D953E08177AC7E100DF166B /* top_navigation_background_black.png in Resources */,
 				2D953E09177AC7E100DF166B /* top_navigation_back_black.png in Resources */,
 				2D953E0A177AC7E100DF166B /* 跟帖.png in Resources */,
+				D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1915,6 +1937,8 @@
 				2D953E00177AAC7700DF166B /* MWTapDetectingImageView.m in Sources */,
 				2D953E01177AAC7700DF166B /* MWTapDetectingView.m in Sources */,
 				2D953E02177AAC7700DF166B /* MWZoomingScrollView.m in Sources */,
+				D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */,
+				D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
