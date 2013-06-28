@@ -26,7 +26,6 @@
 @property (strong, nonatomic) CMHTableView *tableView;
 @property (strong, nonatomic) UILabel *textLabel;
 @property (strong, nonatomic) NSArray *oneKeyShareListArray;
-@property (strong, nonatomic) JDONewsDetailController *controller;
 
 @end
 
@@ -34,11 +33,11 @@
     JDOShareViewDelegate *shareViewDelegate;
 }
 
-- (id)initWithController:(JDONewsDetailController *)controller
+- (id)initWithTarget:(id<JDOReviewTargetDelegate>)target
 {
     self = [super initWithFrame: [self initialFrame]];
     if (self) {
-        self.controller = controller;
+        self.target = target;
         self.backgroundColor = [UIColor grayColor];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
@@ -74,7 +73,7 @@
         submitBtn.tag = Review_SubmitBtn_Tag;
         submitBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
         submitBtn.frame = CGRectMake(320-Review_Right_Margin-SubmitBtn_Width, 8, SubmitBtn_Width, 27);
-        [submitBtn addTarget:self.controller action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
+        [submitBtn addTarget:target action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
         [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
         [submitBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
         submitBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
@@ -132,8 +131,18 @@
         } completeBlock:^{
             [self performSelector:@selector(authCompleted) withObject:nil afterDelay:0.15];
         }];
+        
+        // 在这里设置object无效,但在controller的viewDidLoad里可以
+        [[NSNotificationCenter defaultCenter] addObserver:self.target selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];    
+        [[NSNotificationCenter defaultCenter] addObserver:self.target selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self.target name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.target name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (CGRect) initialFrame{
@@ -141,7 +150,7 @@
 }
 
 - (void) authCompleted{
-    [self.controller writeReview];
+    [self.target writeReview];
 }
 
 - (NSArray *)selectedClients
@@ -183,7 +192,7 @@
                     [item setObject:[NSNumber numberWithBool:selected] forKey:@"selected"];
                     [_tableView reloadData];
                 }else{
-                    [self.controller hideReviewView];
+                    [self.target hideReviewView];
                     id<ISSAuthOptions> authOptions = JDOGetOauthOptions(shareViewDelegate);
                   
                     [ShareSDK authWithType:shareType options:authOptions result:^(SSAuthState state, id<ICMErrorInfo> error) {

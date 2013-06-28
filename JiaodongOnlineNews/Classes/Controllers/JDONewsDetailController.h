@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JDOToolBar.h"
 
 @class JDONewsModel;
 
@@ -15,9 +16,8 @@
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDONewsModel *newsModel;
 @property (nonatomic,strong) UIActivityIndicatorView *activityIndicationView;
+@property (nonatomic,strong) JDOToolBar *toolbar;
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
-- (void)writeReview;
-- (void)hideReviewView;
 
 @end

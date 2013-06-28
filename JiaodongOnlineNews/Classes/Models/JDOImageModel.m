@@ -10,5 +10,8 @@
 
 @implementation JDOImageModel
 
+- (NSString *) reviewService{
+    return @"";
+}
 
 @end

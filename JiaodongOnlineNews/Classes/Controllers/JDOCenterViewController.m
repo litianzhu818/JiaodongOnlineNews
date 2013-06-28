@@ -13,6 +13,7 @@
 #import "JDOConvenienceController.h"
 #import "JDOLeftViewController.h"
 #import "JDORightViewController.h"
+#import "JDOImageDetailController.h"
 
 @interface JDOCenterViewController ()
 
@@ -90,7 +91,7 @@
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    if( self.viewControllers.count == 1){
+    if( self.viewControllers.count == 1){   // navigation层级超过一个viewcontroller则禁用viewdeck
         [self.viewDeckController setEnabled:false] ;
     }
     [self pushViewController:viewController orientation:JDOTransitionFromRight animated:animated];
@@ -178,17 +179,55 @@
     [super didReceiveMemoryWarning];
 }
 
-- (BOOL)shouldAutorotate{
-    return false;
-}
-
+// 图片详情允许转屏iOS5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return true;
+    }
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
-- (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskPortrait;
+// iOS6
+- (BOOL)shouldAutorotate{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return true;
+    }
+    return false;
 }
+
+// iOS6
+- (NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationPortrait;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        [self.topViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    }
+}
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        [self.topViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        [self.topViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    }
+}
+
+//- (BOOL)shouldAutorotate{
+//    return false;
+//}
+//
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+//    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+//}
+//
+//- (NSUInteger)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
 
 #pragma mark - IIViewDeckControllerDelegate
 

@@ -13,57 +13,23 @@
 #import "JDONewsDetailModel.h"
 #import "JDOCenterViewController.h"
 #import "WebViewJavascriptBridge_iOS.h"
-#import "UIDevice+IdentifierAddition.h"
 #import "JDOReviewListController.h"
-#import "CMPopTipView.h"
-#import "JDOShareViewController.h"
-#import "JDONewsReviewView.h"
-#import "HPTextViewInternal.h"
-#import <ShareSDK/ShareSDK.h>
-#import "JDOShareViewDelegate.h"
-
-#define Toolbar_Tag 100
-#define Review_Tag  100
-#define Share_Tag   101
-#define Font_Tag    102
-#define Collect_Tag 103
-
-#define Toolbar_Btn_Size 32
-#define Toolbar_Height   40
-
-#define Font_Selected_Color [UIColor blueColor]
-#define Font_Unselected_Color [UIColor whiteColor]
-#define PoptipView_Autodismiss_Delay 1.0
-
-#define Review_Panel_Init_Height 40+30
-#define Review_Comment_Placeholder @"说点什么吧..."
+#import "UIDevice+IdentifierAddition.h"
 
 @interface JDONewsDetailController ()
 
 @property (strong, nonatomic) WebViewJavascriptBridge *bridge;
-@property (strong, nonatomic) JDONewsReviewView *reviewPanel;
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
-@property (assign, nonatomic) BOOL isKeyboardShowing;
-@property (strong, nonatomic) UIButton *selectedFontBtn;
-@property (strong, nonatomic) CMPopTipView *fontPopTipView;
-@property (assign, nonatomic,getter = isCollected) BOOL collected;
-@property (strong, nonatomic) CMPopTipView *collectPopTipView;
-@property (strong, nonatomic) JDOShareViewController *shareViewController;
 @property (strong, nonatomic) UIView *blackMask;
 
 @end
 
-@implementation JDONewsDetailController{
-
-}
+@implementation JDONewsDetailController
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.newsModel = newsModel;
-#warning 查询该新闻是否被收藏
-        self.collected = false;
-        self.isKeyboardShowing = false;
     }
     return self;
 }
@@ -74,13 +40,21 @@
     [super loadView];
     // 内容
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-Toolbar_Height)]; // 去掉导航栏和工具栏
+    // 工具栏
+    NSArray *toolbarBtnConfig = @[
+        [NSNumber numberWithInt:ToolBarButtonReview],
+        [NSNumber numberWithInt:ToolBarButtonShare],
+        [NSNumber numberWithInt:ToolBarButtonFont],
+        [NSNumber numberWithInt:ToolBarButtonCollect]
+    ];
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentView:self.view config:toolbarBtnConfig height:56.0 theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    [self.view addSubview:_toolbar];
+    
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-_toolbar.height)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
     [self.view addSubview:_webView];
-    // 工具栏
-    [self setupToolBar];
     
     // WebView加载mask
     UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
@@ -101,32 +75,20 @@
     
     [self buildWebViewJavascriptBridge];
     [self loadWebView];
-    self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideReviewView)];
+    
+    _toolbar.bridge = self.bridge;
+    
+    self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
     _blackMask = self.view.blackMask;
     [_blackMask addGestureRecognizer:self.closeReviewGesture];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:_reviewPanel.textView];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:_reviewPanel.textView];
 }
 
 -(void)viewDidUnload{
     [super viewDidUnload];
     [self setWebView:nil];
-    [self setReviewPanel:nil];
-    [self setFontPopTipView:nil];
-    [self setCollectPopTipView:nil];
+    [self setToolbar:nil];
     
     [_blackMask removeGestureRecognizer:self.closeReviewGesture];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:_reviewPanel.textView];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:_reviewPanel.textView];
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-}
-
-- (void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Navigation
@@ -146,254 +108,6 @@
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithParams:@{@"aid":self.newsModel.id,@"deviceId":[[UIDevice currentDevice] uniqueDeviceIdentifier]}];
     [centerViewController pushViewController:reviewController animated:true];
-}
-
-#pragma mark - ToolBar
-
-- (void) setupToolBar{
-    NSArray *icons = @[@"review",@"share",@"font",@"collect"];
-    UIView *toolView = [[UIView alloc] initWithFrame:CGRectMake(0, App_Height-Toolbar_Height, 320, Toolbar_Height)];
-    for(int i =0;i<4;i++ ){
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*80+(80-Toolbar_Btn_Size)/2, 4, Toolbar_Btn_Size, Toolbar_Btn_Size)];
-        if( i==3 && self.isCollected){
-#warning 替换收藏过的图片
-            [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
-        }else{
-            [btn setBackgroundImage:[UIImage imageNamed:[icons objectAtIndex:i]] forState:UIControlStateNormal]; 
-        }
-        
-        [btn setTag:Toolbar_Tag+i];
-        [btn addTarget:self action:@selector(toolbarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [toolView addSubview:btn];
-    }
-    [self.view addSubview:toolView];
-}
-
-- (void) toolbarBtnClicked:(UIButton *)sender{
-    switch (sender.tag) {
-        case Review_Tag:
-            [self writeReview]; break;
-        case Share_Tag:
-            [self shareNews];   break;
-        case Font_Tag:
-            [self popupFontPanel:sender];   break;
-        case Collect_Tag:
-            [self collectNews:sender];  break;
-    }
-}
-
-#pragma mark - Write Review
-
-// 在键盘事件的通知中获得以下参数，用来同步视图动画和键盘动画
-CGRect endFrame;
-NSTimeInterval timeInterval;
-
-- (void)writeReview{
-    if( _reviewPanel == nil){
-        _reviewPanel = [[JDONewsReviewView alloc] initWithController:self];
-        [(HPTextViewInternal *)_reviewPanel.textView.internalTextView setPlaceholder:Review_Comment_Placeholder];
-    }
-    
-    [self.view pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
-        [_reviewPanel.textView becomeFirstResponder];
-        _isKeyboardShowing = true;
-        *_startFrame = _reviewPanel.frame;
-        *_endFrame = endFrame;
-        *_timeInterval = timeInterval;
-    } complete:^{
-        
-    }];
-}
-
-// 显示键盘和切换输入法时都会执行
-- (void)keyboardWillShow:(NSNotification *)notification{
-    NSDictionary *userInfo = [notification userInfo];
-    
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    // self.view会scale到0.95，所以用superview(UIViewControllerWrapperView)作为参考系
-    keyboardRect = [self.view.superview convertRect:keyboardRect fromView:nil];
-    
-    CGRect reviewPanelFrame = _reviewPanel.frame;
-    reviewPanelFrame.origin.y = self.view.bounds.size.height - (keyboardRect.size.height + reviewPanelFrame.size.height);
-    CGRect _endFrame = reviewPanelFrame;
-    
-    if( _isKeyboardShowing == false){
-        endFrame = _endFrame;
-        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-        [animationDurationValue getValue:&timeInterval];
-    }else{
-        _reviewPanel.frame = _endFrame;
-    }
-}
-
-- (void)hideReviewView{
-    [_reviewPanel.textView resignFirstResponder];
-    _isKeyboardShowing = false;
-    [_reviewPanel popView:self.view process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
-        *_startFrame = _reviewPanel.frame;
-        *_endFrame = CGRectMake(0, App_Height, 320, _reviewPanel.frame.size.height);
-        *_timeInterval = timeInterval;
-    } complete:^{
-        [_reviewPanel removeFromSuperview];
-    }];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification{
-    NSDictionary *userInfo = [notification userInfo];
-    
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    [animationDurationValue getValue:&timeInterval];
-}
-
-- (void)submitReview:(id)sender{
-    
-    if(JDOIsEmptyString(_reviewPanel.textView.text) || [[_reviewPanel.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:Review_Comment_Placeholder]){
-        return;
-    }
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:5];
-    [params setObject:self.newsModel.id forKey:@"aid"];
-    [params setObject:[_reviewPanel.textView.text stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters] forKey:@"content"];
-    [params setObject:@"" forKey:@"nickName"];
-    [params setObject:@"" forKey:@"uid"];
-    [params setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"deviceId"];
-    
-    [[JDOHttpClient sharedClient] getJSONByServiceName:COMMIT_COMMENT_SERVICE modelClass:nil params:params success:^(NSDictionary *result) {
-        NSNumber *status = [result objectForKey:@"status"];
-        if([status intValue] == 1 || [status intValue] == 2){ // 1:提交成功 2:重复提交,隐藏键盘
-            // 清空内容，重设键盘高度
-            _reviewPanel.textView.text = nil;
-            _reviewPanel.frame = [_reviewPanel initialFrame];
-            [_reviewPanel.remainWordNum setHidden:true];
-            [self hideReviewView];
-        }else if([status intValue] == 0){
-            // 提交失败,服务器错误
-            NSLog(@"提交失败,服务器错误");
-        }
-    } failure:^(NSString *errorStr) {
-        NSLog(@"错误内容--%@", errorStr);
-    }];
-    
-    // 同时发布到微博
-    [self shareReview];
-}
-
-- (void)shareReview{
-    NSArray *selectedClients = [_reviewPanel selectedClients];
-    if ([selectedClients count] == 0) {
-        return;
-    }
-    
-    id<ISSContent> publishContent = [ShareSDK content:[_reviewPanel.textView.text stringByAppendingString:[self defaultShareContent]]
-                                       defaultContent:nil
-                                                image:nil
-                                                title:self.newsModel.title
-                                                  url:@"http://m.jiaodong.net"
-                                          description:self.newsModel.summary
-                                            mediaType:SSPublishContentMediaTypeNews];
-    
-    [ShareSDK oneKeyShareContent:publishContent
-                       shareList:selectedClients
-                     authOptions:JDOGetOauthOptions(nil)
-                   statusBarTips:YES
-                          result:nil];
-}
-
-- (NSString *)defaultShareContent{
-    return [NSString stringWithFormat:@" //评论胶东在线新闻【%@】 http://m.jiaodong.net",self.newsModel.title];
-    
-}
-
-#pragma mark - Share
-
-- (void) setupSharePanel{
-    if( _shareViewController == nil){
-        _shareViewController = [[JDOShareViewController alloc] initWithNewsModel:self.newsModel];
-    };
-}
-
-- (void) shareNews{
-    [self setupSharePanel];
-    [(JDOCenterViewController *)self.navigationController pushViewController:_shareViewController orientation:JDOTransitionFromBottom animated:true];
-}
-
-#pragma mark - Font
-
-- (void) popupFontPanel:(UIButton *)sender{
-    if(_fontPopTipView == nil){
-        UIView *fontView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 20)];
-        NSArray *fontLabelName = @[@"小",@"中",@"大"];
-        NSArray *fontCSSName = @[@"small_font",@"normal_font",@"big_font"];
-        NSArray *fontSize = @[@16,@18,@20];
-        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        NSString *fontClass = [userDefault objectForKey:@"font_class"];
-        if(fontClass == nil)    fontClass = @"normal_font";
-        for(int i=0;i<3;i++){
-            UIButton *fontBtn = [[UIButton alloc] initWithFrame:CGRectMake(i*40, 0, 40, 20)];
-            [fontBtn setTitle:[fontLabelName objectAtIndex:i] forState:UIControlStateNormal];
-            [fontBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:[[fontSize objectAtIndex:i] intValue]]];
-            [fontBtn addTarget:self action:@selector(changeFontSize:) forControlEvents:UIControlEventTouchUpInside];
-            [fontBtn setTitleColor:Font_Unselected_Color forState:UIControlStateNormal];
-            [fontBtn setTitleColor:Font_Selected_Color forState:UIControlStateSelected];
-            if([fontClass isEqualToString:[fontCSSName objectAtIndex:i]]){
-                self.selectedFontBtn = fontBtn;
-                [fontBtn setSelected:true];
-            }else{
-                [fontBtn setSelected:false];
-            }
-            [fontView addSubview:fontBtn];
-        }
-        _fontPopTipView = [[CMPopTipView alloc] initWithCustomView:fontView];
-        _fontPopTipView.disableTapToDismiss = YES;
-        _fontPopTipView.preferredPointDirection = PointDirectionDown;
-        _fontPopTipView.backgroundColor = [UIColor darkGrayColor];
-        _fontPopTipView.animation = CMPopTipAnimationPop;
-        _fontPopTipView.dismissTapAnywhere = YES;
-    }
-    [_fontPopTipView presentPointingAtView:sender inView:self.view animated:YES];
-}
-- (void) changeFontSize:(UIButton *)sender{
-    if(self.selectedFontBtn == sender)  return;
-    self.selectedFontBtn = sender;
-    NSArray *fontLabelName = @[@"小",@"中",@"大"];
-    NSArray *fontCSSName = @[@"small_font",@"normal_font",@"big_font"];
-    NSString *title = [sender titleForState:UIControlStateNormal];
-    [sender setSelected:true];
-    for(UIView *otherBtn in [[sender superview] subviews]){
-        if([otherBtn isKindOfClass:[UIButton class]] && otherBtn!=sender){
-            [(UIButton *)otherBtn setSelected:false];
-        }
-    }
-    NSString *selectedFontCSSName = [fontCSSName objectAtIndex:[fontLabelName indexOfObject:title]];
-    [_bridge callHandler:@"changeFontSize" data:selectedFontCSSName];
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setObject:selectedFontCSSName forKey:@"font_class"];
-    [userDefault synchronize];
-    [_fontPopTipView.autoDismissTimer invalidate];
-    [_fontPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];
-}
-
-#pragma mark - Collect
-
-- (void) collectNews:(UIButton *)sender{
-    if(_collectPopTipView == nil){
-        _collectPopTipView = [[CMPopTipView alloc] initWithMessage:@""];
-        _collectPopTipView.disableTapToDismiss = YES;
-        _collectPopTipView.preferredPointDirection = PointDirectionDown;
-        _collectPopTipView.backgroundColor = [UIColor darkGrayColor];
-        _collectPopTipView.animation = CMPopTipAnimationPop;
-        _collectPopTipView.dismissTapAnywhere = NO;
-    }
-    if(self.isCollected){
-#warning 取消收藏
-        self.collected = false;
-        _collectPopTipView.message = @"  取消收藏!  ";
-    }else{
-        self.collected = true;
-        _collectPopTipView.message = @"  收藏成功!  ";
-    }
-    [_collectPopTipView presentPointingAtView:sender inView:self.view animated:YES];
-    [_collectPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];
 }
 
 #pragma mark - Load WebView

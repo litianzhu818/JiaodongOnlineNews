@@ -14,7 +14,6 @@
 @interface MWPhotoBrowser ()
 - (UIImage *)imageForPhoto:(id<MWPhoto>)photo;
 - (void)cancelControlHiding;
-- (void)hideControlsAfterDelay;
 @end
 
 // Private methods and properties
@@ -44,7 +43,7 @@
 		// Image view
 		_photoImageView = [[MWTapDetectingImageView alloc] initWithFrame:CGRectZero];
 		_photoImageView.tapDelegate = self;
-		_photoImageView.contentMode = UIViewContentModeCenter;
+		_photoImageView.contentMode = UIViewContentModeScaleAspectFit;
 		_photoImageView.backgroundColor = [UIColor blackColor];
 		[self addSubview:_photoImageView];
 		
@@ -118,6 +117,7 @@
 			CGRect photoImageViewFrame;
 			photoImageViewFrame.origin = CGPointZero;
 			photoImageViewFrame.size = img.size;
+//            photoImageViewFrame.size = [[UIScreen mainScreen] applicationFrame].size;
 			_photoImageView.frame = photoImageViewFrame;
 			self.contentSize = photoImageViewFrame.size;
 
@@ -238,7 +238,7 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-	[_photoBrowser hideControlsAfterDelay];
+
 }
 
 #pragma mark - Tap Detection
@@ -264,9 +264,6 @@
 		[self zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 1, 1) animated:YES];
 		
 	}
-	
-	// Delay controls
-	[_photoBrowser hideControlsAfterDelay];
 	
 }
 

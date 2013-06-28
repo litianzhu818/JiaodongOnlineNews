@@ -278,21 +278,22 @@
     [tableView reloadData];
     
     // 使用slide动画关闭左菜单
-    if ([self.viewDeckController.centerController isKindOfClass:[JDOCenterViewController class]]) {
-        JDOCenterViewController *centerController = (JDOCenterViewController *)self.viewDeckController.centerController;
-        [centerController setRootViewControllerType:indexPath.row];
-    }
-    [self.viewDeckController closeLeftViewAnimated:true];
+//    if ([self.viewDeckController.centerController isKindOfClass:[JDOCenterViewController class]]) {
+//        JDOCenterViewController *centerController = (JDOCenterViewController *)self.viewDeckController.centerController;
+//        [centerController setRootViewControllerType:indexPath.row];
+//    }
+//    [self.viewDeckController closeLeftViewAnimated:true];
     
     // 使用Bouncing动画关闭左菜单
-//    [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
-//        if ([controller.centerController isKindOfClass:[JDOCenterViewController class]]) {
-//            JDOCenterViewController *centerController = (JDOCenterViewController *)controller.centerController;
-//            [centerController setRootViewControllerType:indexPath.row];
-//        }
-//    } completion:^(IIViewDeckController *controller, BOOL success) {
-//        
-//    }];
+    [self.viewDeckController closeSideView:IIViewDeckLeftSide bounceOffset:320-self.viewDeckController.leftSize+30 bounced:^(IIViewDeckController *controller) {
+        if ([self.viewDeckController.centerController isKindOfClass:[JDOCenterViewController class]]) {
+            JDOCenterViewController *centerController = (JDOCenterViewController *)self.viewDeckController.centerController;
+            [centerController setRootViewControllerType:indexPath.row];
+        }
+    } completion:^(IIViewDeckController *controller, BOOL success) {
+        
+    }];
+
 }
 
 @end
