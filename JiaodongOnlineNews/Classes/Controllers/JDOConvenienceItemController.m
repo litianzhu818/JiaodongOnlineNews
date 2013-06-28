@@ -24,7 +24,7 @@
 
 @interface JDOConvenienceItemController ()
 
-@end
+@end  
 
 @implementation JDOConvenienceItemController
 

@@ -19,6 +19,7 @@
     NSString *CarTypeString;
     NSString *ChassisNumString;
     
+    NSArray *Types;
 }
 
 @property (nonatomic, strong)SBTableAlert *alert;

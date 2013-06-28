@@ -19,7 +19,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        Types = @[@"大型汽车",@"小型汽车",@"使馆汽车",@"领馆汽车",@"境外汽车",@"外籍汽车",@"两、三轮摩托车",@"轻便摩托车",@"使馆摩托车",@"领馆摩托车",@"境外摩托车",@"外籍摩托车",@"农用运输车",@"拖拉机",@"挂车",@"教练汽车",@"教练摩托车",@"实验汽车",@"实验摩托车",@"临时入境汽车",@"临时入境摩托车",@"临时行驶车",@"公安警车",@"公安警车",@"其他"];
     }
     return self;
 }
@@ -68,14 +68,14 @@
 		cell = [[SBTableAlertCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 	}
 	
-	[cell.textLabel setText:[NSString stringWithFormat:@"Cell %d", indexPath.row]];
+	[cell.textLabel setText:[Types objectAtIndex:indexPath.row]];
 	
 	return cell;
 }
 
 - (NSInteger)tableAlert:(SBTableAlert *)tableAlert numberOfRowsInSection:(NSInteger)section {
 	if (tableAlert.type == SBTableAlertTypeSingleSelect)
-		return 3;
+		return Types.count;
 	else
 		return 10;
 }
@@ -106,14 +106,12 @@
 		
 		[tableAlert.tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+    [CarType setTitle:[Types objectAtIndex:indexPath.row] forState:UIControlStateNormal];
 }
 
 - (void)tableAlert:(SBTableAlert *)tableAlert didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	NSLog(@"Dismissed: %i", buttonIndex);
-
 }
-
-
 
 - (void)didReceiveMemoryWarning
 {

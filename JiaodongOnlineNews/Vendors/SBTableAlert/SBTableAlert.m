@@ -250,8 +250,8 @@
 		
 		_alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancelTitle otherButtonTitles:nil];
 		
-		_maximumVisibleRows = 4;
-		_rowHeight = 40.;
+		_maximumVisibleRows = 8;
+		_rowHeight = 35.;
 
 		_tableView = [[SBTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 		

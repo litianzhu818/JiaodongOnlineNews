@@ -279,6 +279,7 @@
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FF14D0F81761B1E400D6D4F4 /* ImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF14D0F71761B1E400D6D4F4 /* ImageTableCell.xib */; };
@@ -709,6 +710,8 @@
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
+		D8FCACA6177C19E9001050EF /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
+		D8FCACA7177C19E9001050EF /* M13Checkbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13Checkbox.m; sourceTree = "<group>"; };
 		FF1234C117631E5D00832AD2 /* JDOListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListViewController.h; sourceTree = "<group>"; };
 		FF1234C217631E5D00832AD2 /* JDOListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListViewController.m; sourceTree = "<group>"; };
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
@@ -919,6 +922,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				D8FCACA5177C19BC001050EF /* M13CheckBox */,
 				D8F10184177BB9620024A93A /* SBTableAlert */,
 				2D9BCE6A176D820B0040DDA0 /* ShareSDK_v2.2.2 */,
 				2D8D8FF2176AD40800BC9126 /* NJKWebViewProgress */,
@@ -1473,6 +1477,15 @@
 			path = SBTableAlert;
 			sourceTree = "<group>";
 		};
+		D8FCACA5177C19BC001050EF /* M13CheckBox */ = {
+			isa = PBXGroup;
+			children = (
+				D8FCACA6177C19E9001050EF /* M13Checkbox.h */,
+				D8FCACA7177C19E9001050EF /* M13Checkbox.m */,
+			);
+			path = M13CheckBox;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1818,6 +1831,7 @@
 				2D14665017782A13002BC44B /* JDOImageCell.m in Sources */,
 				D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */,
 				D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */,
+				D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
