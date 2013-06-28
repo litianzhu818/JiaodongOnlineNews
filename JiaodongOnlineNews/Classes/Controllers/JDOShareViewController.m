@@ -64,7 +64,7 @@
 //    self.imageView.layer.shadowRadius = 1.8;
     
     // 图集中切换图片内容会跟着变,放到viewWillAppear中
-//    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+//    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"news_image_placeholder.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
 //
 //    } failure:^(NSError *error) {
 //        
@@ -128,7 +128,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.titleLabel.text = [self getShareTitleAndContent];
-    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"default_icon.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"news_image_placeholder.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         
     } failure:^(NSError *error) {
         

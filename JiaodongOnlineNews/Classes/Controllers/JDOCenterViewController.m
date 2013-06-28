@@ -188,17 +188,17 @@
 }
 
 // iOS6
-- (BOOL)shouldAutorotate{
-    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        return true;
-    }
-    return false;
-}
+//- (BOOL)shouldAutorotate{
+//    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+//        return true;
+//    }
+//    return false;
+//}
 
 // iOS6
-- (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationPortrait;
-}
+//- (NSUInteger)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationPortrait;
+//}
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){

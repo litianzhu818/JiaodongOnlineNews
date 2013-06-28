@@ -6,6 +6,10 @@
 //  Copyright (c) 2013年 胶东在线. All rights reserved.
 //
 
+/*
+ 左菜单项目完全同图片替换，该类不使用
+ */
+
 #import "JDOLeftMenuCell.h"
 
 #define icon_size 42.0f

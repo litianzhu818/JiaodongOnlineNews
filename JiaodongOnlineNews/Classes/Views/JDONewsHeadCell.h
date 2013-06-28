@@ -15,5 +15,6 @@
 @property (nonatomic,strong) NSMutableArray *imageViews;
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UIPageControl *pageControl;
+@property (nonatomic,strong) UIImageView *titleBackground;
 
 @end

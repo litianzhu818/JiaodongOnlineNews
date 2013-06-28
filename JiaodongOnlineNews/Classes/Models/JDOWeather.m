@@ -84,7 +84,7 @@
         NSRange range = [_provinceAndCity rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]];
         if(range.length > 0){
             [self.province appendString:[_provinceAndCity substringToIndex:range.location]];
-            [self.city appendString:[_provinceAndCity substringFromIndex:range.location]];
+            [self.city appendString:[_provinceAndCity substringFromIndex:range.location+1]];
         }else{
             [self.city appendString:_provinceAndCity];
         }

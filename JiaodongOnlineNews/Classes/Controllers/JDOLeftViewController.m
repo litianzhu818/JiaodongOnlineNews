@@ -7,17 +7,19 @@
 #import "JDOLeftViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOCenterViewController.h"
-#import "JDOLeftMenuCell.h"
+//#import "JDOLeftMenuCell.h"
 #import "JDOXmlClient.h"
 #import "JDOWeatherForcast.h"
 #import "JDOWeather.h"
 
-#define Menu_Cell_Height 60.0f
-#define Left_Margin 20.0f
-#define Top_Margin 20.0f
+#define Menu_Cell_Height 55.0f
+#define Menu_Image_Tag 101
+#define Left_Margin 40.0f
+#define Top_Margin 7.5f
 #define Padding 5.0f
-#define Weather_Icon_Height 64
-#define Weather_Icon_Width 180.0/130.0*64
+#define Weather_Icon_Height 56
+#define Weather_Icon_Width 180.0/130.0*56
+#define Separator_Y 324.0
 
 @interface JDOLeftViewController ()
 
@@ -67,7 +69,7 @@
     _tableView.rowHeight = Menu_Cell_Height;
     [self.view addSubview:_tableView];
     
-    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _tableView.frame.size.height+10, 320, 2)];
+    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Separator_Y, 320, 1)];
     separateView.image = [UIImage imageNamed:@"menu_separator.png"];
     [self.view addSubview:separateView];
     
@@ -76,8 +78,8 @@
     [self.view addSubview:_blackMask];
     
     // 天气部分
-    float topMargin = _tableView.bounds.size.height+Top_Margin;
-    cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 40, 30)];
+    float topMargin = Separator_Y+Top_Margin;
+    cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 0, 0)];
     cityLabel.text = @"烟台";
     cityLabel.font = [UIFont boldSystemFontOfSize:18];
     cityLabel.textColor = [UIColor whiteColor];
@@ -89,7 +91,7 @@
     weatherIcon.image = [UIImage imageNamed:@"默认.png"];
     [self.view addSubview:weatherIcon];
     
-    temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height+Padding, 0, 0)];
+    temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height, 0, 0)];
     temperatureLabel.text = @" ";
     temperatureLabel.font = [UIFont boldSystemFontOfSize:14];
     temperatureLabel.textColor = [UIColor whiteColor];
@@ -97,7 +99,7 @@
     [temperatureLabel sizeToFit];
     [self.view addSubview:temperatureLabel];
     
-    weatherLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height+temperatureLabel.height + 2*Padding, 0, 0)];
+    weatherLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height+temperatureLabel.height + Padding, 0, 0)];
     weatherLabel.text = @" ";
     weatherLabel.font = [UIFont systemFontOfSize:12];
     weatherLabel.textColor = [UIColor whiteColor];
@@ -105,7 +107,7 @@
     [weatherLabel sizeToFit];
     [self.view addSubview:weatherLabel];
     
-    dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin,  topMargin+Weather_Icon_Height+temperatureLabel.height +weatherLabel.height+ 3*Padding, 0, 0)];
+    dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin,  topMargin+Weather_Icon_Height+temperatureLabel.height +weatherLabel.height+ 2*Padding, 0, 0)];
     dateLabel.text = @" ";
     dateLabel.font = [UIFont systemFontOfSize:12];
     dateLabel.textColor = [UIColor whiteColor];
@@ -235,21 +237,28 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"MenuItem";
     
-    JDOLeftMenuCell *cell = (JDOLeftMenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UIImageView *imageView;
+    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[JDOLeftMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin, 0, 115, Menu_Cell_Height)];
+        [imageView setTag:Menu_Image_Tag];
+        [cell.contentView addSubview:imageView];
     }
     
+    imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
     if(indexPath.row == lastSelectedRow){
-        cell.imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
+        imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
-        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
+//        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
     }else{
-        cell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
+        imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
         cell.backgroundView = nil;
-        cell.textLabel.textColor = [UIColor whiteColor];
+//        cell.textLabel.textColor = [UIColor whiteColor];
     }
-    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
+//    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
     
     return cell;
 }

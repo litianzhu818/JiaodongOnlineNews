@@ -19,7 +19,9 @@
 
 @end
 
-@implementation JDOImageDetailController
+@implementation JDOImageDetailController{
+    bool _toPortrait;
+}
 
 - (id)initWithImageModel:(JDOImageModel *)imageModel{
     self = [super initWithNibName:nil bundle:nil];
@@ -66,17 +68,17 @@
 }
 
 - (void) setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 480, 44+43)];
-    self.navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth ;
+    self.navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44+43)];
+    self.navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     
-    UIImageView *topView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
+    UIImageView *topView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     topView.image = [UIImage imageNamed:@"top_navigation_background_black.png"];
-//    topView.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
+    topView.autoresizingMask =  UIViewAutoresizingFlexibleWidth ;
     [self.navigationView addSubview:topView];
     // 导航栏下面的渐变色
-    UIImageView *gradientTopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 480, 43)];
+    UIImageView *gradientTopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, 43)];
     gradientTopView.image = [UIImage imageNamed:@"top_navigation_gradient_background.png"];
-//    gradientTopView.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
+    gradientTopView.autoresizingMask =  UIViewAutoresizingFlexibleWidth ;
     [self.navigationView addSubview:gradientTopView];
     
     [self.navigationView addLeftButtonImage:@"top_navigation_back_black" highlightImage:@"top_navigation_back_black" target:self action:@selector(backToViewList)];
@@ -113,37 +115,55 @@
     return UIInterfaceOrientationMaskAll;
 }
 
+/** 
+    iOS5下转屏调用顺序,其中转屏通知发送给rootViewController
+    willRotateToInterfaceOrientation:
+    viewWillLayoutSubviews
+    LayoutSubviews
+    willAnimateRotationToInterfaceOrientation
+    didRotateFromInterfaceOrientation
+    UIDeviceOrientationDidChangeNotification
+*/
+
+// 除了Portrait方向以外，其他方向都不显示导航栏和工具栏，因为回退和分享都只做了Portrait方向的动画设置
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    if(toInterfaceOrientation == UIInterfaceOrientationPortrait){
-        _browser.showToolbar = true;
+    MWZoomingScrollView *page = [_browser pageDisplayedAtIndex:[_browser currentPageIndex]];
+    MWCaptionView *caption = page.captionView;
+    caption.alpha = 0;
+    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+        if(toInterfaceOrientation == UIInterfaceOrientationPortrait){
+            _browser.showToolbar = true;
+            _toPortrait = true;
+        }else{
+            _browser.showToolbar = false;
+            _toPortrait = false;
+        }
     }else{
         _browser.showToolbar = false;
+        _toPortrait = false;
     }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-//    if(_browser.showToolbar){
-//        self.navigationView.alpha = 1.0;
-//        self.toolbar.alpha = 1.0;
-//    }else{
-//        self.navigationView.alpha = 0;
-//        self.toolbar.alpha = 0;
-//    }
+    if(!_toPortrait){
+        [self.navigationView removeFromSuperview];
+        [self.toolbar removeFromSuperview];
+    }
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    MWZoomingScrollView *page = [_browser pageDisplayedAtIndex:[_browser currentPageIndex]];
+    MWCaptionView *caption = page.captionView;
+    caption.alpha = 1.0;
     if(toInterfaceOrientation == UIInterfaceOrientationPortrait){
-        [UIView animateWithDuration:duration animations:^{
-            self.navigationView.alpha = 1.0;
-            self.toolbar.alpha = 1.0;
-        }];
+        [self.view addSubview:self.navigationView];
+        [self.view addSubview:self.toolbar];
+        self.navigationView.alpha = 1.0;
+        self.toolbar.alpha = 1.0;
     }else{
-        [UIView animateWithDuration:duration animations:^{
-            self.navigationView.alpha = 0;
-            self.toolbar.alpha = 0;
-        }];
+        self.navigationView.alpha = 0;
+        self.toolbar.alpha = 0;
     }
-    
 }
 
 // iOS5以上有viewWillLayoutSubviews方法,屏幕转向的时候先执行该方法,早于controller的回调和UIDevice的通知
@@ -209,6 +229,7 @@
         [NSNumber numberWithInt:ToolBarButtonCollect]
     ];
     _toolbar = [[JDOToolBar alloc] initWithModel:self.imageModel parentView:self.view config:toolbarBtnConfig height:44 theme:ToolBarThemeBlack];
+    _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
     _toolbar.shareTarget = self;
     _toolbar.downloadTarget = self;
     [self.view addSubview:_toolbar];
