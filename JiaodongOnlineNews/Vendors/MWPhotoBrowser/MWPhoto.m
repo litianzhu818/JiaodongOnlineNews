@@ -106,7 +106,7 @@ caption = _caption;
         } else if (_photoURL) {
             // Load async from web (using SDWebImage)
             SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            [manager downloadWithURL:_photoURL delegate:self];
+            [manager downloadWithURL:_photoURL delegate:self options:SDWebImageOption];
         } else {
             // Failed - no source
             self.underlyingImage = nil;

@@ -34,7 +34,7 @@
 #import "MBProgressHUD.h"
 
 #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
-#define SDWebImageOption SDWebImageLowPriority|SDWebImageProgressiveDownload//|SDWebImageCacheMemoryOnly
+#define SDWebImageOption SDWebImageRetryFailed|SDWebImageLowPriority|SDWebImageProgressiveDownload//|SDWebImageCacheMemoryOnly
 #define USE_JSONKIT
 #define App_Height [[UIScreen mainScreen] applicationFrame].size.height
 

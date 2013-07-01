@@ -105,39 +105,40 @@
     [self.view addSubview:_browser.view];
 }
 
+/**
+ 转屏调用顺序,其中转屏通知发送给topViewController
+ willRotateToInterfaceOrientation:
+ viewWillLayoutSubviews
+ LayoutSubviews
+ willAnimateRotationToInterfaceOrientation
+ didRotateFromInterfaceOrientation
+ UIDeviceOrientationDidChangeNotification
+ */
+
+// iOS5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
     return true;
 }
+
+// iOS6
 - (BOOL)shouldAutorotate{
     return true;
 }
+
+// iOS6
 - (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
-/** 
-    iOS5下转屏调用顺序,其中转屏通知发送给rootViewController
-    willRotateToInterfaceOrientation:
-    viewWillLayoutSubviews
-    LayoutSubviews
-    willAnimateRotationToInterfaceOrientation
-    didRotateFromInterfaceOrientation
-    UIDeviceOrientationDidChangeNotification
-*/
 
-// 除了Portrait方向以外，其他方向都不显示导航栏和工具栏，因为回退和分享都只做了Portrait方向的动画设置
+// 除了Portrait方向以外，其他方向都不显示导航栏和工具栏，因为回退和分享都只做了Portrait方向的导航设置
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     MWZoomingScrollView *page = [_browser pageDisplayedAtIndex:[_browser currentPageIndex]];
     MWCaptionView *caption = page.captionView;
     caption.alpha = 0;
-    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
-        if(toInterfaceOrientation == UIInterfaceOrientationPortrait){
-            _browser.showToolbar = true;
-            _toPortrait = true;
-        }else{
-            _browser.showToolbar = false;
-            _toPortrait = false;
-        }
+    if(toInterfaceOrientation == UIInterfaceOrientationPortrait){
+        _browser.showToolbar = true;
+        _toPortrait = true;
     }else{
         _browser.showToolbar = false;
         _toPortrait = false;
@@ -292,6 +293,7 @@
     if(self.photos.count >0){
         MWPhoto *photo = [self.photos objectAtIndex:index];
         MWCaptionView *captionView = [[MWCaptionView alloc] initWithPhoto:photo];
+        captionView.userInteractionEnabled = false;
         return captionView;
     }
     return nil;

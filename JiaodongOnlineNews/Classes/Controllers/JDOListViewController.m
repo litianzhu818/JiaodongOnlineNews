@@ -38,7 +38,7 @@
         
         if(__currentPage == nil){
             self.currentPage = 1;
-            [self.listParam setObject:@0 forKey:@"p"];
+            [self.listParam setObject:@1 forKey:@"p"];
         }else{
             self.currentPage = [(NSNumber *)[self.listParam objectForKey:@"p"] intValue];
         }
@@ -116,8 +116,8 @@
     }];
 }
 - (void) refresh{
-    self.currentPage = 0;
-    [self.listParam setObject:@0 forKey:@"p"];
+    self.currentPage = 1;
+    [self.listParam setObject:@1 forKey:@"p"];
     
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList)  {
         if(dataList == nil){

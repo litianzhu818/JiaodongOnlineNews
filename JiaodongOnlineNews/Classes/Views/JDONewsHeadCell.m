@@ -11,8 +11,13 @@
 
 #define Default_Image @"news_head_placeholder.png"
 #define Title_Height 25.0f
+#define Left_Margin 7.5f
+#define Right_Margin 7.5f
+#define PageControl_Width 40.0f
 
-@implementation JDONewsHeadCell
+@implementation JDONewsHeadCell{
+    int _currentPage;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -43,16 +48,18 @@
         _titleBackground.image = [UIImage imageNamed:@"news_head_title_background.png"];
         
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, height-Title_Height, width-45, Title_Height)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
         _titleLabel.textAlignment = UITextAlignmentLeft;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_titleLabel];
         
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(width-40, height-Title_Height, 40, Title_Height)];
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(width-PageControl_Width-Right_Margin, height-Title_Height, PageControl_Width, Title_Height)];
         _pageControl.backgroundColor = [UIColor clearColor];
         _pageControl.numberOfPages = 0;
         [self.contentView addSubview:_pageControl];
+        
+        _currentPage = 0;
     }
     return self;
 }
@@ -76,12 +83,12 @@
     _scrollView.contentSize = CGSizeMake(models.count *width, height);
     for (int i=0; i<models.count; i++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i*width, 0, width, height)];
-        imageView.userInteractionEnabled = true;
+        imageView.userInteractionEnabled = true;    // UIImageView默认不开启userInteraction
         [self.imageViews addObject:imageView];
         [_scrollView addSubview:imageView];
         
         JDONewsModel *newsModel = (JDONewsModel *)[models objectAtIndex:i];
-        if( i==0){
+        if( i==_currentPage ){
             _titleLabel.text = newsModel.title;
         }
             
@@ -100,7 +107,7 @@
     }
 #warning _pageControl图标样式需要改为蓝色
     _pageControl.numberOfPages = models.count;
-    _pageControl.currentPage = 0;
+    _pageControl.currentPage = _currentPage;
 }
 
 
@@ -108,9 +115,9 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // 修改pageControl的位置和titleLabel的内容
     float width = CGRectGetWidth(self.bounds);
-    int page = _scrollView.contentOffset.x / width;
-    _pageControl.currentPage = page;
-    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:page];
+    _currentPage = _scrollView.contentOffset.x / width;
+    _pageControl.currentPage = _currentPage;
+    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:_currentPage];
     _titleLabel.text = newsModel.title;
 }
 

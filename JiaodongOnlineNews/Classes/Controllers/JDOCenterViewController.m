@@ -179,26 +179,33 @@
     [super didReceiveMemoryWarning];
 }
 
-// 图片详情允许转屏iOS5
+// iOS5 图片详情允许转屏
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
     if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        return true;
+        return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
     }
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
-// iOS6
-//- (BOOL)shouldAutorotate{
-//    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-//        return true;
-//    }
-//    return false;
-//}
+/*
+ 若设置了window.rootViewController,所有转屏事件都先调用rootViewController的shouldAutorotate来确定是否可以旋转,
+ 若可以旋转,则由子viewController的supportedInterfaceOrientations决定可旋转的方向
+ */
+// iOS6 图片详情允许转屏
+- (BOOL)shouldAutorotate{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return true;
+    }
+    return false;
+}
 
-// iOS6
-//- (NSUInteger)supportedInterfaceOrientations{
-//    return UIInterfaceOrientationPortrait;
-//}
+// iOS6 图片详情允许转屏，注意:若不加mask会无限递归
+- (NSUInteger)supportedInterfaceOrientations{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    return UIInterfaceOrientationMaskPortrait; // 26 = 11010 (P+L+R) 
+}
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
@@ -216,18 +223,6 @@
         [self.topViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     }
 }
-
-//- (BOOL)shouldAutorotate{
-//    return false;
-//}
-//
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
-//    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
-//}
-//
-//- (NSUInteger)supportedInterfaceOrientations{
-//    return UIInterfaceOrientationMaskPortrait;
-//}
 
 #pragma mark - IIViewDeckControllerDelegate
 
