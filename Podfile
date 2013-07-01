@@ -1,5 +1,7 @@
 platform:ios
 
+inhibit_all_warnings!
+
 pod 'AFNetworking','0.10.1'
 pod 'JSONKit'
 pod 'SDURLCache'

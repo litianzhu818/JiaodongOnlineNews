@@ -42,14 +42,6 @@
 	NSTimer *_controlVisibilityTimer;
     UIActionSheet *_actionsSheet;
     
-    // Appearance
-    UIImage *_navigationBarBackgroundImageDefault, 
-    *_navigationBarBackgroundImageLandscapePhone;
-    UIColor *_previousNavBarTintColor;
-    UIBarStyle _previousNavBarStyle;
-    UIStatusBarStyle _previousStatusBarStyle;
-    UIBarButtonItem *_previousViewControllerBackButton;
-    
     // Misc
     BOOL _displayActionButton;
 	BOOL _performingLayout;
@@ -59,20 +51,10 @@
     
 }
 
-// Private Properties
-@property (nonatomic, retain) UIColor *previousNavBarTintColor;
-@property (nonatomic, retain) UIBarButtonItem *previousViewControllerBackButton;
-@property (nonatomic, retain) UIImage *navigationBarBackgroundImageDefault, *navigationBarBackgroundImageLandscapePhone;
-
 // Private Methods
 
 // Layout
 - (void)performLayout;
-
-// Nav Bar Appearance
-- (void)setNavBarAppearance:(BOOL)animated;
-- (void)storePreviousNavBarAppearance;
-- (void)restorePreviousNavBarAppearance:(BOOL)animated;
 
 // Paging
 - (void)tilePages;
@@ -106,9 +88,6 @@
 - (void)loadAdjacentPhotosIfNecessary:(id<MWPhoto>)photo;
 - (void)releaseAllUnderlyingPhotos;
 
-// Actions
-- (void)savePhoto;
-
 @end
 
 // Handle depreciations and supress hide warnings
@@ -118,13 +97,6 @@
 
 // MWPhotoBrowser
 @implementation MWPhotoBrowser
-
-// Properties
-@synthesize previousNavBarTintColor = _previousNavBarTintColor;
-@synthesize navigationBarBackgroundImageDefault = _navigationBarBackgroundImageDefault,
-navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandscapePhone;
-@synthesize displayActionButton = _displayActionButton;
-@synthesize previousViewControllerBackButton = _previousViewControllerBackButton;
 
 #pragma mark - NSObject
 
@@ -171,10 +143,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_previousNavBarTintColor release];
-    [_navigationBarBackgroundImageDefault release];
-    [_navigationBarBackgroundImageLandscapePhone release];
-    [_previousViewControllerBackButton release];
 	[_pagingScrollView release];
 	[_visiblePages release];
 	[_recycledPages release];
@@ -221,6 +189,9 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     _pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
 	[self.view addSubview:_pagingScrollView];
     
+    _captionView = [[MWCaptionView alloc] initWithFrame:CGRectMake(0, 0, 320, 86.0)];
+    [self.view addSubview:_captionView];
+    
     // Update
     [self reloadData];
     
@@ -233,46 +204,13 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     
     // Setup
     _performingLayout = YES;
-    NSUInteger numberOfPhotos = [self numberOfPhotos];
     
 	// Setup pages
     [_visiblePages removeAllObjects];
     [_recycledPages removeAllObjects];
     
 	[self updateNavigation];
-    
-    // Navigation buttons
-//    if ([self.navigationController.viewControllers objectAtIndex:0] == self) {
-//        // We're first on stack so show done button
-//        UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)] autorelease];
-//        // Set appearance
-//        if ([UIBarButtonItem respondsToSelector:@selector(appearance)]) {
-//            [doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//            [doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-//            [doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-//            [doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-//            [doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
-//            [doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
-//        }
-//        self.navigationItem.rightBarButtonItem = doneButton;
-//    } else {
-//        // We're not first so show back button
-//        UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-//        NSString *backButtonTitle = previousViewController.navigationItem.backBarButtonItem ? previousViewController.navigationItem.backBarButtonItem.title : previousViewController.title;
-//        UIBarButtonItem *newBackButton = [[[UIBarButtonItem alloc] initWithTitle:backButtonTitle style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
-//        // Appearance
-//        if ([UIBarButtonItem respondsToSelector:@selector(appearance)]) {
-//            [newBackButton setBackButtonBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//            [newBackButton setBackButtonBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-//            [newBackButton setBackButtonBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-//            [newBackButton setBackButtonBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-//            [newBackButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
-//            [newBackButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
-//        }
-//        self.previousViewControllerBackButton = previousViewController.navigationItem.backBarButtonItem; // remember previous
-//        previousViewController.navigationItem.backBarButtonItem = newBackButton;
-//    }
-    
+        
     // Content offset
 	_pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:_currentPageIndex];
     [self tilePages];
@@ -300,18 +238,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	// Layout manually (iOS < 5)
     if (SYSTEM_VERSION_LESS_THAN(@"5")) [self viewWillLayoutSubviews];
     
-    // Status bar
-    if (self.wantsFullScreenLayout && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        _previousStatusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:animated];
-    }
-    
-    // Navigation bar appearance
-//    if (!_viewIsActive && [self.navigationController.viewControllers objectAtIndex:0] != self) {
-//        [self storePreviousNavBarAppearance];
-//    }
-//    [self setNavBarAppearance:animated];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -323,20 +249,12 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         // State
         _viewIsActive = NO;
         
-        // Bar state / appearance
-        [self restorePreviousNavBarAppearance:animated];
-        
     }
     
     // Controls
     [self.navigationController.navigationBar.layer removeAllAnimations]; // Stop all animations on nav bar
     [NSObject cancelPreviousPerformRequestsWithTarget:self]; // Cancel any pending toggles from taps
     [self setControlsHidden:NO animated:NO permanent:YES];
-    
-    // Status bar
-    if (self.wantsFullScreenLayout && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [[UIApplication sharedApplication] setStatusBarStyle:_previousStatusBarStyle animated:animated];
-    }
     
 	// Super
 	[super viewWillDisappear:animated];
@@ -346,44 +264,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     _viewIsActive = YES;
-}
-
-#pragma mark - Nav Bar Appearance
-
-- (void)setNavBarAppearance:(BOOL)animated {
-    self.navigationController.navigationBar.tintColor = nil;
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-    if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
-    }
-}
-
-- (void)storePreviousNavBarAppearance {
-    _didSavePreviousStateOfNavBar = YES;
-    self.previousNavBarTintColor = self.navigationController.navigationBar.tintColor;
-    _previousNavBarStyle = self.navigationController.navigationBar.barStyle;
-    if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        self.navigationBarBackgroundImageDefault = [self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
-        self.navigationBarBackgroundImageLandscapePhone = [self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsLandscapePhone];
-    }
-}
-
-- (void)restorePreviousNavBarAppearance:(BOOL)animated {
-    if (_didSavePreviousStateOfNavBar) {
-        self.navigationController.navigationBar.tintColor = _previousNavBarTintColor;
-        self.navigationController.navigationBar.barStyle = _previousNavBarStyle;
-        if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-            [self.navigationController.navigationBar setBackgroundImage:_navigationBarBackgroundImageDefault forBarMetrics:UIBarMetricsDefault];
-            [self.navigationController.navigationBar setBackgroundImage:_navigationBarBackgroundImageLandscapePhone forBarMetrics:UIBarMetricsLandscapePhone];
-        }
-        // Restore back button if we need to
-        if (_previousViewControllerBackButton) {
-            UIViewController *previousViewController = [self.navigationController topViewController]; // We've disappeared so previous is now top
-            previousViewController.navigationItem.backBarButtonItem = _previousViewControllerBackButton;
-            self.previousViewControllerBackButton = nil;
-        }
-    }
 }
 
 #pragma mark - Layout
@@ -415,13 +295,16 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	for (MWZoomingScrollView *page in _visiblePages) {
         NSUInteger index = PAGE_INDEX(page);
 		page.frame = [self frameForPageAtIndex:index];
-        page.captionView.frame = [self frameForCaptionView:page.captionView atIndex:index];
 		[page setMaxMinZoomScalesForCurrentBounds];
 	}
 	
 	// Adjust contentOffset to preserve page location based on values collected prior to location
 	_pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:indexPriorToLayout];
 	[self didStartViewingPageAtIndex:_currentPageIndex]; // initial
+    [_captionView setPhoto:[_delegate photoBrowser:self photoAtIndex:_currentPageIndex]];
+    
+    // captionview frame,转屏后重设frame
+    _captionView.frame = CGRectMake(0, self.view.bounds.size.height-86.0-(_showToolbar?_toolbar.frame.size.height:0), self.view.bounds.size.width, 86.0);
     
 	// Reset
 	_currentPageIndex = indexPriorToLayout;
@@ -508,19 +391,19 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     return photo;
 }
 
-- (MWCaptionView *)captionViewForPhotoAtIndex:(NSUInteger)index {
-    MWCaptionView *captionView = nil;
-    if ([_delegate respondsToSelector:@selector(photoBrowser:captionViewForPhotoAtIndex:)]) {
-        captionView = [_delegate photoBrowser:self captionViewForPhotoAtIndex:index];
-    } else {
-        id <MWPhoto> photo = [self photoAtIndex:index];
-        if ([photo respondsToSelector:@selector(caption)]) {
-            if ([photo caption]) captionView = [[[MWCaptionView alloc] initWithPhoto:photo] autorelease];
-        }
-    }
-    captionView.alpha = [self areControlsHidden] ? 0 : 1; // Initial alpha
-    return captionView;
-}
+//- (MWCaptionView *)captionViewForPhotoAtIndex:(NSUInteger)index {
+//    MWCaptionView *captionView = nil;
+//    if ([_delegate respondsToSelector:@selector(photoBrowser:captionViewForPhotoAtIndex:)]) {
+//        captionView = [_delegate photoBrowser:self captionViewForPhotoAtIndex:index];
+//    } else {
+//        id <MWPhoto> photo = [self photoAtIndex:index];
+//        if ([photo respondsToSelector:@selector(caption)]) {
+//            if ([photo caption]) captionView = [[[MWCaptionView alloc] initWithPhoto:photo] autorelease];
+//        }
+//    }
+//    captionView.alpha = [self areControlsHidden] ? 0 : 1; // Initial alpha
+//    return captionView;
+//}
 
 - (UIImage *)imageForPhoto:(id<MWPhoto>)photo {
 	if (photo) {
@@ -620,12 +503,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 			[_visiblePages addObject:page];
 			[_pagingScrollView addSubview:page];
 			MWLog(@"Added page at index %i", index);
-            
-            // Add caption
-            MWCaptionView *captionView = [self captionViewForPhotoAtIndex:index];
-            captionView.frame = [self frameForCaptionView:captionView atIndex:index];
-            [_pagingScrollView addSubview:captionView];
-            page.captionView = captionView;
             
 		}
 	}
@@ -751,14 +628,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	return CGRectMake(0, self.view.bounds.size.height - height, self.view.bounds.size.width, height);
 }
 
-- (CGRect)frameForCaptionView:(MWCaptionView *)captionView atIndex:(NSUInteger)index {
-    CGRect pageFrame = [self frameForPageAtIndex:index];
-    captionView.frame = CGRectMake(0, 0, pageFrame.size.width, 44); // set initial frame
-    CGSize captionSize = [captionView sizeThatFits:CGSizeMake(pageFrame.size.width, 0)];
-    CGRect captionFrame = CGRectMake(pageFrame.origin.x, pageFrame.size.height - captionSize.height - (_showToolbar?_toolbar.frame.size.height:0), pageFrame.size.width, captionSize.height);
-    return captionFrame;
-}
-
 #pragma mark - UIScrollView Delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -778,6 +647,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	_currentPageIndex = index;
 	if (_currentPageIndex != previousCurrentPage) {
         [self didStartViewingPageAtIndex:index];
+        [_captionView setPhoto:[_delegate photoBrowser:self photoAtIndex:_currentPageIndex]];
     }
 	
 }
@@ -842,12 +712,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         self.navigationController.navigationBar.frame = navBarFrame;
         
     }
-    
-    // Captions
-    NSMutableSet *captionViews = [[[NSMutableSet alloc] initWithCapacity:_visiblePages.count] autorelease];
-    for (MWZoomingScrollView *page in _visiblePages) {
-        if (page.captionView) [captionViews addObject:page.captionView];
-    }
 	
 	// Animate
     if (animated) {
@@ -858,7 +722,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	[self.navigationController.navigationBar setAlpha:alpha];
 	[_toolbar setAlpha:alpha];
     [_navigationView setAlpha:alpha];
-    for (UIView *v in captionViews) v.alpha = alpha;
+    _captionView.alpha = alpha;
 	if (animated) [UIView commitAnimations];
 	
 }
@@ -874,9 +738,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 - (BOOL)areControlsHidden {
     // 导航和工具栏可能在其他方向自动隐藏，只有caption是完全靠用户交互来控制显隐
-    MWZoomingScrollView *page = [self pageDisplayedAtIndex:[self currentPageIndex]];
-    MWCaptionView *caption = page.captionView;
-    return (caption.alpha == 0);
+    return (_captionView.alpha == 0);
 }
 - (void)hideControls { [self setControlsHidden:YES animated:YES permanent:NO]; }
 - (void)toggleControls { [self setControlsHidden:![self areControlsHidden] animated:YES permanent:NO]; }

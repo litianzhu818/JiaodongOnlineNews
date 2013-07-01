@@ -188,8 +188,7 @@
 }
 
 /*
- 若设置了window.rootViewController,所有转屏事件都先调用rootViewController的shouldAutorotate来确定是否可以旋转,
- 若可以旋转,则由子viewController的supportedInterfaceOrientations决定可旋转的方向
+ 在初始化设置window.rootViewController时,先由rootViewController的supportedInterfaceOrientations决定可旋转的方向.然后调用rootViewController的shouldAutorotate来决定是否可以旋转。设备旋转时的调用顺序相反。
  */
 // iOS6 图片详情允许转屏
 - (BOOL)shouldAutorotate{
@@ -199,29 +198,16 @@
     return false;
 }
 
-// iOS6 图片详情允许转屏，注意:若不加mask会无限递归
+// iOS6 图片详情允许转屏，注意:若不加Mask可能会无限递归
 - (NSUInteger)supportedInterfaceOrientations{
     if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        return UIInterfaceOrientationMaskAllButUpsideDown;
+        return UIInterfaceOrientationMaskAllButUpsideDown;  // 26 = 11010 (P+L+R)
     }
-    return UIInterfaceOrientationMaskPortrait; // 26 = 11010 (P+L+R) 
+    return UIInterfaceOrientationMaskPortrait;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        [self.topViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }
-}
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        [self.topViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    }
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        [self.topViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
 }
 
 #pragma mark - IIViewDeckControllerDelegate
