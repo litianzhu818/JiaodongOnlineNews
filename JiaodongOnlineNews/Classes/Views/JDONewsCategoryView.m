@@ -52,6 +52,8 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;  // 分割线用背景图片实现
+        self.tableView.rowHeight = News_Cell_Height;
         [self addSubview:self.tableView];
         
         __block JDONewsCategoryView *blockSelf = self;

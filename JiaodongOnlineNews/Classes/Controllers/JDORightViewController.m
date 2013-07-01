@@ -11,9 +11,12 @@
 #import "JDOSettingViewController.h"
 #import "JDOFeedbackViewController.h"
 #import "JDOAboutUsViewController.h"
-#import "JDORightMenuCell.h"
+//#import "JDORightMenuCell.h"
 
-#define Menu_Cell_Height 60.0f
+#define Menu_Cell_Height 55.0f
+#define Menu_Image_Tag 101
+#define Right_Margin 40
+#define Menu_Item_Width 115
 
 typedef enum {
     RightMenuItemSetting = 0,
@@ -119,17 +122,37 @@ typedef enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"MenuItem";
     
-    JDORightMenuCell *cell = (JDORightMenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    UIImageView *imageView;
+    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[JDORightMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.width-Right_Margin-Menu_Item_Width, 0, Menu_Item_Width, Menu_Cell_Height)];
+        [imageView setTag:Menu_Image_Tag];
+        [cell.contentView addSubview:imageView];
     }
-    cell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
-    cell.imageView.highlightedImage = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
-    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.highlightedTextColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
-    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
+    // 因为图片大小不一致,调整frame以对齐
+    switch (indexPath.row) {
+        case RightMenuItemCollection:
+            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-2, 0, Menu_Item_Width, Menu_Cell_Height);
+            break;
+        case RightMenuItemAbout:
+            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-1, 0, Menu_Item_Width, Menu_Cell_Height);
+            break;
+        default:
+            break;
+    }
+    
+    imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
+    imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
+    imageView.highlightedImage = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
+    
+//    cell.textLabel.textColor = [UIColor whiteColor];
+//    cell.textLabel.highlightedTextColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
+//    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
     
     return cell;
 }

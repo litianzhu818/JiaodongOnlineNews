@@ -12,10 +12,11 @@
 #define MASK_VISIBLE_ALPHA 0.5
 #define UPPER_TOUCH_LIMIT -10
 #define LOWER_TOUCH_LIMIT 10
-#define slider_top_margin 5
-#define slider_left_margin 5
+#define Left_Margin 6.5f
+#define slider_top_margin 3.5f
+#define slider_padding 3.5f
 #define title_label_tag 100
-#define title_normal_color [UIColor colorWithWhite:85.0/255.0 alpha:1.0]
+#define title_normal_color [UIColor colorWithWhite:100.0/255.0 alpha:1.0]
 #define title_highlight_color [UIColor whiteColor]
 
 @implementation JDOPageControl
@@ -29,7 +30,7 @@
         [self sendSubviewToBack:_backgroundView];
 		// 滑动背景
 		_slider = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [_slider setImage:[[UIImage imageNamed:sliderImage] stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
+        [_slider setImage:[UIImage imageNamed:sliderImage]];
         [self insertSubview:_slider aboveSubview:_backgroundView];
         
         [self setPages:pages];
@@ -42,12 +43,15 @@
     _currentPage = -1;
     _pages = pages;
     _numberOfPages = pages.count;
-    int width = self.frame.size.width/pages.count;
+    float width = (self.frame.size.width-Left_Margin*2)/pages.count;
     for (int i=0; i<pages.count; i++) {
-        UIButton *titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(i*width, 0, width,self.frame.size.height)];
+        UIButton *titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(Left_Margin+i*width, 0, width,self.frame.size.height)];
         [titleBtn setTitle:[(JDONewsCategoryInfo *)[pages objectAtIndex:i] title] forState:UIControlStateNormal];
         [titleBtn setTitleColor:title_normal_color forState:UIControlStateNormal];
         titleBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        // iOS5中label的文字偏左2个像素
+        [titleBtn setTitleEdgeInsets:UIEdgeInsetsMake( 0,2,0,0)];
+//        titleBtn.titleLabel.backgroundColor = [UIColor blueColor];
         titleBtn.tag = title_label_tag+i;
         titleBtn.backgroundColor = [UIColor clearColor];
         [titleBtn addTarget:self action:@selector(onTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -84,10 +88,10 @@
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	}
 	
-	int width = self.frame.size.width/self.numberOfPages;
-	int x = width*_currentPage;
+	float width = (self.frame.size.width-2*Left_Margin)/self.numberOfPages;
+	float x = Left_Margin+width*_currentPage;
     // 也可以只修改center,设置为对应labelButton的center
-	[self.slider setFrame:CGRectMake(x+slider_left_margin,slider_top_margin,width-slider_left_margin*2,self.frame.size.height-slider_top_margin*2)];
+	[self.slider setFrame:CGRectMake(x+slider_padding,slider_top_margin,width-slider_padding*2,self.frame.size.height-slider_top_margin*2)];
 	if (animated){
         [UIView commitAnimations];
     }else{
@@ -101,26 +105,26 @@
     [titleButton setTitleColor:color forState:UIControlStateNormal];
 }
 
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-	CGContextRef myContext = UIGraphicsGetCurrentContext();
-	float diameter = 5;
-	
-	CGFloat blackColor[4];
-	blackColor[0]=0.0;
-	blackColor[1]=0.0;
-	blackColor[2]=0.0;
-	blackColor[3]=1.0;
-	float width = self.frame.size.width/self.numberOfPages;
-	
-	int i;
-	for (i=0; i<self.numberOfPages; i++)
-	{
-		int x = i*width + (width-diameter)/2;
-		CGContextSetFillColor(myContext, blackColor);
-		CGContextFillEllipseInRect(myContext, CGRectMake(x,(self.frame.size.height-diameter)/2,diameter,diameter));
-	}
-}
+//- (void)drawRect:(CGRect)rect {
+//    // Drawing code
+//	CGContextRef myContext = UIGraphicsGetCurrentContext();
+//	float diameter = 5;
+//	
+//	CGFloat blackColor[4];
+//	blackColor[0]=0.0;
+//	blackColor[1]=0.0;
+//	blackColor[2]=0.0;
+//	blackColor[3]=1.0;
+//	float width = self.frame.size.width/self.numberOfPages;
+//	
+//	int i;
+//	for (i=0; i<self.numberOfPages; i++)
+//	{
+//		int x = i*width + (width-diameter)/2;
+//		CGContextSetFillColor(myContext, blackColor);
+//		CGContextFillEllipseInRect(myContext, CGRectMake(x,(self.frame.size.height-diameter)/2,diameter,diameter));
+//	}
+//}
 
 
 -(void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context{

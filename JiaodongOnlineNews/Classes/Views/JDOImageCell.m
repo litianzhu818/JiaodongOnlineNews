@@ -10,7 +10,7 @@
 #import "JDOImageModel.h"
 #import "SSLineView.h"
 
-#define Default_Image @"progressbar_logo.png"
+#define Default_Image @"news_head_placeholder.png"
 
 #define Content_Inset 15.0
 #define Padding 5.0

@@ -9,7 +9,8 @@
 #import "JDONewsHeadCell.h"
 #import "JDONewsModel.h"
 
-#define Default_Image @"progressbar_logo.png"
+#define Default_Image @"news_head_placeholder.png"
+#define Title_Height 25.0f
 
 @implementation JDONewsHeadCell
 
@@ -33,19 +34,23 @@
         self.imageViews = [NSMutableArray arrayWithCapacity:1];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-        imageView.image = [UIImage imageNamed:@"progressbar_logo.png"];
+        imageView.image = [UIImage imageNamed:Default_Image];
         [self.imageViews addObject:imageView];
         [_scrollView addSubview:imageView];
         [self.contentView addSubview:_scrollView];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height-20, width-40, 20)];
+        _titleBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, height-Title_Height, width, Title_Height)];
+        _titleBackground.image = [UIImage imageNamed:@"news_head_title_background.png"];
+        
+        
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, height-Title_Height, width-45, Title_Height)];
         _titleLabel.textAlignment = UITextAlignmentLeft;
-        _titleLabel.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.7];
+        _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_titleLabel];
         
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(width-40, height-20, 40, 20)];
-        _pageControl.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.7];
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(width-40, height-Title_Height, 40, Title_Height)];
+        _pageControl.backgroundColor = [UIColor clearColor];
         _pageControl.numberOfPages = 0;
         [self.contentView addSubview:_pageControl];
     }
@@ -55,7 +60,13 @@
 - (void)setModels:(NSArray *)models{
     _models = models;
     
+    // _titleBackground在有数据的时候才添加到contentView,是为了在显示占位图的时候不显示
+    if( _titleBackground.superview == nil){
+        [self.contentView insertSubview:_titleBackground belowSubview:_titleLabel];
+    }
+    
     self.imageViews = [NSMutableArray arrayWithCapacity:models.count];
+    // 移除之前的图像,包括最初的占位图
     [[_scrollView subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [obj removeFromSuperview];
     }];
@@ -71,7 +82,7 @@
         
         JDONewsModel *newsModel = (JDONewsModel *)[models objectAtIndex:i];
         if( i==0){
-            _titleLabel.text = [NSString stringWithFormat:@" %@",newsModel.title ];// 标题左边留空白
+            _titleLabel.text = newsModel.title;
         }
             
         __block UIImageView *blockImageView = imageView;
@@ -87,6 +98,7 @@
             
         }];
     }
+#warning _pageControl图标样式需要改为蓝色
     _pageControl.numberOfPages = models.count;
     _pageControl.currentPage = 0;
 }
@@ -99,14 +111,8 @@
     int page = _scrollView.contentOffset.x / width;
     _pageControl.currentPage = page;
     JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:page];
-    _titleLabel.text = [NSString stringWithFormat:@" %@",newsModel.title ];
+    _titleLabel.text = newsModel.title;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
 
 @end

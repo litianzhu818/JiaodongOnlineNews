@@ -77,6 +77,7 @@
     self.frame = CGRectMake(0, App_Height-self.frameHeight, 320, self.frameHeight);
     self.backgroundColor = [UIColor clearColor];
     UIImageView *toolBackground = [[UIImageView alloc] initWithFrame:self.bounds];
+    toolBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     if(_theme == ToolBarThemeWhite){
         toolBackground.image = [UIImage imageNamed:@"toolbar_white_background.png"];
     }else if(_theme == ToolBarThemeBlack){

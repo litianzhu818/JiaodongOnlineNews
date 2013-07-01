@@ -49,8 +49,8 @@
 #define Transition_View_Bottom CGRectMake(0, App_Height, 320, App_Height)
 
 // 新闻
-#define Headline_Height 170
-#define News_Cell_Height 70
+#define Headline_Height 176.0f
+#define News_Cell_Height 70.0f
 #define Review_Font_Size 14
 
 // 刷新时间间隔
@@ -60,7 +60,7 @@
 #define News_Update_Interval 30*60
 
 // 颜色
-#define Main_Background_Color @"ececec"
+#define Main_Background_Color @"f0f0f0"
 
 
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"

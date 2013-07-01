@@ -146,8 +146,8 @@
     [centerController setRootViewControllerType:MenuItemNews];
 
     IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
-    deckController.leftSize = 120;
-    deckController.rightSize = 150;
+    deckController.leftSize = 320-207;
+    deckController.rightSize = 320-207+10;
     deckController.panningGestureDelegate = centerController;
     deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
     deckController.delegate = centerController;
