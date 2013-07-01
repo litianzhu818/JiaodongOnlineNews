@@ -8,6 +8,7 @@
 
 #import "JDOViolationViewController.h"
 #import "TPKeyboardAvoidingScrollView.h"
+#import "M13Checkbox.h"
 
 @interface JDOViolationViewController ()
 
@@ -28,6 +29,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    M13Checkbox *titleWithHeight1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
+    titleWithHeight1.frame = CGRectMake(self.view.frame.size.width * 0.06, 190, titleWithHeight1.frame.size.width, titleWithHeight1.frame.size.height);
+    [self.view addSubview:titleWithHeight1];
+    
+    M13Checkbox *titleWithHeight2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:22];
+    titleWithHeight2.frame = CGRectMake(self.view.frame.size.width * 0.56, 190, titleWithHeight2.frame.size.width, titleWithHeight2.frame.size.height);
+    [self.view addSubview:titleWithHeight2];
+    
     TPKeyboardAvoidingScrollView *tp = self.view;
     [tp setScrollEnabled:NO];
     tp = nil;
