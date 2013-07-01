@@ -222,6 +222,15 @@
 
 - (void)viewDidUnload{
     [super viewDidUnload];
+    self.tableView = nil;
+    self.blackMask = nil;
+    self.weather = nil;
+    self.forcast = nil;
+    cityLabel = nil;
+    weatherIcon = nil;
+    temperatureLabel = nil;
+    weatherLabel = nil;
+    dateLabel = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

@@ -90,6 +90,12 @@
 	[self loadDataFromNetwork];
 }
 
+- (void)viewDidUnload{
+    [super viewDidUnload];
+    self.statusView = nil;
+    self.tableView = nil;
+}
+
 - (void) setCurrentState:(ViewStatusType)status{
     _status = status;
     

@@ -132,7 +132,7 @@
             [self performSelector:@selector(authCompleted) withObject:nil afterDelay:0.15];
         }];
         
-        // 在这里设置object无效,但在controller的viewDidLoad里可以
+        // 在这里设置object参数无效,但在controller的viewDidLoad里可以,原因不明,暂时使用nil
         [[NSNotificationCenter defaultCenter] addObserver:self.target selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];    
         [[NSNotificationCenter defaultCenter] addObserver:self.target selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }

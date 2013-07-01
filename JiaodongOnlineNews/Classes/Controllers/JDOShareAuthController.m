@@ -122,6 +122,11 @@
     [self.view addSubview:_tableView];
 }
 
+- (void)viewDidUnload{
+    [super viewDidUnload];
+    _tableView = nil;
+}
+
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [self.navigationView setTitle:@"分享授权"];

@@ -83,6 +83,12 @@ typedef enum {
     [_controllerStack addObject:deckController];
 }
 
+- (void)viewDidUnload{
+    [super viewDidUnload];
+    self.controllerStack = nil;
+    self.tableView = nil;
+}
+
 - (void) transitionToAlpha:(float) alpha Scale:(float) scale{
     self.blackMask.alpha = alpha;
     self.view.transform = CGAffineTransformMakeScale(scale, scale);

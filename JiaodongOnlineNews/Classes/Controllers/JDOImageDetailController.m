@@ -106,7 +106,7 @@
 /**
  * 转屏调用顺序,其中NavigationController默认将转屏通知发送给topViewController
  * willRotateToInterfaceOrientation:
- * viewWillLayoutSubviews
+ * viewWillLayoutSubviews(iOS5以上有viewWillLayoutSubviews方法,屏幕转向的时候先执行该方法)
  * LayoutSubviews
  * willAnimateRotationToInterfaceOrientation
  * didRotateFromInterfaceOrientation
@@ -164,33 +164,7 @@
     }
 }
 
-// iOS5以上有viewWillLayoutSubviews方法,屏幕转向的时候先执行该方法,早于controller的回调和UIDevice的通知
-//- (void)viewWillLayoutSubviews{
-//    if([[[UIDevice currentDevice] systemVersion] compare:@"5" options:NSNumericSearch] != NSOrderedAscending){
-//        [super viewWillLayoutSubviews];
-//    }
-//    // iOS5下未开启beginGeneratingDeviceOrientationNotifications也能接收到正确的方向
-//    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-//    
-//    if (orientation == UIDeviceOrientationUnknown ||
-//        orientation == UIDeviceOrientationFaceUp  ||
-//        orientation == UIDeviceOrientationFaceDown){
-//        return;
-//    }
-//    
-//    if ( UIDeviceOrientationIsPortrait(orientation) ){
-//        if(orientation == UIDeviceOrientationPortrait){
-//            [self.view addSubview:self.navigationView];
-//            [self.view addSubview:self.toolbar];
-//        }else{
-//            [self.navigationView removeFromSuperview];
-//            [self.toolbar removeFromSuperview];
-//        }
-//    }else{
-//        [self.navigationView removeFromSuperview];
-//        [self.toolbar removeFromSuperview];
-//    }
-//}
+// 
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -219,6 +193,12 @@
     } failure:^(NSString *errorStr) {
         [JDOCommonUtil showHintHUD:errorStr inView:self.view];
     }];
+}
+
+- (void)viewDidUnload{
+    [super viewDidUnload];
+    self.browser = nil;
+    self.toolbar = nil;
 }
 
 - (void) setupToolbar{

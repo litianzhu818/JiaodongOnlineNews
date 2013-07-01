@@ -72,6 +72,9 @@
         [self.contentView insertSubview:_titleBackground belowSubview:_titleLabel];
     }
     
+    for(UIImageView *imageView in self.imageViews){
+        [imageView removeGestureRecognizer:[imageView.gestureRecognizers lastObject] ];
+    }
     self.imageViews = [NSMutableArray arrayWithCapacity:models.count];
     // 移除之前的图像,包括最初的占位图
     [[_scrollView subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -110,6 +113,11 @@
     _pageControl.currentPage = _currentPage;
 }
 
+- (void)dealloc{
+    for(UIImageView *imageView in self.imageViews){
+        [imageView removeGestureRecognizer:[imageView.gestureRecognizers lastObject] ];
+    }
+}
 
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{

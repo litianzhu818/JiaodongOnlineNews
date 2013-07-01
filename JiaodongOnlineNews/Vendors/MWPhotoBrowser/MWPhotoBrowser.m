@@ -151,6 +151,7 @@
     [self releaseAllUnderlyingPhotos];
     [[SDImageCache sharedImageCache] clearMemory]; // clear memory
     [_photos release];
+    [_captionView release];
     [super dealloc];
 }
 
