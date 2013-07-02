@@ -8,7 +8,8 @@
 
 #import "JDOViolationViewController.h"
 #import "TPKeyboardAvoidingScrollView.h"
-#import "M13Checkbox.h"
+#import "JDOJsonClient.h"
+#import "JDOViolationModel.h"
 
 @interface JDOViolationViewController ()
 
@@ -21,6 +22,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         Types = @[@"大型汽车",@"小型汽车",@"使馆汽车",@"领馆汽车",@"境外汽车",@"外籍汽车",@"两、三轮摩托车",@"轻便摩托车",@"使馆摩托车",@"领馆摩托车",@"境外摩托车",@"外籍摩托车",@"农用运输车",@"拖拉机",@"挂车",@"教练汽车",@"教练摩托车",@"实验汽车",@"实验摩托车",@"临时入境汽车",@"临时入境摩托车",@"临时行驶车",@"公安警车",@"公安警车",@"其他"];
+        CarNumString = [[NSString alloc] init];
+        CarTypeString = [[NSString alloc] init];
+        ChassisNumString = [[NSString alloc] init];
     }
     return self;
 }
@@ -30,13 +34,13 @@
 {
     [super viewDidLoad];
     
-    M13Checkbox *titleWithHeight1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
-    titleWithHeight1.frame = CGRectMake(self.view.frame.size.width * 0.06, 190, titleWithHeight1.frame.size.width, titleWithHeight1.frame.size.height);
-    [self.view addSubview:titleWithHeight1];
+    checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
+    checkBox1.frame = CGRectMake(self.view.frame.size.width * 0.06, 190, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    [self.view addSubview:checkBox1];
     
-    M13Checkbox *titleWithHeight2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:22];
-    titleWithHeight2.frame = CGRectMake(self.view.frame.size.width * 0.56, 190, titleWithHeight2.frame.size.width, titleWithHeight2.frame.size.height);
-    [self.view addSubview:titleWithHeight2];
+    checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:22];
+    checkBox2.frame = CGRectMake(self.view.frame.size.width * 0.48, 190, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    [self.view addSubview:checkBox2];
     
     TPKeyboardAvoidingScrollView *tp = self.view;
     [tp setScrollEnabled:NO];
@@ -121,6 +125,30 @@
 
 - (void)tableAlert:(SBTableAlert *)tableAlert didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	NSLog(@"Dismissed: %i", buttonIndex);
+}
+
+- (void)sendToServer:(id)sender {
+    CarNumString = [CarNum text];
+    CarTypeString = [CarType currentTitle];
+    ChassisNumString = [ChassisNum text];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:CarTypeString forKey:@"cartype"];
+    [params setValue:ChassisNumString forKey:@"vin"];
+    [params setValue:CarNumString forKey:@"hphm"];
+    
+    [[JDOHttpClient sharedClient] getJSONByServiceName:VIOLATION_SERVICE modelClass:@"JDOViolationModel" params:params success:^(NSArray *dataList) {
+        if(dataList == nil){
+            
+        }else if(dataList.count >0){
+            for (int i = 0; i < dataList.count; i++) {
+                JDOViolationModel *violationModel = [[JDOViolationModel alloc] init];
+                violationModel = [dataList objectAtIndex:i];
+            }
+        }
+    } failure:^(NSString *errorStr) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning

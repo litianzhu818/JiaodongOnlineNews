@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "SBTableAlert.h"
+#import "M13Checkbox.h"
 
 @interface JDOViolationViewController : JDONavigationController <SBTableAlertDelegate, SBTableAlertDataSource>
 {
     IBOutlet UITextField *CarNum;
     IBOutlet UIButton *CarType;
     IBOutlet UITextField *ChassisNum;
+    IBOutlet UILabel *result;
+    IBOutlet M13Checkbox *checkBox1;
+    IBOutlet M13Checkbox *checkBox2;
     
     NSString *CarNumString;
     NSString *CarTypeString;
@@ -24,5 +28,6 @@
 
 @property (nonatomic, strong)SBTableAlert *alert;
 - (IBAction)selectCarType:(id)sender;
+- (IBAction)sendToServer:(id)sender;
 
 @end
