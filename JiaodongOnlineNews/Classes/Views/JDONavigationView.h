@@ -19,6 +19,6 @@
 - (void) setTitle:(NSString *)title;
 
 - (UIButton *) addBackButtonWithTarget:(id)target action:(SEL)selector;
-- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector;
+//- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector;
 
 @end

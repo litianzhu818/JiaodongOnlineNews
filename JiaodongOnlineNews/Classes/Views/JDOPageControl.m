@@ -17,7 +17,9 @@
 #define slider_padding 3.5f
 #define title_label_tag 100
 #define title_normal_color [UIColor colorWithWhite:100.0/255.0 alpha:1.0]
+#define title_normal_shadow [UIColor whiteColor]
 #define title_highlight_color [UIColor whiteColor]
+#define title_highlight_shadow [UIColor blackColor]
 
 @implementation JDOPageControl
 
@@ -48,12 +50,14 @@
         UIButton *titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(Left_Margin+i*width, 0, width,self.frame.size.height)];
         [titleBtn setTitle:[(JDONewsCategoryInfo *)[pages objectAtIndex:i] title] forState:UIControlStateNormal];
         [titleBtn setTitleColor:title_normal_color forState:UIControlStateNormal];
+        [titleBtn setTitleShadowColor:title_normal_shadow forState:UIControlStateNormal];
         titleBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-        // iOS5中label的文字偏左2个像素
+        // iOS5中,调整label的文字偏左2个像素以使其在整个button中居中,iOS6未测试时候需要调整
         [titleBtn setTitleEdgeInsets:UIEdgeInsetsMake( 0,2,0,0)];
 //        titleBtn.titleLabel.backgroundColor = [UIColor blueColor];
         titleBtn.tag = title_label_tag+i;
         titleBtn.backgroundColor = [UIColor clearColor];
+        titleBtn.titleLabel.shadowOffset = CGSizeMake(0, 1);
         [titleBtn addTarget:self action:@selector(onTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:titleBtn];
     }
@@ -80,7 +84,7 @@
         _animating = false;
         return;
     }
-    [self setTitleOfIndex:_currentPage toColor:title_normal_color];
+    [self setTitleOfIndex:_currentPage toColor:title_normal_color shadowColor:title_normal_shadow offset:CGSizeMake(0, 1)];
     _currentPage = toPage;
 	if (animated){
 		[UIView beginAnimations:@"moveSlider" context:nil];
@@ -95,14 +99,16 @@
 	if (animated){
         [UIView commitAnimations];
     }else{
-        [self setTitleOfIndex:toPage toColor:title_highlight_color];
+        [self setTitleOfIndex:toPage toColor:title_highlight_color shadowColor:title_highlight_shadow offset:CGSizeMake(0, -1)];
     }
 }
 
-- (void)setTitleOfIndex:(int)index toColor:(UIColor *)color{
+- (void)setTitleOfIndex:(int)index toColor:(UIColor *)color shadowColor:(UIColor *)shadowColor offset:(CGSize) offset{
     if(index<0) return;
     UIButton *titleButton = (UIButton *)[self viewWithTag:title_label_tag+index];
+    titleButton.titleLabel.shadowOffset = offset;
     [titleButton setTitleColor:color forState:UIControlStateNormal];
+    [titleButton setTitleShadowColor:shadowColor forState:UIControlStateNormal];
 }
 
 //- (void)drawRect:(CGRect)rect {
@@ -129,7 +135,7 @@
 
 -(void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context{
     if([animationID isEqualToString:@"moveSlider"] && [finished boolValue]){
-        [self setTitleOfIndex:_currentPage toColor:title_highlight_color];
+        [self setTitleOfIndex:_currentPage toColor:title_highlight_color shadowColor:title_highlight_shadow offset:CGSizeMake(0, -1)];
         _animating = false;
     }
     

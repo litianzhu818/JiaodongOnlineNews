@@ -2164,7 +2164,9 @@ static NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat velocit
             self.centerTapper.frame = [self.centerView bounds];
             [self.centerTapper addTarget:self action:@selector(centerTapped) forControlEvents:UIControlEventTouchUpInside];
             self.centerTapper.backgroundColor = [UIColor clearColor];
-            self.centerTapper.accessibilityViewIsModal = YES;
+            if([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0){
+                self.centerTapper.accessibilityViewIsModal = YES;   // iOS5.0以上可用
+            }
         }
         [self.centerView addSubview:self.centerTapper];
         self.centerTapper.frame = [self.centerView bounds];

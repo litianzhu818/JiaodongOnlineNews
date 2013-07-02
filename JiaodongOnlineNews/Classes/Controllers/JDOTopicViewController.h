@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "JDOListViewController.h"
-@interface JDOTopicViewController : JDOListViewController< UITableViewDelegate, UITableViewDataSource>
+@interface JDOTopicViewController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate>
+
+@property (nonatomic,assign) ViewStatusType status;
+@property (strong,nonatomic) JDOStatusView *statusView;
+- (void) setCurrentState:(ViewStatusType)status;
 
 @end

@@ -54,16 +54,18 @@
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:22];
     titleLabel.text = title;
+    titleLabel.shadowColor = [UIColor blackColor];
+    titleLabel.shadowOffset = CGSizeMake(0, -1);
     [self addSubview:titleLabel];
 }
 
 - (UIButton *) addBackButtonWithTarget:(id)target action:(SEL)selector {
-    return [self addLeftButtonImage:@"top_navigation_back" highlightImage:@"top_navigation_back_highlighted" target:target action:selector];
+    return [self addLeftButtonImage:@"top_navigation_back" highlightImage:@"top_navigation_back" target:target action:selector];
 }
 
-- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector {
-    return [self addRightButtonImage:@"right_menu" highlightImage:@"right_menu" target:target action:selector];
-}
+//- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector {
+//    return [self addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:target action:selector];
+//}
 
 /*
 // Only override drawRect: if you perform custom drawing.

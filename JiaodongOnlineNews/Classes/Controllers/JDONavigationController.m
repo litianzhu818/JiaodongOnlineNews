@@ -24,6 +24,7 @@
 }
 
 - (void)viewDidUnload{
+    [super viewDidUnload];
     self.navigationView = nil;
 }
 

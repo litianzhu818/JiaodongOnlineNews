@@ -28,7 +28,6 @@
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(backToDetailList)];
-    [self.navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(backToDetailList)];
     [self.navigationView setTitle:self.title];
 }
 

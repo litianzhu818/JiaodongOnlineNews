@@ -14,6 +14,7 @@
 #import "JDOLeftViewController.h"
 #import "JDORightViewController.h"
 #import "JDOImageDetailController.h"
+#import "JDOTopicViewController.h"
 
 @interface JDOCenterViewController ()
 
@@ -66,6 +67,15 @@
     return _controller;
 }
 
++ (JDOTopicViewController *) sharedTopicViewController{
+    static JDOTopicViewController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOTopicViewController alloc] initWithNibName:nil bundle:nil];
+    });
+    return _controller;
+}
+
 - (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
@@ -76,7 +86,7 @@
             controller = [[self class] sharedImageViewController];
             break;
         case MenuItemTopic:
-//            controller = [[self class] sharedImageViewController];
+            controller = [[self class] sharedTopicViewController];
             break;
         case MenuItemConvenience:
             controller = [[self class] sharedConvenienceController];
