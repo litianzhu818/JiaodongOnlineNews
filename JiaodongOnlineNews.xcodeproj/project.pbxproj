@@ -311,6 +311,8 @@
 		D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
+		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
+		D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
@@ -785,6 +787,9 @@
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D8FCACA6177C19E9001050EF /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
 		D8FCACA7177C19E9001050EF /* M13Checkbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13Checkbox.m; sourceTree = "<group>"; };
+		D8FFA10B178266A30026F0C1 /* JDOBusLIstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOBusLIstViewController.h; sourceTree = "<group>"; };
+		D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOBusLIstViewController.m; sourceTree = "<group>"; };
+		D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOBusLIstViewController.xib; sourceTree = "<group>"; };
 		FF1234C117631E5D00832AD2 /* JDOListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListViewController.h; sourceTree = "<group>"; };
 		FF1234C217631E5D00832AD2 /* JDOListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListViewController.m; sourceTree = "<group>"; };
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
@@ -1525,6 +1530,9 @@
 				2D8D231A17712AE40012D6FD /* JDOShareAuthController.m */,
 				2D8D231C1771313F0012D6FD /* JDONavigationController.h */,
 				2D8D231D1771313F0012D6FD /* JDONavigationController.m */,
+				D8FFA10B178266A30026F0C1 /* JDOBusLIstViewController.h */,
+				D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */,
+				D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1829,6 +1837,7 @@
 				2DC1D2C7177D8ED600D31184 /* news_content_background_selected.png in Resources */,
 				2DC1D2C9177D920400D31184 /* top_navigation_background.png in Resources */,
 				2DC1D2CB177DA02100D31184 /* icon.png in Resources */,
+				D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1999,6 +2008,7 @@
 				D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */,
 				D8A298A6177D775600080BB2 /* MWCaptionView.m in Sources */,
 				D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */,
+				D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
