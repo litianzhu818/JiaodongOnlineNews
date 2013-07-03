@@ -32,7 +32,6 @@
 		2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */; };
 		2D29B276176065D300F116E4 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2D29B275176065D300F116E4 /* style.css */; };
 		2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D329AD41750A91100003EA2 /* JDOScrollView.m */; };
-		2D4C7A711781183300AA6280 /* JDOTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4C7A701781183300AA6280 /* JDOTopicViewController.m */; };
 		2D5409C4175DE5D300718FFB /* MGTemplateEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409BD175DE5D300718FFB /* MGTemplateEngine.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D5409C5175DE5D300718FFB /* MGTemplateStandardMarkers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409C1175DE5D300718FFB /* MGTemplateStandardMarkers.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D5409C6175DE5D300718FFB /* MGTemplateStandardFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409C3175DE5D300718FFB /* MGTemplateStandardFilters.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -45,10 +44,6 @@
 		2D5409DF175DEE2100718FFB /* UIWebView+RemoveShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409DE175DEE2100718FFB /* UIWebView+RemoveShadow.m */; };
 		2D58AE18176EBA52003B843F /* JDOShareViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D58AE17176EBA51003B843F /* JDOShareViewDelegate.m */; };
 		2D58AE1A176EDB49003B843F /* icon50*50.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D58AE19176EDB46003B843F /* icon50*50.png */; };
-		2D6316161782B4B400248FD6 /* JDOTopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316151782B4B400248FD6 /* JDOTopicCell.m */; };
-		2D6316191782B5CB00248FD6 /* share_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D6316181782B5CB00248FD6 /* share_btn.png */; };
-		2D63161C1782B5FC00248FD6 /* top_navigation_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D63161A1782B5FC00248FD6 /* top_navigation_back.png */; };
-		2D63161D1782B5FC00248FD6 /* top_navigation_review.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D63161B1782B5FC00248FD6 /* top_navigation_review.png */; };
 		2D811E26177D595D008B2C06 /* news_navbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D811E16177D595D008B2C06 /* news_navbar_background.png */; };
 		2D811E27177D595D008B2C06 /* news_navbar_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D811E17177D595D008B2C06 /* news_navbar_selected.png */; };
 		2D811E29177D595D008B2C06 /* left_menu_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D811E19177D595D008B2C06 /* left_menu_btn.png */; };
@@ -305,6 +300,8 @@
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
 		D8A298A6177D775600080BB2 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF1177AAC7700DF166B /* MWCaptionView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
+		D8DE412A1783C86600CD617F /* JDOTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4C7A701781183300AA6280 /* JDOTopicViewController.m */; };
+		D8DE412B1783C88300CD617F /* JDOTopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316151782B4B400248FD6 /* JDOTopicCell.m */; };
 		D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
@@ -2004,6 +2001,8 @@
 				D8A298A6177D775600080BB2 /* MWCaptionView.m in Sources */,
 				D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */,
 				D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */,
+				D8DE412A1783C86600CD617F /* JDOTopicViewController.m in Sources */,
+				D8DE412B1783C88300CD617F /* JDOTopicCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
