@@ -14,6 +14,7 @@
 #import "JDOLeftViewController.h"
 #import "JDORightViewController.h"
 #import "JDOImageDetailController.h"
+#import "JDOTopicViewController.h"
 
 @interface JDOCenterViewController ()
 
@@ -66,6 +67,15 @@
     return _controller;
 }
 
++ (JDOTopicViewController *) sharedTopicViewController{
+    static JDOTopicViewController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOTopicViewController alloc] initWithNibName:nil bundle:nil];
+    });
+    return _controller;
+}
+
 - (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
@@ -76,7 +86,7 @@
             controller = [[self class] sharedImageViewController];
             break;
         case MenuItemTopic:
-//            controller = [[self class] sharedImageViewController];
+            controller = [[self class] sharedTopicViewController];
             break;
         case MenuItemConvenience:
             controller = [[self class] sharedConvenienceController];
@@ -179,55 +189,36 @@
     [super didReceiveMemoryWarning];
 }
 
-// 图片详情允许转屏iOS5
+// iOS5 图片详情允许转屏
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
     if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        return true;
+        return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
     }
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
-// iOS6
-//- (BOOL)shouldAutorotate{
-//    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-//        return true;
-//    }
-//    return false;
-//}
-
-// iOS6
-//- (NSUInteger)supportedInterfaceOrientations{
-//    return UIInterfaceOrientationPortrait;
-//}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        [self.topViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+/*
+ 在初始化设置window.rootViewController时,先由rootViewController的supportedInterfaceOrientations决定可旋转的方向.然后调用rootViewController的shouldAutorotate来决定是否可以旋转。设备旋转时的调用顺序相反。
+ */
+// iOS6 图片详情允许转屏
+- (BOOL)shouldAutorotate{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return true;
     }
-}
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        [self.topViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    }
+    return false;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    if( [self.topViewController isKindOfClass:[JDOImageDetailController class]]){
-        [self.topViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+// iOS6 图片详情允许转屏，注意:若不加Mask可能会无限递归
+- (NSUInteger)supportedInterfaceOrientations{
+    if([self.topViewController isKindOfClass:[JDOImageDetailController class]]){
+        return UIInterfaceOrientationMaskAllButUpsideDown;  // 26 = 11010 (P+L+R)
     }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
-//- (BOOL)shouldAutorotate{
-//    return false;
-//}
-//
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
-//    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
-//}
-//
-//- (NSUInteger)supportedInterfaceOrientations{
-//    return UIInterfaceOrientationMaskPortrait;
-//}
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
 
 #pragma mark - IIViewDeckControllerDelegate
 

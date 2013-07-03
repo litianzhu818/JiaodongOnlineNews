@@ -176,7 +176,16 @@
     _forcast = [_weather.forecast objectAtIndex:0];
     cityLabel.text = _weather.city;
     [cityLabel sizeToFit];
-    weatherIcon.image = [UIImage imageNamed:[_forcast.weatherDetail stringByAppendingPathExtension:@"png"] ];
+    UIImage *weatherImg = [UIImage imageNamed:[_forcast.weatherDetail stringByAppendingPathExtension:@"png"] ];
+    if( weatherImg ){   
+        weatherIcon.image = weatherImg;
+    }else{  // xx转xx的情况,用前者的天气图标
+        NSString *firstWeather = [[_forcast.weatherDetail componentsSeparatedByString:@"转"] objectAtIndex:0];
+        weatherImg = [UIImage imageNamed:[firstWeather stringByAppendingPathExtension:@"png"] ];
+        if( weatherImg ){   // 没有对应的天气图标则使用默认.png
+            weatherIcon.image = weatherImg; 
+        }
+    }
     temperatureLabel.text = _forcast.temperature;
     [temperatureLabel sizeToFit];
     weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_forcast.weatherDetail,_forcast.wind];
@@ -213,6 +222,15 @@
 
 - (void)viewDidUnload{
     [super viewDidUnload];
+    self.tableView = nil;
+    self.blackMask = nil;
+    self.weather = nil;
+    self.forcast = nil;
+    cityLabel = nil;
+    weatherIcon = nil;
+    temperatureLabel = nil;
+    weatherLabel = nil;
+    dateLabel = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

@@ -96,7 +96,7 @@
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
     [self.navigationView setTitle:@"新闻详情"];
-    [self.navigationView addRightButtonImage:@"review_item" highlightImage:@"review_item" target:self action:@selector(showReviewList)];
+    [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
 }
 
 - (void) backToViewList{

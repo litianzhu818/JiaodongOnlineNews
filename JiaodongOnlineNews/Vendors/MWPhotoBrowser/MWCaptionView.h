@@ -11,9 +11,6 @@
 
 @interface MWCaptionView : UIView
 
-// Init
-- (id)initWithPhoto:(id<MWPhoto>)photo;
-
 // To create your own custom caption view, subclass this view
 // and override the following two methods (as well as any other
 // UIView methods that you see fit):
@@ -25,9 +22,7 @@
 // subclass to the photo browsers -photoBrowser:photoAtIndex: delegate method
 - (void)setupCaption;
 
-// Override -sizeThatFits: and return a CGSize specifying the height of your
-// custom caption view. With width property is ignored and the caption is displayed
-// the full width of the screen
-- (CGSize)sizeThatFits:(CGSize)size;
+
+@property (nonatomic,strong) id<MWPhoto> photo;
 
 @end

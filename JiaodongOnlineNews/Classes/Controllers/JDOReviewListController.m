@@ -28,7 +28,6 @@
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self.viewDeckController action:@selector(backToDetailList)];
-    [self.navigationView addCustomButtonWithTarget:self.viewDeckController action:@selector(backToDetailList)];
     [self.navigationView setTitle:self.title];
 }
 
@@ -41,6 +40,11 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.allowsSelection = false;
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+}
+
+- (void)viewDidUnload{
+    [super viewDidUnload];
+    self.tableView = nil;
 }
 
 - (void) backToDetailList{

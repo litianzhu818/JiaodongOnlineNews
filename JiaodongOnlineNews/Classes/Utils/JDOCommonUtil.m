@@ -220,6 +220,25 @@ NSString* JDOGetHomeFilePath(NSString *fileName){
 NSString* JDOGetTmpFilePath(NSString *fileName){
     return [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
 }
+NSString* JDOGetUUID(){
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
+        return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//        [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    }else{
+//        KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"UUID" accessGroup:@"YOUR_BUNDLE_SEED.com.yourcompany.userinfo"];
+//        NSString *strUUID = [keychainItem objectForKey:(id)kSecValueData];
+//        if ([strUUID isEqualToString:@""]){
+//            CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+//            CFStringRef stringRef = CFUUIDCreateString (kCFAllocatorDefault,uuidRef);
+//            strUUID = (__bridge_transfer NSString*)stringRef;
+//            [keychainItem setObject:strUUID forKey:(id)kSecValueData];
+//            CFRelease(uuidRef);
+//            CFRelease(stringRef);
+//        }
+//        return strUUID;
+        return @"";
+    }
+}
 
 id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){
     id<ISSViewDelegate> _delegate;
