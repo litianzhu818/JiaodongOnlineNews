@@ -32,7 +32,6 @@
 		2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */; };
 		2D29B276176065D300F116E4 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2D29B275176065D300F116E4 /* style.css */; };
 		2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D329AD41750A91100003EA2 /* JDOScrollView.m */; };
-		2D4C7A711781183300AA6280 /* JDOTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4C7A701781183300AA6280 /* JDOTopicViewController.m */; };
 		2D5409C4175DE5D300718FFB /* MGTemplateEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409BD175DE5D300718FFB /* MGTemplateEngine.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D5409C5175DE5D300718FFB /* MGTemplateStandardMarkers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409C1175DE5D300718FFB /* MGTemplateStandardMarkers.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D5409C6175DE5D300718FFB /* MGTemplateStandardFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409C3175DE5D300718FFB /* MGTemplateStandardFilters.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -168,8 +167,7 @@
 		2D944ACE1769BC3D00CEC12F /* MessageEntryInputField.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D944AC01769BC3D00CEC12F /* MessageEntryInputField.png */; };
 		2D944AD01769BC3D00CEC12F /* MessageEntryInputField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D944AC11769BC3D00CEC12F /* MessageEntryInputField@2x.png */; };
 		2D953DEA177A73FD00DF166B /* JDOToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DE9177A73FD00DF166B /* JDOToolBar.m */; };
-		2D953DFD177AAC7700DF166B /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF1177AAC7700DF166B /* MWCaptionView.m */; };
-		2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF3177AAC7700DF166B /* MWPhoto.m */; };
+		2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF3177AAC7700DF166B /* MWPhoto.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D953DFF177AAC7700DF166B /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF5177AAC7700DF166B /* MWPhotoBrowser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D953E00177AAC7700DF166B /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF8177AAC7700DF166B /* MWTapDetectingImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D953E01177AAC7700DF166B /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DFA177AAC7700DF166B /* MWTapDetectingView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -314,8 +312,15 @@
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
+		D8A298A6177D775600080BB2 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF1177AAC7700DF166B /* MWCaptionView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
+		D8DE412A1783C86600CD617F /* JDOTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4C7A701781183300AA6280 /* JDOTopicViewController.m */; };
+		D8DE412B1783C88300CD617F /* JDOTopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316151782B4B400248FD6 /* JDOTopicCell.m */; };
+		D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
+		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
+		D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
@@ -798,8 +803,15 @@
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
+		D8EB1FAC17812C0900932011 /* JDOViolationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationModel.h; sourceTree = "<group>"; };
+		D8EB1FAD17812C0900932011 /* JDOViolationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationModel.m; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
+		D8FCACA6177C19E9001050EF /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
+		D8FCACA7177C19E9001050EF /* M13Checkbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13Checkbox.m; sourceTree = "<group>"; };
+		D8FFA10B178266A30026F0C1 /* JDOBusLIstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOBusLIstViewController.h; sourceTree = "<group>"; };
+		D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOBusLIstViewController.m; sourceTree = "<group>"; };
+		D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOBusLIstViewController.xib; sourceTree = "<group>"; };
 		FF1234C117631E5D00832AD2 /* JDOListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListViewController.h; sourceTree = "<group>"; };
 		FF1234C217631E5D00832AD2 /* JDOListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListViewController.m; sourceTree = "<group>"; };
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
@@ -999,6 +1011,8 @@
 				2DE931C41772D57600A87ACC /* JDOWeather.h */,
 				2DE931C51772D57600A87ACC /* JDOWeather.m */,
 				2D953DEE177A8D8700DF166B /* JDOToolbarModel.h */,
+				D8EB1FAC17812C0900932011 /* JDOViolationModel.h */,
+				D8EB1FAD17812C0900932011 /* JDOViolationModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1038,6 +1052,7 @@
 				2D8D702A1783B4B200CA9806 /* StyledPageControl */,
 				2D63161E1782D66F00248FD6 /* HGPageScrollView */,
 				2D953DEF177AAC5700DF166B /* MWPhotoBrowser */,
+				D8FCACA5177C19BC001050EF /* M13CheckBox */,
 				D8F10184177BB9620024A93A /* SBTableAlert */,
 				2D9BCE6A176D820B0040DDA0 /* ShareSDK_v2.2.2 */,
 				2D8D8FF2176AD40800BC9126 /* NJKWebViewProgress */,
@@ -1582,6 +1597,9 @@
 				2D8D231A17712AE40012D6FD /* JDOShareAuthController.m */,
 				2D8D231C1771313F0012D6FD /* JDONavigationController.h */,
 				2D8D231D1771313F0012D6FD /* JDONavigationController.m */,
+				D8FFA10B178266A30026F0C1 /* JDOBusLIstViewController.h */,
+				D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */,
+				D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1670,6 +1688,15 @@
 				D8F10186177BB9890024A93A /* SBTableAlert.m */,
 			);
 			path = SBTableAlert;
+			sourceTree = "<group>";
+		};
+		D8FCACA5177C19BC001050EF /* M13CheckBox */ = {
+			isa = PBXGroup;
+			children = (
+				D8FCACA6177C19E9001050EF /* M13Checkbox.h */,
+				D8FCACA7177C19E9001050EF /* M13Checkbox.m */,
+			);
+			path = M13CheckBox;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2037,7 +2064,6 @@
 				2DDC4D3E177927A0007CF9E0 /* JDOImageDetailController.m in Sources */,
 				2DDC4D4717792F7C007CF9E0 /* JDOImageDetailModel.m in Sources */,
 				2D953DEA177A73FD00DF166B /* JDOToolBar.m in Sources */,
-				2D953DFD177AAC7700DF166B /* MWCaptionView.m in Sources */,
 				2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */,
 				2D953DFF177AAC7700DF166B /* MWPhotoBrowser.m in Sources */,
 				2D953E00177AAC7700DF166B /* MWTapDetectingImageView.m in Sources */,

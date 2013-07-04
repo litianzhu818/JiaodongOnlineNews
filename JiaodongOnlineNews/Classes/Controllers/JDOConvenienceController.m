@@ -10,6 +10,7 @@
 #import "BadgedLauncherButtonView.h"
 #import "JDOConvenienceViewModel.h"
 #import "JDOViolationViewController.h"
+#import "JDOBusLIstViewController.h"
 
 @interface JDOConvenienceController () <NILauncherViewModelDelegate>
 @property (nonatomic, readwrite, retain) JDOConvenienceViewModel* model;
@@ -98,6 +99,10 @@
         static JDOViolationViewController *violation = nil;
         violation = [[JDOViolationViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:violation animated:YES];
+    } else if (index == 0){
+        static JDOBusLIstViewController *buslist = nil;
+        buslist = [[JDOBusLIstViewController alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:buslist animated:YES];
     } else {
         static JDOConvenienceItemController *controller = nil;
         controller = [[JDOConvenienceItemController alloc] initWithNibName:nil bundle:nil];
@@ -105,7 +110,6 @@
         switch (index) {
             case 0:
                 controller.title = @"公交班次";
-                controller.channelid = @"19";
                 break;
             case 1:
                 controller.title = @"客运时刻";
