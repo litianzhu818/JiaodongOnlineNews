@@ -314,8 +314,9 @@
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
+		D899316A1785020200F8E1E9 /* JDOBusDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
-        D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
+		D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
 		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
@@ -802,6 +803,8 @@
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
+		D89931681785020200F8E1E9 /* JDOBusDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOBusDetailViewController.h; sourceTree = "<group>"; };
+		D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOBusDetailViewController.m; sourceTree = "<group>"; };
 		D8EB1FAC17812C0900932011 /* JDOViolationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationModel.h; sourceTree = "<group>"; };
 		D8EB1FAD17812C0900932011 /* JDOViolationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationModel.m; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
@@ -1555,6 +1558,8 @@
 		2D9BCEEB176D88580040DDA0 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D89931681785020200F8E1E9 /* JDOBusDetailViewController.h */,
+				D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */,
 				D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */,
 				D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */,
 				D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */,
@@ -2080,9 +2085,10 @@
 				2D8CD7341782FFF3006B0D03 /* JDOWebClient.m in Sources */,
 				2D8CD7371783289B006B0D03 /* JDOTopicModel.m in Sources */,
 				2D8D702D1783B4EE00CA9806 /* StyledPageControl.m in Sources */,
-                D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */,
-                D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */,
+				D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */,
+				D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */,
 				D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */,
+				D899316A1785020200F8E1E9 /* JDOBusDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
