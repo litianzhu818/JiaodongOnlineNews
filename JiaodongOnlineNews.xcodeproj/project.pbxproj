@@ -2152,6 +2152,7 @@
 				D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */,
 				2D97A93E178506EA00CEEE82 /* JDOTopicDetailController.m in Sources */,
 				2D97A9461785113000CEEE82 /* JDOTopicDetailModel.m in Sources */,
+                D899316A1785020200F8E1E9 /* JDOBusDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
