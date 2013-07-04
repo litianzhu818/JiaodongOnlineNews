@@ -32,6 +32,7 @@
 		2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */; };
 		2D29B276176065D300F116E4 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2D29B275176065D300F116E4 /* style.css */; };
 		2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D329AD41750A91100003EA2 /* JDOScrollView.m */; };
+		2D4C7A711781183300AA6280 /* JDOTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4C7A701781183300AA6280 /* JDOTopicViewController.m */; };
 		2D5409C4175DE5D300718FFB /* MGTemplateEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409BD175DE5D300718FFB /* MGTemplateEngine.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D5409C5175DE5D300718FFB /* MGTemplateStandardMarkers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409C1175DE5D300718FFB /* MGTemplateStandardMarkers.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D5409C6175DE5D300718FFB /* MGTemplateStandardFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409C3175DE5D300718FFB /* MGTemplateStandardFilters.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -167,7 +168,8 @@
 		2D944ACE1769BC3D00CEC12F /* MessageEntryInputField.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D944AC01769BC3D00CEC12F /* MessageEntryInputField.png */; };
 		2D944AD01769BC3D00CEC12F /* MessageEntryInputField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D944AC11769BC3D00CEC12F /* MessageEntryInputField@2x.png */; };
 		2D953DEA177A73FD00DF166B /* JDOToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DE9177A73FD00DF166B /* JDOToolBar.m */; };
-		2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF3177AAC7700DF166B /* MWPhoto.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2D953DFD177AAC7700DF166B /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF1177AAC7700DF166B /* MWCaptionView.m */; };
+		2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF3177AAC7700DF166B /* MWPhoto.m */; };
 		2D953DFF177AAC7700DF166B /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF5177AAC7700DF166B /* MWPhotoBrowser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D953E00177AAC7700DF166B /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF8177AAC7700DF166B /* MWTapDetectingImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D953E01177AAC7700DF166B /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DFA177AAC7700DF166B /* MWTapDetectingView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -312,11 +314,8 @@
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
-		D8A298A6177D775600080BB2 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D953DF1177AAC7700DF166B /* MWCaptionView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
-		D8DE412A1783C86600CD617F /* JDOTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4C7A701781183300AA6280 /* JDOTopicViewController.m */; };
-		D8DE412B1783C88300CD617F /* JDOTopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316151782B4B400248FD6 /* JDOTopicCell.m */; };
-		D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
+        D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
 		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
@@ -1904,6 +1903,7 @@
 				2D8CD7301782EF54006B0D03 /* topic_separator.png in Resources */,
 				2D8CD7311782EF54006B0D03 /* topic_border.png in Resources */,
 				2D8D70291783A9BF00CA9806 /* topic_image_mask.png in Resources */,
+				D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2064,6 +2064,7 @@
 				2DDC4D3E177927A0007CF9E0 /* JDOImageDetailController.m in Sources */,
 				2DDC4D4717792F7C007CF9E0 /* JDOImageDetailModel.m in Sources */,
 				2D953DEA177A73FD00DF166B /* JDOToolBar.m in Sources */,
+				2D953DFD177AAC7700DF166B /* MWCaptionView.m in Sources */,
 				2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */,
 				2D953DFF177AAC7700DF166B /* MWPhotoBrowser.m in Sources */,
 				2D953E00177AAC7700DF166B /* MWTapDetectingImageView.m in Sources */,
@@ -2079,6 +2080,9 @@
 				2D8CD7341782FFF3006B0D03 /* JDOWebClient.m in Sources */,
 				2D8CD7371783289B006B0D03 /* JDOTopicModel.m in Sources */,
 				2D8D702D1783B4EE00CA9806 /* StyledPageControl.m in Sources */,
+                D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */,
+                D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */,
+				D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
