@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 胶东在线. All rights reserved.
 //
 
-#import "AFHTTPClient.h"
+#import "JDOWebClient.h"
 
-@interface JDOXmlClient : AFHTTPClient
+@interface JDOXmlClient : JDOWebClient
 
 + (JDOXmlClient *)sharedClient;
 

@@ -67,6 +67,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.rowHeight = Menu_Cell_Height;
+    _tableView.scrollEnabled = false;
     [self.view addSubview:_tableView];
     
     UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Separator_Y, 320, 1)];

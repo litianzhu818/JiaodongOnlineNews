@@ -71,7 +71,7 @@
     static JDOTopicViewController *_controller = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _controller = [[JDOTopicViewController alloc] initWithNibName:nil bundle:nil];
+        _controller = [[JDOTopicViewController alloc] init];
     });
     return _controller;
 }
@@ -101,7 +101,7 @@
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    if( self.viewControllers.count == 1){   // navigation层级超过一个viewcontroller则禁用viewdeck
+    if( self.viewControllers.count == 1){   // navigation层级超过一个viewcontroller则禁用viewdeck,例如新闻详情,图片详情
         [self.viewDeckController setEnabled:false] ;
     }
     [self pushViewController:viewController orientation:JDOTransitionFromRight animated:animated];

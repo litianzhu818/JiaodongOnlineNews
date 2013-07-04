@@ -86,8 +86,12 @@
 {
     [super viewDidLoad];
     
-    [self setCurrentState:ViewStatusLoading];
-	[self loadDataFromNetwork];
+    if(![Reachability isEnableNetwork]){
+        [self setCurrentState:ViewStatusNoNetwork];
+    }else{  // 从网络加载数据，切换到loading状态
+        [self setCurrentState:ViewStatusLoading];
+        [self loadDataFromNetwork];
+    }
 }
 
 - (void)viewDidUnload{
@@ -112,7 +116,7 @@
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
         if(dataList == nil){
             // 数据加载完成
-        }else{  // dataList.count == 0的情况需要在tableview的datasource中处理，例如评论列表
+        }else{  // dataList.count == 0的情况需要在tableview的datasource中处理，例如评论列表中提示"暂无评论"
             [self setCurrentState:ViewStatusNormal];
             [self dataLoadFinished:dataList];
         }
@@ -133,7 +137,7 @@
             [self dataLoadFinished:dataList];
         }
     } failure:^(NSString *errorStr) {
-        NSLog(@"错误内容--%@", errorStr);
+        [JDOCommonUtil showHintHUD:errorStr inView:self.view];
     }];
 }
 
@@ -163,7 +167,7 @@
     [self.listParam setObject:[NSNumber numberWithInt:self.currentPage] forKey:@"p"];
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
         bool finished = false;
-        if(dataList == nil){    // 数据加载完成
+        if(dataList == nil || dataList.count == 0){    // 数据加载完成
             [self.tableView.infiniteScrollingView stopAnimating];
             finished = true;
         }else if(dataList.count >0){
@@ -198,7 +202,7 @@
             });
         }
     } failure:^(NSString *errorStr) {
-        NSLog(@"错误内容--%@", errorStr);
+        [JDOCommonUtil showHintHUD:errorStr inView:self.view];
     }];
 }
 - (void)didReceiveMemoryWarning

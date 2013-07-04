@@ -19,32 +19,37 @@
     return self;
 }
 
-- (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
-    return [self addButtonWithFrame:CGRectMake(0, 0, 44, 44) image:image highlightImage:highlightImage];
+- (void) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
+    if(self.leftBtn ){
+        [self.leftBtn removeFromSuperview];
+    }
+    self.leftBtn = [self getButtonWithFrame:CGRectMake(0, 0, 44, 44) image:image highlightImage:highlightImage];
+    [self addSubview:self.leftBtn];
 }
-- (UIButton *) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
-    return [self addButtonWithFrame:CGRectMake(320-44, 0, 44, 44) image:image highlightImage:highlightImage];
+- (void) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
+    if(self.rightBtn ){
+        [self.rightBtn removeFromSuperview];
+    }
+    self.rightBtn = [self getButtonWithFrame:CGRectMake(320-44, 0, 44, 44) image:image highlightImage:highlightImage];
+    [self addSubview:self.rightBtn];
 }
 
-- (UIButton *) addButtonWithFrame:(CGRect)frame image:(NSString *)image highlightImage:(NSString *)highlightImage{
+- (UIButton *) getButtonWithFrame:(CGRect)frame image:(NSString *)image highlightImage:(NSString *)highlightImage{
     UIButton *btn = [[UIButton alloc] initWithFrame:frame];
     [btn setImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
     [btn setImage:[UIImage imageNamed:highlightImage] forState:UIControlStateHighlighted];
     [btn setBackgroundImage:[UIImage imageNamed:@"navigation_button_clicked"] forState:UIControlStateHighlighted];
-    [self addSubview:btn];
     return btn;
 }
 
-- (UIButton *) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector{
-    UIButton *btn = [self addLeftButtonImage:image highlightImage:highlightImage];
-    [btn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    return btn;
+- (void) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector{
+    [self addLeftButtonImage:image highlightImage:highlightImage];
+    [self.leftBtn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (UIButton *) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector{
-    UIButton *btn = [self addRightButtonImage:image highlightImage:highlightImage];
-    [btn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    return btn;
+- (void) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector{
+    [self addRightButtonImage:image highlightImage:highlightImage];
+    [self.rightBtn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
 #warning 标题可以考虑用图片艺术字
 - (void) setTitle:(NSString *)title{
@@ -59,8 +64,8 @@
     [self addSubview:titleLabel];
 }
 
-- (UIButton *) addBackButtonWithTarget:(id)target action:(SEL)selector {
-    return [self addLeftButtonImage:@"top_navigation_back" highlightImage:@"top_navigation_back" target:target action:selector];
+- (void) addBackButtonWithTarget:(id)target action:(SEL)selector {
+    [self addLeftButtonImage:@"top_navigation_back" highlightImage:@"top_navigation_back" target:target action:selector];
 }
 
 //- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector {

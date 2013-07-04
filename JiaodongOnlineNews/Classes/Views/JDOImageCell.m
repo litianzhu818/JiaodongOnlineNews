@@ -80,7 +80,6 @@
 
 - (void)setModel:(JDOImageModel *)imageModel{
     __block UIImageView *blockImageView = self.imageView;
-    self.imageView.image = nil;
     [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:imageModel.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         if(!cached){    // 非缓存加载时使用渐变动画
             CATransition *transition = [CATransition animation];

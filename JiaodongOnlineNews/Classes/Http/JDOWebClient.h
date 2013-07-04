@@ -9,4 +9,8 @@
 typedef void(^LoadDataSuccessBlock)(id result);
 typedef void(^LoadDataFailureBlock)(NSString *errorStr);
 
+@interface JDOWebClient : AFHTTPClient
+
+@end
+
 

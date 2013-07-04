@@ -6,8 +6,12 @@
 //  Copyright (c) 2013年 胶东在线. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "HGPageView.h"
 
-@interface JDOTopicCell : UIView
+@class JDOTopicModel;
+
+@interface JDOTopicCell : HGPageView
+
+- (void)setModel:(JDOTopicModel *)topicModel;
 
 @end
