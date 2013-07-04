@@ -9,6 +9,7 @@
 #import "JDOBusLIstViewController.h"
 #import "JDOHttpClient.h"
 #import "JDONewsModel.h"
+#import "JDOBusDetailViewController.h"
 
 @interface JDOBusLIstViewController ()
 
@@ -65,7 +66,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
+    static JDOBusDetailViewController *controller = nil;
+    controller = [[JDOBusDetailViewController alloc] initWithNibName:nil bundle:nil];
+    controller.aid = [[buslines objectAtIndex:indexPath.row] id];
+    controller.back = self;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
