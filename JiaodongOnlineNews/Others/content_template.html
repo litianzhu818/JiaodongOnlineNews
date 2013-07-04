@@ -1,0 +1,181 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    
+    <link href='style.css' rel='stylesheet'/>
+    {% if hasVote %}
+    <link href='vote.css' rel='stylesheet'/>
+    {% /if %}
+    <style type="text/css">
+
+    </style>
+
+    <script src="jquery.min.js"></script>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+        
+        document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
+        
+        function onBridgeReady(event) {
+            var bridge = event.bridge;
+            var uniqueId = 1;
+            bridge.init(function(message, responseCallback) {
+                var data = { 'Javascript Responds':'Wee!' };
+                responseCallback(data);
+            });
+            
+            // 调整图片尺寸
+            $("img").each(adjustImgSize);
+            $("img[tapToLoad='true']").one("click", function(){
+                // 替换为加载提示图，并加载原图
+                $(this).attr('src' ,'loading.gif');		// 更换为加载效果gif
+                window.showimage.loadImage($(this).attr('realUrl'));
+                $(this).click(clickImageEvent);
+            });
+            
+            // 显示图集或图片详情
+            $("img[tapToLoad!='true']").click(function(e){
+                e.preventDefault()
+                if(this.attributes["src"].nodeValue!="icon.png" && this.attributes["src"].nodeValue!="img_set_flag.png"){
+                    var index = $.inArray(this,$("img[src!='img_set_flag.png']"));
+                    var linkId = $(this).closest("p").attr("id");
+                    if( linkId ){
+                        bridge.callHandler('showImageSet', {'linkId': linkId}, function(response) {
+                                 
+                                           });
+                    }else{
+                        bridge.callHandler('showImageDetail', {'imageId': 'fakeId'}, function(response) {
+                                 
+                                           });
+                    }
+                }
+            });
+            
+            // 修改字号
+            bridge.registerHandler('changeFontSize', function(data, responseCallback) {
+                $('#body_section').removeClass('small_font normal_font big_font').addClass(data);
+                if(responseCallback){
+                    responseCallback(responseData);
+                }
+            })
+            
+            
+            {% if hasVote %}
+                {% for aPoint in points %}
+                setProgress("{{aPoint.pointId}}", "{{aPoint.pointPer}}");
+                {% /for %}
+            
+//                if(topic.getVotePointId() == 0){
+                    hideResult();
+//                }else{
+//                    voteForResult(topic.getVotePointId());
+//                }
+            
+                $(".vount span").toggle(function() {showResult();},function(){hideResult();});
+            {% /if %}
+            
+        }
+        
+        {% if hasVote %}
+        function setProgress(id, value){
+            var $progressView = $("#vote_items #" + id + " .progress");
+            var $bar = $progressView.find(".bar");
+            $bar.css("width", value);
+            var $barvalue = $progressView.find(".barvalue");
+            $barvalue.text(value);
+        }
+        
+        function hideResult(){
+            $(".vount span").text("查看结果");
+            $("#vote_items > div").addClass("item").removeClass("item2").bind("click", vote);
+            $(".vote #vote_items .progress").hide();
+        }
+        function showResult(){
+            $(".vount span").text("我要投票");
+            $("#vote_items > div").removeClass("item").addClass("item2").unbind("click", vote);
+            $(".vote #vote_items .progress").show();
+        }
+        var choice;
+        function vote(){
+            choice = this.id;
+            $.post("{{vote_addr}}", { aid: "{{id}}", pointId: choice },
+                   voteForResult, "json");
+        }
+        function voteForResult(result){
+            $("#voteCounts").text(result.voteCounts+ "人参与投票");
+            for(var i = 0 ; i < result.points.length; ++i){
+                setProgress(result.points[i].pointId, result.points[i].pointPer);
+            }
+            showResult();
+            $("#"+choice).css({"background-color": "#eaeaea"});
+            $("#"+choice).before($("<img src='gou.png' class='win'/>"));
+            $(".vount span").hide();
+        }
+        {% /if %}
+        
+    </script>
+</head>
+<body>
+    <!-- 导航部分透明时,留下导航高度 -->
+    <!--
+    <div style="height:44px"></div>
+    -->
+    <!-- 文章部分 -->
+    <div id="title_section">
+        
+        {% if drawno %}
+        <div id="id">第{{drawno}}期</div>
+        {% /if %}
+        
+        {% if title %}
+        <div id='title'>{{title}}</div>
+        {% /if %}
+        
+        
+        <div id='subtitle'>
+            {% if source %} <span>来源:{{source}}</span>{% /if %}
+            {% if addtime %}<span>{{addtime}}</span>{% /if %}
+            {% if date %}   <span>{{date}}</span>   {% /if %}
+        </div>
+    </div>
+        
+    <div id="body_section" class="contentstyle {{font_class}}">
+        {{content}}
+    </div>
+    
+    
+    <!-- 广告推广 -->
+    {% if ad %}{{ad}}{% /if %}
+    <!-- 相关投票 -->
+    {% if hasVote %}
+    <hr>
+	<div class="vote">
+		<div class="votedt">投票</div>
+		
+		<div id="issue">{{issue}}</div>
+		<div class="vount">
+			<div style="display: inline-block" id="voteCounts">{{voteCounts}}人参与投票</div>
+			<span>查看结果</span>
+		</div>
+		<div id="vote_items">
+            {% for aPoint in points %}
+            <div id="{{aPoint.pointId}}" >
+                <a>{{aPoint.point}}</a><br/>
+                <div class='progress'>
+                    <span class='bar'></span>
+                    <span class='barvalue'>{{aPoint.pointPer}}</span>
+                    </div>
+                </div>
+            {% /for %}
+        </div>
+	</div>
+    {% /if %}
+    <!-- 相关新闻 -->
+    {% for relate in relates %}
+    
+    {% /for %}
+    <!-- 热门跟贴 -->
+    {% if comments %}{{comments}}{% /if %}
+
+</body>
+</html>

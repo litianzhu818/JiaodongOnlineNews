@@ -65,7 +65,7 @@ typedef enum {
 @property (strong,nonatomic) id<JDODownloadTargetDelegate> downloadTarget;
 
 
-- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView config:(NSArray *)btnConfig height:(CGFloat) toolbarHeight theme:(ToolBarTheme)theme;
+- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView config:(NSArray *)btnConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
 
 @end
 

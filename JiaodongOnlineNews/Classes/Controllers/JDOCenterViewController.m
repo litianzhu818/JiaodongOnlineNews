@@ -141,6 +141,21 @@
     }
 }
 
+- (NSArray *)popToViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated complete:(void (^)()) complete{
+    if (animated) {
+        [self.view popView:viewController.view orientation:orientation complete:^{
+            [self.view.blackMask removeFromSuperview];
+            self.view.frame = Transition_View_Center;
+            [viewController.view removeFromSuperview];
+            [super popToViewController:viewController animated:false];
+            if(complete)    complete();
+        }];
+        return nil;
+    }else{
+        return [super popToViewController:viewController animated:false];
+    }
+}
+
 
 #pragma mark - UIGestureRecognizerDelegate
 
