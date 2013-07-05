@@ -18,7 +18,7 @@ static const char* blackMaskKey = "blackMaskKey";
 
 - (void) pushView:(UIView *) moveInView orientation:(JDOTransitionOrientation)orientation complete:(void (^)())complete{
     
-    CGRect moveInStartFrame ;
+    CGRect moveInStartFrame = CGRectZero;
     CGRect moveInEndFrame = Transition_View_Center;
     if(orientation == JDOTransitionFromRight){
         moveInStartFrame = Transition_View_Right;
@@ -64,7 +64,7 @@ static const char* blackMaskKey = "blackMaskKey";
 - (void) popView:(UIView *) presentView orientation:(JDOTransitionOrientation)orientation complete:(void (^)()) complete{
     
     CGRect moveOutStartFrame = Transition_View_Center;
-    CGRect moveOutEndFrame;
+    CGRect moveOutEndFrame = CGRectZero;
     if(orientation == JDOTransitionToRight){
         moveOutEndFrame = Transition_View_Right;
     }else if(orientation == JDOTransitionToBottom){

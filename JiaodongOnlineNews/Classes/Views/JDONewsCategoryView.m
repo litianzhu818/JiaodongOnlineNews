@@ -21,12 +21,8 @@
 
 #define Finished_Label_Tag 111
 
-#define News_Cache_Path(fileName) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName]
-
 //#define Load_Finished_Notification @"Load_Finished_Notification"
 //#define Load_Failed_Notification @"Load_Failed_Notification"
-
-#define Hint_Min_Show_Time 1.2
 
 @interface JDONewsCategoryView ()
 
@@ -295,13 +291,13 @@
 
 // 保存列表内容至本地缓存文件
 - (void) saveListToLocalCache{
-    [NSKeyedArchiver archiveRootObject:self.headArray toFile:News_Cache_Path([@"NewsHeadCache" stringByAppendingString:self.info.reuseId])];
-    [NSKeyedArchiver archiveRootObject:self.listArray toFile:News_Cache_Path([@"NewsListCache" stringByAppendingString:self.info.reuseId])];
+    [NSKeyedArchiver archiveRootObject:self.headArray toFile:JDOGetCacheFilePath([@"NewsHeadCache" stringByAppendingString:self.info.reuseId])];
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:JDOGetCacheFilePath([@"NewsListCache" stringByAppendingString:self.info.reuseId])];
 }
 
 - (BOOL) readListFromLocalCache{
-    self.headArray = [NSKeyedUnarchiver unarchiveObjectWithFile: News_Cache_Path([@"NewsHeadCache" stringByAppendingString:self.info.reuseId])];
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: News_Cache_Path([@"NewsListCache" stringByAppendingString:self.info.reuseId])];
+    self.headArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"NewsHeadCache" stringByAppendingString:self.info.reuseId])];
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"NewsListCache" stringByAppendingString:self.info.reuseId])];
     // 任何一个数组为空都任务本地缓存无效
     return self.headArray && self.listArray;
 }

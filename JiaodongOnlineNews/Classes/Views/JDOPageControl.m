@@ -7,7 +7,6 @@
 //
 
 #import "JDOPageControl.h"
-#import "JDONewsCategoryInfo.h"
 
 #define MASK_VISIBLE_ALPHA 0.5
 #define UPPER_TOUCH_LIMIT -10
@@ -48,7 +47,8 @@
     float width = (self.frame.size.width-Left_Margin*2)/pages.count;
     for (int i=0; i<pages.count; i++) {
         UIButton *titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(Left_Margin+i*width, 0, width,self.frame.size.height)];
-        [titleBtn setTitle:[(JDONewsCategoryInfo *)[pages objectAtIndex:i] title] forState:UIControlStateNormal];
+        // pages中的内容必须是含有title属性的对象或包含该key值的Dictionary
+        [titleBtn setTitle:[[pages objectAtIndex:i] valueForKey:@"title"] forState:UIControlStateNormal];
         [titleBtn setTitleColor:title_normal_color forState:UIControlStateNormal];
         [titleBtn setTitleShadowColor:title_normal_shadow forState:UIControlStateNormal];
         titleBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -60,6 +60,13 @@
         titleBtn.titleLabel.shadowOffset = CGSizeMake(0, 1);
         [titleBtn addTarget:self action:@selector(onTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:titleBtn];
+    }
+}
+
+- (void) setTitleFontSize:(CGFloat) size{
+    for (int i=0; i<_pages.count; i++) {
+        UIButton *titleBtn = (UIButton *)[self viewWithTag:title_label_tag+i];
+        [titleBtn.titleLabel setFont:[UIFont systemFontOfSize:size]];
     }
 }
 

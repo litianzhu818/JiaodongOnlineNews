@@ -15,6 +15,7 @@
 #import "JDORightViewController.h"
 #import "JDOImageDetailController.h"
 #import "JDOTopicViewController.h"
+#import "JDOLivehoodViewController.h"
 
 @interface JDOCenterViewController ()
 
@@ -76,6 +77,15 @@
     return _controller;
 }
 
++ (JDOLivehoodViewController *) sharedLivehoodViewController{
+    static JDOLivehoodViewController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOLivehoodViewController alloc] init];
+    });
+    return _controller;
+}
+
 - (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
@@ -92,7 +102,7 @@
             controller = [[self class] sharedConvenienceController];
             break;
         case MenuItemLivehood:
-//            controller = [[self class] sharedImageViewController];
+            controller = [[self class] sharedLivehoodViewController];
             break;
         default:
             break;
@@ -166,7 +176,7 @@
     
     NIPagingScrollView *targetView = [[self class] sharedNewsViewController].scrollView;
     if(otherGestureRecognizer.view != targetView.pagingScrollView){
-        #warning 在头条上滑动不起作用，未考虑在头条的最左边一条再向左滑动时应该出左菜单的情况
+        #warning 在头条上滑动不起作用，未考虑在头条的最左边一条再向左滑动时应该出左菜单的情况。也未考虑在话题中最左边向左滑动的情况，因为话题向右滑动加载新内容，不处理也可以
         if([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]]){
             return false;
         }

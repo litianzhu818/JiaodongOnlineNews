@@ -220,6 +220,11 @@ NSString* JDOGetHomeFilePath(NSString *fileName){
 NSString* JDOGetTmpFilePath(NSString *fileName){
     return [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
 }
+NSString* JDOGetCacheFilePath(NSString *fileName){
+    return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
+}
+
+
 NSString* JDOGetUUID(){
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
         return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
