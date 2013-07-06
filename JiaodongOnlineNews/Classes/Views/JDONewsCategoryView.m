@@ -199,7 +199,7 @@
 
 - (void) refresh{
     if(![Reachability isEnableNetwork]){
-        [JDOCommonUtil showHintHUD:@"网络当前不可用" inView:self];
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self];
         [self.tableView.pullToRefreshView stopAnimating];
         return ;
     }
@@ -304,7 +304,7 @@
 
 - (void) loadMore{
     if(![Reachability isEnableNetwork]){
-        [JDOCommonUtil showHintHUD:@"网络当前不可用" inView:self];
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self];
         [self.tableView.infiniteScrollingView stopAnimating];
         return ;
     }
