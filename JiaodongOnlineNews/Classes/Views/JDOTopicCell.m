@@ -43,8 +43,8 @@
         self.layer.borderWidth = 1.0f;
         self.backgroundColor = [UIColor whiteColor];
         
-        
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, Padding, self.bounds.size.width-Padding*2, Image_Height-1)];
+        // 宽度和高度都-1,否则有可能露出来边缘
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+1, Padding, self.bounds.size.width-Padding*2-2, Image_Height-1)];
 //        _imageView.image = [UIImage imageNamed:Default_Image]; 
         [self addSubview:_imageView];
         

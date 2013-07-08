@@ -47,6 +47,7 @@ typedef enum{
 BOOL JDOIsEmptyString(NSString *string);
 NSString* JDOGetHomeFilePath(NSString *fileName);
 NSString* JDOGetTmpFilePath(NSString *fileName);
+NSString* JDOGetCacheFilePath(NSString *fileName);
 NSString* JDOGetUUID();
 
 id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate);

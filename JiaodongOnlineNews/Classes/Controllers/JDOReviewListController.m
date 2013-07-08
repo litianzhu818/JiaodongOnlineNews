@@ -48,7 +48,7 @@
 }
 
 - (void) backToDetailList{
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:1] animated:true];
 }
 

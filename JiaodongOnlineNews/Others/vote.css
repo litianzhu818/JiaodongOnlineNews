@@ -1,0 +1,87 @@
+#id {
+    font-size: 15px;
+    color: #3399cc;
+    line-height: 20px
+}
+
+.vote {
+    padding: 12px
+}
+
+.vote .votedt {
+    background: url(toupiao.png) no-repeat left center;
+    font: 20px;
+    color: #999;
+    padding-left: 30px;
+    line-height: 27px;
+}
+
+.vote .issue {
+    color: #333;
+    line-height: 27px;
+}
+
+.vote .vount {
+    font-size: 16px;
+    color: #999;
+    line-height: 25px;
+    line-height: 30px;
+}
+
+.vote .vount span {
+    position: absolute;
+    right: 20px;
+    color: #5581B6
+}
+
+.vote #vote_items{
+    padding-left: 0px;
+    line-height: 27px;
+}
+
+.vote #vote_items a {
+    color: #333;
+}
+
+.vote #vote_items .progress{
+    display: inline-block;
+    width:80%;
+}
+
+.vote #vote_items .progress .bar{
+    display:inline-block;
+    width: 100%;
+    height: 15px;
+    background-image: url('point_per.png');
+    background-repeat: repeat-x;
+}
+
+.vote #vote_items .progress .barvalue{
+    display:inline-block;
+    padding-left:5px;
+    position: center;
+}
+
+.item{
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff), to(#b8c4cb));
+    border:1px solid #999;
+    border-radius:5px;
+    line-height:40px;
+    margin-bottom:10px;
+    padding-left:5px;
+}
+
+.item:hover{
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#bfcfff));
+}
+
+.item2{
+    width:100%;
+    display: inline-block;
+    padding-left:5px;
+}
+
+.win{
+    position: absolute;
+    right: 10px;
+}

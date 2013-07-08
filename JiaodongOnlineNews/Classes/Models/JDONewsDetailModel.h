@@ -28,6 +28,6 @@
 
 + (MGTemplateEngine *) sharedTemplateEngine;
 + (NSString *) mergeToHTMLTemplateFromDictionary:(NSDictionary *)dictionary;
-- (NSString *) mergeToHTMLTemplate;
+//- (NSString *) mergeToHTMLTemplate;
 
 @end

@@ -296,6 +296,7 @@
                 CGPathCloseSubpath(rectPath);
                 // 纵向阴影
                 CGContextAddPath(myContext, rectPath);
+                CFRelease(rectPath);
                 CGContextSaveGState(myContext);
                 CGContextSetShadowWithColor(myContext, CGSizeMake(0, 1.0), 1.0, [UIColor whiteColor].CGColor);
                 CGContextFillPath(myContext);

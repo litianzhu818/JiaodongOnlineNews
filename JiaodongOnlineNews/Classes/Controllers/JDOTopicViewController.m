@@ -10,6 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "JDOTopicCell.h"
 #import "JDOTopicModel.h"
+#import "JDOTopicDetailController.h"
 
 #define TopicList_Page_Size 10
 #define ScrollView_Tag 108
@@ -18,6 +19,7 @@
 
 @property (nonatomic,strong) NSDate *lastUpdateTime;
 @property (nonatomic,assign) int currentPage;
+@property (nonatomic,strong) UIView *detailView;
 
 @end
 
@@ -111,26 +113,14 @@
                 isLoadFinised = true;   
             }
             [self setCurrentState:ViewStatusNormal];
-            [self dataLoadFinished:dataList];
+            [self.listArray removeAllObjects];
+            [self.listArray addObjectsFromArray:dataList];
+            [self.horizontalScrollView reloadData];
         }
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
     }];
-}
-
-- (void) dataLoadFinished:(NSArray *)dataList{
-    [self.listArray removeAllObjects];
-    [self.listArray addObjectsFromArray:dataList];
-    [self.horizontalScrollView reloadData];
-//    [self updateLastRefreshTime];
-//    if( dataList.count<self.pageSize ){
-//        [self.tableView.infiniteScrollingView setEnabled:false];
-//        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
-//    }else{
-//        [self.tableView.infiniteScrollingView setEnabled:true];
-//        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
-//    }
 }
 
 - (void) loadMore{
@@ -194,75 +184,21 @@
 #pragma mark -
 #pragma mark HGPageScrollViewDelegate
 
-- (void)pageScrollView:(HGPageScrollView *)scrollView willSelectPageAtIndex:(NSInteger)index;
-{
-//    NSDictionary *pageData = [_myPageDataArray objectAtIndex:index];
-    
-    HGPageView *page = (HGPageView*)[scrollView pageAtIndex:index];
-    UIScrollView *pageContentsScrollView = (UIScrollView*)[page viewWithTag:10];
-    
-//    if (!page.isInitialized) {
-    
-        
-        // asjust text box height to show all text
-        UITextView *textView = (UITextView*)[page viewWithTag:3];
-        CGFloat margin = 12;
-        CGSize size = [textView.text sizeWithFont:textView.font
-                                constrainedToSize:CGSizeMake(textView.frame.size.width, 2000) //very large height
-                                    lineBreakMode:UILineBreakModeWordWrap];
-        CGRect frame = textView.frame;
-        frame. size.height = size.height + 4*margin;
-        textView.frame = frame;
-        
-        // adjust content size of scroll view
-        pageContentsScrollView.contentSize = CGSizeMake(pageContentsScrollView.frame.size.width, frame.origin.y + frame.size.height);
-        
-        // mark the page as initialized, so that we don't have to do all of the above again
-        // the next time this page is selected
-//        page.isInitialized = YES;
-//    }
-    
-    // enable scroll
-    pageContentsScrollView.scrollEnabled = YES;
-    
-	
-}
-
 - (void) pageScrollView:(HGPageScrollView *)scrollView didSelectPageAtIndex:(NSInteger)index
 {
-    [self.navigationView addLeftButtonImage:@"top_navigation_back" highlightImage:@"top_navigation_back" target:self action:@selector(didClickBrowsePages:)];
-    [self.navigationView.rightBtn removeFromSuperview];
     [SharedAppDelegate deckController].enabled = false;
-}
-
-- (void)pageScrollView:(HGPageScrollView *)scrollView willDeselectPageAtIndex:(NSInteger)index;
-{
-//    NSDictionary *pageData = [_myPageDataArray objectAtIndex:index];
     
-    // disable scroll of the contents page to avoid conflict with horizonal scroll of the pageScrollView
-    HGPageView *page = [scrollView pageAtIndex:index];
-    UIScrollView *scrollContentView = (UIScrollView*)[page viewWithTag:10];
-    scrollContentView.scrollEnabled = NO;
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
+    JDOTopicDetailController *detailController = [[JDOTopicDetailController alloc] initWithTopicModel:[self.listArray objectAtIndex:index] pController:self];
+    [centerViewController pushViewController:detailController animated:true];
+    
 }
 
 
 - (void)pageScrollView:(HGPageScrollView *)scrollView didDeselectPageAtIndex:(NSInteger)index
 {
-    // Now the page scroller is in DECK mode.
-    // Complete an add/remove pages request if one is pending
-//    if (indexesToDelete) {
-//        [self removePagesAtIndexSet:indexesToDelete];
-//        [indexesToDelete release];
-//        indexesToDelete = nil;
-//    }
-//    if (indexesToInsert) {
-//        [self addPagesAtIndexSet:indexesToInsert];
-//        [indexesToInsert release];
-//        indexesToInsert = nil;
-//    }
-    [self.navigationView addLeftButtonImage:@"left_menu_btn" highlightImage:@"left_menu_btn" target:self.viewDeckController action:@selector(toggleLeftView)];
-    [self.navigationView addRightButtonImage:@"right_menu_btn" highlightImage:@"right_menu_btn" target:self.viewDeckController action:@selector(toggleRightView)];
     [SharedAppDelegate deckController].enabled = true;
+    
 }
 
 
@@ -270,24 +206,10 @@
 #pragma mark - toolbar Actions
 
 
-- (IBAction) didClickBrowsePages : (id) sender
+- (void) returnFromDetail
 {
 	HGPageScrollView *pageScrollView = (HGPageScrollView *)[self.view viewWithTag:ScrollView_Tag];
-	
-    if (self.modalViewController) {
-//        NSDictionary *pageData = [_myPageDataArray objectAtIndex:[pageScrollView indexForSelectedPage]];
-        [self dismissModalViewControllerAnimated:NO];
-        // copy the toolbar items back to our own toolbar
-    }
-    
-	if(pageScrollView.viewMode == HGPageScrollViewModePage){
-		[pageScrollView deselectPageAnimated:YES];
-	}
-	else {
-		[pageScrollView selectPageAtIndex:[pageScrollView indexForSelectedPage] animated:YES];
-	}
-	
-	
+	[pageScrollView deselectPageAnimated:YES];
 }
 
 @end

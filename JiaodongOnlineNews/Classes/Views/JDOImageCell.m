@@ -19,6 +19,8 @@
 @interface JDOImageCell ()
 
 @property (nonatomic,strong) SSLineView *separatorLine;
+@property (nonatomic,strong) UIImageView *background;
+@property (nonatomic,strong) UIImageView *imageMask;
 
 @end
 
@@ -43,6 +45,13 @@
         self.separatorLine.lineColor = [UIColor lightGrayColor];
         [self.contentView addSubview:self.separatorLine];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        self.background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"image_background"]];
+        [self.contentView addSubview:self.background];
+        [self.contentView sendSubviewToBack:self.background];
+        
+        self.imageMask = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"image_mask"]];
+        [self.contentView addSubview:self.imageMask];
     }
     return self;
 }
@@ -57,15 +66,17 @@
     [super layoutSubviews];
     
     self.contentView.frame = UIEdgeInsetsInsetRect(self.contentView.frame,UIEdgeInsetsMake(Content_Inset/2.0, Content_Inset, Content_Inset/2.0, Content_Inset));
-    self.contentView.backgroundColor = [UIColor whiteColor];
-    self.contentView.layer.borderColor = [UIColor grayColor].CGColor;
-    self.contentView.layer.borderWidth = 1.0f;
-    
-    self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.contentView.bounds].CGPath;
-    self.contentView.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.contentView.layer.shadowOffset = CGSizeMake(3, 3);
-    self.contentView.layer.shadowOpacity = 0.8;
-    self.contentView.layer.shadowRadius = 3;
+    self.background.frame = self.contentView.bounds;
+    // 用图片背景替换contentView的描边
+//    self.contentView.backgroundColor = [UIColor whiteColor];
+//    self.contentView.layer.borderColor = [UIColor grayColor].CGColor;
+//    self.contentView.layer.borderWidth = 1.0f;
+//    
+//    self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.contentView.bounds].CGPath;
+//    self.contentView.layer.shadowColor = [UIColor blackColor].CGColor;
+//    self.contentView.layer.shadowOffset = CGSizeMake(3, 3);
+//    self.contentView.layer.shadowOpacity = 0.8;
+//    self.contentView.layer.shadowRadius = 3;
     
     float titleLineHeight = self.textLabel.font.lineHeight;
     self.textLabel.frame = CGRectMake(Padding,Padding,Title_Width,titleLineHeight);
@@ -74,7 +85,9 @@
     float timeWidth = contentWidth-3*Padding-Title_Width;
     self.detailTextLabel.frame = CGRectMake(contentWidth-Padding-timeWidth,Padding+titleLineHeight-timeLineHeight,timeWidth,timeLineHeight);
     self.separatorLine.frame = CGRectMake(Padding, 2*Padding+titleLineHeight, contentWidth-2*Padding, 1);
-    self.imageView.frame = CGRectMake(Padding,self.separatorLine.top+Padding,contentWidth-2*Padding,self.contentView.height-self.separatorLine.top-2*Padding);
+    self.imageView.frame = CGRectMake(Padding,self.separatorLine.top+Padding,contentWidth-2*Padding,self.contentView.height-self.separatorLine.top-2*Padding-2/*背景图的下边缘*/);
+    self.imageMask.frame = self.imageView.frame;
+    [self.contentView bringSubviewToFront:self.imageMask];
 
 }
 

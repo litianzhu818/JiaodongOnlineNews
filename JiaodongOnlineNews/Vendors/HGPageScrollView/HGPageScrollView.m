@@ -179,7 +179,7 @@ typedef enum{
     _pageSelector.pointPerPage = 10;
     [_pageSelector addTarget:self action:@selector(didChangePageValue:) forControlEvents:UIControlEventValueChanged];
     
-    [self addSubview:_pageSelector];
+    [self insertSubview:_pageSelector belowSubview:_scrollView];
 	
 	// default number of pages 
 	_numberOfPages = 1;

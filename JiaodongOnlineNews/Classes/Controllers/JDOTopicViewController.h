@@ -23,4 +23,6 @@
 @property (nonatomic,copy) NSString *modelClass;
 @property (nonatomic,strong) NSMutableDictionary *listParam;
 
+- (void) returnFromDetail;
+
 @end

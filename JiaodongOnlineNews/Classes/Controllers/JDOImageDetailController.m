@@ -68,7 +68,7 @@
 //}
 
 - (void) setupNavigationView{
-    self.navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44+43)];
+    self.navigationView = [[JDONavigationView alloc] initWithFrame:CGRectMake(0, 0, 320, 44+86)];
     self.navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     
     UIImageView *topView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
@@ -76,7 +76,7 @@
     topView.autoresizingMask =  UIViewAutoresizingFlexibleWidth ;
     [self.navigationView addSubview:topView];
     // 导航栏下面的渐变色
-    UIImageView *gradientTopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, 43)];
+    UIImageView *gradientTopView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, 86)];
     gradientTopView.image = [UIImage imageNamed:@"top_navigation_gradient_background.png"];
     gradientTopView.autoresizingMask =  UIViewAutoresizingFlexibleWidth ;
     [self.navigationView addSubview:gradientTopView];
@@ -208,7 +208,7 @@
         [NSNumber numberWithInt:ToolBarButtonDownload],
         [NSNumber numberWithInt:ToolBarButtonCollect]
     ];
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.imageModel parentView:self.view config:toolbarBtnConfig height:44 theme:ToolBarThemeBlack];
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.imageModel parentView:self.view config:toolbarBtnConfig frame:CGRectMake(0, App_Height-44.0, 320, 44.0) theme:ToolBarThemeBlack];
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
     _toolbar.shareTarget = self;
     _toolbar.downloadTarget = self;

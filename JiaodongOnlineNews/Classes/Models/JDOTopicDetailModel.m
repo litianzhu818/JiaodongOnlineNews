@@ -1,15 +1,15 @@
 //
-//  JDONewsDetailModel.m
+//  JDOTopicDetailModel.m
 //  JiaodongOnlineNews
 //
-//  Created by zhang yi on 13-6-4.
+//  Created by zhang yi on 13-7-4.
 //  Copyright (c) 2013年 胶东在线. All rights reserved.
 //
 
-#import "JDONewsDetailModel.h"
+#import "JDOTopicDetailModel.h"
 #import "ICUTemplateMatcher.h"
 
-@implementation JDONewsDetailModel
+@implementation JDOTopicDetailModel
 
 + (MGTemplateEngine *) sharedTemplateEngine{
     static MGTemplateEngine *_sharedEngine = nil;
@@ -33,26 +33,15 @@
         [userDefault setObject:fontClass forKey:@"font_class"];
         [userDefault synchronize];
     }
-    
+#warning 未处理重复投票
     NSMutableDictionary *variables = [[NSMutableDictionary alloc] init];
     [variables setValue:fontClass forKey:@"font_class"];
+    [variables setValue:@"1" forKey:@"hasVote"];
+    [variables setValue:[SERVER_URL stringByAppendingString:VOTE_SERVICE] forKey:@"vote_addr"];
     [variables addEntriesFromDictionary:dictionary];
     
     return [engine processTemplateInFileAtPath:templatePath withVariables:variables];
 }
-
-//- (NSString *) mergeToHTMLTemplate{
-//    MGTemplateEngine *engine = [[self class] sharedTemplateEngine];
-//    [engine setDelegate:self];
-//    [engine setMatcher:[ICUTemplateMatcher matcherWithTemplateEngine:engine]];
-//    NSString *templatePath = [[NSBundle mainBundle] pathForResource:@"news_template" ofType:@"html"];
-//    
-//    NSMutableDictionary *variables = [[NSMutableDictionary alloc] init];
-//    NSDictionary *selfDictionary = @{@"title":self.title,@"content":self.content};
-//    [variables addEntriesFromDictionary:selfDictionary];
-//    
-//    return [engine processTemplateInFileAtPath:templatePath withVariables:variables];
-//}
 
 - (void)templateEngine:(MGTemplateEngine *)engine blockStarted:(NSDictionary *)blockInfo
 {

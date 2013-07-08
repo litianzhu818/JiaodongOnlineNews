@@ -45,14 +45,14 @@
     NSTimeInterval timeInterval;
 }
 
-- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView config:(NSArray *)btnConfig height:(CGFloat) toolbarHeight theme:(ToolBarTheme)theme{
-    self = [super init];
+- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView config:(NSArray *)btnConfig frame:(CGRect) frame theme:(ToolBarTheme)theme{
+    self = [super initWithFrame:frame];
     if (self) {
         self.model = model;
         self.parentView = parentView;
         self.btnConfig = btnConfig;
         self.theme = theme;
-        self.frameHeight = toolbarHeight;
+        self.frameHeight = frame.size.height;
 #warning 查询该新闻是否被收藏
         _collected = false;
         _isKeyboardShowing = false;
@@ -74,7 +74,6 @@
 }
 
 - (void) setupToolBar{
-    self.frame = CGRectMake(0, App_Height-self.frameHeight, 320, self.frameHeight);
     self.backgroundColor = [UIColor clearColor];
     UIImageView *toolBackground = [[UIImageView alloc] initWithFrame:self.bounds];
     toolBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -202,6 +201,7 @@
             [JDOCommonUtil showHintHUD:@"服务器错误" inView:self.parentView];
         }
     } failure:^(NSString *errorStr) {
+#warning 评论时的错误在页面上显示不出来提示
         NSLog(@"错误内容--%@", errorStr);
         [JDOCommonUtil showHintHUD:errorStr inView:self.parentView];
     }];

@@ -10,4 +10,8 @@
 
 @implementation JDOTopicModel
 
+- (NSString *) reviewService{
+    return COMMIT_COMMENT_SERVICE;
+}
+
 @end

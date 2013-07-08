@@ -18,5 +18,6 @@
 
 - (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage pages:(NSArray *)pages;
 - (void)setCurrentPage:(int)_currentPage animated:(BOOL)animated;
+- (void) setTitleFontSize:(CGFloat) size;
 
 @end
