@@ -318,6 +318,9 @@
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
 		D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
+		D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */; };
+		D8F68612178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
 		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
 		D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */; };
@@ -809,6 +812,11 @@
 		D8EB1FAD17812C0900932011 /* JDOViolationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationModel.m; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
+		D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLifeKnowledgeViewController.h; sourceTree = "<group>"; };
+		D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLifeKnowledgeViewController.m; sourceTree = "<group>"; };
+		D8F6860E178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOSelectCarTypeViewController.h; sourceTree = "<group>"; };
+		D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOSelectCarTypeViewController.m; sourceTree = "<group>"; };
+		D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOSelectCarTypeViewController.xib; sourceTree = "<group>"; };
 		D8FCACA6177C19E9001050EF /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
 		D8FCACA7177C19E9001050EF /* M13Checkbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13Checkbox.m; sourceTree = "<group>"; };
 		D8FFA10B178266A30026F0C1 /* JDOBusLIstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOBusLIstViewController.h; sourceTree = "<group>"; };
@@ -1604,6 +1612,11 @@
 				D8FFA10B178266A30026F0C1 /* JDOBusLIstViewController.h */,
 				D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */,
 				D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */,
+				D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */,
+				D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */,
+				D8F6860E178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.h */,
+				D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */,
+				D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1909,6 +1922,7 @@
 				2D8CD7311782EF54006B0D03 /* topic_border.png in Resources */,
 				2D8D70291783A9BF00CA9806 /* topic_image_mask.png in Resources */,
 				D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */,
+				D8F68612178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2089,6 +2103,8 @@
 				D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */,
 				D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */,
 				D899316A1785020200F8E1E9 /* JDOBusDetailViewController.m in Sources */,
+				D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */,
+				D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
