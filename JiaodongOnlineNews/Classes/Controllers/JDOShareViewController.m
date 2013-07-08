@@ -107,12 +107,12 @@
     disableImageNames = @[@"sina.png",@"tencent.png",@"qzone.png",@"renren.png"];
     enableImageNames = @[@"sina01.png",@"tencent01.png",@"qzone01.png",@"renren01.png"];
     for(int i=0; i<4 ;i++){
-        UIButton *shareImage = (UIButton *)[self.view viewWithTag:Image_Base_Tag+i];
+        UIButton *shareImage = (UIButton *)[self.mainView viewWithTag:Image_Base_Tag+i];
         [shareImage setBackgroundImage:[UIImage imageNamed:[enableImageNames objectAtIndex:i]] forState:UIControlStateNormal];
         [shareImage setBackgroundImage:[UIImage imageNamed:[disableImageNames objectAtIndex:i]] forState:UIControlStateDisabled];
         [shareImage addTarget:self action:@selector(getAuth:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIButton *shareBtn = (UIButton *)[self.view viewWithTag:Btn_Base_Tag+i];
+        UIButton *shareBtn = (UIButton *)[self.mainView viewWithTag:Btn_Base_Tag+i];
         [shareBtn addTarget:self action:@selector(onBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         if([ShareSDK hasAuthorizedWithType:shareTypes[i]] ){
@@ -170,6 +170,7 @@
     [self setTitleLabel:nil];
     [self setRemainWordLabel:nil];
     [self setQqBtn:nil];
+    [self setMainView:nil];
     [super viewDidUnload];
 }
 
@@ -218,14 +219,14 @@
 - (IBAction)onShareClicked:(UIButton *)sender {
     NSMutableArray *selectedClients = [NSMutableArray array];
     for(int i=0; i<4 ;i++){
-        UIButton *shareBtn = (UIButton *)[self.view viewWithTag:Btn_Base_Tag+i];
+        UIButton *shareBtn = (UIButton *)[self.mainView viewWithTag:Btn_Base_Tag+i];
         if(shareBtn.state & UIControlStateSelected){
             [selectedClients addObject:[NSNumber numberWithInteger:shareTypes[i]]];
         }
     }
 
     if ([selectedClients count] == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"未选择需要分享的平台" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择需要分享的平台" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
         [alertView show];
         return;
     }
@@ -270,7 +271,7 @@
             [ShareSDK authWithType:shareType options:JDOGetOauthOptions(nil) result:^(SSAuthState state, id<ICMErrorInfo> error) {
                 if (state == SSPublishContentStateSuccess){
                     [sender setSelected:true];
-                    UIButton *shareImage = (UIButton *)[self.view viewWithTag:Image_Base_Tag+index];
+                    UIButton *shareImage = (UIButton *)[self.mainView viewWithTag:Image_Base_Tag+index];
                     [shareImage setBackgroundImage:[UIImage imageNamed:[enableImageNames objectAtIndex:index]] forState:UIControlStateNormal];
                     [shareImage setEnabled:false];
                     

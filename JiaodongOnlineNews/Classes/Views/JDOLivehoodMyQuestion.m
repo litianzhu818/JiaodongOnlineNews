@@ -152,7 +152,7 @@
 //                }else{
 //                    UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.infiniteScrollingView.bounds.size.width, self.tableView.infiniteScrollingView.bounds.size.height)];
 //                    finishLabel.textAlignment = NSTextAlignmentCenter;
-//                    finishLabel.text = @"数据已全部加载完成";
+//                    finishLabel.text = All_Date_Load_Finished;
 //                    finishLabel.tag = Finished_Label_Tag;
 //                    [self.tableView.infiniteScrollingView setEnabled:false];
 //                    [self.tableView.infiniteScrollingView addSubview:finishLabel];

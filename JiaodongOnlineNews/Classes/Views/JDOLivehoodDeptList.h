@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "NimbusPagingScrollView.h"
 
+@class JDOLivehoodViewController;
+
 @interface JDOLivehoodDeptList : NIPageView <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic,assign) NSDictionary *info;
+@property (nonatomic,strong) NSDictionary *info;
 
 @property (nonatomic,strong) UITableView *tableView;
 
-@property (nonatomic,assign) BOOL isShowingLocalCache;
+@property (nonatomic,assign) JDOLivehoodViewController *livehoodController;
+
 
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info;
 - (void)loadDataFromNetwork;

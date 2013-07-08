@@ -7,9 +7,15 @@
 //
 
 #import "JDOLivehoodDeptList.h"
+#import "JDOLivehoodViewController.h"
 
 #define Section_Height 43.0f
 #define Line_Height 43.0f
+#define Section_Label_Tag 111
+#define Section_Normal_Color [UIColor colorWithHex:@"505050"]
+#define Section_Highlight_Color [UIColor whiteColor]
+#define Shadow_Normal_Color [UIColor whiteColor]
+#define Shadow_Highlight_Color [UIColor colorWithHex:@"505050"]
 
 #define List_Background @"livehood_content_background"
 #define List_Background_Selected @"livehood_content_background_selected"
@@ -21,6 +27,7 @@
 @property (nonatomic,strong) NSMutableArray *headerViewArray;
 @property (nonatomic,strong) NSMutableArray *sectionExpandState;
 @property (nonatomic,strong) NSArray *currentSectionList;
+@property (nonatomic,strong) NSIndexPath *checkedIndexPath;
 
 @end
 
@@ -38,6 +45,7 @@
         _selectedSection = -1;
         
         self.reuseIdentifier = [info valueForKey:@"reuseId"];
+        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
         self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
@@ -62,8 +70,13 @@
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickSection:)];
             [headerView addGestureRecognizer:tapGesture];
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 44)];
+            label.textColor = Section_Normal_Color;
+            label.shadowColor = Shadow_Normal_Color;
+            label.shadowOffset = CGSizeMake(0, 1);
             label.backgroundColor = [UIColor clearColor];
             label.text = [_sectionTitleArray objectAtIndex:i];
+            label.font = [UIFont systemFontOfSize:18];
+            label.tag = Section_Label_Tag;
             [headerView addSubview:label];
             [_headerViewArray addObject:headerView];
             
@@ -99,8 +112,10 @@
         BOOL isExpand = [(NSNumber *)[_sectionExpandState objectAtIndex:_selectedSection] boolValue];
         if(isExpand){
             [self shrinkLastSection];
+            _selectedSection = -1;
         }else{
             [self expandCurrentSection];
+            _selectedSection = _currentSection;
         }
     }
 }
@@ -157,14 +172,14 @@
 
     HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
     [SharedAppDelegate.window addSubview:HUD];
-//    HUD.color = [UIColor colorWithRed:0.23 green:0.50 blue:0.82 alpha:0.90];
-//    HUD.minShowTime = Hint_Min_Show_Time;
-//    HUD.dimBackground = true;
     HUD.labelText = @"更新数据";
     HUD.removeFromSuperViewOnHide = true;
     [HUD show:true];
     HUDShowTime = [NSDate date];
     
+    if([deptKey isEqualToString:@"金融"]){
+        deptKey = @"B";
+    }
     NSDictionary *param = @{@"letter":deptKey};
     // 加载列表
     [[JDOJsonClient sharedClient] getJSONByServiceName:BRANCHS_LIST_SERVICE modelClass:nil params:param success:^(NSArray *dataList) {
@@ -210,6 +225,9 @@
     if(_selectedSection != -1){
         UIImageView *lastSelectedView = (UIImageView *)[_headerViewArray objectAtIndex:_selectedSection];
         lastSelectedView.image = [UIImage imageNamed:@"livehood_content_background"];
+        [(UILabel *)[lastSelectedView viewWithTag:Section_Label_Tag] setTextColor:Section_Normal_Color];
+        [(UILabel *)[lastSelectedView viewWithTag:Section_Label_Tag] setShadowColor:Shadow_Normal_Color];
+        
         [_sectionExpandState replaceObjectAtIndex:_selectedSection withObject:[NSNumber numberWithBool:false]];
         if(_selectedSection > 0){
             [[_sectionContentArray objectAtIndex:_selectedSection] removeAllObjects];
@@ -223,6 +241,9 @@
 - (void) expandCurrentSection {
     UIImageView *headerView = (UIImageView *)[_headerViewArray objectAtIndex:_currentSection];
     headerView.image = [UIImage imageNamed:@"livehood_content_background_selected"];
+    [(UILabel *)[headerView viewWithTag:Section_Label_Tag] setTextColor:Section_Highlight_Color];
+    [(UILabel *)[headerView viewWithTag:Section_Label_Tag] setShadowColor:Shadow_Highlight_Color];
+    
     [_sectionExpandState replaceObjectAtIndex:_currentSection withObject:[NSNumber numberWithBool:true]];
     [[_sectionContentArray objectAtIndex:_currentSection] removeAllObjects];
     [[_sectionContentArray objectAtIndex:_currentSection] addObjectsFromArray:_currentSectionList];
@@ -279,16 +300,22 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil){
         cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-        cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell.textLabel.font = [UIFont systemFontOfSize:16];
+        cell.textLabel.textColor = [UIColor colorWithHex:@"808080"];
         cell.textLabel.backgroundColor = [UIColor clearColor];
-#warning 应该也设置selectedBackgroundView来提示选中了哪个部门
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"livehood_item_background"]];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     NSArray *deptArray = [_sectionContentArray objectAtIndex:indexPath.section];
     /* NSDictionary : dept_code,dept_name */
     NSDictionary *dept = (NSDictionary *)[deptArray objectAtIndex:indexPath.row];    
     cell.textLabel.text = [dept objectForKey:@"dept_name"];
+    // 当前选中部门打钩
+    if( _checkedIndexPath != nil && _checkedIndexPath.row == indexPath.row && _checkedIndexPath.section == indexPath.section){
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     
     return cell;
 }
@@ -299,14 +326,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.section == 0){
-        // section0 由于存在scrollView与didSelectRowAtIndexPath冲突，不会进入该函数，通过给UIImageView设置gesture的方式解决
-    }else{
-//        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
-//        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-//        [centerController pushViewController:detailController animated:true];
-//        [tableView deselectRowAtIndexPath:indexPath animated:true];
+
+    if(_checkedIndexPath == nil || _checkedIndexPath.row != indexPath.row || _checkedIndexPath.section != indexPath.section ){
+        if( _checkedIndexPath != nil ) {
+            [tableView cellForRowAtIndexPath:self.checkedIndexPath].accessoryType = UITableViewCellAccessoryNone;
+        }
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        self.checkedIndexPath = indexPath;
+        
+        NSArray *deptArray = [_sectionContentArray objectAtIndex:indexPath.section];
+        /* NSDictionary : dept_code,dept_name */
+        NSDictionary *dept = (NSDictionary *)[deptArray objectAtIndex:indexPath.row];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDeptChangedNotification object:nil userInfo:@{@"dept_code":[dept objectForKey:@"dept_code"]}];
     }
+    
+    [self.livehoodController.scrollView moveToNextAnimated:true];
 }
 
 

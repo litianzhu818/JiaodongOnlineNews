@@ -61,6 +61,7 @@
         }];
         
         self.statusView = [[JDOStatusView alloc] initWithFrame:self.bounds];
+        self.statusView.delegate = self;
         [self addSubview:self.statusView];
         
         // 从本地缓存读取，本地缓存每个栏目只保存20条记录
@@ -89,6 +90,14 @@
 
 - (void)dealloc{
     [[SDImageCache sharedImageCache] clearMemory];
+}
+
+- (void) onRetryClicked:(JDOStatusView *) statusView{
+    [self loadDataFromNetwork];
+}
+
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
+    [self loadDataFromNetwork];
 }
 
 - (void) setCurrentState:(ViewStatusType)status{
@@ -129,7 +138,7 @@
     
     // 加载头条
     [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
-        if(dataList.count >0){
+        if(dataList != nil && dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
             headlineFinished = true;
@@ -144,9 +153,7 @@
     
     // 加载列表
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
-        if(dataList == nil){
-            // 数据加载完成
-        }else if(dataList.count >0){
+        if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
             newslistFinished = true;
@@ -341,7 +348,7 @@
                 }else{
                     UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.infiniteScrollingView.bounds.size.width, self.tableView.infiniteScrollingView.bounds.size.height)];
                     finishLabel.textAlignment = NSTextAlignmentCenter;
-                    finishLabel.text = @"数据已全部加载完成";
+                    finishLabel.text = All_Date_Load_Finished;
                     finishLabel.tag = Finished_Label_Tag;
                     [self.tableView.infiniteScrollingView setEnabled:false];
                     [self.tableView.infiniteScrollingView addSubview:finishLabel];

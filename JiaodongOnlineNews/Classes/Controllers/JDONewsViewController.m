@@ -102,18 +102,9 @@
     
     if (nil == page) {
         page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds info:newsCategoryInfo];
-        page.statusView.delegate = self;
     }
     
     return page;
-}
-
-- (void) onRetryClicked:(JDOStatusView *) statusView{
-    [(JDONewsCategoryView *)statusView.superview loadDataFromNetwork];
-}
-
-- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
-    [(JDONewsCategoryView *)statusView.superview loadDataFromNetwork];
 }
 
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{

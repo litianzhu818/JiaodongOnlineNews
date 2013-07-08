@@ -104,36 +104,32 @@
     
     NIPageView *page = (NIPageView *)[pagingScrollView dequeueReusablePageWithIdentifier:[itemInfo objectForKey:@"reuseId"] ];
     
-    if (nil == page) {
-        switch (pageIndex) {
-            case 0:
-                page = [[JDOLivehoodDeptList alloc] initWithFrame:_scrollView.bounds info:itemInfo];
-                break;
-            case 1:
-                page = [[JDOLivehoodQuestionList alloc] initWithFrame:_scrollView.bounds info:itemInfo];
-                ((id<JDOStatusView>)page).statusView.delegate = self;
-                break;
-            case 2:
-                page = [[JDOLivehoodAskQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo];
-                break;
-            case 3:
-                page = [[JDOLivehoodMyQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo];
-                ((id<JDOStatusView>)page).statusView.delegate = self;
-                break;
-            default:
-                break;
-        }
+    if(page != nil){
+        return page;
     }
     
-    return page;
-}
-
-- (void) onRetryClicked:(JDOStatusView *) statusView{
-//    [(JDOLivehoodDeptList *)statusView.superview loadDataFromNetwork];
-}
-
-- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
-//    [(JDOLivehoodDeptList *)statusView.superview loadDataFromNetwork];
+    switch (pageIndex) {
+        case 0:{
+            JDOLivehoodDeptList *aPage = [[JDOLivehoodDeptList alloc] initWithFrame:_scrollView.bounds info:itemInfo];
+            [aPage setLivehoodController:self];
+            return aPage;
+        }
+        case 1:{
+            JDOLivehoodQuestionList *aPage = [[JDOLivehoodQuestionList alloc] initWithFrame:_scrollView.bounds info:itemInfo rootView:self.view];
+            [aPage setCurrentState:ViewStatusLogo];
+            return aPage;
+        }
+        case 2:{
+            JDOLivehoodAskQuestion *aPage = [[JDOLivehoodAskQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo];
+            return aPage;
+        }
+        case 3:{
+            JDOLivehoodMyQuestion *aPage = [[JDOLivehoodMyQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo];
+            return aPage;
+        }
+        default:
+            return nil;
+    }
 }
 
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{
@@ -200,44 +196,20 @@
     switch (_scrollView.centerPageIndex) {
         case 0:{
             JDOLivehoodDeptList *aPage = (JDOLivehoodDeptList *)page;
-//            [aPage.tableView reloadData];
-
-//            if(aPage.status == ViewStatusNormal){
-//                if([Reachability isEnableNetwork]){
-//                    //显示的数据是从本地缓存加载，则重新加载，也就是说初始化页面的时候始终认为本地缓存是过期的数据
-//                    if(aPage.isShowingLocalCache){
-//                        [aPage loadDataFromNetwork];
-//                    }else{
-//                        NSMutableDictionary *updateTimes = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:News_Update_Time] mutableCopy];
-//                        if( updateTimes && [updateTimes objectForKey:pageInfo.title]){
-//                            double lastUpdateTime = [(NSNumber *)[updateTimes objectForKey:pageInfo.title] doubleValue];
-//                            // 上次加载时间离现在超过时间间隔
-//                            if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > News_Update_Interval/**/ ){
-//                                [page loadDataFromNetwork];
-//                            }
-//                        }
-//                    }
-//                }
-//            }else if(aPage.status != ViewStatusLoading){
-//                if(![Reachability isEnableNetwork]){
-//#warning 显示无网络界面，应监听网络通知，若有网络则自动加载
-//                    [aPage setCurrentState:ViewStatusNoNetwork];
-//                }else{  // 从网络加载数据，切换到loading状态
-//                    [aPage setCurrentState:ViewStatusLoading];
-//                    [aPage loadDataFromNetwork];
-//                }
-//            }
             break;
         }
-        case 1:
-//            page = (JDOLivehoodDeptList *)_scrollView.centerPageView;
+        case 1:{
+            JDOLivehoodQuestionList *aPage = (JDOLivehoodQuestionList *)page;
             break;
-        case 2:
-//            JDOLivehoodAskQuestion
+        }
+        case 2:{
+            JDOLivehoodAskQuestion *aPage = (JDOLivehoodAskQuestion *)page;
             break;
-        case 3:
-//            JDOLivehoodMyQuestion
+        }
+        case 3:{
+            JDOLivehoodMyQuestion *aPage = (JDOLivehoodMyQuestion *)page;
             break;
+        }
         default:
             break;
     }

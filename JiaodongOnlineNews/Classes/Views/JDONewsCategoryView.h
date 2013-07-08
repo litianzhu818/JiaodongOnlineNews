@@ -18,8 +18,9 @@ typedef enum {
     NewsCategorySport           //体育
 } NewsCategory;
 
+@protocol JDOStatusViewDelegate;
 
-@interface JDONewsCategoryView : NIPageView <JDOStatusView, UITableViewDelegate, UITableViewDataSource>
+@interface JDONewsCategoryView : NIPageView <JDOStatusView, UITableViewDelegate, UITableViewDataSource,JDOStatusViewDelegate>
 
 - (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info;
 
