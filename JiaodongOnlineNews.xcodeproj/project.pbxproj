@@ -2014,6 +2014,18 @@
 				2D8D70291783A9BF00CA9806 /* topic_image_mask.png in Resources */,
 				D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */,
 				D8F68612178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib in Resources */,
+				2D97A94217850A4600CEEE82 /* image_background.png in Resources */,
+				2D97A94317850A4600CEEE82 /* image_mask.png in Resources */,
+				2D97A94817851C5200CEEE82 /* content_template.html in Resources */,
+				2D97A94C17853D4C00CEEE82 /* gou.png in Resources */,
+				2D97A94D17853D4C00CEEE82 /* point_per.png in Resources */,
+				2D97A94E17853D4C00CEEE82 /* toupiao.png in Resources */,
+				2D97A9501785547800CEEE82 /* vote.css in Resources */,
+				2D9B540A1786659F0027123D /* top_navigation_background_black.png in Resources */,
+				2D9B540B1786659F0027123D /* top_navigation_gradient_background.png in Resources */,
+				2D9B54291786C3BD0027123D /* livehood_content_background.png in Resources */,
+				2D9B542A1786C3BD0027123D /* livehood_item_background.png in Resources */,
+				2D9B542B1786C3BD0027123D /* livehood_content_background_selected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2198,6 +2210,11 @@
 				D899316A1785020200F8E1E9 /* JDOBusDetailViewController.m in Sources */,
 				D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */,
 				D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */,
+				2D9B54071786448F0027123D /* JDOLivehoodViewController.m in Sources */,
+				2D9B540E178667ED0027123D /* JDOLivehoodDeptList.m in Sources */,
+				2D9B541117867EF80027123D /* JDOLivehoodQuestionList.m in Sources */,
+				2D9B541417867F0B0027123D /* JDOLivehoodAskQuestion.m in Sources */,
+				2D9B541717867F1C0027123D /* JDOLivehoodMyQuestion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
