@@ -50,14 +50,15 @@
         // pages中的内容必须是含有title属性的对象或包含该key值的Dictionary
         [titleBtn setTitle:[[pages objectAtIndex:i] valueForKey:@"title"] forState:UIControlStateNormal];
         [titleBtn setTitleColor:title_normal_color forState:UIControlStateNormal];
-        [titleBtn setTitleShadowColor:title_normal_shadow forState:UIControlStateNormal];
+        // 不使用字体阴影
+//        titleBtn.titleLabel.shadowOffset = CGSizeMake(0, 1);
+//        [titleBtn setTitleShadowColor:title_normal_shadow forState:UIControlStateNormal];
         titleBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
         // iOS5中,调整label的文字偏左2个像素以使其在整个button中居中,iOS6未测试时候需要调整
         [titleBtn setTitleEdgeInsets:UIEdgeInsetsMake( 0,2,0,0)];
 //        titleBtn.titleLabel.backgroundColor = [UIColor blueColor];
         titleBtn.tag = title_label_tag+i;
         titleBtn.backgroundColor = [UIColor clearColor];
-        titleBtn.titleLabel.shadowOffset = CGSizeMake(0, 1);
         [titleBtn addTarget:self action:@selector(onTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:titleBtn];
     }
@@ -113,9 +114,9 @@
 - (void)setTitleOfIndex:(int)index toColor:(UIColor *)color shadowColor:(UIColor *)shadowColor offset:(CGSize) offset{
     if(index<0) return;
     UIButton *titleButton = (UIButton *)[self viewWithTag:title_label_tag+index];
-    titleButton.titleLabel.shadowOffset = offset;
     [titleButton setTitleColor:color forState:UIControlStateNormal];
-    [titleButton setTitleShadowColor:shadowColor forState:UIControlStateNormal];
+//    titleButton.titleLabel.shadowOffset = offset;
+//    [titleButton setTitleShadowColor:shadowColor forState:UIControlStateNormal];
 }
 
 //- (void)drawRect:(CGRect)rect {

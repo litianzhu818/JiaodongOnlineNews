@@ -18,7 +18,9 @@
         id model = [[class alloc] init];
         
         [dictObj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [model setValue:obj forKey:key];
+            if([model respondsToSelector:NSSelectorFromString(key)]){
+                [model setValue:obj forKey:key];
+            }
         }];
         [modelArray addObject:model];
     }];

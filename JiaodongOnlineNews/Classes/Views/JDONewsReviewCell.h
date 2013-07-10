@@ -17,6 +17,6 @@
 @interface JDONewsReviewCell : UITableViewCell
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
-- (void)setModel:(JDOCommentModel *)newsModel;
+- (void)setModel:(JDOCommentModel *)commentModel;
 
 @end

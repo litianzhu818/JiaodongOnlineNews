@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "JDOToolbarModel.h"
+#import "TPKeyboardAvoidingScrollView.h"
 
 @interface JDOShareViewController : JDONavigationController
 
 @property (strong,nonatomic) id<JDOToolbarModel> model;
+#warning 为了避免NavigationView跟着滚动,应该在view的层级中添加独立的TPKeyboardAvoidingScrollView
+@property (strong, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *mainView;
 
 - (id) initWithModel:(id<JDOToolbarModel>) model;
 

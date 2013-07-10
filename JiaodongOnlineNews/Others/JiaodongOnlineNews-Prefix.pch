@@ -65,7 +65,12 @@
 #define Main_Background_Color @"f0f0f0"
 
 // 提示最少显示时间
-#define Hint_Min_Show_Time 1.2
+#define Hint_Min_Show_Time 0.8
+#define No_Network_Connection @"网络当前不可用"
+#define All_Date_Load_Finished @"数据已全部加载完成"
+
+// 自定义通知
+#define kDeptChangedNotification @"kDeptChangedNotification"
 
 
 #define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
