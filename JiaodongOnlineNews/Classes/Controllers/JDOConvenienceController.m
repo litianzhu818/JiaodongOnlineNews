@@ -11,6 +11,7 @@
 #import "JDOConvenienceViewModel.h"
 #import "JDOViolationViewController.h"
 #import "JDOBusLIstViewController.h"
+#import "JDOLifeKnowledgeViewController.h"
 
 @interface JDOConvenienceController () <NILauncherViewModelDelegate>
 @property (nonatomic, readwrite, retain) JDOConvenienceViewModel* model;
@@ -103,44 +104,44 @@
         static JDOBusLIstViewController *buslist = nil;
         buslist = [[JDOBusLIstViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:buslist animated:YES];
+    } else if (index == 7){
+        static JDOLifeKnowledgeViewController *lifeknowledge = nil;
+        lifeknowledge = [[JDOLifeKnowledgeViewController alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:lifeknowledge animated:YES];
     } else {
         static JDOConvenienceItemController *controller = nil;
         controller = [[JDOConvenienceItemController alloc] initWithNibName:nil bundle:nil];
 
         switch (index) {
-            case 0:
-                controller.title = @"公交班次";
-                break;
             case 1:
                 controller.title = @"客运时刻";
                 controller.channelid = @"22";
+                controller.deletetitle = YES;
                 break;
             case 2:
                 controller.title = @"火车时刻";
                 controller.channelid = @"23";
+                controller.deletetitle = YES;
                 break;
             case 3:
                 controller.title = @"船运时刻";
                 controller.channelid = @"24";
-                break;
-            case 4:
-                controller.title = @"违章查询";
+                controller.deletetitle = YES;
                 break;
             case 5:
                 controller.title = @"航空时刻";
                 controller.channelid = @"25";
+                controller.deletetitle = YES;
                 break;
             case 6:
                 controller.title = @"常用电话";
                 controller.channelid = @"26";
-                break;
-            case 7:
-                controller.title = @"生活常识";
-                controller.channelid = @"27";
+                controller.deletetitle = NO;
                 break;
             case 8:
                 controller.title = @"烟台天气";
                 controller.channelid = @"21";
+                controller.deletetitle = NO;
                 break;
         }
         [self.navigationController pushViewController:controller animated:YES];

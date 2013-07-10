@@ -22,6 +22,7 @@
 
 #define Hint_Min_Show_Time 1.2
 
+
 @interface JDOLifeKnowledgeViewController ()
 
 @end
@@ -32,7 +33,10 @@
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super init]) {
+    if (self = [super initWithNibName:nil bundle:nil]) {
+        self.title = @"生活常识";
+        self.reuseId = @"27";
+        self.channelid = @"27";
         self.currentPage = 1;
         self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
         //self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
@@ -52,7 +56,7 @@
         }];
         
         self.statusView = [[JDOStatusView alloc] initWithFrame:self.view.bounds];
-        [self.view addSubview:self.statusView];
+        //[self.view addSubview:self.statusView];
         
         // 从本地缓存读取，本地缓存每个栏目只保存20条记录
         BOOL hasCache = [self readListFromLocalCache];
@@ -62,6 +66,7 @@
             // 显示logo界面，不显示加载进度指示，当实际调用loadcurrentPage的时候才从网络加载并显示进度
             [self setCurrentState:ViewStatusLogo];
             _isShowingLocalCache = false;
+            [self loadDataFromNetwork];
         }else{
             [self setCurrentState:ViewStatusNormal];
             _isShowingLocalCache = true;
@@ -264,7 +269,7 @@
         }else if(dataList.count >0){
             NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:NewsList_Page_Size];
             for(int i=0;i<dataList.count;i++){
-                [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:1]];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
             }
             [self.listArray addObjectsFromArray:dataList];
             [self.tableView beginUpdates];
@@ -296,6 +301,43 @@
         [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
     
+}
+
+
+
+// 将普通新闻和头条划分为两个section
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.listArray.count==0 ? 20:self.listArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *listIdentifier = @"listIdentifier";
+    #warning 测试时暂时不开启磁盘缓存 SDWebImageCacheMemoryOnly
+    JDONewsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
+    if (cell == nil){
+        cell =[[JDONewsTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:listIdentifier];
+    }
+    if(self.listArray.count > 0){
+        JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
+        [cell setModel:newsModel];
+    }
+    return cell;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return News_Cell_Height;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+    [centerController pushViewController:detailController animated:true];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
 

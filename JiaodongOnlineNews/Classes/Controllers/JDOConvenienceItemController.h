@@ -15,6 +15,7 @@
 @property (strong,nonatomic) JDONavigationView *navigationView;
 @property (nonatomic,strong) UIActivityIndicatorView *activityIndicationView;
 @property (strong,nonatomic) NSString *title;
+@property BOOL deletetitle;
 @property (strong,nonatomic) NSString *channelid;
 
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
