@@ -12,12 +12,12 @@
 #import "AGCustomShareItemView.h"
 #import "JDOShareViewDelegate.h"
 
-#define Review_Text_Init_Height 40
+#define Review_Text_Init_Height 44
 #define Review_ShareBar_Height 40
 
 #define Review_Left_Margin 10
 #define Review_Right_Margin 10
-#define SubmitBtn_Width 60
+#define SubmitBtn_Width 55
 #define Review_Content_MaxLength 100
 #define Review_SubmitBtn_Tag 200
 
@@ -50,37 +50,32 @@
         _textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
         _textView.animateHeightChange = NO; //turns off animation
         //    _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _textView.backgroundColor = [UIColor whiteColor];
+        _textView.backgroundColor = [UIColor clearColor];
         
-        UIImage *entryBackground = [[UIImage imageNamed:@"MessageEntryInputField.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-        UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-        entryImageView.frame = CGRectMake(Review_Left_Margin, 0, 320-Review_Left_Margin-10-SubmitBtn_Width, Review_Text_Init_Height);
-        entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        //        UIImage *entryBackground = [[UIImage imageNamed:@"MessageEntryInputField.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+        //        UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
+        //        entryImageView.frame = CGRectMake(Review_Left_Margin, 0, 320-Review_Left_Margin-10-SubmitBtn_Width, Review_Text_Init_Height);
+        //        entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
-        UIImage *background = [[UIImage imageNamed:@"MessageEntryBackground.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
-        imageView.frame = CGRectMake(0, 0, 320, Review_Text_Init_Height);
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"inputFieldType2"]];
+        background.frame = CGRectMake(0, 0, 320, Review_Text_Init_Height);
+        background.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
-        [self addSubview:imageView];
+        [self addSubview:background];
         [self addSubview:_textView];
-        [self addSubview:entryImageView];
-        
-        UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-        UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
         
         UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom] ;
         submitBtn.tag = Review_SubmitBtn_Tag;
         submitBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-        submitBtn.frame = CGRectMake(320-Review_Right_Margin-SubmitBtn_Width, 8, SubmitBtn_Width, 27);
+        submitBtn.frame = CGRectMake(320-Review_Right_Margin-SubmitBtn_Width, 7, SubmitBtn_Width, 30);
         [submitBtn addTarget:target action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
         [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
         [submitBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
         submitBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
         submitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
         [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [submitBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-        [submitBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+        [submitBtn setBackgroundImage:[UIImage imageNamed:@"inputSendButton"] forState:UIControlStateNormal];
+        [submitBtn setBackgroundImage:[UIImage imageNamed:@"inputSendButton"] forState:UIControlStateSelected];
         [self addSubview:submitBtn];
         
         _remainWordNum = [[UILabel alloc] initWithFrame:CGRectMake(320-Review_Right_Margin-SubmitBtn_Width+2, 10, SubmitBtn_Width, 30)];
@@ -252,7 +247,7 @@
     r.origin.y += diff;
 	self.frame = r;
     
-    if(r.size.height > 100){
+    if(r.size.height > 120){
         [_remainWordNum setHidden:false];
     }else{
         [_remainWordNum setHidden:true];

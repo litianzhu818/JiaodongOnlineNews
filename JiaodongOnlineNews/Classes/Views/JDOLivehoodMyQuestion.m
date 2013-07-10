@@ -107,10 +107,10 @@
 //    [self updateLastRefreshTime];
 //    if( dataList.count<self.pageSize ){
 //        [self.tableView.infiniteScrollingView setEnabled:false];
-//        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+////        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
 //    }else{
 //        [self.tableView.infiniteScrollingView setEnabled:true];
-//        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+////        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
 //    }
 //}
 //
@@ -154,6 +154,7 @@
 //                    finishLabel.textAlignment = NSTextAlignmentCenter;
 //                    finishLabel.text = All_Date_Load_Finished;
 //                    finishLabel.tag = Finished_Label_Tag;
+//                    finishLabel.backgroundColor = [UIColor clearColor];
 //                    [self.tableView.infiniteScrollingView setEnabled:false];
 //                    [self.tableView.infiniteScrollingView addSubview:finishLabel];
 //                }
