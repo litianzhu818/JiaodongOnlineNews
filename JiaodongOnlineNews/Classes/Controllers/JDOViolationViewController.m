@@ -7,7 +7,6 @@
 //
 
 #import "JDOViolationViewController.h"
-#import "TPKeyboardAvoidingScrollView.h"
 #import "JDOJsonClient.h"
 #import "JDOViolationModel.h"
 #import "JDOSelectCarTypeViewController.h"
@@ -42,17 +41,15 @@
     
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox1.frame = CGRectMake(self.view.frame.size.width * 0.07, 190, checkBox1.frame.size.width, checkBox1.frame.size.height);
-    [self.view addSubview:checkBox1];
+    checkBox1.frame = CGRectMake(tp.frame.size.width * 0.07, 148, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    [tp addSubview:checkBox1];
     
     checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:22];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox2.frame = CGRectMake(self.view.frame.size.width * 0.52, 190, checkBox2.frame.size.width, checkBox2.frame.size.height);
-    [self.view addSubview:checkBox2];
+    checkBox2.frame = CGRectMake(tp.frame.size.width * 0.52, 148, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    [tp addSubview:checkBox2];
     
-    TPKeyboardAvoidingScrollView *tp = self.view;
     [tp setScrollEnabled:NO];
-    tp = nil;
 }
  
 - (void)setupNavigationView

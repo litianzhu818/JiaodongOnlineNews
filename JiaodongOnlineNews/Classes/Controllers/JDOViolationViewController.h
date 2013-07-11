@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "M13Checkbox.h"
+#import "TPKeyboardAvoidingScrollView.h"
 
 @interface JDOViolationViewController : JDONavigationController
 {
@@ -15,6 +16,7 @@
     IBOutlet UIButton *CarType;
     IBOutlet UITextField *ChassisNum;
     IBOutlet UILabel *result;
+    IBOutlet TPKeyboardAvoidingScrollView *tp;
     
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
