@@ -23,7 +23,7 @@
         CarNumString = [[NSString alloc] init];
         CarTypeString = [[NSString alloc] init];
         ChassisNumString = [[NSString alloc] init];
-        CarTypeString = @"01";
+        CarTypeString = @"02";
     }
     return self;
 }
@@ -91,7 +91,7 @@
         
         [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
-                NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"Data"];
+                NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
             } else {
                 NSLog(@"wrongParams");
             }
