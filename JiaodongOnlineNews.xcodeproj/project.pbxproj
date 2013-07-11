@@ -2240,6 +2240,7 @@
 				2D17817C178A3C4100EC88CE /* JDOQuestionModel.m in Sources */,
 				2D17817F178A3C9300EC88CE /* JDOQuestionCell.m in Sources */,
 				A774BF23178D726100A3B866 /* JDOWeather.m in Sources */,
+				2D044641178E301200571548 /* JDOLivehoodDetailController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
