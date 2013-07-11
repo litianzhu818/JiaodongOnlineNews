@@ -294,8 +294,6 @@
 		2DE0845F175B872800A1A6BC /* JDONewsHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */; };
 		2DE931BD1772A86900A87ACC /* JDOLeftMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931BC1772A86900A87ACC /* JDOLeftMenuCell.m */; };
 		2DE931C01772C17600A87ACC /* JDOXmlClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931BF1772C17600A87ACC /* JDOXmlClient.m */; };
-		2DE931C31772D56B00A87ACC /* JDOWeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931C21772D56B00A87ACC /* JDOWeatherForcast.m */; };
-		2DE931C61772D57700A87ACC /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE931C51772D57600A87ACC /* JDOWeather.m */; };
 		2DE931E81772E3E500A87ACC /* 暴雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931C81772E3E500A87ACC /* 暴雪.png */; };
 		2DE931E91772E3E500A87ACC /* 暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931C91772E3E500A87ACC /* 暴雨.png */; };
 		2DE931EA1772E3E500A87ACC /* 大暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931CA1772E3E500A87ACC /* 大暴雨.png */; };
@@ -329,6 +327,9 @@
 		2DE932061772E3E500A87ACC /* 中雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E61772E3E500A87ACC /* 中雪.png */; };
 		2DE932071772E3E500A87ACC /* 中雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E71772E3E500A87ACC /* 中雨.png */; };
 		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
+		A7341C7D178EB77C00ADD976 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */; };
+		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
+		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
@@ -803,10 +804,6 @@
 		2DE931BC1772A86900A87ACC /* JDOLeftMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLeftMenuCell.m; sourceTree = "<group>"; };
 		2DE931BE1772C17600A87ACC /* JDOXmlClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOXmlClient.h; sourceTree = "<group>"; };
 		2DE931BF1772C17600A87ACC /* JDOXmlClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOXmlClient.m; sourceTree = "<group>"; };
-		2DE931C11772D56B00A87ACC /* JDOWeatherForcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeatherForcast.h; sourceTree = "<group>"; };
-		2DE931C21772D56B00A87ACC /* JDOWeatherForcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeatherForcast.m; sourceTree = "<group>"; };
-		2DE931C41772D57600A87ACC /* JDOWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeather.h; sourceTree = "<group>"; };
-		2DE931C51772D57600A87ACC /* JDOWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeather.m; sourceTree = "<group>"; };
 		2DE931C81772E3E500A87ACC /* 暴雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雪.png"; sourceTree = "<group>"; };
 		2DE931C91772E3E500A87ACC /* 暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雨.png"; sourceTree = "<group>"; };
 		2DE931CA1772E3E500A87ACC /* 大暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大暴雨.png"; sourceTree = "<group>"; };
@@ -841,6 +838,11 @@
 		2DE931E71772E3E500A87ACC /* 中雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雨.png"; sourceTree = "<group>"; };
 		2DE932081772E99D00A87ACC /* weather.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = weather.xml; sourceTree = "<group>"; };
 		5F222CF8F96D417D992D04DB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
+		A7341C7C178EB77C00ADD976 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
+		A7341C7F178EB7EC00ADD976 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		A774BF21178D726100A3B866 /* JDOWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeather.h; sourceTree = "<group>"; };
+		A774BF22178D726100A3B866 /* JDOWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeather.m; sourceTree = "<group>"; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D823DBC11762B88B0006F80B /* JDOConvenienceItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceItemController.h; sourceTree = "<group>"; };
 		D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOConvenienceItemController.m; sourceTree = "<group>"; };
@@ -875,6 +877,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */,
 				2D958592176E082E009F5AE4 /* CoreTelephony.framework in Frameworks */,
 				2D958590176E07F1009F5AE4 /* libsqlite3.dylib in Frameworks */,
 				2D95858E176E07D8009F5AE4 /* libstdc++.dylib in Frameworks */,
@@ -902,6 +905,7 @@
 				2D9BCED1176D820B0040DDA0 /* TencentOpenAPI.framework in Frameworks */,
 				2D9BCED5176D820C0040DDA0 /* libWeiboSDK.a in Frameworks */,
 				2D9BCED7176D820C0040DDA0 /* ShareSDK.framework in Frameworks */,
+				A7341C7D178EB77C00ADD976 /* libMobClickLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -950,6 +954,7 @@
 			isa = PBXGroup;
 			children = (
 				2D958591176E082E009F5AE4 /* CoreTelephony.framework */,
+				A7341C7F178EB7EC00ADD976 /* libz.dylib */,
 				2D95858F176E07F1009F5AE4 /* libsqlite3.dylib */,
 				2D95858D176E07D8009F5AE4 /* libstdc++.dylib */,
 				2D95858B176E07C7009F5AE4 /* libz.1.2.5.dylib */,
@@ -1066,15 +1071,13 @@
 				2D8DB0B61760EA2D00DB3EF0 /* JDOConvenienceViewModel.m */,
 				2D115D761762CAC30011C0D7 /* JDOCommentModel.h */,
 				2D115D771762CAC30011C0D7 /* JDOCommentModel.m */,
-				2DE931C11772D56B00A87ACC /* JDOWeatherForcast.h */,
-				2DE931C21772D56B00A87ACC /* JDOWeatherForcast.m */,
-				2DE931C41772D57600A87ACC /* JDOWeather.h */,
-				2DE931C51772D57600A87ACC /* JDOWeather.m */,
 				2D953DEE177A8D8700DF166B /* JDOToolbarModel.h */,
 				D8EB1FAC17812C0900932011 /* JDOViolationModel.h */,
 				D8EB1FAD17812C0900932011 /* JDOViolationModel.m */,
 				2D17817A178A3C4100EC88CE /* JDOQuestionModel.h */,
 				2D17817B178A3C4100EC88CE /* JDOQuestionModel.m */,
+				A774BF21178D726100A3B866 /* JDOWeather.h */,
+				A774BF22178D726100A3B866 /* JDOWeather.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1111,6 +1114,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				A7341C7E178EB78100ADD976 /* UMENG */,
 				2D8D702A1783B4B200CA9806 /* StyledPageControl */,
 				2D63161E1782D66F00248FD6 /* HGPageScrollView */,
 				2D953DEF177AAC5700DF166B /* MWPhotoBrowser */,
@@ -1792,6 +1796,15 @@
 			path = Convenience;
 			sourceTree = "<group>";
 		};
+		A7341C7E178EB78100ADD976 /* UMENG */ = {
+			isa = PBXGroup;
+			children = (
+				A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */,
+				A7341C7C178EB77C00ADD976 /* MobClick.h */,
+			);
+			name = UMENG;
+			sourceTree = "<group>";
+		};
 		D8F10184177BB9620024A93A /* SBTableAlert */ = {
 			isa = PBXGroup;
 			children = (
@@ -2179,8 +2192,6 @@
 				2D8D231E1771313F0012D6FD /* JDONavigationController.m in Sources */,
 				2DE931BD1772A86900A87ACC /* JDOLeftMenuCell.m in Sources */,
 				2DE931C01772C17600A87ACC /* JDOXmlClient.m in Sources */,
-				2DE931C31772D56B00A87ACC /* JDOWeatherForcast.m in Sources */,
-				2DE931C61772D57700A87ACC /* JDOWeather.m in Sources */,
 				2D8DA2B21774A55F0021F482 /* JDORightMenuCell.m in Sources */,
 				2D14665017782A13002BC44B /* JDOImageCell.m in Sources */,
 				2DDC4D3E177927A0007CF9E0 /* JDOImageDetailController.m in Sources */,
@@ -2215,6 +2226,7 @@
 				2D9B541717867F1C0027123D /* JDOLivehoodMyQuestion.m in Sources */,
 				2D17817C178A3C4100EC88CE /* JDOQuestionModel.m in Sources */,
 				2D17817F178A3C9300EC88CE /* JDOQuestionCell.m in Sources */,
+				A774BF23178D726100A3B866 /* JDOWeather.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2324,6 +2336,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -2350,6 +2363,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
