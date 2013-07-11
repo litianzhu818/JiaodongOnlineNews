@@ -1814,6 +1814,7 @@
 				A7341C7C178EB77C00ADD976 /* MobClick.h */,
 			);
 			name = UMENG;
+			path = UMeng;
 			sourceTree = "<group>";
 		};
 		D8F10184177BB9620024A93A /* SBTableAlert */ = {
