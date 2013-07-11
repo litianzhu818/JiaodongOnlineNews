@@ -21,13 +21,14 @@
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
     
-    NSString *CarNumString;
-    NSString *CarTypeString;
-    NSString *ChassisNumString;
+    NSMutableString *CarNumString;
+    NSMutableString *CarTypeString;
+    NSMutableString *ChassisNumString;
     
 }
-
-- (void)setCartype:(NSString*) type;
+@property (nonatomic ,strong) NSMutableArray *listArray;
+- (BOOL)checkEmpty;
+- (void)setCartype:(NSString*) type index:(int)index;
 - (IBAction)selectCarType:(id)sender;
 - (IBAction)sendToServer:(id)sender;
 

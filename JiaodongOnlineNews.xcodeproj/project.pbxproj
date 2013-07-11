@@ -335,7 +335,6 @@
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
 		D899316A1785020200F8E1E9 /* JDOBusDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
-		D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FAD17812C0900932011 /* JDOViolationModel.m */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
 		D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */; };
@@ -855,8 +854,6 @@
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
 		D89931681785020200F8E1E9 /* JDOBusDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOBusDetailViewController.h; sourceTree = "<group>"; };
 		D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOBusDetailViewController.m; sourceTree = "<group>"; };
-		D8EB1FAC17812C0900932011 /* JDOViolationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationModel.h; sourceTree = "<group>"; };
-		D8EB1FAD17812C0900932011 /* JDOViolationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationModel.m; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLifeKnowledgeViewController.h; sourceTree = "<group>"; };
@@ -1079,8 +1076,6 @@
 				2DE931C41772D57600A87ACC /* JDOWeather.h */,
 				2DE931C51772D57600A87ACC /* JDOWeather.m */,
 				2D953DEE177A8D8700DF166B /* JDOToolbarModel.h */,
-				D8EB1FAC17812C0900932011 /* JDOViolationModel.h */,
-				D8EB1FAD17812C0900932011 /* JDOViolationModel.m */,
 				2D17817A178A3C4100EC88CE /* JDOQuestionModel.h */,
 				2D17817B178A3C4100EC88CE /* JDOQuestionModel.m */,
 			);
@@ -2217,7 +2212,6 @@
 				2D8CD7371783289B006B0D03 /* JDOTopicModel.m in Sources */,
 				2D8D702D1783B4EE00CA9806 /* StyledPageControl.m in Sources */,
 				D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */,
-				D8EB1FAE17812C0A00932011 /* JDOViolationModel.m in Sources */,
 				D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */,
 				2D97A93E178506EA00CEEE82 /* JDOTopicDetailController.m in Sources */,
 				2D97A9461785113000CEEE82 /* JDOTopicDetailModel.m in Sources */,

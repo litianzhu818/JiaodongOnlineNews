@@ -8,7 +8,6 @@
 
 #import "JDOViolationViewController.h"
 #import "JDOJsonClient.h"
-#import "JDOViolationModel.h"
 #import "JDOSelectCarTypeViewController.h"
 
 @interface JDOViolationViewController ()
@@ -24,15 +23,23 @@
         CarNumString = [[NSString alloc] init];
         CarTypeString = [[NSString alloc] init];
         ChassisNumString = [[NSString alloc] init];
+        CarTypeString = @"01";
     }
     return self;
 }
 
-- (void)setCartype:(NSString *)type
+- (void)setCartype:(NSString *)type index:(int)index
 {
     [CarType setTitle:type forState:UIControlStateNormal];
     [CarType setTitle:type forState:UIControlStateSelected];
-    CarTypeString = type;
+    NSMutableString *tmp = @"0";
+    if (index < 10) {
+        [tmp appendString:[NSString stringWithFormat:@"%d", index]];
+        CarTypeString = tmp;
+    } else {
+        CarTypeString = [NSString stringWithFormat:@"%d", index];
+    }
+        
 }
 
 - (void)viewDidLoad
@@ -70,6 +77,41 @@
     controller.violation = self;
     [self.navigationController pushViewController:controller animated:YES];
     controller = nil;
+}
+
+- (IBAction)sendToServer:(id)sender
+{
+    CarNumString = CarNum.text;
+    ChassisNumString = ChassisNum.text;
+    if (!self.checkEmpty) {
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:CarNumString forKey:@"hphm"];
+        [params setValue:CarTypeString forKey:@"cartype"];
+        [params setValue:ChassisNumString forKey:@"vin"];
+        
+        [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
+                NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"Data"];
+            } else {
+                NSLog(@"wrongParams");
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }
+    
+}
+
+
+- (BOOL)checkEmpty
+{
+    if (CarNumString.length < 7) {
+        return YES;
+    }
+    if (ChassisNumString.length < 4){
+        return YES;
+    }
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning

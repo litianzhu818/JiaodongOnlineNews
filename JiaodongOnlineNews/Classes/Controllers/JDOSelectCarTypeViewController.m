@@ -39,7 +39,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.violation setCartype:[cartypes objectAtIndex:indexPath.row]];
+    [self.violation setCartype:[cartypes objectAtIndex:indexPath.row] index:indexPath.row];
     [self.navigationController popToViewController:self.violation animated:YES];
     self.violation = nil;
 }
