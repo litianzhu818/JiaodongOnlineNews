@@ -161,6 +161,16 @@
                 [self loadFinished];
                 [self dismissHUDOnLoadFinished];
             }
+            if( dataList.count<NewsList_Page_Size ){
+                [self.tableView.infiniteScrollingView setEnabled:false];
+                // 总数量不足第一页时不显示"已加载完成"提示
+                [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+            }else{
+                [self.tableView.infiniteScrollingView setEnabled:true];
+                [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+            }
+        }else {
+#warning 暂时未考虑频道无数据的情况
         }
     } failure:^(NSString *errorStr) {
         [self dismissHUDOnLoadFailed:errorStr];
@@ -234,17 +244,23 @@
     
     // 刷新列表
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
-        if(dataList == nil){
-            // 数据加载完成
-        }else if(dataList.count >0){
+        if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
             newslistFinished = true;
             if(headlineFinished){
                 [self loadFinished];
             }
-            [self.tableView.infiniteScrollingView setEnabled:true];
-            [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+            if( dataList.count<NewsList_Page_Size ){
+                [self.tableView.infiniteScrollingView setEnabled:false];
+                // 总数量不足第一页时不显示"已加载完成"提示
+                [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+            }else{
+                [self.tableView.infiniteScrollingView setEnabled:true];
+                [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+            }
+        }else {
+            // 无数据
         }
     } failure:^(NSString *errorStr) {
         newslistFailed = true;
@@ -350,6 +366,7 @@
                     finishLabel.textAlignment = NSTextAlignmentCenter;
                     finishLabel.text = All_Date_Load_Finished;
                     finishLabel.tag = Finished_Label_Tag;
+                    finishLabel.backgroundColor = [UIColor clearColor];
                     [self.tableView.infiniteScrollingView setEnabled:false];
                     [self.tableView.infiniteScrollingView addSubview:finishLabel];
                 }

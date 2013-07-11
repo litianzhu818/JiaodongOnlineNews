@@ -106,6 +106,9 @@
             iconName = @"review.png";
             if (_theme == ToolBarThemeBlack) {
                 iconHighlightName = @"review_highlight.png";
+            }else if(_theme == ToolBarThemeWhite){
+                // 若不设置高亮图片,默认高亮清晰度有问题
+                iconHighlightName = @"review_clicked.png";
             }
             [btn addTarget:self action:@selector(writeReview) forControlEvents:UIControlEventTouchUpInside];
             break;
@@ -113,6 +116,8 @@
             iconName = @"share.png";
             if (_theme == ToolBarThemeBlack) {
                 iconHighlightName = @"share_highlight.png";
+            }else if(_theme == ToolBarThemeWhite){
+                iconHighlightName = @"share_clicked.png";
             }
             [btn addTarget:self action:@selector(onShare) forControlEvents:UIControlEventTouchUpInside];
             break;
@@ -120,6 +125,8 @@
             iconName = @"font.png";
             if (_theme == ToolBarThemeBlack) {
                 iconHighlightName = @"font_highlight.png";
+            }else if(_theme == ToolBarThemeWhite){
+                iconHighlightName = @"font_clicked.png";
             }
             [btn addTarget:self action:@selector(popupFontPanel:) forControlEvents:UIControlEventTouchUpInside];
             break;
@@ -127,6 +134,8 @@
             iconName = @"collect.png";
             if (_theme == ToolBarThemeBlack) {
                 iconHighlightName = @"collect_highlight.png";
+            }else if(_theme == ToolBarThemeWhite){
+                iconHighlightName = @"collect_clicked.png";
             }
             [btn addTarget:self action:@selector(onCollect:) forControlEvents:UIControlEventTouchUpInside];
             break;
