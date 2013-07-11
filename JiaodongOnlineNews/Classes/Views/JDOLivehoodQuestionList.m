@@ -51,10 +51,11 @@
         self.rootView = rootView;
         self.currentPage = 1;
         self.listArray = [[NSMutableArray alloc] initWithCapacity:QuestionList_Page_Size];
+        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
         
         self.reuseIdentifier = [info valueForKey:@"reuseId"];
         CGRect tableFrame = self.bounds;
-        tableFrame.size.height = tableFrame.size.height-53 /*搜索框高度*/;
+        tableFrame.size.height = tableFrame.size.height-44 /*搜索框实际高度*/;
         self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
@@ -73,12 +74,12 @@
         }];
         
         // 搜索框
-        _fakeSearchField = [[UILabel alloc] initWithFrame:CGRectMake(20,13,200,40)];
+        _fakeSearchField = [[UILabel alloc] initWithFrame:CGRectMake(10+10,16,240-10*2,30)];
         _fakeSearchField.userInteractionEnabled = true;
         _fakeSearchField.backgroundColor = [UIColor clearColor];
         _fakeSearchField.textAlignment = NSTextAlignmentLeft;
-//        _fakeSearchField.textColor = [UIColor colorWithHex:@"808080"];
-        _fakeSearchField.enabled = false;
+        _fakeSearchField.textColor = [UIColor colorWithHex:@"c8c8c8"];
+//        _fakeSearchField.enabled = false;
         _fakeSearchField.text = Search_Placeholder;
         _openInputGesture= [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showSearchPanel)];
         [_fakeSearchField addGestureRecognizer:_openInputGesture];
@@ -97,46 +98,57 @@
 }
 
 - (UIImageView *) buildSearchBar:(UIView *)inputField {
-    CGRect frame = CGRectZero;
+    CGRect frame, backgroundFrame, inputMaskFrame,inputBackgroundFrame, submitBtnFrame;
     SEL searchBtnClicked = nil;
+    NSString *backgroudImageName;
     if([inputField isKindOfClass:[UILabel class]]){
-        frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame), 320, 53);
+        frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame)-(53-44), 320, 53);
+        backgroundFrame = CGRectMake(0, 0, 320, 53);
+        inputMaskFrame = CGRectMake(0, 9, 320, 44);
+        inputBackgroundFrame = CGRectMake(10,9+7,240,30);
+        submitBtnFrame = CGRectMake(320-10-55, (53-44)+(44-30)/2, 55, 30);
         searchBtnClicked = @selector(fakeBtnClicked:);
+        backgroudImageName = @"inputFieldType1";
     }else{  // UITextField
-        frame = CGRectMake(0, App_Height-53, 320, 53);
+        frame = CGRectMake(0, App_Height-44, 320, 44);
+        backgroundFrame = CGRectMake(0, 0, 320, 44);
+        inputMaskFrame = CGRectMake(0, 0, 320, 44);
+        inputBackgroundFrame = CGRectMake(10,7,240,30);
+        submitBtnFrame = CGRectMake(320-10-55, (44-30)/2, 55, 30);
         searchBtnClicked = @selector(sendBtnClicked:);
+        backgroudImageName = @"inputFieldType2";
     }
     UIImageView *searchBar = [[UIImageView alloc] initWithFrame:frame];
 //    searchBar.image = [UIImage imageNamed:@"livehood_search_background"];
     searchBar.userInteractionEnabled = true;
     
-    UIImage *entryBackground = [[UIImage imageNamed:@"MessageEntryInputField.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-    UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-    entryImageView.frame = CGRectMake(10, 13, 220, 40);
-    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    UIImageView *inputMask = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"inputField"]];
+    inputMask.frame = inputMaskFrame;
+    inputMask.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
-    UIImage *background = [[UIImage imageNamed:@"MessageEntryBackground.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
-    imageView.frame = CGRectMake(0, 13, 320, 40);
-    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:backgroudImageName]];
+    background.frame = backgroundFrame;
+    background.autoresizingMask = UIViewAutoresizingFlexibleHeight ;
     
-    [searchBar addSubview:imageView];
+    // 不直接设置UILabel的背景色是因为要给label设置leftPadding,否则文字太贴近左边框
+    UIView *inputBackground = [[UIView alloc] initWithFrame:CGRectInset(inputBackgroundFrame, 1, 1)];
+    inputBackground.backgroundColor = [UIColor whiteColor];
+    
+    [searchBar addSubview:background];
+    [searchBar addSubview:inputBackground];
     [searchBar addSubview:inputField];
-    [searchBar addSubview:entryImageView];
-    
-    UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-    UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+    [searchBar addSubview:inputMask];
     
     UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     submitBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-    submitBtn.frame = CGRectMake(320-10-60, 13+8, 60, 27);
+    submitBtn.frame = submitBtnFrame;
     [submitBtn setTitle:@"搜索" forState:UIControlStateNormal];
     [submitBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
     submitBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
     submitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [submitBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-    [submitBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+    [submitBtn setBackgroundImage:[UIImage imageNamed:@"inputSendButton"] forState:UIControlStateNormal];
+    [submitBtn setBackgroundImage:[UIImage imageNamed:@"inputSendButton"] forState:UIControlStateSelected];
     [submitBtn addTarget:self action:searchBtnClicked forControlEvents:UIControlEventTouchUpInside];
     
     [searchBar addSubview:submitBtn];
@@ -156,7 +168,7 @@
     [SharedAppDelegate deckController].enabled = false;
     
     if( _searchPanel == nil){
-        _searchField = [[UITextField alloc] initWithFrame:CGRectMake(20,23,200,40)];
+        _searchField = [[UITextField alloc] initWithFrame:CGRectMake(10+10,7+4/*使文本居中*/,240-10*2,30)];
         _searchField.backgroundColor = [UIColor clearColor];
         _searchField.placeholder = Search_Placeholder;
         
@@ -183,10 +195,12 @@
     
     // 把_searchField的内容复制到_fakeSearchField
     if(!JDOIsEmptyString(_searchField.text)){
-        _fakeSearchField.enabled = true;
+//        _fakeSearchField.enabled = true;
+        _fakeSearchField.textColor = [UIColor colorWithHex:@"505050"];
         _fakeSearchField.text = _searchField.text;
     }else{
-        _fakeSearchField.enabled = false;
+//        _fakeSearchField.enabled = false;
+        _fakeSearchField.textColor = [UIColor colorWithHex:@"c8c8c8"];
         _fakeSearchField.text = Search_Placeholder;
     }
     // 关闭输入窗口

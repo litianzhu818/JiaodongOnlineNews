@@ -14,6 +14,7 @@
 
 #define Review_Text_Init_Height 44
 #define Review_ShareBar_Height 40
+#define Review_Input_Height 35
 
 #define Review_Left_Margin 10
 #define Review_Right_Margin 10
@@ -38,36 +39,42 @@
     self = [super initWithFrame: [self initialFrame]];
     if (self) {
         self.target = target;
-        self.backgroundColor = [UIColor grayColor];
+        self.backgroundColor = [UIColor colorWithHex:@"f0f0f0"];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
-        _textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(Review_Left_Margin, 4/*背景图片偏移*/, 320-Review_Left_Margin-10-SubmitBtn_Width, Review_Text_Init_Height)];
+        // HPGrowingTextView根据字体的大小有最小高度限制,15号字最少需要35的高度
+        _textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(Review_Left_Margin, (Review_Text_Init_Height-Review_Input_Height)/2.0, 240+5, Review_Input_Height)];
         _textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
         _textView.minNumberOfLines = 1;
-        _textView.maxNumberOfLines = 5;
+        _textView.maxNumberOfLines = 4;
         _textView.font = [UIFont systemFontOfSize:15];
         _textView.delegate = self;
         _textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-        _textView.animateHeightChange = NO; //turns off animation
-        //    _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _textView.backgroundColor = [UIColor clearColor];
+//        _textView.animateHeightChange = NO; //turns off animation
+        _textView.backgroundColor = [UIColor whiteColor];
         
-        //        UIImage *entryBackground = [[UIImage imageNamed:@"MessageEntryInputField.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-        //        UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-        //        entryImageView.frame = CGRectMake(Review_Left_Margin, 0, 320-Review_Left_Margin-10-SubmitBtn_Width, Review_Text_Init_Height);
-        //        entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
+#warning 未测试非retina屏幕是否必须不带2x的图片
+        // 必须有2x的图片!!!!!否则retina下不起作用,即使图片大小满足2x的尺寸也不行
+        UIImage *inputMaskImg = [[UIImage imageNamed:@"inputField"] stretchableImageWithLeftCapWidth:0 topCapHeight:10];
+//        UIImage *inputBorderImg = [[UIImage imageNamed:@"inputField"] resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
+        UIImageView *inputMask = [[UIImageView alloc] initWithImage:inputMaskImg];
         
-        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"inputFieldType2"]];
-        background.frame = CGRectMake(0, 0, 320, Review_Text_Init_Height);
-        background.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        inputMask.frame = CGRectMake(0, 0, 320, Review_Text_Init_Height);
+        inputMask.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
-        [self addSubview:background];
+//        UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"inputFieldType2"]];
+//        background.frame = CGRectMake(0, 0, 320, Review_Text_Init_Height);
+//        background.autoresizingMask = UIViewAutoresizingFlexibleHeight ;
+        
+//        [self addSubview:background];
         [self addSubview:_textView];
+        [self addSubview:inputMask];
         
         UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom] ;
         submitBtn.tag = Review_SubmitBtn_Tag;
         submitBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-        submitBtn.frame = CGRectMake(320-Review_Right_Margin-SubmitBtn_Width, 7, SubmitBtn_Width, 30);
+        submitBtn.frame = CGRectMake(320-Review_Right_Margin-SubmitBtn_Width, (Review_Text_Init_Height-30)/2.0, SubmitBtn_Width, 30);
         [submitBtn addTarget:target action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
         [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
         [submitBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
@@ -78,7 +85,7 @@
         [submitBtn setBackgroundImage:[UIImage imageNamed:@"inputSendButton"] forState:UIControlStateSelected];
         [self addSubview:submitBtn];
         
-        _remainWordNum = [[UILabel alloc] initWithFrame:CGRectMake(320-Review_Right_Margin-SubmitBtn_Width+2, 10, SubmitBtn_Width, 30)];
+        _remainWordNum = [[UILabel alloc] initWithFrame:CGRectMake(320-Review_Right_Margin-SubmitBtn_Width+2, 7, SubmitBtn_Width, 30)];
         _remainWordNum.hidden = true;
         _remainWordNum.backgroundColor =[UIColor clearColor];
         _remainWordNum.numberOfLines = 2;
@@ -98,8 +105,8 @@
 //        _textLabel.contentMode = UIViewContentModeCenter;
 //        [self addSubview:_textLabel];
 //        float tableViewX = _textLabel.frame.origin.x+_textLabel.frame.size.width;
-        
-        _tableView = [[CMHTableView alloc] initWithFrame:CGRectMake(7, Review_Text_Init_Height, 320-14, Review_ShareBar_Height)];
+   
+        _tableView = [[CMHTableView alloc] initWithFrame:CGRectMake(7, Review_Text_Init_Height-7.0/2, 320-14, Review_ShareBar_Height)];
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _tableView.dataSource = self;
@@ -230,6 +237,7 @@
 //- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView;
 
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+#warning 复制粘贴的情况可能超过规定的字数
     if (range.location>=Review_Content_MaxLength)  return  NO;
     return YES;
 }
@@ -247,7 +255,7 @@
     r.origin.y += diff;
 	self.frame = r;
     
-    if(r.size.height > 120){
+    if(r.size.height > 140){
         [_remainWordNum setHidden:false];
     }else{
         [_remainWordNum setHidden:true];
