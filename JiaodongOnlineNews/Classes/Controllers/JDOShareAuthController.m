@@ -12,6 +12,7 @@
 #import <AGCommon/UIColor+Common.h>
 #import "JDOShareViewDelegate.h"
 #import "JDORightViewController.h"
+#import "MBSwitch.h"
 
 #define TARGET_CELL_ID @"targetCell"
 #define BASE_TAG 100
@@ -195,8 +196,11 @@
         cell = [[AGShareCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TARGET_CELL_ID] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        UISwitch *switchCtrl = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [switchCtrl sizeToFit];
+        MBSwitch *switchCtrl = [[MBSwitch alloc] initWithFrame:CGRectMake(0, 0, 53, 31)];
+        [switchCtrl setTintColor:[UIColor grayColor]];
+        [switchCtrl setOnTintColor:[UIColor yellowColor]];
+        [switchCtrl setOffTintColor:[UIColor grayColor]];
+        [switchCtrl setThumbTintColor:[UIColor colorWithRed:0.23f green:0.35f blue:0.60f alpha:1.00f]];
         [switchCtrl addTarget:self action:@selector(authSwitchChangeHandler:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = switchCtrl;
     }

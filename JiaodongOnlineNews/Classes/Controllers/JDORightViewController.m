@@ -11,6 +11,7 @@
 #import "JDOSettingViewController.h"
 #import "JDOFeedbackViewController.h"
 #import "JDOAboutUsViewController.h"
+#import "JDOShareAuthController.h"
 //#import "JDORightMenuCell.h"
 
 #define Menu_Cell_Height 55.0f
@@ -21,6 +22,8 @@
 typedef enum {
     RightMenuItemSetting = 0,
     RightMenuItemCollection,
+    RightMenuItemBind,
+    RightMenuItemRate,
     RightMenuItemfeedback,
     RightMenuItemAbout,
     RightMenuItemCount
@@ -31,6 +34,8 @@ typedef enum {
 @property (nonatomic,strong) JDOSettingViewController *settingContrller;
 @property (nonatomic,strong) JDOFeedbackViewController *feedbackController;
 @property (nonatomic,strong) JDOAboutUsViewController *aboutUsController;
+@property (nonatomic,strong) JDOShareAuthController *shareAuthController;
+
 
 @property (nonatomic,strong) UIView *blackMask;
 @property (nonatomic,strong) NSMutableArray *controllerStack;
@@ -46,10 +51,10 @@ typedef enum {
 - (id)init{
     self = [super init];
     if (self) {
-        iconNames = @[@"menu_setting",@"menu_collect",@"menu_feedback",@"menu_about",@"menu_about",@"menu_about",@"menu_about"];
-        iconSelectedNames = @[@"menu_setting_selected",@"menu_collect_selected",@"menu_feedback_selected",@"menu_about_selected",@"menu_about_selected",@"menu_about_selected",@"menu_about_selected"];
+        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_feedback",@"menu_about"];
+        iconSelectedNames = @[@"menu_setting_selected",@"menu_collect_selected",@"menu_bind",@"menu_rate",@"menu_feedback_selected",@"menu_about_selected"];
 #warning 评价一下,检查更新,分享绑定
-        iconTitles = @[@"设  置",@"我的收藏",@"意见反馈",@"关  于",@"评价一下",@"检查更新",@"分享绑定"];
+        iconTitles = @[@"设  置",@"我的收藏",@"分享绑定",@"评价一下",@"意见反馈",@"关于我们",@"检查更新"];
     }
     return self;
 }
@@ -61,13 +66,27 @@ typedef enum {
     backgroundView.image = [UIImage imageNamed:@"menu_background.png"];
     [self.view addSubview:backgroundView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, Menu_Cell_Height*5) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, Menu_Cell_Height*iconNames.count) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.rowHeight = Menu_Cell_Height;
+    _tableView.scrollEnabled = false;
     [self.view addSubview:_tableView];
+    
+    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Menu_Cell_Height*iconNames.count+1, 320, 1)];
+    separateView.image = [UIImage imageNamed:@"menu_separator.png"];
+    [self.view addSubview:separateView];
+    
+    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width-100, App_Height-25, 90, 15)];
+    versionLabel.font = [UIFont systemFontOfSize:14];
+    // 从info.plist文件中获取版本号
+    versionLabel.text = [NSString stringWithFormat:@"V%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]];
+    versionLabel.textColor = [UIColor whiteColor];
+    versionLabel.textAlignment = NSTextAlignmentRight;
+    versionLabel.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:versionLabel];
     
     _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , App_Height)];
     _blackMask.backgroundColor = [UIColor blackColor];
@@ -148,6 +167,10 @@ typedef enum {
         case RightMenuItemAbout:
             imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-1, 0, Menu_Item_Width, Menu_Cell_Height);
             break;
+        case RightMenuItemBind:
+        case RightMenuItemRate:
+            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-3, 0, Menu_Item_Width, Menu_Cell_Height);
+            break;
         default:
             break;
     }
@@ -189,6 +212,19 @@ typedef enum {
             [self pushViewController:_feedbackController];
             break;
         case RightMenuItemAbout:
+            if( _aboutUsController == nil){
+                _aboutUsController = [[JDOAboutUsViewController alloc] init];
+            }
+            [self pushViewController:_aboutUsController];
+            break;
+        case RightMenuItemBind:
+            if( _shareAuthController == nil){
+                _shareAuthController = [[JDOShareAuthController alloc] init];
+            }
+            [self pushViewController:_shareAuthController];
+            break;
+        case RightMenuItemRate:
+#warning 未实现
             if( _aboutUsController == nil){
                 _aboutUsController = [[JDOAboutUsViewController alloc] init];
             }

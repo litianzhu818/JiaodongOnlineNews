@@ -7,7 +7,7 @@
 //
 
 #import "JDOSettingViewController.h"
-#import "JDOShareAuthController.h"
+//#import "JDOShareAuthController.h"
 #import "JDORightViewController.h"
 
 @interface JDOSettingViewController ()
@@ -60,15 +60,13 @@
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.textLabel.text = @"分享授权";
+    cell.textLabel.text = @"设置项目";
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
         case 0:{
-            JDOShareAuthController *shareAuthController = [[JDOShareAuthController alloc] init];
-            [(JDORightViewController *)self.stackViewController pushViewController:shareAuthController];
             break;
         }
         default:

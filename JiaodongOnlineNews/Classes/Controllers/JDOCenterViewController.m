@@ -173,7 +173,7 @@
     //    NSLog(@"=======%@======",NSStringFromSelector(_cmd));
     //    NSLog(@"gesture:%@",gestureRecognizer);
     //    NSLog(@"other gesture:%@",otherGestureRecognizer);
-    
+#warning 目前只在新闻中心判断了左右滑出菜单的手势冲突,其他栏目尚未设置
     NIPagingScrollView *targetView = [[self class] sharedNewsViewController].scrollView;
     if(otherGestureRecognizer.view != targetView.pagingScrollView){
         #warning 在头条上滑动不起作用，未考虑在头条的最左边一条再向左滑动时应该出左菜单的情况。也未考虑在话题中最左边向左滑动的情况，因为话题向右滑动加载新内容，不处理也可以
