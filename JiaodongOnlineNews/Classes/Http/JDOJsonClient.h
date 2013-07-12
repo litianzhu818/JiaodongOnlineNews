@@ -12,6 +12,8 @@
 
 + (JDOJsonClient *)sharedClient;
 
++ (JDOJsonClient *)sharedTestClient;
+
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
 @end

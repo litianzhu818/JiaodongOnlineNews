@@ -9,8 +9,8 @@
 #import "JDOLivehoodDeptList.h"
 #import "JDOLivehoodViewController.h"
 
-#define Section_Height 43.0f
-#define Line_Height 43.0f
+#define Section_Height 35.0f
+#define Line_Height 35.0f
 #define Section_Label_Tag 111
 #define Section_Normal_Color [UIColor colorWithHex:@"505050"]
 #define Section_Highlight_Color [UIColor whiteColor]
@@ -66,12 +66,12 @@
             NSMutableArray *contentArray = [[NSMutableArray alloc] init];
             [_sectionContentArray addObject:contentArray];
             
-            UIImageView *headerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+            UIImageView *headerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, Section_Height)];
             headerView.userInteractionEnabled = true;
             headerView.image = [UIImage imageNamed:@"livehood_content_background"];
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickSection:)];
             [headerView addGestureRecognizer:tapGesture];
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 44)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, Section_Height)];
             label.textColor = Section_Normal_Color;
             label.shadowColor = Shadow_Normal_Color;
             label.shadowOffset = CGSizeMake(0, 1);
@@ -105,7 +105,8 @@
         
         if(_currentSection == 0){ // 全部部门
             // 转到相关问题
-            _selectedSection = _currentSection;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDeptChangedNotification object:nil userInfo:@{@"dept_code":@"ALL"}];
+            [self.livehoodController.scrollView moveToNextAnimated:true];
         }else{
             [self loadSection];
         }

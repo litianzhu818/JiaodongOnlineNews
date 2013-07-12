@@ -20,6 +20,8 @@
         [dictObj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if([model respondsToSelector:NSSelectorFromString(key)]){
                 [model setValue:obj forKey:key];
+            }else{
+//                NSLog(@"返回结果中有%@属性,但model中未定义",key);
             }
         }];
         [modelArray addObject:model];

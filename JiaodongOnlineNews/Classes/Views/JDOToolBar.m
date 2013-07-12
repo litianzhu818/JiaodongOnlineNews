@@ -17,7 +17,8 @@
 #import "JDOImageModel.h"
 #import "MBProgressHUD.h"
 
-#define Toolbar_Btn_Size 47
+#define Toolbar_Control_Default_Width 47
+#define Toolbar_Control_Default_Height 47
 #define Toolbar_Height   44
 
 #define Font_Selected_Color [UIColor blueColor]
@@ -45,12 +46,14 @@
     NSTimeInterval timeInterval;
 }
 
-- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView config:(NSArray *)btnConfig frame:(CGRect) frame theme:(ToolBarTheme)theme{
+// widthConfig中保存NSDictionary,包括"controlWidth","frameWidth","controlHeight"
+- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme{
     self = [super initWithFrame:frame];
     if (self) {
         self.model = model;
         self.parentView = parentView;
-        self.btnConfig = btnConfig;
+        self.typeConfig = typeConfig;
+        self.widthConfig = widthConfig;
         self.theme = theme;
         self.frameHeight = frame.size.height;
 #warning 查询该新闻是否被收藏
@@ -68,7 +71,8 @@
     [self setCollectPopTipView:nil];
     [self setParentView:nil];
     [self setModel:nil];
-    [self setBtnConfig:nil];
+    [self setTypeConfig:nil];
+    [self setWidthConfig:nil];
     [self setBridge:nil];
     [self setShareViewController:nil];
 }
@@ -84,11 +88,25 @@
     }
     [self addSubview:toolBackground];
     
-    for(int i =0;i<_btnConfig.count;i++ ){
-        float perBtnWidth = 320.0/_btnConfig.count;
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*perBtnWidth+(perBtnWidth-Toolbar_Btn_Size)/2, _frameHeight-Toolbar_Height + (Toolbar_Height-Toolbar_Btn_Size)/2.0, Toolbar_Btn_Size, Toolbar_Btn_Size)];
-        ToolBarButtonType btnType = [(NSNumber *)[_btnConfig objectAtIndex:i] intValue];
-        if( btnType == ToolBarButtonCollect && self.isCollected){
+    float xPosition = 0;
+    for(int i =0;i<_typeConfig.count;i++ ){
+        float frameWidth = 0, controlWidth = 0, controlHeight = 0;
+        if(_widthConfig == nil){
+            frameWidth = 320.0/_typeConfig.count;
+            controlWidth = Toolbar_Control_Default_Width;
+            controlHeight = Toolbar_Control_Default_Height;
+        }else{
+            frameWidth = [[[_widthConfig objectAtIndex:i] objectForKey:@"frameWidth"] floatValue];
+            controlWidth = [[[_widthConfig objectAtIndex:i] objectForKey:@"controlWidth"] floatValue];
+            controlHeight = [[[_widthConfig objectAtIndex:i] objectForKey:@"controlHeight"] floatValue];
+        }
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(xPosition+(frameWidth-controlWidth)/2, _frameHeight-Toolbar_Height + (Toolbar_Height-controlHeight)/2.0, controlWidth, controlHeight)];
+        xPosition += frameWidth;
+        
+        ToolBarControlType btnType = [(NSNumber *)[_typeConfig objectAtIndex:i] intValue];
+        if( btnType == ToolBarInputField ){
+            // 工具栏包含输入框的情况,暂时未做添加,遇到后在添加
+        }else if( btnType == ToolBarButtonCollect && self.isCollected){
 #warning 替换收藏过的图片
             [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
         }else{
@@ -98,7 +116,7 @@
     }
 }
 
-- (void) configButton:(UIButton *)btn withType:(ToolBarButtonType)btnType{
+- (void) configButton:(UIButton *)btn withType:(ToolBarControlType)btnType{
     NSString *iconName ;
     NSString *iconHighlightName ;
     switch (btnType) {
@@ -145,6 +163,8 @@
                 iconHighlightName = @"download_highlight.png";
             }
             [btn addTarget:self action:@selector(onDownload:) forControlEvents:UIControlEventTouchUpInside];
+            break;
+        default:
             break;
     }
     [btn setBackgroundImage:[UIImage imageNamed:iconName] forState:UIControlStateNormal];

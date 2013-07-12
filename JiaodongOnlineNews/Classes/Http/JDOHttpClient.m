@@ -19,6 +19,15 @@
     return _sharedClient;
 }
 
++ (JDOHttpClient *)sharedTestClient {
+    static JDOHttpClient *_sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedClient = [[JDOHttpClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_URL_TEST]];
+    });
+    return _sharedClient;
+}
+
 - (id)initWithBaseURL:(NSURL *)url {
     if (self = [super initWithBaseURL:url]) {
         [self registerHTTPOperationClass:[AFHTTPRequestOperation class]];

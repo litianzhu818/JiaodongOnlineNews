@@ -11,7 +11,7 @@
 		2D01E67D1748D82E00B81568 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D01E67C1748D82E00B81568 /* Reachability.m */; };
 		2D01E67F1748D84E00B81568 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D01E67E1748D84E00B81568 /* SystemConfiguration.framework */; };
 		2D01E6811748DB2F00B81568 /* default_adv.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2D01E6801748DB2F00B81568 /* default_adv.jpg */; };
-		2D044641178E301200571548 /* JDOLivehoodDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D044640178E301100571548 /* JDOLivehoodDetailController.m */; };
+		2D044641178E301200571548 /* JDOQuestionDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D044640178E301100571548 /* JDOQuestionDetailController.m */; };
 		2D044645178E34A300571548 /* inputField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D044642178E34A300571548 /* inputField@2x.png */; };
 		2D044646178E34A300571548 /* inputFieldType2Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D044643178E34A300571548 /* inputFieldType2Background.png */; };
 		2D044647178E34A300571548 /* inputFieldType1Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D044644178E34A300571548 /* inputFieldType1Background.png */; };
@@ -25,6 +25,8 @@
 		2D080CE2173CE4D9005653A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE1173CE4D9005653A7 /* main.m */; };
 		2D080CE6173CE4D9005653A7 /* JDOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */; };
 		2D080CEF173CE4D9005653A7 /* JDONewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */; };
+		2D0D6162178FAA5A00934CCD /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0D6161178FAA5A00934CCD /* CoreText.framework */; };
+		2D0D6166178FE28900934CCD /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0D6165178FE28900934CCD /* FXLabel.m */; };
 		2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D771762CAC30011C0D7 /* JDOCommentModel.m */; };
 		2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D7A1762F30A0011C0D7 /* JDOStatusView.m */; };
 		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
@@ -274,6 +276,10 @@
 		2D9D8F2A17791ADE00CF9C3B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9D8F2917791ADE00CF9C3B /* Default.png */; };
 		2D9FDC0A175D6B37003EAF78 /* JDOHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC09175D6B37003EAF78 /* JDOHttpClient.m */; };
 		2D9FDC0E175D7922003EAF78 /* JDOJsonClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */; };
+		2DA3C4C5178E9B2F009817A6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */; };
+		2DA3C4C8178EA56D009817A6 /* JDOQuestionDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */; };
+		2DA3C4CA178EB481009817A6 /* full_separator_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA3C4C9178EB481009817A6 /* full_separator_line.png */; };
+		2DA3C4D0178EC0A6009817A6 /* InsetsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */; };
 		2DC1D2C6177D8ED600D31184 /* news_content_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2C4177D8ED600D31184 /* news_content_background.png */; };
 		2DC1D2C7177D8ED600D31184 /* news_content_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2C5177D8ED600D31184 /* news_content_background_selected.png */; };
 		2DC1D2C9177D920400D31184 /* top_navigation_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2C8177D920400D31184 /* top_navigation_background.png */; };
@@ -330,7 +336,6 @@
 		2DE932061772E3E500A87ACC /* 中雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E61772E3E500A87ACC /* 中雪.png */; };
 		2DE932071772E3E500A87ACC /* 中雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E71772E3E500A87ACC /* 中雨.png */; };
 		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
-		A7341C7D178EB77C00ADD976 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */; };
 		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
 		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
@@ -369,8 +374,8 @@
 		2D01E67C1748D82E00B81568 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		2D01E67E1748D84E00B81568 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2D01E6801748DB2F00B81568 /* default_adv.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = default_adv.jpg; sourceTree = "<group>"; };
-		2D04463F178E301100571548 /* JDOLivehoodDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLivehoodDetailController.h; sourceTree = "<group>"; };
-		2D044640178E301100571548 /* JDOLivehoodDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLivehoodDetailController.m; sourceTree = "<group>"; };
+		2D04463F178E301100571548 /* JDOQuestionDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOQuestionDetailController.h; sourceTree = "<group>"; };
+		2D044640178E301100571548 /* JDOQuestionDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOQuestionDetailController.m; sourceTree = "<group>"; };
 		2D044642178E34A300571548 /* inputField@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inputField@2x.png"; sourceTree = "<group>"; };
 		2D044643178E34A300571548 /* inputFieldType2Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inputFieldType2Background.png; sourceTree = "<group>"; };
 		2D044644178E34A300571548 /* inputFieldType1Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inputFieldType1Background.png; sourceTree = "<group>"; };
@@ -389,6 +394,9 @@
 		2D080CE5173CE4D9005653A7 /* JDOAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDOAppDelegate.m; sourceTree = "<group>"; };
 		2D080CED173CE4D9005653A7 /* JDONewsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JDONewsViewController.h; sourceTree = "<group>"; };
 		2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JDONewsViewController.m; sourceTree = "<group>"; };
+		2D0D6161178FAA5A00934CCD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		2D0D6164178FE28900934CCD /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXLabel.h; sourceTree = "<group>"; };
+		2D0D6165178FE28900934CCD /* FXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXLabel.m; sourceTree = "<group>"; };
 		2D115D761762CAC30011C0D7 /* JDOCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCommentModel.h; sourceTree = "<group>"; };
 		2D115D771762CAC30011C0D7 /* JDOCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCommentModel.m; sourceTree = "<group>"; };
 		2D115D791762F30A0011C0D7 /* JDOStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOStatusView.h; sourceTree = "<group>"; };
@@ -782,6 +790,11 @@
 		2D9FDC0C175D7922003EAF78 /* JDOJsonClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOJsonClient.h; sourceTree = "<group>"; };
 		2D9FDC0D175D7922003EAF78 /* JDOJsonClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOJsonClient.m; sourceTree = "<group>"; };
 		2D9FDC0F175D7980003EAF78 /* JDOWebClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWebClient.h; sourceTree = "<group>"; };
+		2DA3C4C6178EA56D009817A6 /* JDOQuestionDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOQuestionDetailModel.h; sourceTree = "<group>"; };
+		2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOQuestionDetailModel.m; sourceTree = "<group>"; };
+		2DA3C4C9178EB481009817A6 /* full_separator_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = full_separator_line.png; sourceTree = "<group>"; };
+		2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
+		2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetsTextField.m; sourceTree = "<group>"; };
 		2DC1D2C4177D8ED600D31184 /* news_content_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_content_background.png; sourceTree = "<group>"; };
 		2DC1D2C5177D8ED600D31184 /* news_content_background_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_content_background_selected.png; sourceTree = "<group>"; };
 		2DC1D2C8177D920400D31184 /* top_navigation_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_navigation_background.png; sourceTree = "<group>"; };
@@ -884,6 +897,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D0D6162178FAA5A00934CCD /* CoreText.framework in Frameworks */,
+				2DA3C4C5178E9B2F009817A6 /* libMobClickLibrary.a in Frameworks */,
 				A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */,
 				2D958592176E082E009F5AE4 /* CoreTelephony.framework in Frameworks */,
 				2D958590176E07F1009F5AE4 /* libsqlite3.dylib in Frameworks */,
@@ -912,7 +927,6 @@
 				2D9BCED1176D820B0040DDA0 /* TencentOpenAPI.framework in Frameworks */,
 				2D9BCED5176D820C0040DDA0 /* libWeiboSDK.a in Frameworks */,
 				2D9BCED7176D820C0040DDA0 /* ShareSDK.framework in Frameworks */,
-				A7341C7D178EB77C00ADD976 /* libMobClickLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -932,6 +946,8 @@
 				2D86D5A1175875630000AA6A /* NSArray+Model.m */,
 				2D1DDB59175E2BBC0048F7A7 /* NSDictionary+Model.h */,
 				2D1DDB5A175E2BBC0048F7A7 /* NSDictionary+Model.m */,
+				2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */,
+				2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -960,6 +976,7 @@
 		2D080CD4173CE4D9005653A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2D0D6161178FAA5A00934CCD /* CoreText.framework */,
 				2D958591176E082E009F5AE4 /* CoreTelephony.framework */,
 				A7341C7F178EB7EC00ADD976 /* libz.dylib */,
 				2D95858F176E07F1009F5AE4 /* libsqlite3.dylib */,
@@ -990,6 +1007,15 @@
 			);
 			name = Classes;
 			path = JiaodongOnlineNews/Classes;
+			sourceTree = "<group>";
+		};
+		2D0D6163178FE06C00934CCD /* FXLabel */ = {
+			isa = PBXGroup;
+			children = (
+				2D0D6164178FE28900934CCD /* FXLabel.h */,
+				2D0D6165178FE28900934CCD /* FXLabel.m */,
+			);
+			path = FXLabel;
 			sourceTree = "<group>";
 		};
 		2D141462176324E700A6A50A /* UniqueIdentifier */ = {
@@ -1083,6 +1109,8 @@
 				D8EB1FAD17812C0900932011 /* JDOViolationModel.m */,
 				2D17817A178A3C4100EC88CE /* JDOQuestionModel.h */,
 				2D17817B178A3C4100EC88CE /* JDOQuestionModel.m */,
+				2DA3C4C6178EA56D009817A6 /* JDOQuestionDetailModel.h */,
+				2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */,
 				A774BF21178D726100A3B866 /* JDOWeather.h */,
 				A774BF22178D726100A3B866 /* JDOWeather.m */,
 			);
@@ -1121,7 +1149,8 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
-				A7341C7E178EB78100ADD976 /* UMENG */,
+				2D0D6163178FE06C00934CCD /* FXLabel */,
+				A7341C7E178EB78100ADD976 /* UMeng */,
 				2D8D702A1783B4B200CA9806 /* StyledPageControl */,
 				2D63161E1782D66F00248FD6 /* HGPageScrollView */,
 				2D953DEF177AAC5700DF166B /* MWPhotoBrowser */,
@@ -1398,6 +1427,7 @@
 				2D8AABAF177203410049E730 /* Menu */,
 				2D98C8DB177017C900061E2E /* Share */,
 				2D58AE19176EDB46003B843F /* icon50*50.png */,
+				2DA3C4C9178EB481009817A6 /* full_separator_line.png */,
 				2DC1D2CA177DA02000D31184 /* icon.png */,
 				2D971DE01776A2E10013C229 /* 37x-Checkmark@2x.png */,
 				2D9D8F2917791ADE00CF9C3B /* Default.png */,
@@ -1682,8 +1712,8 @@
 				2D97A93D178506EA00CEEE82 /* JDOTopicDetailController.m */,
 				2D9B54051786448F0027123D /* JDOLivehoodViewController.h */,
 				2D9B54061786448F0027123D /* JDOLivehoodViewController.m */,
-				2D04463F178E301100571548 /* JDOLivehoodDetailController.h */,
-				2D044640178E301100571548 /* JDOLivehoodDetailController.m */,
+				2D04463F178E301100571548 /* JDOQuestionDetailController.h */,
+				2D044640178E301100571548 /* JDOQuestionDetailController.m */,
 				2D19CFE3174A3F8700BDAE39 /* JDOLeftViewController.h */,
 				2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */,
 				2D19CFE6174A3F8700BDAE39 /* JDORightViewController.h */,
@@ -1807,13 +1837,12 @@
 			path = Convenience;
 			sourceTree = "<group>";
 		};
-		A7341C7E178EB78100ADD976 /* UMENG */ = {
+		A7341C7E178EB78100ADD976 /* UMeng */ = {
 			isa = PBXGroup;
 			children = (
 				A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */,
 				A7341C7C178EB77C00ADD976 /* MobClick.h */,
 			);
-			name = UMENG;
 			path = UMeng;
 			sourceTree = "<group>";
 		};
@@ -2053,6 +2082,7 @@
 				2D04464D178E504900571548 /* review_clicked.png in Resources */,
 				2D04464E178E504900571548 /* collect_clicked.png in Resources */,
 				2D04464F178E504900571548 /* font_clicked.png in Resources */,
+				2DA3C4CA178EB481009817A6 /* full_separator_line.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2241,7 +2271,10 @@
 				2D17817C178A3C4100EC88CE /* JDOQuestionModel.m in Sources */,
 				2D17817F178A3C9300EC88CE /* JDOQuestionCell.m in Sources */,
 				A774BF23178D726100A3B866 /* JDOWeather.m in Sources */,
-				2D044641178E301200571548 /* JDOLivehoodDetailController.m in Sources */,
+				2D044641178E301200571548 /* JDOQuestionDetailController.m in Sources */,
+				2DA3C4C8178EA56D009817A6 /* JDOQuestionDetailModel.m in Sources */,
+				2DA3C4D0178EC0A6009817A6 /* InsetsTextField.m in Sources */,
+				2D0D6166178FE28900934CCD /* FXLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2352,6 +2385,7 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -2379,6 +2413,7 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

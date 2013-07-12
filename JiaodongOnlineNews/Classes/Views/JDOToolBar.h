@@ -15,8 +15,9 @@ typedef enum {
     ToolBarButtonShare,
     ToolBarButtonFont,
     ToolBarButtonCollect,
-    ToolBarButtonDownload
-}ToolBarButtonType;
+    ToolBarButtonDownload,
+    ToolBarInputField
+}ToolBarControlType;
 
 typedef enum {
     ToolBarThemeWhite,
@@ -56,7 +57,8 @@ typedef enum {
 
 @property (strong,nonatomic) id<JDOToolbarModel> model;
 @property (strong,nonatomic) UIView *parentView;
-@property (strong,nonatomic) NSArray *btnConfig;
+@property (strong,nonatomic) NSArray *typeConfig;
+@property (strong,nonatomic) NSArray *widthConfig;
 @property (assign, nonatomic,getter = isCollected) BOOL collected;
 @property (assign, nonatomic) CGFloat frameHeight;
 @property (assign, nonatomic) ToolBarTheme theme;
@@ -65,7 +67,7 @@ typedef enum {
 @property (strong,nonatomic) id<JDODownloadTargetDelegate> downloadTarget;
 
 
-- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView config:(NSArray *)btnConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
+- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
 
 @end
 

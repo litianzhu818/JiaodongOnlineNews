@@ -20,7 +20,7 @@
 
 @property (nonatomic,strong) UILabel *codeLabel;
 @property (nonatomic,strong) UILabel *replyLabel;
-@property (nonatomic,strong) SSLineView *separatorLine;
+@property (nonatomic,strong) UIImageView *separatorLine;
 
 @end
 
@@ -54,9 +54,8 @@
         self.replyLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.replyLabel];
         
-        self.separatorLine = [[SSLineView alloc] initWithFrame:CGRectZero];
-        self.separatorLine.lineColor = [UIColor colorWithHex:@"d3d3d3"];
-        self.separatorLine.insetColor = [UIColor colorWithHex:@"f0f0f0"];
+        self.separatorLine = [[UIImageView alloc] initWithFrame:CGRectZero];
+        self.separatorLine.image = [UIImage imageNamed:@"full_separator_line"];
         [self.contentView addSubview:self.separatorLine];
         
     }
@@ -86,9 +85,9 @@
         self.separatorLine.hidden = true;
     }else{
         self.textLabel.textColor = [UIColor colorWithHex:@"1673ba"];
-        self.textLabel.text = [NSString stringWithFormat:@"处理部门:%@", questionModel.department];
+        self.textLabel.text = [NSString stringWithFormat:@"处理部门：%@", questionModel.department];
         self.detailTextLabel.text = questionModel.title;
-        self.codeLabel.text = [NSString stringWithFormat:@"编号:[%@]",questionModel.id];
+        self.codeLabel.text = [NSString stringWithFormat:@"编号：[%@]",questionModel.id];
         if([(NSNumber *)questionModel.reply boolValue]){
             self.replyLabel.text = @"已回复";
             self.replyLabel.textColor = [UIColor colorWithHex:@"dd141c"];

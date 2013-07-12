@@ -10,8 +10,10 @@
 #import "JDOQuestionModel.h"
 #import "JDOQuestionCell.h"
 #import "SVPullToRefresh.h"
-//#import "JDOQuestionDetailController.h"
+#import "JDOQuestionDetailController.h"
 #import "JDOCenterViewController.h"
+#import "FXLabel.h"
+#import "InsetsTextField.h"
 
 #define QuestionList_Page_Size 20
 #define Finished_Label_Tag 111
@@ -23,9 +25,9 @@
 @property (nonatomic,assign) int currentPage;
 @property (nonatomic,strong) NSString *deptCode;
 @property (nonatomic,strong) UIImageView *searchBar;
-@property (nonatomic,strong) UITextField *searchField;
+@property (nonatomic,strong) InsetsTextField *searchField;
 @property (nonatomic,strong) UIView *maskView;
-@property (nonatomic,strong) UILabel *fakeSearchField;
+@property (nonatomic,strong) FXLabel *fakeSearchField;
 
 @property (strong, nonatomic) UIImageView *searchPanel;
 @property (strong, nonatomic) UITapGestureRecognizer *closeInputGesture;
@@ -74,9 +76,10 @@
         }];
         
         // 搜索框
-        _fakeSearchField = [[UILabel alloc] initWithFrame:CGRectMake(10+10,16,240-10*2,30)];
+        _fakeSearchField = [[FXLabel alloc] initWithFrame:CGRectMake(10,9+7,240,30)];
+        _fakeSearchField.textInsets = UIEdgeInsetsMake(0, 5, 0, 5);
         _fakeSearchField.userInteractionEnabled = true;
-        _fakeSearchField.backgroundColor = [UIColor clearColor];
+        _fakeSearchField.backgroundColor = [UIColor whiteColor];
         _fakeSearchField.textAlignment = NSTextAlignmentLeft;
         _fakeSearchField.textColor = [UIColor colorWithHex:@"c8c8c8"];
 //        _fakeSearchField.enabled = false;
@@ -98,14 +101,13 @@
 }
 
 - (UIImageView *) buildSearchBar:(UIView *)inputField {
-    CGRect frame, backgroundFrame, inputMaskFrame,inputBackgroundFrame, submitBtnFrame;
+    CGRect frame, backgroundFrame, inputMaskFrame, submitBtnFrame;
     SEL searchBtnClicked = nil;
     NSString *backgroudImageName;
     if([inputField isKindOfClass:[UILabel class]]){
         frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame)-(53-44), 320, 53);
         backgroundFrame = CGRectMake(0, 0, 320, 53);
         inputMaskFrame = CGRectMake(0, 9, 320, 44);
-        inputBackgroundFrame = CGRectMake(10,9+7,240,30);
         submitBtnFrame = CGRectMake(320-10-55, (53-44)+(44-30)/2, 55, 30);
         searchBtnClicked = @selector(fakeBtnClicked:);
         backgroudImageName = @"inputFieldType1";
@@ -113,7 +115,6 @@
         frame = CGRectMake(0, App_Height-44, 320, 44);
         backgroundFrame = CGRectMake(0, 0, 320, 44);
         inputMaskFrame = CGRectMake(0, 0, 320, 44);
-        inputBackgroundFrame = CGRectMake(10,7,240,30);
         submitBtnFrame = CGRectMake(320-10-55, (44-30)/2, 55, 30);
         searchBtnClicked = @selector(sendBtnClicked:);
         backgroudImageName = @"inputFieldType2";
@@ -130,12 +131,7 @@
     background.frame = backgroundFrame;
     background.autoresizingMask = UIViewAutoresizingFlexibleHeight ;
     
-    // 不直接设置UILabel的背景色是因为要给label设置leftPadding,否则文字太贴近左边框
-    UIView *inputBackground = [[UIView alloc] initWithFrame:CGRectInset(inputBackgroundFrame, 1, 1)];
-    inputBackground.backgroundColor = [UIColor whiteColor];
-    
     [searchBar addSubview:background];
-    [searchBar addSubview:inputBackground];
     [searchBar addSubview:inputField];
     [searchBar addSubview:inputMask];
     
@@ -168,8 +164,8 @@
     [SharedAppDelegate deckController].enabled = false;
     
     if( _searchPanel == nil){
-        _searchField = [[UITextField alloc] initWithFrame:CGRectMake(10+10,7+4/*使文本居中*/,240-10*2,30)];
-        _searchField.backgroundColor = [UIColor clearColor];
+        _searchField = [[InsetsTextField alloc] initWithFrame:CGRectMake(10,7,240,30)];
+        _searchField.backgroundColor = [UIColor whiteColor];
         _searchField.placeholder = Search_Placeholder;
         
         _searchPanel = [self buildSearchBar:_searchField];
@@ -294,7 +290,7 @@
 - (NSDictionary *) listParam{
     NSMutableDictionary *listParam = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithInt:self.currentPage],@"p",@QuestionList_Page_Size,@"pageSize",nil];
     
-    if (!JDOIsEmptyString(self.deptCode)){
+    if (!JDOIsEmptyString(self.deptCode) && ![self.deptCode isEqualToString:@"ALL"]){
         [listParam setObject:self.deptCode forKey:@"dept_code"];
     }
     
@@ -307,7 +303,8 @@
 - (void)loadDataFromNetwork{
     [self setCurrentState:ViewStatusLoading];
 
-    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
+#warning 查询功能目前只在Test下可用
+    [[JDOHttpClient sharedTestClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
 //        if(dataList != nil && dataList.count >0){
             [self setCurrentState:ViewStatusNormal];
             [self dataLoadFinished:dataList];
@@ -388,7 +385,7 @@
                 }else{
                     UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.infiniteScrollingView.bounds.size.width, self.tableView.infiniteScrollingView.bounds.size.height)];
                     finishLabel.textAlignment = NSTextAlignmentCenter;
-                    finishLabel.text = All_Date_Load_Finished;
+                    finishLabel.text = All_Data_Load_Finished;
                     finishLabel.tag = Finished_Label_Tag;
                     finishLabel.backgroundColor = [UIColor clearColor];
                     [self.tableView.infiniteScrollingView setEnabled:false];
@@ -442,10 +439,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
-//    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-//    [centerController pushViewController:detailController animated:true];
-//    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    JDOQuestionDetailController *detailController = [[JDOQuestionDetailController alloc] initWithQuestionModel:[self.listArray objectAtIndex:indexPath.row]];
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+    [centerController pushViewController:detailController animated:true];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
 @end

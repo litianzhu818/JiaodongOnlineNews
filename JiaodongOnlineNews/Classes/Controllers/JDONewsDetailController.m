@@ -54,7 +54,7 @@
     self.webView.scalesPageToFit = true;
     [self.view addSubview:_webView];
     
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentView:self.view config:toolbarBtnConfig frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentView:self.view typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
     [self.view addSubview:_toolbar];
     
     // WebView加载mask
