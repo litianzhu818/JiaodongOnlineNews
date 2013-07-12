@@ -91,8 +91,14 @@
         if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
             // 新闻不存在
         }else if([responseObject isKindOfClass:[NSDictionary class]]){
+            NSMutableDictionary *response = [[NSMutableDictionary alloc] initWithDictionary:responseObject];
+            if (self.deletetitle) {
+                [response removeObjectForKey:@"title"];
+                [response removeObjectForKey:@"source"];
+                [response removeObjectForKey:@"addtime"];
+            }
             //            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
-            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
+            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:response];
             NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
             [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
             //            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://tieba.baidu.com"]]];

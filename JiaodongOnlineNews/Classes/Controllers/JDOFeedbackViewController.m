@@ -8,7 +8,6 @@
 
 #import "JDOFeedbackViewController.h"
 #import "JDOHttpClient.h"
-#import "TPKeyboardAvoidingScrollView.h"
 #import "JDORightViewController.h"
 
 @interface JDOFeedbackViewController ()
@@ -89,9 +88,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    TPKeyboardAvoidingScrollView *tp = self.view;
-    [tp setScrollEnabled:NO];
-    tp = nil;
+    [tpkey setScrollEnabled:NO];
 }
 
 - (void)setupNavigationView{

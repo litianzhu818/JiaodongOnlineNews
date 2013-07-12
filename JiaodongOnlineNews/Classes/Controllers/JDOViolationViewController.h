@@ -7,26 +7,28 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SBTableAlert.h"
 #import "M13Checkbox.h"
+#import "TPKeyboardAvoidingScrollView.h"
 
-@interface JDOViolationViewController : JDONavigationController <SBTableAlertDelegate, SBTableAlertDataSource>
+@interface JDOViolationViewController : JDONavigationController
 {
     IBOutlet UITextField *CarNum;
     IBOutlet UIButton *CarType;
     IBOutlet UITextField *ChassisNum;
     IBOutlet UILabel *result;
-    IBOutlet M13Checkbox *checkBox1;
-    IBOutlet M13Checkbox *checkBox2;
+    IBOutlet TPKeyboardAvoidingScrollView *tp;
     
-    NSString *CarNumString;
-    NSString *CarTypeString;
-    NSString *ChassisNumString;
+    M13Checkbox *checkBox1;
+    M13Checkbox *checkBox2;
     
-    NSArray *Types;
+    NSMutableString *CarNumString;
+    NSMutableString *CarTypeString;
+    NSMutableString *ChassisNumString;
+    
 }
-
-@property (nonatomic, strong)SBTableAlert *alert;
+@property (nonatomic ,strong) NSMutableArray *listArray;
+- (BOOL)checkEmpty;
+- (void)setCartype:(NSString*) type index:(int)index;
 - (IBAction)selectCarType:(id)sender;
 - (IBAction)sendToServer:(id)sender;
 

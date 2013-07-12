@@ -7,9 +7,8 @@
 //
 
 #import "JDOViolationViewController.h"
-#import "TPKeyboardAvoidingScrollView.h"
 #import "JDOJsonClient.h"
-#import "JDOViolationModel.h"
+#import "JDOSelectCarTypeViewController.h"
 
 @interface JDOViolationViewController ()
 
@@ -21,30 +20,43 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        Types = @[@"大型汽车",@"小型汽车",@"使馆汽车",@"领馆汽车",@"境外汽车",@"外籍汽车",@"两、三轮摩托车",@"轻便摩托车",@"使馆摩托车",@"领馆摩托车",@"境外摩托车",@"外籍摩托车",@"农用运输车",@"拖拉机",@"挂车",@"教练汽车",@"教练摩托车",@"实验汽车",@"实验摩托车",@"临时入境汽车",@"临时入境摩托车",@"临时行驶车",@"公安警车",@"公安警车",@"其他"];
         CarNumString = [[NSString alloc] init];
         CarTypeString = [[NSString alloc] init];
         ChassisNumString = [[NSString alloc] init];
+        CarTypeString = @"02";
     }
     return self;
 }
 
+- (void)setCartype:(NSString *)type index:(int)index
+{
+    [CarType setTitle:type forState:UIControlStateNormal];
+    [CarType setTitle:type forState:UIControlStateSelected];
+    NSMutableString *tmp = @"0";
+    if (index < 10) {
+        [tmp appendString:[NSString stringWithFormat:@"%d", index]];
+        CarTypeString = tmp;
+    } else {
+        CarTypeString = [NSString stringWithFormat:@"%d", index];
+    }
+        
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
-    checkBox1.frame = CGRectMake(self.view.frame.size.width * 0.06, 190, checkBox1.frame.size.width, checkBox1.frame.size.height);
-    [self.view addSubview:checkBox1];
+    [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
+    checkBox1.frame = CGRectMake(tp.frame.size.width * 0.07, 148, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    [tp addSubview:checkBox1];
     
     checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:22];
-    checkBox2.frame = CGRectMake(self.view.frame.size.width * 0.48, 190, checkBox2.frame.size.width, checkBox2.frame.size.height);
-    [self.view addSubview:checkBox2];
+    [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
+    checkBox2.frame = CGRectMake(tp.frame.size.width * 0.52, 148, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    [tp addSubview:checkBox2];
     
-    TPKeyboardAvoidingScrollView *tp = self.view;
     [tp setScrollEnabled:NO];
-    tp = nil;
 }
  
 - (void)setupNavigationView
@@ -61,94 +73,45 @@
 
 - (IBAction)selectCarType:(id)sender
 {
-    self.alert = [[SBTableAlert alloc] initWithTitle:@"Single Select" cancelButtonTitle:@"Cancel" messageFormat:nil];
-    [self.alert.view setTag:1];
-    [self.alert setDelegate:self];
-	[self.alert setDataSource:self];
-
-	[self.alert show];
+    JDOSelectCarTypeViewController *controller = [[JDOSelectCarTypeViewController alloc] initWithNibName:nil bundle:nil];
+    controller.violation = self;
+    [self.navigationController pushViewController:controller animated:YES];
+    controller = nil;
 }
 
-
-#pragma mark - SBTableAlertDataSource
-
-- (UITableViewCell *)tableAlert:(SBTableAlert *)tableAlert cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = nil;
-	
-	if (tableAlert.view.tag == 0 || tableAlert.view.tag == 1) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-	} else {
-		// Note: SBTableAlertCell
-		cell = [[SBTableAlertCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-	}
-	
-	[cell.textLabel setText:[Types objectAtIndex:indexPath.row]];
-	
-	return cell;
-}
-
-- (NSInteger)tableAlert:(SBTableAlert *)tableAlert numberOfRowsInSection:(NSInteger)section {
-	if (tableAlert.type == SBTableAlertTypeSingleSelect)
-		return Types.count;
-	else
-		return 10;
-}
-
-- (NSInteger)numberOfSectionsInTableAlert:(SBTableAlert *)tableAlert {
-	if (tableAlert.view.tag == 3)
-		return 2;
-	else
-		return 1;
-}
-
-- (NSString *)tableAlert:(SBTableAlert *)tableAlert titleForHeaderInSection:(NSInteger)section {
-	if (tableAlert.view.tag == 3)
-		return [NSString stringWithFormat:@"Section Header %d", section];
-	else
-		return nil;
-}
-
-#pragma mark - SBTableAlertDelegate
-
-- (void)tableAlert:(SBTableAlert *)tableAlert didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (tableAlert.type == SBTableAlertTypeMultipleSelct) {
-		UITableViewCell *cell = [tableAlert.tableView cellForRowAtIndexPath:indexPath];
-		if (cell.accessoryType == UITableViewCellAccessoryNone)
-			[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-		else
-			[cell setAccessoryType:UITableViewCellAccessoryNone];
-		
-		[tableAlert.tableView deselectRowAtIndexPath:indexPath animated:YES];
-	}
-    [CarType setTitle:[Types objectAtIndex:indexPath.row] forState:UIControlStateNormal];
-}
-
-- (void)tableAlert:(SBTableAlert *)tableAlert didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	NSLog(@"Dismissed: %i", buttonIndex);
-}
-
-- (void)sendToServer:(id)sender {
-    CarNumString = [CarNum text];
-    CarTypeString = [CarType currentTitle];
-    ChassisNumString = [ChassisNum text];
-    
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:CarTypeString forKey:@"cartype"];
-    [params setValue:ChassisNumString forKey:@"vin"];
-    [params setValue:CarNumString forKey:@"hphm"];
-    
-    [[JDOHttpClient sharedClient] getJSONByServiceName:VIOLATION_SERVICE modelClass:@"JDOViolationModel" params:params success:^(NSArray *dataList) {
-        if(dataList == nil){
-            
-        }else if(dataList.count >0){
-            for (int i = 0; i < dataList.count; i++) {
-                JDOViolationModel *violationModel = [[JDOViolationModel alloc] init];
-                violationModel = [dataList objectAtIndex:i];
-            }
-        }
-    } failure:^(NSString *errorStr) {
+- (IBAction)sendToServer:(id)sender
+{
+    CarNumString = CarNum.text;
+    ChassisNumString = ChassisNum.text;
+    if (!self.checkEmpty) {
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:CarNumString forKey:@"hphm"];
+        [params setValue:CarTypeString forKey:@"cartype"];
+        [params setValue:ChassisNumString forKey:@"vin"];
         
-    }];
+        [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
+                NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
+            } else {
+                NSLog(@"wrongParams");
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }
+    
+}
+
+
+- (BOOL)checkEmpty
+{
+    if (CarNumString.length < 7) {
+        return YES;
+    }
+    if (ChassisNumString.length < 4){
+        return YES;
+    }
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning
