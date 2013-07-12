@@ -47,14 +47,15 @@
         [NSNumber numberWithInt:ToolBarButtonFont],
         [NSNumber numberWithInt:ToolBarButtonCollect]
     ];
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentView:self.view config:toolbarBtnConfig frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
-    [self.view addSubview:_toolbar];
     
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-_toolbar.height)]; // 去掉导航栏和工具栏
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-44/*_toolbar.height*/)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
     [self.view addSubview:_webView];
+    
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentView:self.view config:toolbarBtnConfig frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    [self.view addSubview:_toolbar];
     
     // WebView加载mask
     UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];

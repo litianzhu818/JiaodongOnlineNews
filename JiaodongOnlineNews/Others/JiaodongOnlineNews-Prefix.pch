@@ -55,7 +55,7 @@
 
 // 刷新时间间隔
 #define Weather_Update_Time @"Weather_Update_Time"
-#define Weather_Update_Interval 60*60   //一小时
+#define Weather_Update_Interval 0   //一小时
 #define News_Update_Time @"News_Update_Time"
 #define News_Update_Interval 30*60  // 30分钟
 #define Dept_Update_Time @"Dept_Update_Time"

@@ -22,6 +22,7 @@
 #import <TencentOpenAPI/QQApi.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+#import "MobClick.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -165,6 +166,9 @@
     
     //监听用户信息变更
     [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
+    
+    //友盟统计
+    [MobClick startWithAppkey:@"51de0ed156240bd3fb01d54c"];
     
     // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];

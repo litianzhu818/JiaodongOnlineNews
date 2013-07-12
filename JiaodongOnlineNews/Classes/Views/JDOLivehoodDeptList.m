@@ -20,6 +20,8 @@
 #define List_Background @"livehood_content_background"
 #define List_Background_Selected @"livehood_content_background_selected"
 
+#define Animation_Delay 0.35
+
 @interface JDOLivehoodDeptList()
 
 @property (nonatomic,strong) NSArray *sectionTitleArray;
@@ -212,7 +214,11 @@
 
 - (void) refreshTable {
     [self shrinkLastSection];
-    [self performSelector:@selector(expandCurrentSection) withObject:nil afterDelay:0.3];
+    if(_selectedSection == -1){
+        [self expandCurrentSection];
+    }else{
+        [self performSelector:@selector(expandCurrentSection) withObject:nil afterDelay:Animation_Delay];
+    }
     _selectedSection = _currentSection;
 }
 
@@ -230,9 +236,18 @@
         
         [_sectionExpandState replaceObjectAtIndex:_selectedSection withObject:[NSNumber numberWithBool:false]];
         if(_selectedSection > 0){
+            int length = [[_sectionContentArray objectAtIndex:_selectedSection] count];
+            NSMutableArray *indexPaths = [NSMutableArray array];
+            for(int i=0; i<length; i++){
+                [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:_selectedSection]];
+            }
             [[_sectionContentArray objectAtIndex:_selectedSection] removeAllObjects];
-            
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:_selectedSection] withRowAnimation:UITableViewRowAnimationTop];
+
+            [self.tableView beginUpdates];
+            [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+            [self.tableView endUpdates];
+            // 不reloadSection会造成setion短暂空白
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:_selectedSection] withRowAnimation:UITableViewRowAnimationNone];
         }
     }
 }
@@ -245,12 +260,21 @@
     [(UILabel *)[headerView viewWithTag:Section_Label_Tag] setShadowColor:Shadow_Highlight_Color];
     
     [_sectionExpandState replaceObjectAtIndex:_currentSection withObject:[NSNumber numberWithBool:true]];
-    [[_sectionContentArray objectAtIndex:_currentSection] removeAllObjects];
     [[_sectionContentArray objectAtIndex:_currentSection] addObjectsFromArray:_currentSectionList];
     
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:_currentSection] withRowAnimation:UITableViewRowAnimationTop];
+    int length = [[_sectionContentArray objectAtIndex:_currentSection] count];
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    for(int i=0; i<length; i++){
+        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:_currentSection]];
+    }
     
-    [self performSelector:@selector(scrollToTop) withObject:nil afterDelay:0.3];
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+    [self.tableView endUpdates];
+    // 不reloadSection会造成setion短暂空白
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:_currentSection] withRowAnimation:UITableViewRowAnimationNone];
+    
+    [self performSelector:@selector(scrollToTop) withObject:nil afterDelay:Animation_Delay];
 }
 
 - (void)dismissHUDOnLoadFailed:(NSString *)errorStr{
