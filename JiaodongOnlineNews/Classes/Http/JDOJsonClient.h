@@ -16,4 +16,6 @@
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
+- (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass config:(DCParserConfiguration *)config params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
+
 @end

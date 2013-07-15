@@ -7,6 +7,8 @@
 //
 
 #import "JDOHttpClient.h"
+#import "DCKeyValueObjectMapping.h"
+#import "DCParserConfiguration.h"
 
 @implementation JDOHttpClient
 
@@ -45,6 +47,12 @@
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
     
+    [self getJSONByServiceName:serviceName modelClass:modelClass config:[DCParserConfiguration configuration] params:params success:success failure:failure];
+    
+}
+
+- (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass config:(DCParserConfiguration *)config params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
+    
     [self getPath:serviceName parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if([@"null" isEqualToString:operation.responseString]){
             if(success)  success(nil);
@@ -55,10 +63,12 @@
                     success(jsonResult);
                 }else{
                     Class _modelClass = NSClassFromString(modelClass);
+                    DCKeyValueObjectMapping *mapper  = [DCKeyValueObjectMapping mapperForClass:_modelClass andConfiguration:config];
+                    
                     if([jsonResult isKindOfClass:[NSArray class]]){
-                        success([jsonResult jsonArrayToModelArray:_modelClass ]);
+                        success([mapper parseArray:jsonResult]);
                     }else if([jsonResult isKindOfClass:[NSDictionary class]]){
-                        success([jsonResult jsonDictionaryToModel:_modelClass ]);
+                        success([mapper parseDictionary:jsonResult]);
                     }else{
                         NSLog(@"未知Json数据类型");
                     }

@@ -13,6 +13,11 @@
 #import "UIDevice+IdentifierAddition.h"
 #import "JDOQuestionDetailModel.h"
 #import "FXLabel.h"
+#import "JDODataModel.h"
+#import "DCParserConfiguration.h"
+#import "DCCustomParser.h"
+#import "DCKeyValueObjectMapping.h"
+#import "JDOQuestionDetailModel.h"
 
 #define Dept_Label_Tag 101
 #define Title_Label_Tag 102
@@ -117,10 +122,17 @@
 - (void)loadDataFromNetwork{
     [self setCurrentState:ViewStatusLoading];
     // 返回的数据结构最外层是{data,status,info}，data中才是需要的内容
-    [[JDOJsonClient sharedClient] getJSONByServiceName:QUESTION_DETAIL_SERVICE modelClass:nil params:@{@"info_id":self.questionModel.id} success:^(NSDictionary *dict) {
-        if(dict != nil && [(NSNumber *)[dict objectForKey:@"status"] intValue] ==1 && [dict objectForKey:@"data"]!=nil){
-            JDOQuestionDetailModel *model = [(NSDictionary *)[dict objectForKey:@"data"] jsonDictionaryToModel:[JDOQuestionDetailModel class]];
-            [self dataLoadFinished:model];
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCCustomParser *customParser = [[DCCustomParser alloc] initWithBlockParser:^id(NSDictionary *dictionary, NSString *attributeName, __unsafe_unretained Class destinationClass, id value) {
+        DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDOQuestionDetailModel class]];
+        return [mapper parseDictionary:value];
+    } forAttributeName:@"_data" onDestinationClass:[JDODataModel class]];
+    [config addCustomParsersObject:customParser];
+    
+    [[JDOJsonClient sharedClient] getJSONByServiceName:QUESTION_DETAIL_SERVICE modelClass:@"JDODataModel" config:config params:@{@"info_id":self.questionModel.id} success:^(JDODataModel *dataModel) {
+        if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
+            JDOQuestionDetailModel *data = (JDOQuestionDetailModel *)dataModel.data;
+            [self dataLoadFinished: data];
             [self setCurrentState:ViewStatusNormal];
         }else{
             // 服务器端有错误
@@ -132,9 +144,43 @@
 }
 
 - (void) dataLoadFinished:(JDOQuestionDetailModel *)detailModel{
-    UILabel *deptLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 320-20, 0)];
+    
+    NSMutableArray *content = [NSMutableArray array];
+    [content addObject:[NSString stringWithFormat:@"部门：%@",detailModel.department]];
+    [content addObject:detailModel.title];
+    [content addObject:[NSString stringWithFormat:@"%@  发表人：%@",detailModel.entry_date,JDOIsEmptyString(detailModel.petname)?detailModel.username:detailModel.petname]];
+    [content addObject:[detailModel.question stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+    if (!JDOIsEmptyString(detailModel.reply)){
+        [content addObject:[NSString stringWithFormat:@"回复时间：%@",detailModel.reply_date]];
+        [content addObject:[detailModel.reply stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+    }
+    CGFloat totalHeight = [self buildContent:content startY:10];
+
+    if(detailModel.secondInfo != nil){
+        // 有二次提问的情况下
+        UIImageView *separatorLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, totalHeight+15, 320-20, 1)];
+        separatorLine.image = [UIImage imageNamed:@"full_separator_line"];
+        [_mainView addSubview:separatorLine];
+
+        NSMutableArray *content2 = [NSMutableArray array];
+        [content2 addObject:@"追加提问"];
+        [content2 addObject:@""];
+        [content2 addObject:[NSString stringWithFormat:@"%@  发表人：%@",detailModel.secondInfo.entry_date,JDOIsEmptyString(detailModel.secondInfo.petname)?detailModel.secondInfo.username:detailModel.secondInfo.petname]];
+        [content2 addObject:[detailModel.secondInfo.question stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+        if (!JDOIsEmptyString(detailModel.secondInfo.reply)){
+            [content2 addObject:[NSString stringWithFormat:@"回复时间：%@",detailModel.secondInfo.reply_date]];
+            [content2 addObject:[detailModel.secondInfo.reply stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+        }
+        totalHeight = [self buildContent:content2 startY:totalHeight+25];
+    }
+    [_mainView setContentSize:CGSizeMake(320, totalHeight+15)];
+    
+}
+
+- (CGFloat) buildContent:(NSArray *)content startY:(CGFloat)startY {
+    UILabel *deptLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, startY, 320-20, 0)];
     deptLabel.font = [UIFont systemFontOfSize:14];
-    deptLabel.text = [NSString stringWithFormat:@"部门:%@",detailModel.department];
+    deptLabel.text = [content objectAtIndex:0];
     deptLabel.textColor = [UIColor colorWithHex:@"1673ba"];
     deptLabel.backgroundColor = [UIColor clearColor];
     [deptLabel sizeToFit];
@@ -144,19 +190,23 @@
     titleLabel.font = [UIFont systemFontOfSize:18];
     titleLabel.numberOfLines = 0;
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.text = detailModel.title;
+    titleLabel.text = [content objectAtIndex:1];
     titleLabel.textColor = [UIColor colorWithHex:@"505050"];
     titleLabel.backgroundColor = [UIColor clearColor];
-    float infactHeight = [detailModel.title sizeWithFont:[UIFont systemFontOfSize:18] constrainedToSize:CGSizeMake(300, MAXFLOAT) lineBreakMode:NSLineBreakByTruncatingTail].height;
+    // 内容小于一行的情况下直接调用sizeToFit会导致居中对齐无效
+    float infactHeight = [titleLabel.text sizeWithFont:[UIFont systemFontOfSize:18] constrainedToSize:CGSizeMake(300, MAXFLOAT) lineBreakMode:NSLineBreakByTruncatingTail].height;
     if (infactHeight>titleLabel.frame.size.height) {
         [titleLabel sizeToFit];
     }
     [_mainView addSubview:titleLabel];
+    if([titleLabel.text isEqualToString:@""]){  // 追加提问时不需要再显示标题
+        titleLabel.frame = CGRectMake(10, CGRectGetMaxY(deptLabel.frame), 320-20, 0);
+    }
     
     UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLabel.frame)+10, 320-20, [UIFont systemFontOfSize:14].lineHeight)];
     subtitleLabel.font = [UIFont systemFontOfSize:14];
     subtitleLabel.textAlignment = NSTextAlignmentCenter;
-    subtitleLabel.text = [NSString stringWithFormat:@"%@  发表人:%@",detailModel.entry_date,JDOIsEmptyString(detailModel.petname)?detailModel.username:detailModel.petname];
+    subtitleLabel.text = [content objectAtIndex:2];
     subtitleLabel.textColor = [UIColor colorWithHex:@"969696"];
     subtitleLabel.backgroundColor = [UIColor clearColor];
     [_mainView addSubview:subtitleLabel];
@@ -166,14 +216,14 @@
     contentLabel.lineBreakMode = NSLineBreakByCharWrapping;// 必须用CharWrapping,否则只有一行,默认英文是按空格分割的
     contentLabel.font = [UIFont systemFontOfSize:14];
     contentLabel.numberOfLines = 0;
-    contentLabel.text = [detailModel.question stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
+    contentLabel.text = [content objectAtIndex:3];
     contentLabel.textColor = [UIColor colorWithHex:@"505050"];
     contentLabel.backgroundColor = [UIColor clearColor];
     [contentLabel sizeToFit];
     [_mainView addSubview:contentLabel];
     
-    if(JDOIsEmptyString(detailModel.reply)){
-        return;
+    if( content.count == 4){
+        return CGRectGetMaxY(contentLabel.frame);
     }
     // 有回复的情况下
     UIImageView *separatorLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(contentLabel.frame)+15, 320-20, 1)];
@@ -182,7 +232,7 @@
     
     UILabel *replyDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(separatorLine.frame)+15, 320-20, 0)];
     replyDateLabel.font = [UIFont systemFontOfSize:14];
-    replyDateLabel.text = [NSString stringWithFormat:@"回复时间:%@",detailModel.reply_date];
+    replyDateLabel.text = [content objectAtIndex:4];
     replyDateLabel.textColor = [UIColor colorWithHex:@"969696"];
     replyDateLabel.backgroundColor = [UIColor clearColor];
     [replyDateLabel sizeToFit];
@@ -193,14 +243,13 @@
     replyLabel.lineBreakMode = NSLineBreakByCharWrapping;
     replyLabel.font = [UIFont systemFontOfSize:14];
     replyLabel.numberOfLines = 0;
-    replyLabel.text = [detailModel.reply stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
+    replyLabel.text = [content objectAtIndex:5];
     replyLabel.textColor = [UIColor colorWithHex:@"505050"];
     replyLabel.backgroundColor = [UIColor clearColor];
     [replyLabel sizeToFit];
     [_mainView addSubview:replyLabel];
     
-    [_mainView setContentSize:CGSizeMake(320, CGRectGetMaxY(replyLabel.frame)+10)];
-    
+    return CGRectGetMaxY(replyLabel.frame);
 }
 
 @end

@@ -40,7 +40,6 @@
 		2D19CFE9174A3F8700BDAE39 /* JDOLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE4174A3F8700BDAE39 /* JDOLeftViewController.m */; };
 		2D19CFEB174A3F8700BDAE39 /* JDORightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */; };
 		2D1DDB58175E2AD10048F7A7 /* JDONewsDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB57175E2AD10048F7A7 /* JDONewsDetailModel.m */; };
-		2D1DDB5B175E2BBC0048F7A7 /* NSDictionary+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5A175E2BBC0048F7A7 /* NSDictionary+Model.m */; };
 		2D1DDB5D175E33DC0048F7A7 /* sample_template.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5C175E33DC0048F7A7 /* sample_template.txt */; };
 		2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */; };
 		2D29B276176065D300F116E4 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2D29B275176065D300F116E4 /* style.css */; };
@@ -77,7 +76,6 @@
 		2D811E34177D595D008B2C06 /* news_head_title_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D811E24177D595D008B2C06 /* news_head_title_background.png */; };
 		2D86D59617584E420000AA6A /* JDONewsCategoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */; };
 		2D86D59F175872FE0000AA6A /* JDONewsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59E175872FE0000AA6A /* JDONewsModel.m */; };
-		2D86D5A2175875630000AA6A /* NSArray+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5A1175875630000AA6A /* NSArray+Model.m */; };
 		2D86D5A5175885E50000AA6A /* JDONewsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */; };
 		2D86D5AB17588E330000AA6A /* JDOCommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5AA17588E330000AA6A /* JDOCommonUtil.m */; };
 		2D86D5AE175894990000AA6A /* JDOCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5AD175894980000AA6A /* JDOCenterViewController.m */; };
@@ -239,6 +237,25 @@
 		2D98C8F8177018D300061E2E /* sina.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D98C8E9177018D300061E2E /* sina.png */; };
 		2D98C8F9177018D300061E2E /* sina01.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D98C8EA177018D300061E2E /* sina01.png */; };
 		2D98C8FB177018F200061E2E /* huixingzhen.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D98C8FA177018F200061E2E /* huixingzhen.png */; };
+		2D98E200179245F30033951D /* DCArrayMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1DC179245F30033951D /* DCArrayMapping.m */; };
+		2D98E201179245F30033951D /* DCAttributeSetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1DE179245F30033951D /* DCAttributeSetter.m */; };
+		2D98E202179245F30033951D /* DCCustomInitialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1E0179245F30033951D /* DCCustomInitialize.m */; };
+		2D98E203179245F30033951D /* DCCustomParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1E2179245F30033951D /* DCCustomParser.m */; };
+		2D98E204179245F30033951D /* DCDictionaryRearranger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1E4179245F30033951D /* DCDictionaryRearranger.m */; };
+		2D98E205179245F30033951D /* DCDynamicAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1E6179245F30033951D /* DCDynamicAttribute.m */; };
+		2D98E206179245F30033951D /* DCGenericConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1E8179245F30033951D /* DCGenericConverter.m */; };
+		2D98E207179245F30033951D /* DCKeyValueObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1EA179245F30033951D /* DCKeyValueObjectMapping.m */; };
+		2D98E208179245F30033951D /* DCNSArrayConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1EC179245F30033951D /* DCNSArrayConverter.m */; };
+		2D98E209179245F30033951D /* DCNSDateConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1EE179245F30033951D /* DCNSDateConverter.m */; };
+		2D98E20A179245F30033951D /* DCNSSetConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1F0179245F30033951D /* DCNSSetConverter.m */; };
+		2D98E20B179245F30033951D /* DCNSURLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1F2179245F30033951D /* DCNSURLConverter.m */; };
+		2D98E20C179245F30033951D /* DCObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1F4179245F30033951D /* DCObjectMapping.m */; };
+		2D98E20D179245F30033951D /* DCParserConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1F6179245F30033951D /* DCParserConfiguration.m */; };
+		2D98E20E179245F30033951D /* DCPropertyAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1F8179245F30033951D /* DCPropertyAggregator.m */; };
+		2D98E20F179245F30033951D /* DCPropertyFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1FA179245F30033951D /* DCPropertyFinder.m */; };
+		2D98E210179245F30033951D /* DCReferenceKeyParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1FC179245F30033951D /* DCReferenceKeyParser.m */; };
+		2D98E211179245F30033951D /* DCSimpleConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E1FE179245F30033951D /* DCSimpleConverter.m */; };
+		2D98E21417924D8E0033951D /* JDODataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D98E21317924D8E0033951D /* JDODataModel.m */; };
 		2D996A94175ED55800C57673 /* JDOImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D996A93175ED55700C57673 /* JDOImageViewController.m */; };
 		2D996A9B175F29AF00C57673 /* MLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D996A9A175F29AF00C57673 /* MLNavigationController.m */; };
 		2D9B54071786448F0027123D /* JDOLivehoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9B54061786448F0027123D /* JDOLivehoodViewController.m */; };
@@ -426,8 +443,6 @@
 		2D19CFE7174A3F8700BDAE39 /* JDORightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDORightViewController.m; sourceTree = "<group>"; };
 		2D1DDB56175E2AD10048F7A7 /* JDONewsDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsDetailModel.h; sourceTree = "<group>"; };
 		2D1DDB57175E2AD10048F7A7 /* JDONewsDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsDetailModel.m; sourceTree = "<group>"; };
-		2D1DDB59175E2BBC0048F7A7 /* NSDictionary+Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Model.h"; sourceTree = "<group>"; };
-		2D1DDB5A175E2BBC0048F7A7 /* NSDictionary+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Model.m"; sourceTree = "<group>"; };
 		2D1DDB5C175E33DC0048F7A7 /* sample_template.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample_template.txt; sourceTree = "<group>"; };
 		2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.min.js; sourceTree = "<group>"; };
 		2D29B275176065D300F116E4 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
@@ -485,8 +500,6 @@
 		2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsCategoryInfo.m; sourceTree = "<group>"; };
 		2D86D59D175872FE0000AA6A /* JDONewsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsModel.h; sourceTree = "<group>"; };
 		2D86D59E175872FE0000AA6A /* JDONewsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsModel.m; sourceTree = "<group>"; };
-		2D86D5A0175875630000AA6A /* NSArray+Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Model.h"; sourceTree = "<group>"; };
-		2D86D5A1175875630000AA6A /* NSArray+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Model.m"; sourceTree = "<group>"; };
 		2D86D5A3175885E50000AA6A /* JDONewsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsTableCell.h; sourceTree = "<group>"; };
 		2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsTableCell.m; sourceTree = "<group>"; };
 		2D86D5A917588E330000AA6A /* JDOCommonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCommonUtil.h; sourceTree = "<group>"; };
@@ -743,6 +756,45 @@
 		2D98C8E9177018D300061E2E /* sina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sina.png; sourceTree = "<group>"; };
 		2D98C8EA177018D300061E2E /* sina01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sina01.png; sourceTree = "<group>"; };
 		2D98C8FA177018F200061E2E /* huixingzhen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huixingzhen.png; sourceTree = "<group>"; };
+		2D98E1DB179245F30033951D /* DCArrayMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCArrayMapping.h; sourceTree = "<group>"; };
+		2D98E1DC179245F30033951D /* DCArrayMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCArrayMapping.m; sourceTree = "<group>"; };
+		2D98E1DD179245F30033951D /* DCAttributeSetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCAttributeSetter.h; sourceTree = "<group>"; };
+		2D98E1DE179245F30033951D /* DCAttributeSetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCAttributeSetter.m; sourceTree = "<group>"; };
+		2D98E1DF179245F30033951D /* DCCustomInitialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCCustomInitialize.h; sourceTree = "<group>"; };
+		2D98E1E0179245F30033951D /* DCCustomInitialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCCustomInitialize.m; sourceTree = "<group>"; };
+		2D98E1E1179245F30033951D /* DCCustomParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCCustomParser.h; sourceTree = "<group>"; };
+		2D98E1E2179245F30033951D /* DCCustomParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCCustomParser.m; sourceTree = "<group>"; };
+		2D98E1E3179245F30033951D /* DCDictionaryRearranger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCDictionaryRearranger.h; sourceTree = "<group>"; };
+		2D98E1E4179245F30033951D /* DCDictionaryRearranger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCDictionaryRearranger.m; sourceTree = "<group>"; };
+		2D98E1E5179245F30033951D /* DCDynamicAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCDynamicAttribute.h; sourceTree = "<group>"; };
+		2D98E1E6179245F30033951D /* DCDynamicAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCDynamicAttribute.m; sourceTree = "<group>"; };
+		2D98E1E7179245F30033951D /* DCGenericConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCGenericConverter.h; sourceTree = "<group>"; };
+		2D98E1E8179245F30033951D /* DCGenericConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCGenericConverter.m; sourceTree = "<group>"; };
+		2D98E1E9179245F30033951D /* DCKeyValueObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCKeyValueObjectMapping.h; sourceTree = "<group>"; };
+		2D98E1EA179245F30033951D /* DCKeyValueObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCKeyValueObjectMapping.m; sourceTree = "<group>"; };
+		2D98E1EB179245F30033951D /* DCNSArrayConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCNSArrayConverter.h; sourceTree = "<group>"; };
+		2D98E1EC179245F30033951D /* DCNSArrayConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCNSArrayConverter.m; sourceTree = "<group>"; };
+		2D98E1ED179245F30033951D /* DCNSDateConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCNSDateConverter.h; sourceTree = "<group>"; };
+		2D98E1EE179245F30033951D /* DCNSDateConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCNSDateConverter.m; sourceTree = "<group>"; };
+		2D98E1EF179245F30033951D /* DCNSSetConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCNSSetConverter.h; sourceTree = "<group>"; };
+		2D98E1F0179245F30033951D /* DCNSSetConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCNSSetConverter.m; sourceTree = "<group>"; };
+		2D98E1F1179245F30033951D /* DCNSURLConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCNSURLConverter.h; sourceTree = "<group>"; };
+		2D98E1F2179245F30033951D /* DCNSURLConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCNSURLConverter.m; sourceTree = "<group>"; };
+		2D98E1F3179245F30033951D /* DCObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCObjectMapping.h; sourceTree = "<group>"; };
+		2D98E1F4179245F30033951D /* DCObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCObjectMapping.m; sourceTree = "<group>"; };
+		2D98E1F5179245F30033951D /* DCParserConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCParserConfiguration.h; sourceTree = "<group>"; };
+		2D98E1F6179245F30033951D /* DCParserConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCParserConfiguration.m; sourceTree = "<group>"; };
+		2D98E1F7179245F30033951D /* DCPropertyAggregator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCPropertyAggregator.h; sourceTree = "<group>"; };
+		2D98E1F8179245F30033951D /* DCPropertyAggregator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCPropertyAggregator.m; sourceTree = "<group>"; };
+		2D98E1F9179245F30033951D /* DCPropertyFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCPropertyFinder.h; sourceTree = "<group>"; };
+		2D98E1FA179245F30033951D /* DCPropertyFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCPropertyFinder.m; sourceTree = "<group>"; };
+		2D98E1FB179245F30033951D /* DCReferenceKeyParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCReferenceKeyParser.h; sourceTree = "<group>"; };
+		2D98E1FC179245F30033951D /* DCReferenceKeyParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCReferenceKeyParser.m; sourceTree = "<group>"; };
+		2D98E1FD179245F30033951D /* DCSimpleConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCSimpleConverter.h; sourceTree = "<group>"; };
+		2D98E1FE179245F30033951D /* DCSimpleConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCSimpleConverter.m; sourceTree = "<group>"; };
+		2D98E1FF179245F30033951D /* DCValueConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCValueConverter.h; sourceTree = "<group>"; };
+		2D98E21217924D8E0033951D /* JDODataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDODataModel.h; sourceTree = "<group>"; };
+		2D98E21317924D8E0033951D /* JDODataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDODataModel.m; sourceTree = "<group>"; };
 		2D996A92175ED55700C57673 /* JDOImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageViewController.h; sourceTree = "<group>"; };
 		2D996A93175ED55700C57673 /* JDOImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageViewController.m; sourceTree = "<group>"; };
 		2D996A99175F29AF00C57673 /* MLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLNavigationController.h; sourceTree = "<group>"; };
@@ -954,10 +1006,6 @@
 				2D9678BA174AF78A008AC097 /* JDOImageUtil.m */,
 				2D86D5A917588E330000AA6A /* JDOCommonUtil.h */,
 				2D86D5AA17588E330000AA6A /* JDOCommonUtil.m */,
-				2D86D5A0175875630000AA6A /* NSArray+Model.h */,
-				2D86D5A1175875630000AA6A /* NSArray+Model.m */,
-				2D1DDB59175E2BBC0048F7A7 /* NSDictionary+Model.h */,
-				2D1DDB5A175E2BBC0048F7A7 /* NSDictionary+Model.m */,
 				2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */,
 				2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */,
 			);
@@ -1123,6 +1171,8 @@
 				2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */,
 				A774BF21178D726100A3B866 /* JDOWeather.h */,
 				A774BF22178D726100A3B866 /* JDOWeather.m */,
+				2D98E21217924D8E0033951D /* JDODataModel.h */,
+				2D98E21317924D8E0033951D /* JDODataModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1161,6 +1211,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2D98E1DA1792456E0033951D /* KeyValueObjectMapping */,
 				2D9D81D71790458F00E69B0E /* MBSwitch */,
 				2D0D6163178FE06C00934CCD /* FXLabel */,
 				A7341C7E178EB78100ADD976 /* UMeng */,
@@ -1597,6 +1648,50 @@
 				2D98C8EA177018D300061E2E /* sina01.png */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		2D98E1DA1792456E0033951D /* KeyValueObjectMapping */ = {
+			isa = PBXGroup;
+			children = (
+				2D98E1DB179245F30033951D /* DCArrayMapping.h */,
+				2D98E1DC179245F30033951D /* DCArrayMapping.m */,
+				2D98E1DD179245F30033951D /* DCAttributeSetter.h */,
+				2D98E1DE179245F30033951D /* DCAttributeSetter.m */,
+				2D98E1DF179245F30033951D /* DCCustomInitialize.h */,
+				2D98E1E0179245F30033951D /* DCCustomInitialize.m */,
+				2D98E1E1179245F30033951D /* DCCustomParser.h */,
+				2D98E1E2179245F30033951D /* DCCustomParser.m */,
+				2D98E1E3179245F30033951D /* DCDictionaryRearranger.h */,
+				2D98E1E4179245F30033951D /* DCDictionaryRearranger.m */,
+				2D98E1E5179245F30033951D /* DCDynamicAttribute.h */,
+				2D98E1E6179245F30033951D /* DCDynamicAttribute.m */,
+				2D98E1E7179245F30033951D /* DCGenericConverter.h */,
+				2D98E1E8179245F30033951D /* DCGenericConverter.m */,
+				2D98E1E9179245F30033951D /* DCKeyValueObjectMapping.h */,
+				2D98E1EA179245F30033951D /* DCKeyValueObjectMapping.m */,
+				2D98E1EB179245F30033951D /* DCNSArrayConverter.h */,
+				2D98E1EC179245F30033951D /* DCNSArrayConverter.m */,
+				2D98E1ED179245F30033951D /* DCNSDateConverter.h */,
+				2D98E1EE179245F30033951D /* DCNSDateConverter.m */,
+				2D98E1EF179245F30033951D /* DCNSSetConverter.h */,
+				2D98E1F0179245F30033951D /* DCNSSetConverter.m */,
+				2D98E1F1179245F30033951D /* DCNSURLConverter.h */,
+				2D98E1F2179245F30033951D /* DCNSURLConverter.m */,
+				2D98E1F3179245F30033951D /* DCObjectMapping.h */,
+				2D98E1F4179245F30033951D /* DCObjectMapping.m */,
+				2D98E1F5179245F30033951D /* DCParserConfiguration.h */,
+				2D98E1F6179245F30033951D /* DCParserConfiguration.m */,
+				2D98E1F7179245F30033951D /* DCPropertyAggregator.h */,
+				2D98E1F8179245F30033951D /* DCPropertyAggregator.m */,
+				2D98E1F9179245F30033951D /* DCPropertyFinder.h */,
+				2D98E1FA179245F30033951D /* DCPropertyFinder.m */,
+				2D98E1FB179245F30033951D /* DCReferenceKeyParser.h */,
+				2D98E1FC179245F30033951D /* DCReferenceKeyParser.m */,
+				2D98E1FD179245F30033951D /* DCSimpleConverter.h */,
+				2D98E1FE179245F30033951D /* DCSimpleConverter.m */,
+				2D98E1FF179245F30033951D /* DCValueConverter.h */,
+			);
+			path = KeyValueObjectMapping;
 			sourceTree = "<group>";
 		};
 		2D996A98175F298F00C57673 /* MultiLayerNavigation */ = {
@@ -2170,7 +2265,6 @@
 				D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */,
 				2D86D59617584E420000AA6A /* JDONewsCategoryInfo.m in Sources */,
 				2D86D59F175872FE0000AA6A /* JDONewsModel.m in Sources */,
-				2D86D5A2175875630000AA6A /* NSArray+Model.m in Sources */,
 				2D86D5A5175885E50000AA6A /* JDONewsTableCell.m in Sources */,
 				2D86D5AB17588E330000AA6A /* JDOCommonUtil.m in Sources */,
 				2D86D5AE175894990000AA6A /* JDOCenterViewController.m in Sources */,
@@ -2214,7 +2308,6 @@
 				2D5409DC175DEA5800718FFB /* JDONewsDetailController.m in Sources */,
 				2D5409DF175DEE2100718FFB /* UIWebView+RemoveShadow.m in Sources */,
 				2D1DDB58175E2AD10048F7A7 /* JDONewsDetailModel.m in Sources */,
-				2D1DDB5B175E2BBC0048F7A7 /* NSDictionary+Model.m in Sources */,
 				2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */,
 				2D996A94175ED55800C57673 /* JDOImageViewController.m in Sources */,
 				2D996A9B175F29AF00C57673 /* MLNavigationController.m in Sources */,
@@ -2307,6 +2400,25 @@
 				2DA3C4D0178EC0A6009817A6 /* InsetsTextField.m in Sources */,
 				2D0D6166178FE28900934CCD /* FXLabel.m in Sources */,
 				2D9D81DA179047AF00E69B0E /* MBSwitch.m in Sources */,
+				2D98E200179245F30033951D /* DCArrayMapping.m in Sources */,
+				2D98E201179245F30033951D /* DCAttributeSetter.m in Sources */,
+				2D98E202179245F30033951D /* DCCustomInitialize.m in Sources */,
+				2D98E203179245F30033951D /* DCCustomParser.m in Sources */,
+				2D98E204179245F30033951D /* DCDictionaryRearranger.m in Sources */,
+				2D98E205179245F30033951D /* DCDynamicAttribute.m in Sources */,
+				2D98E206179245F30033951D /* DCGenericConverter.m in Sources */,
+				2D98E207179245F30033951D /* DCKeyValueObjectMapping.m in Sources */,
+				2D98E208179245F30033951D /* DCNSArrayConverter.m in Sources */,
+				2D98E209179245F30033951D /* DCNSDateConverter.m in Sources */,
+				2D98E20A179245F30033951D /* DCNSSetConverter.m in Sources */,
+				2D98E20B179245F30033951D /* DCNSURLConverter.m in Sources */,
+				2D98E20C179245F30033951D /* DCObjectMapping.m in Sources */,
+				2D98E20D179245F30033951D /* DCParserConfiguration.m in Sources */,
+				2D98E20E179245F30033951D /* DCPropertyAggregator.m in Sources */,
+				2D98E20F179245F30033951D /* DCPropertyFinder.m in Sources */,
+				2D98E210179245F30033951D /* DCReferenceKeyParser.m in Sources */,
+				2D98E211179245F30033951D /* DCSimpleConverter.m in Sources */,
+				2D98E21417924D8E0033951D /* JDODataModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

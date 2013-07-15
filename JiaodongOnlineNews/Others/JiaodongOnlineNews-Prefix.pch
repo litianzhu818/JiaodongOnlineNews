@@ -16,8 +16,6 @@
 #import "JDOAppDelegate.h"
 #import "IIViewDeckController.h"
 #import "Reachability.h"
-#import "NSArray+Model.h"
-#import "NSDictionary+Model.h"
 #import "UIImageView+WebCache.h"
 #import "JDOCommonUtil.h"
 #import "JDONavigationView.h"

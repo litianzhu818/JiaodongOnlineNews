@@ -191,7 +191,7 @@
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
     JDOTopicDetailController *detailController = [[JDOTopicDetailController alloc] initWithTopicModel:[self.listArray objectAtIndex:index] pController:self];
     [centerViewController pushViewController:detailController animated:true];
-    
+#warning 点击显示详情时加透明度渐变
 }
 
 

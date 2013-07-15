@@ -253,6 +253,7 @@
         _deptCode = deptCode;
         // 切换部门时清空查询条件
         _fakeSearchField.text = Search_Placeholder;
+        _fakeSearchField.textColor = [UIColor colorWithHex:@"c8c8c8"];
         _searchField.text = nil;
         [self loadDataFromNetwork];
     }

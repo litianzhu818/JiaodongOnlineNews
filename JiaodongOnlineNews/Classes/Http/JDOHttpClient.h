@@ -8,6 +8,8 @@
 
 #import "JDOWebClient.h"
 
+@class DCParserConfiguration;
+
 @interface JDOHttpClient : JDOWebClient
 
 + (JDOHttpClient *)sharedClient;
@@ -15,6 +17,8 @@
 + (JDOHttpClient *)sharedTestClient;
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
+
+- (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass config:(DCParserConfiguration *)config params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
 - (void)getNSDataByServiceName:(NSString*)serviceName params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
