@@ -18,13 +18,14 @@
 #define Menu_Image_Tag 101
 #define Right_Margin 40
 #define Menu_Item_Width 115
+#define Separator_Y 324.0
 
 typedef enum {
     RightMenuItemSetting = 0,
     RightMenuItemCollection,
     RightMenuItemBind,
     RightMenuItemRate,
-    RightMenuItemfeedback,
+//    RightMenuItemfeedback,
     RightMenuItemAbout,
     RightMenuItemCount
 } RightMenuItem;
@@ -51,10 +52,10 @@ typedef enum {
 - (id)init{
     self = [super init];
     if (self) {
-        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_feedback",@"menu_about"];
-        iconSelectedNames = @[@"menu_setting_selected",@"menu_collect_selected",@"menu_bind",@"menu_rate",@"menu_feedback_selected",@"menu_about_selected"];
+        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about"];
+        iconSelectedNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about"];
 #warning 评价一下,检查更新,分享绑定
-        iconTitles = @[@"设  置",@"我的收藏",@"分享绑定",@"评价一下",@"意见反馈",@"关于我们",@"检查更新"];
+//        iconTitles = @[@"设  置",@"我的收藏",@"分享绑定",@"评价一下",@"意见反馈",@"关于我们",@"检查更新"];
     }
     return self;
 }
@@ -75,18 +76,18 @@ typedef enum {
     _tableView.scrollEnabled = false;
     [self.view addSubview:_tableView];
     
-    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Menu_Cell_Height*iconNames.count+1, 320, 1)];
-    separateView.image = [UIImage imageNamed:@"menu_separator.png"];
-    [self.view addSubview:separateView];
+//    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Separator_Y/*Menu_Cell_Height*iconNames.count+1*/, 320, 1)];
+//    separateView.image = [UIImage imageNamed:@"menu_separator.png"];
+//    [self.view addSubview:separateView];
     
-    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width-100, App_Height-25, 90, 15)];
-    versionLabel.font = [UIFont systemFontOfSize:14];
-    // 从info.plist文件中获取版本号
-    versionLabel.text = [NSString stringWithFormat:@"V%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]];
-    versionLabel.textColor = [UIColor whiteColor];
-    versionLabel.textAlignment = NSTextAlignmentRight;
-    versionLabel.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:versionLabel];
+//    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width-100, App_Height-25, 90, 15)];
+//    versionLabel.font = [UIFont systemFontOfSize:14];
+//    // 从info.plist文件中获取版本号
+//    versionLabel.text = [NSString stringWithFormat:@"V%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]];
+//    versionLabel.textColor = [UIColor whiteColor];
+//    versionLabel.textAlignment = NSTextAlignmentRight;
+//    versionLabel.backgroundColor = [UIColor clearColor];
+//    [self.view addSubview:versionLabel];
     
     _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , App_Height)];
     _blackMask.backgroundColor = [UIColor blackColor];
@@ -158,6 +159,11 @@ typedef enum {
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.width-Right_Margin-Menu_Item_Width, 0, Menu_Item_Width, Menu_Cell_Height)];
         [imageView setTag:Menu_Image_Tag];
         [cell.contentView addSubview:imageView];
+        
+        // 每个选项下方增加一条分割线
+        UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Menu_Cell_Height-1, 320, 1)];
+        separateView.image = [UIImage imageNamed:@"menu_separator.png"];
+        [cell.contentView addSubview:separateView];
     }
     // 因为图片大小不一致,调整frame以对齐
     switch (indexPath.row) {
@@ -205,12 +211,12 @@ typedef enum {
         case RightMenuItemCollection:
             
             break;
-        case RightMenuItemfeedback:
-            if( _feedbackController == nil){
-                _feedbackController = [[JDOFeedbackViewController alloc] init];
-            }
-            [self pushViewController:_feedbackController];
-            break;
+//        case RightMenuItemfeedback:
+//            if( _feedbackController == nil){
+//                _feedbackController = [[JDOFeedbackViewController alloc] init];
+//            }
+//            [self pushViewController:_feedbackController];
+//            break;
         case RightMenuItemAbout:
             if( _aboutUsController == nil){
                 _aboutUsController = [[JDOAboutUsViewController alloc] init];

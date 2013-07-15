@@ -13,10 +13,13 @@
 #define Comment_Time_Width  120
 
 @class JDOCommentModel;
+@class JDOQuestionCommentModel;
 
 @interface JDONewsReviewCell : UITableViewCell
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
-- (void)setModel:(JDOCommentModel *)commentModel;
+// 目前新闻和问题评论结构一样,暂时使用同一个cell
+- (void)setNewsModel:(JDOCommentModel *)commentModel;
+- (void)setQuestionModel:(JDOQuestionCommentModel *)commentModel;
 
 @end

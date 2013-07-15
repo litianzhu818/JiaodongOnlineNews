@@ -10,8 +10,10 @@
 
 @protocol JDOToolbarModel <NSObject>
 
-@optional
+@required
 @property (nonatomic,strong) NSString *id;
+
+@optional
 @property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) NSString *summary;
 @property (nonatomic,strong) NSString *imageurl;

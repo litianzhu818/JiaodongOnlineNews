@@ -208,7 +208,7 @@
         [NSNumber numberWithInt:ToolBarButtonDownload],
         [NSNumber numberWithInt:ToolBarButtonCollect]
     ];
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.imageModel parentView:self.view typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-44.0, 320, 44.0) theme:ToolBarThemeBlack];
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.imageModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-44.0, 320, 44.0) theme:ToolBarThemeBlack];
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
     _toolbar.shareTarget = self;
     _toolbar.downloadTarget = self;

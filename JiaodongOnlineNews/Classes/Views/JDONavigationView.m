@@ -25,6 +25,12 @@
     }
     self.leftBtn = [self getButtonWithFrame:CGRectMake(0, 0, 44, 44) image:image highlightImage:highlightImage];
     [self addSubview:self.leftBtn];
+    
+    // 有按钮有才增加分割线
+    UIImageView *separatorLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
+    separatorLine.frame = CGRectMake(44, 1, 1, 42);
+    [self addSubview:separatorLine];
+    
 }
 - (void) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
     if(self.rightBtn ){
@@ -32,6 +38,11 @@
     }
     self.rightBtn = [self getButtonWithFrame:CGRectMake(320-44, 0, 44, 44) image:image highlightImage:highlightImage];
     [self addSubview:self.rightBtn];
+    
+    // 有按钮有才增加分割线
+    UIImageView *separatorLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
+    separatorLine.frame = CGRectMake(320-44, 1, 1, 42);
+    [self addSubview:separatorLine];
 }
 
 - (UIButton *) getButtonWithFrame:(CGRect)frame image:(NSString *)image highlightImage:(NSString *)highlightImage{

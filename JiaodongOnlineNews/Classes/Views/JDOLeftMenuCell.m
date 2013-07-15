@@ -16,6 +16,8 @@
 #define label_width 80.0f
 #define padding 20.0f
 
+// 暂时不使用该类
+
 @implementation JDOLeftMenuCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

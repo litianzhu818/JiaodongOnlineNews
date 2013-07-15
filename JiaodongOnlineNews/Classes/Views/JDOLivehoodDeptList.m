@@ -9,7 +9,7 @@
 #import "JDOLivehoodDeptList.h"
 #import "JDOLivehoodViewController.h"
 
-#define Section_Height 35.0f
+#define Section_Height 38.0f
 #define Line_Height 35.0f
 #define Section_Label_Tag 111
 #define Section_Normal_Color [UIColor colorWithHex:@"505050"]

@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    JDOReviewTypeNews = 0,
+    JDOReviewTypeLivehood
+}JDOReviewType;
+
 @interface JDOCommentModel : NSObject
 
 @property (nonatomic,copy) NSString *id;

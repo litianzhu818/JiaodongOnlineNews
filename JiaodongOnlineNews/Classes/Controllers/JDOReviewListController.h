@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "JDOListViewController.h"
+#import "JDOToolBar.h"
 
 @interface JDOReviewListController : JDOListViewController<UITableViewDelegate, UITableViewDataSource>
 
--(id)initWithParams:(NSDictionary *)params;
+-(id)initWithType:(JDOReviewType)type params:(NSDictionary *)params;
 
 @end

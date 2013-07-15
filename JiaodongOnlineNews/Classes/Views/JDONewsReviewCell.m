@@ -9,12 +9,12 @@
 #import "JDONewsReviewCell.h"
 #import "JDOCommentModel.h"
 #import "NIFoundationMethods.h"
-#import "SSLineView.h"
+#import "JDOQuestionCommentModel.h"
 
 @interface JDONewsReviewCell ()
 
 @property (nonatomic,strong) UILabel *pubtimeLabel;
-@property (nonatomic,strong) SSLineView *separatorLine;
+@property (nonatomic,strong) UIImageView *separatorLine;
 
 @end
 
@@ -45,8 +45,8 @@
         self.pubtimeLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.pubtimeLabel];
         
-        self.separatorLine = [[SSLineView alloc] initWithFrame:CGRectZero];
-        self.separatorLine.lineColor = [UIColor lightGrayColor];
+        self.separatorLine = [[UIImageView alloc] initWithFrame:CGRectZero];
+        self.separatorLine.image = [UIImage imageNamed:@"full_separator_line"];
         [self.contentView addSubview:self.separatorLine];
         
     }
@@ -59,10 +59,10 @@
     self.textLabel.frame = CGRectMake(10, 10, Comment_Name_Width, Comment_Name_Height);
     float contentHeight = NISizeOfStringWithLabelProperties(self.detailTextLabel.text, CGSizeMake(300, MAXFLOAT), [UIFont systemFontOfSize:Review_Font_Size], UILineBreakModeWordWrap, 0).height;
     self.detailTextLabel.frame = CGRectMake(10, 10+Comment_Name_Height+5, 300, contentHeight);
-    self.separatorLine.frame = CGRectMake(10, 10+Comment_Name_Height+5+contentHeight+10, 320-20, 2);
+    self.separatorLine.frame = CGRectMake(10, 10+Comment_Name_Height+5+contentHeight+10, 320-20, 1);
 }
 
-- (void)setModel:(JDOCommentModel *)commentModel{
+- (void)setNewsModel:(JDOCommentModel *)commentModel{
     if(commentModel == nil){
         self.textLabel.textColor = [UIColor blackColor];
         self.textLabel.text = @"暂无评论";
@@ -76,7 +76,22 @@
         self.pubtimeLabel.text = [commentModel.pubtime substringWithRange:NSMakeRange(5,11)]; //mm-dd hh:mi
         self.separatorLine.hidden = false;
     }
-    
+}
+
+- (void)setQuestionModel:(JDOQuestionCommentModel *)commentModel{
+    if(commentModel == nil){
+        self.textLabel.textColor = [UIColor blackColor];
+        self.textLabel.text = @"暂无评论";
+        self.detailTextLabel.text = nil;
+        self.pubtimeLabel.text = nil;
+        self.separatorLine.hidden = true;
+    }else{
+        self.textLabel.textColor = [UIColor blueColor];
+        self.textLabel.text = JDOIsEmptyString(commentModel.username) ? @"胶东在线网友" :commentModel.username;
+        self.detailTextLabel.text = commentModel.liuyan;
+        self.pubtimeLabel.text = [commentModel.pubtime substringWithRange:NSMakeRange(5,11)]; //mm-dd hh:mi
+        self.separatorLine.hidden = false;
+    }
 }
 
 @end

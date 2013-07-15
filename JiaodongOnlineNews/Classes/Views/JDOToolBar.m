@@ -16,6 +16,7 @@
 #import "UIDevice+IdentifierAddition.h"
 #import "JDOImageModel.h"
 #import "MBProgressHUD.h"
+#import "JDOQuestionReviewController.h"
 
 #define Toolbar_Control_Default_Width 47
 #define Toolbar_Control_Default_Height 47
@@ -37,6 +38,7 @@
 @property (strong, nonatomic) JDOShareViewController *shareViewController;
 @property (strong, nonatomic) JDONewsReviewView *reviewPanel;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) JDOQuestionReviewController *questionReviewController;
 
 @end
 
@@ -47,11 +49,11 @@
 }
 
 // widthConfig中保存NSDictionary,包括"controlWidth","frameWidth","controlHeight"
-- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme{
+- (id)initWithModel:(id<JDOToolbarModel>)model parentController:(UIViewController *)parentController typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme{
     self = [super initWithFrame:frame];
     if (self) {
         self.model = model;
-        self.parentView = parentView;
+        self.parentController = parentController;
         self.typeConfig = typeConfig;
         self.widthConfig = widthConfig;
         self.theme = theme;
@@ -59,6 +61,7 @@
 #warning 查询该新闻是否被收藏
         _collected = false;
         _isKeyboardShowing = false;
+        _reviewType = JDOReviewTypeNews;
         
         [self setupToolBar];
     }
@@ -69,7 +72,7 @@
     [self setReviewPanel:nil];
     [self setFontPopTipView:nil];
     [self setCollectPopTipView:nil];
-    [self setParentView:nil];
+    [self setParentController:nil];
     [self setModel:nil];
     [self setTypeConfig:nil];
     [self setWidthConfig:nil];
@@ -176,26 +179,36 @@
 #pragma mark - Write Review
 
 - (void)writeReview{
-    if( _reviewPanel == nil){
-        _reviewPanel = [[JDONewsReviewView alloc] initWithTarget:self];
-        [(HPTextViewInternal *)_reviewPanel.textView.internalTextView setPlaceholder:Review_Comment_Placeholder];
+    if( _reviewType == JDOReviewTypeNews){
+        if( _reviewPanel == nil){
+            _reviewPanel = [[JDONewsReviewView alloc] initWithTarget:self];
+            [(HPTextViewInternal *)_reviewPanel.textView.internalTextView setPlaceholder:Review_Comment_Placeholder];
+        }
+        
+        [self.parentController.view pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
+            [_reviewPanel.textView becomeFirstResponder];
+            _isKeyboardShowing = true;
+            *_startFrame = _reviewPanel.frame;
+            *_endFrame = endFrame;
+            *_timeInterval = timeInterval;
+        } complete:^{
+            
+        }];
+    }else if( _reviewType == JDOReviewTypeLivehood){
+        // 民声评论需要输入的内容较多，在新页面打开
+        if (_questionReviewController == nil){
+            _questionReviewController = [[JDOQuestionReviewController alloc] initWithQuestionModel:(JDOQuestionModel *)self.model];
+        }
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+        [centerController pushViewController:_questionReviewController animated:true];
     }
     
-    [self.parentView pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
-        [_reviewPanel.textView becomeFirstResponder];
-        _isKeyboardShowing = true;
-        *_startFrame = _reviewPanel.frame;
-        *_endFrame = endFrame;
-        *_timeInterval = timeInterval;
-    } complete:^{
-        
-    }];
 }
 
 - (void)hideReviewView{
     [_reviewPanel.textView resignFirstResponder];
     _isKeyboardShowing = false;
-    [_reviewPanel popView:self.parentView process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
+    [_reviewPanel popView:self.parentController.view process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
         *_startFrame = _reviewPanel.frame;
         *_endFrame = CGRectMake(0, App_Height, 320, _reviewPanel.frame.size.height);
         *_timeInterval = timeInterval;
@@ -227,12 +240,12 @@
         }else if([status intValue] == 0){
             // 提交失败,服务器错误
             NSLog(@"提交失败,服务器错误");
-            [JDOCommonUtil showHintHUD:@"服务器错误" inView:self.parentView];
+            [JDOCommonUtil showHintHUD:@"服务器错误" inView:self.parentController.view];
         }
     } failure:^(NSString *errorStr) {
 #warning 评论时的错误在页面上显示不出来提示
         NSLog(@"错误内容--%@", errorStr);
-        [JDOCommonUtil showHintHUD:errorStr inView:self.parentView];
+        [JDOCommonUtil showHintHUD:errorStr inView:self.parentController.view];
     }];
     
     // 同时发布到微博
@@ -273,10 +286,10 @@
     NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [aValue CGRectValue];
     // self.parentView会scale到0.95，所以用superview(UIViewControllerWrapperView)作为参考系
-    keyboardRect = [self.parentView.superview convertRect:keyboardRect fromView:nil];
+    keyboardRect = [self.parentController.view.superview convertRect:keyboardRect fromView:nil];
     
     CGRect reviewPanelFrame = _reviewPanel.frame;
-    reviewPanelFrame.origin.y = self.parentView.bounds.size.height - (keyboardRect.size.height + reviewPanelFrame.size.height);
+    reviewPanelFrame.origin.y = self.parentController.view.bounds.size.height - (keyboardRect.size.height + reviewPanelFrame.size.height);
     CGRect _endFrame = reviewPanelFrame;
     
     if( _isKeyboardShowing == false){
@@ -344,7 +357,7 @@
         _fontPopTipView.animation = CMPopTipAnimationPop;
         _fontPopTipView.dismissTapAnywhere = YES;
     }
-    [_fontPopTipView presentPointingAtView:sender inView:self.parentView animated:YES];
+    [_fontPopTipView presentPointingAtView:sender inView:self.parentController.view animated:YES];
 }
 
 - (void) changeFontSize:(UIButton *)sender{
@@ -387,7 +400,7 @@
         self.collected = true;
         _collectPopTipView.message = @"  收藏成功!  ";
     }
-    [_collectPopTipView presentPointingAtView:sender inView:self.parentView animated:YES];
+    [_collectPopTipView presentPointingAtView:sender inView:self.parentController.view animated:YES];
     [_collectPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];
 }
 
@@ -430,12 +443,12 @@
 
 - (MBProgressHUD *)progressHUD {
     if (!_progressHUD) {
-        _progressHUD = [[MBProgressHUD alloc] initWithView:self.parentView];
+        _progressHUD = [[MBProgressHUD alloc] initWithView:self.parentController.view];
 //        _progressHUD.minSize = CGSizeMake(120, 120);
         _progressHUD.minShowTime = 1;
 
         self.progressHUD.customView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/Checkmark.png"]];
-        [self.parentView addSubview:_progressHUD];
+        [self.parentController.view addSubview:_progressHUD];
     }
     return _progressHUD;
 }

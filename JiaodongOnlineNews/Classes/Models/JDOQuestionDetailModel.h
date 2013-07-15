@@ -24,4 +24,6 @@
 @property (nonatomic,strong) NSString *reply_date;
 @property (nonatomic,strong) JDOQuestionDetailModel *secondInfo;
 
+@property (nonatomic,strong) NSString *dept_code;
+
 @end
