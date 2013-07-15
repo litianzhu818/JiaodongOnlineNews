@@ -25,13 +25,17 @@
     return self;
 }
 
-- (void)viewDidLoad{
-    [super viewDidLoad];
+- (void)loadView{
+    [super loadView];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
+}
+
+- (void)viewDidLoad{
+    [super viewDidLoad];
 }
 
 - (void)setupNavigationView{

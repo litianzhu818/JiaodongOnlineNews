@@ -12,7 +12,7 @@
 
 - (id)init
 {
-    self = [self initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self = [self initWithFrame:CGRectMake(0, 0, 320, 93.0/2)];
     UIImageView *background = [[UIImageView alloc] initWithFrame:self.frame];
     background.image = [UIImage imageNamed:@"top_navigation_background"];
     [self addSubview:background];
