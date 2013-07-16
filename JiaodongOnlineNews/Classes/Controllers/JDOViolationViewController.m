@@ -9,6 +9,7 @@
 #import "JDOViolationViewController.h"
 #import "JDOJsonClient.h"
 #import "JDOSelectCarTypeViewController.h"
+#import "JDOViolationTableCell.h"
 
 @interface JDOViolationViewController ()
 
@@ -20,10 +21,10 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        CarNumString = [[NSString alloc] init];
-        CarTypeString = [[NSString alloc] init];
-        ChassisNumString = [[NSString alloc] init];
-        CarTypeString = @"02";
+        CarNumString = [[NSMutableString alloc] init];
+        CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
+        ChassisNumString = [[NSMutableString alloc] init];
+        resultArray = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -57,8 +58,13 @@
     [tp addSubview:checkBox2];
     
     [tp setScrollEnabled:NO];
+    
+    [result setDataSource:self];
+    [result setDelegate:self];
+    [result setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [result reloadData];
 }
- 
+
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
@@ -92,6 +98,11 @@
         [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
                 NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
+                if (datas.count > 0) {
+                    [resultArray removeAllObjects];
+                    [resultArray addObjectsFromArray:datas];
+                    [result reloadData];
+                }
             } else {
                 NSLog(@"wrongParams");
             }
@@ -101,7 +112,6 @@
     }
     
 }
-
 
 - (BOOL)checkEmpty
 {
@@ -113,6 +123,53 @@
     }
     return NO;
 }
+
+
+
+
+#pragma mark UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    JDOViolationTableCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.height;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 0.;
+}
+
+#pragma mark -
+#pragma mark UITableViewDataSource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (resultArray.count > 0) {
+        NSString *cellIdentifier = @"ViolationTableCell";
+        
+        JDOViolationTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (cell == nil) {
+            cell = [[JDOViolationTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+        NSDictionary *temp = [resultArray objectAtIndex:indexPath.row];
+        [cell setData:temp];
+        return cell;
+    }
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"COUNT:%d", resultArray.count);
+	return resultArray.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {

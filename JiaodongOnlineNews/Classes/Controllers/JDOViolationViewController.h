@@ -10,13 +10,13 @@
 #import "M13Checkbox.h"
 #import "TPKeyboardAvoidingScrollView.h"
 
-@interface JDOViolationViewController : JDONavigationController
+@interface JDOViolationViewController : JDONavigationController <UITableViewDataSource, UITableViewDelegate>
 {
     IBOutlet UITextField *CarNum;
     IBOutlet UIButton *CarType;
     IBOutlet UITextField *ChassisNum;
-    IBOutlet UILabel *result;
     IBOutlet TPKeyboardAvoidingScrollView *tp;
+    IBOutlet UITableView *result;
     
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
@@ -24,7 +24,7 @@
     NSMutableString *CarNumString;
     NSMutableString *CarTypeString;
     NSMutableString *ChassisNumString;
-    
+    NSMutableArray *resultArray;
 }
 @property (nonatomic ,strong) NSMutableArray *listArray;
 - (BOOL)checkEmpty;
