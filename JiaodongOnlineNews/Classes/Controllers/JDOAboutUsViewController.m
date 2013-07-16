@@ -24,12 +24,18 @@
     return self;
 }
 
+- (void)loadView{
+    [super loadView];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,44,320,App_Height-44)];
+    [self.view addSubview:imageView];
+    imageView.image = [UIImage imageNamed:@"aboutus"];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,44,320,416)];
-    [self.view addSubview:imageView];
-    imageView.image = [UIImage imageNamed:@"aboutus"];
+    
 }
 
 - (void)setupNavigationView{

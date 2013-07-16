@@ -414,6 +414,7 @@ typedef enum{
 		
         // add the page back to the scrollView and transform it
         [_scrollView addSubview:_selectedPage];
+        _selectedPage.alpha = 1.0;
 		_selectedPage.transform = CGAffineTransformMakeScale(Scale, Scale);
  		CGRect frame = _selectedPage.frame;
         frame.origin.y = 0;

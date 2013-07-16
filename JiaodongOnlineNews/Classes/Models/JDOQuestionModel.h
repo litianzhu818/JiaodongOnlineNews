@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JDOToolbarModel.h"
 
-@interface JDOQuestionModel : NSObject
+@interface JDOQuestionModel : NSObject <JDOToolbarModel>
 
 @property (nonatomic,strong) NSString *id;
 @property (nonatomic,strong) NSString *department;

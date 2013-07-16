@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JDOToolbarModel.h"
 #import "WebViewJavascriptBridge_iOS.h"
+#import "JDOCommentModel.h"
 
 typedef enum {
     ToolBarButtonReview = 0,
@@ -27,6 +28,8 @@ typedef enum {
 @protocol JDOReviewTargetDelegate <NSObject>
 
 @required
+@property (nonatomic,assign) JDOReviewType reviewType;
+
 - (void)writeReview;
 - (void)submitReview:(id)sender;
 - (void)hideReviewView;
@@ -56,7 +59,7 @@ typedef enum {
 @interface JDOToolBar : UIView <JDOReviewTargetDelegate>
 
 @property (strong,nonatomic) id<JDOToolbarModel> model;
-@property (strong,nonatomic) UIView *parentView;
+@property (assign,nonatomic) UIViewController *parentController;
 @property (strong,nonatomic) NSArray *typeConfig;
 @property (strong,nonatomic) NSArray *widthConfig;
 @property (assign, nonatomic,getter = isCollected) BOOL collected;
@@ -66,8 +69,10 @@ typedef enum {
 @property (strong,nonatomic) id<JDOShareTargetDelegate> shareTarget;
 @property (strong,nonatomic) id<JDODownloadTargetDelegate> downloadTarget;
 
+@property (nonatomic,assign) JDOReviewType reviewType;
 
-- (id)initWithModel:(id<JDOToolbarModel>)model parentView:(UIView *)parentView typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
+
+- (id)initWithModel:(id<JDOToolbarModel>)model parentController:(UIViewController *)parentController typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
 
 @end
 

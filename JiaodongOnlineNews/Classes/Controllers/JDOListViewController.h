@@ -19,7 +19,8 @@
 @property (nonatomic,copy) NSString *modelClass;
 @property (nonatomic,strong) NSMutableDictionary *listParam;
 
-- (void)loadDataFromNetwork;
 - (id)initWithServiceName:(NSString*)serviceName modelClass:(NSString*)modelClass title:(NSString*)title params:(NSMutableDictionary *)listParam needRefreshControl:(BOOL)needRefreshControl;
+- (void)loadDataFromNetwork;
+- (void) dataLoadFinished:(NSArray *)dataList;
 
 @end

@@ -73,12 +73,10 @@
     [self.view addSubview:_mainView];
     
     // 工具栏输入框
-    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarInputField]];
-    NSArray *toolbarWidthConfig = @[
-        @{@"frameWidth":[NSNumber numberWithFloat:1],@"controlWidth":[NSNumber numberWithFloat:1],@"controlHeight":[NSNumber numberWithFloat:1]}
-    ];
+    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonCollect]];
     
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.questionModel parentView:self.view typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.questionModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    _toolbar.reviewType = JDOReviewTypeLivehood;
     [self.view addSubview:_toolbar];
     
     self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
@@ -115,7 +113,7 @@
 
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithParams:@{@"aid":self.questionModel.id,@"deviceId":[[UIDevice currentDevice] uniqueDeviceIdentifier]}];
+    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeLivehood params:@{@"qid":self.questionModel.id}];
     [centerViewController pushViewController:reviewController animated:true];
 }
 
@@ -132,6 +130,7 @@
     [[JDOJsonClient sharedClient] getJSONByServiceName:QUESTION_DETAIL_SERVICE modelClass:@"JDODataModel" config:config params:@{@"info_id":self.questionModel.id} success:^(JDODataModel *dataModel) {
         if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
             JDOQuestionDetailModel *data = (JDOQuestionDetailModel *)dataModel.data;
+            self.questionModel.dept_code = data.dept_code ;  // 提交评论时用到dept_code
             [self dataLoadFinished: data];
             [self setCurrentState:ViewStatusNormal];
         }else{
@@ -149,15 +148,14 @@
     [content addObject:[NSString stringWithFormat:@"部门：%@",detailModel.department]];
     [content addObject:detailModel.title];
     [content addObject:[NSString stringWithFormat:@"%@  发表人：%@",detailModel.entry_date,JDOIsEmptyString(detailModel.petname)?detailModel.username:detailModel.petname]];
-    [content addObject:[detailModel.question stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+    [content addObject:[[detailModel.question stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"] stringByTrimmingLeadingAndTrailingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
     if (!JDOIsEmptyString(detailModel.reply)){
         [content addObject:[NSString stringWithFormat:@"回复时间：%@",detailModel.reply_date]];
-        [content addObject:[detailModel.reply stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+        [content addObject:[[detailModel.reply stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"] stringByTrimmingLeadingAndTrailingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
     }
     CGFloat totalHeight = [self buildContent:content startY:10];
 
-    if(detailModel.secondInfo != nil){
-        // 有二次提问的情况下
+    if(detailModel.secondInfo != nil){   // 有二次提问的情况下
         UIImageView *separatorLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, totalHeight+15, 320-20, 1)];
         separatorLine.image = [UIImage imageNamed:@"full_separator_line"];
         [_mainView addSubview:separatorLine];
@@ -166,15 +164,32 @@
         [content2 addObject:@"追加提问"];
         [content2 addObject:@""];
         [content2 addObject:[NSString stringWithFormat:@"%@  发表人：%@",detailModel.secondInfo.entry_date,JDOIsEmptyString(detailModel.secondInfo.petname)?detailModel.secondInfo.username:detailModel.secondInfo.petname]];
-        [content2 addObject:[detailModel.secondInfo.question stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+        [content2 addObject:[[detailModel.secondInfo.question stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"] stringByTrimmingLeadingAndTrailingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
         if (!JDOIsEmptyString(detailModel.secondInfo.reply)){
             [content2 addObject:[NSString stringWithFormat:@"回复时间：%@",detailModel.secondInfo.reply_date]];
-            [content2 addObject:[detailModel.secondInfo.reply stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+            [content2 addObject:[[detailModel.secondInfo.reply stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"] stringByTrimmingLeadingAndTrailingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
         }
         totalHeight = [self buildContent:content2 startY:totalHeight+25];
+    }else{  // 没有二次提问则允许追问
+        if(!JDOIsEmptyString(detailModel.reply)){
+            UIButton *continueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [continueBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [continueBtn setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
+            [continueBtn setTitle:@"追加提问" forState:UIControlStateNormal];
+            [continueBtn addTarget:self action:@selector(continueAsk) forControlEvents:UIControlEventTouchUpInside];
+            continueBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+            continueBtn.frame = CGRectMake(10, totalHeight+15, 297, 43);
+            [_mainView addSubview:continueBtn];
+            totalHeight += 15+43;
+        }
     }
+    
     [_mainView setContentSize:CGSizeMake(320, totalHeight+15)];
     
+}
+
+- (void) continueAsk {
+//    self.questionModel.id
 }
 
 - (CGFloat) buildContent:(NSArray *)content startY:(CGFloat)startY {

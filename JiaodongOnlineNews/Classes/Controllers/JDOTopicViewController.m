@@ -184,6 +184,17 @@
 #pragma mark -
 #pragma mark HGPageScrollViewDelegate
 
+- (void)pageScrollView:(HGPageScrollView *)scrollView willSelectPageAtIndex:(NSInteger)index{
+    int _index = [scrollView indexForSelectedPage];
+    [scrollView pageAtIndex:_index].alpha = 0.6;
+}
+
+- (void)pageScrollView:(HGPageScrollView *)scrollView willDeselectPageAtIndex:(NSInteger)index{
+    // 此回调未在动画块中被调用,将设置alpha直接写到HGPageScrollView的setViewMode:(HGPageScrollViewMode)mode animated:(BOOL)animated
+//    int _index = [scrollView indexForSelectedPage];
+//    [scrollView pageAtIndex:_index].alpha = 1.0;
+}
+
 - (void) pageScrollView:(HGPageScrollView *)scrollView didSelectPageAtIndex:(NSInteger)index
 {
     [SharedAppDelegate deckController].enabled = false;
@@ -191,15 +202,14 @@
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
     JDOTopicDetailController *detailController = [[JDOTopicDetailController alloc] initWithTopicModel:[self.listArray objectAtIndex:index] pController:self];
     [centerViewController pushViewController:detailController animated:true];
-#warning 点击显示详情时加透明度渐变
 }
-
 
 - (void)pageScrollView:(HGPageScrollView *)scrollView didDeselectPageAtIndex:(NSInteger)index
 {
     [SharedAppDelegate deckController].enabled = true;
     
 }
+
 
 
 
