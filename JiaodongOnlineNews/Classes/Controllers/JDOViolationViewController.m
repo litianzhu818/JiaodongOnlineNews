@@ -21,11 +21,10 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        CarNumString = [[NSString alloc] init];
-        CarTypeString = [[NSString alloc] init];
-        ChassisNumString = [[NSString alloc] init];
+        CarNumString = [[NSMutableString alloc] init];
+        CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
+        ChassisNumString = [[NSMutableString alloc] init];
         resultArray = [[NSMutableArray alloc] init];
-        CarTypeString = @"02";
     }
     return self;
 }
@@ -129,11 +128,12 @@
 
 
 #pragma mark UITableViewDelegate
-/*
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 120;
+    JDOViolationTableCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.height;
 }
-*/
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
 }
@@ -168,7 +168,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
-
 
 
 

@@ -81,6 +81,9 @@
     [ispaid setFrame:CGRectMake(5, istreated.bottom + 5, labelsize.width, labelsize.height)];
     [ispaid setText:ispaidString];
     [self.contentView addSubview:ispaid];
+    
+    [self setFrame:CGRectMake(0, 0, 280, 5 + time.height + 5 + location.height + 5 + action.height + 5 + istreated.height + 5 + ispaid.height
+                              + 5)];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
