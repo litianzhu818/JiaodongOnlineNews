@@ -2452,6 +2452,9 @@
 				2D98E211179245F30033951D /* DCSimpleConverter.m in Sources */,
 				2D98E21417924D8E0033951D /* JDODataModel.m in Sources */,
 				D8A0C03717938777005A6307 /* JDOViolationTableCell.m in Sources */,
+				2D9C249A17938EB500EAB2E3 /* JDOQuestionReviewController.m in Sources */,
+				2D9C249F1793D2B200EAB2E3 /* JDOQuestionCommentModel.m in Sources */,
+				2D9C24A21793D74E00EAB2E3 /* JDOArrayModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
