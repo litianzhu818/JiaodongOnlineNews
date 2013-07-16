@@ -14,24 +14,30 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.noNetWorkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bad_net"]];
-        self.noNetWorkView.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+        self.noNetWorkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_no_network"]];
+        self.noNetWorkView.frame = self.bounds;
+        self.noNetWorkView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.noNetWorkView.contentMode = UIViewContentModeScaleAspectFit;
 //        self.noNetWorkView.center = self.center;
         self.noNetWorkView.userInteractionEnabled = true;
         [self addSubview:self.noNetWorkView];
         
-        self.retryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"retry"]];
-        self.retryView.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+        self.retryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_retry"]];
+        self.retryView.frame = self.bounds;
+        self.retryView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.retryView.contentMode = UIViewContentModeScaleAspectFit;
 //        self.retryView.center = self.center;
         self.retryView.userInteractionEnabled = true;
         [self addSubview:self.retryView];
         
-        self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"progressbar_logo"]];
-        self.logoView.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+        self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_logo"]];
+        self.logoView.frame = self.bounds;
+        self.logoView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.logoView.contentMode = UIViewContentModeScaleAspectFit;
 //        self.logoView.center = self.center;
         self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.activityIndicator sizeToFit];
-        self.activityIndicator.center = CGPointMake(self.logoView.center.x,self.logoView.center.y-50);
+        self.activityIndicator.center = CGPointMake(self.logoView.center.x,self.logoView.center.y-80);
         [self.logoView addSubview:self.activityIndicator];
         [self addSubview:self.logoView];
         

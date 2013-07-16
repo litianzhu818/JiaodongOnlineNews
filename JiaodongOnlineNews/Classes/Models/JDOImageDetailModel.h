@@ -12,5 +12,6 @@
 
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *imagecontent;
+@property (nonatomic,strong) NSString *tinyurl;
 
 @end

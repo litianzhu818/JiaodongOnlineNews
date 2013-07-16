@@ -17,6 +17,7 @@
 @property (nonatomic,strong) NSString *summary;
 @property (nonatomic,strong) NSString *drawno;
 @property (nonatomic,strong) NSString *modifytime;
+@property (nonatomic,strong) NSString *tinyurl;
 
 // protocol
 @property (nonatomic,strong) NSString *reviewService;

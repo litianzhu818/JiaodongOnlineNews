@@ -164,8 +164,6 @@
     }
 }
 
-// 
-
 - (void)viewDidLoad{
     [super viewDidLoad];
     // 设置导航栏
@@ -236,7 +234,8 @@
 - (void)onSharedClicked{
     JDOImageDetailModel *model = (JDOImageDetailModel *)[_models objectAtIndex:_browser.currentPageIndex];
     _toolbar.model.imageurl = model.imageurl;
-    _browser.toolbar.model.summary = model.imagecontent;
+    _toolbar.model.summary = model.imagecontent;
+    _toolbar.model.tinyurl = model.tinyurl;
 }
 
 #pragma mark - download delegate

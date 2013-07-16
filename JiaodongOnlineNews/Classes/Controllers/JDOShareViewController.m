@@ -199,7 +199,7 @@
                                 defaultContent:nil
                                          image:[ShareSDK jpegImageWithImage:_imageView.image quality:1]
                                          title:[self.model title]
-                                           url:@"http://m.jiaodong.net"
+                                           url:[self.model tinyurl]
                                    description:nil
                                      mediaType:SSPublishContentMediaTypeNews];
     
@@ -231,11 +231,11 @@
         return;
     }
     
-    id<ISSContent> publishContent = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingString:@" http://m.jiaodong.net"]
+    id<ISSContent> publishContent = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingFormat:@" %@",[self.model tinyurl]]
                                        defaultContent:nil
                                                 image:[ShareSDK jpegImageWithImage:_imageView.image quality:1]
                                                 title:[self.model title]
-                                                  url:@"http://m.jiaodong.net"
+                                                  url:[self.model tinyurl]
                                           description:[self.model summary]
                                             mediaType:SSPublishContentMediaTypeNews];
     
@@ -247,6 +247,9 @@
 #warning 根据状态alert提示分享成功,模态窗口,完成后自动返回上级页面
                               if(type == ShareTypeQQSpace){
 #warning 未通过审核的应用没有发布图片的权限
+                              }
+                              if(error){
+                                  NSLog(@"分享错误代码:%d",error.errorCode);
                               }
                           }];
     // 返回上级页面

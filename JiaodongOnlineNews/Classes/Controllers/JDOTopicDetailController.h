@@ -11,11 +11,12 @@
 
 @class JDOTopicModel;
 
-@interface JDOTopicDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate>
+@interface JDOTopicDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate,JDOStatusView,JDOStatusViewDelegate>
 
+@property (strong,nonatomic) JDOStatusView *statusView;
+@property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDOTopicModel *topicModel;
-@property (nonatomic,strong) UIActivityIndicatorView *activityIndicationView;
 @property (nonatomic,strong) JDOToolBar *toolbar;
 @property (nonatomic,strong) JDOTopicViewController *pController;
 

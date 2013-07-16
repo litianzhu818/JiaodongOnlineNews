@@ -10,7 +10,7 @@
 #import "JDOQuestionModel.h"
 #import "InsetsTextField.h"
 
-#define Line_Height 30.0f
+#define Line_Height 28.0f
 #define Label_Wdith 80.0f
 #define Input_Wdith 210.0f
 
@@ -43,26 +43,34 @@
     
     UILabel *userLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, Label_Wdith, Line_Height)];
     userLabel.backgroundColor = [UIColor clearColor];
-    userLabel.text = @"用户昵称:";
+    userLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
+    userLabel.font = [UIFont systemFontOfSize:16];
+    userLabel.text = @"用户昵称";
     [self.mainView addSubview:userLabel];
     
     _userInput = [[InsetsTextField alloc] initWithFrame:CGRectMake(Label_Wdith+20, 10, Input_Wdith, Line_Height)];
     _userInput.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+    _userInput.font = [UIFont systemFontOfSize:16];
     [self.mainView addSubview:_userInput];
     
     UILabel *telLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(userLabel.frame)+10, Label_Wdith, Line_Height)];
     telLabel.backgroundColor = [UIColor clearColor];
-    telLabel.text = @"联系电话:";
+    telLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
+    telLabel.font = [UIFont systemFontOfSize:16];
+    telLabel.text = @"联系电话";
     [self.mainView addSubview:telLabel];
     
     _telInput = [[InsetsTextField alloc] initWithFrame:CGRectMake(Label_Wdith+20, CGRectGetMaxY(userLabel.frame)+10, Input_Wdith, Line_Height)];
     _telInput.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
     _telInput.keyboardType = UIKeyboardTypePhonePad;
+    _telInput.font = [UIFont systemFontOfSize:16];
     [self.mainView addSubview:_telInput];
     
     UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(telLabel.frame)+10, Label_Wdith, Line_Height)];
     contentLabel.backgroundColor = [UIColor clearColor];
-    contentLabel.text = @"留言内容:";
+    contentLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
+    contentLabel.font = [UIFont systemFontOfSize:16];
+    contentLabel.text = @"留言内容";
     [self.mainView addSubview:contentLabel];
     
     _contentInput = [[UITextView alloc] initWithFrame:CGRectMake(Label_Wdith+20, CGRectGetMaxY(telLabel.frame)+10, Input_Wdith, 100)];

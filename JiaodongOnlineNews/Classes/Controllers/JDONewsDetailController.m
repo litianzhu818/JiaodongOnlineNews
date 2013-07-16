@@ -15,6 +15,7 @@
 #import "WebViewJavascriptBridge_iOS.h"
 #import "JDOReviewListController.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "DCKeyValueObjectMapping.h"
 
 @interface JDONewsDetailController ()
 
@@ -57,19 +58,31 @@
     _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
     [self.view addSubview:_toolbar];
     
-    // WebView加载mask
-    UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
-    [maskView setTag:108];
-    [maskView setBackgroundColor:[UIColor blackColor]];
-    [maskView setAlpha:0.3];
-    [self.view addSubview:maskView];
-    
-    self.activityIndicationView = [[UIActivityIndicatorView alloc] init];
-    self.activityIndicationView.center = self.webView.center;
-    self.activityIndicationView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    [self.view addSubview:_activityIndicationView];
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView.delegate = self;
+    [self.view addSubview:self.statusView];
     
 }
+
+- (void) onRetryClicked:(JDOStatusView *) statusView{
+    [self loadWebView];
+}
+
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
+    [self loadWebView];
+}
+
+- (void) setCurrentState:(ViewStatusType)status{
+    _status = status;
+    
+    self.statusView.status = status;
+    if(status == ViewStatusNormal){
+        self.webView.hidden = false;
+    }else{
+        self.webView.hidden = true;
+    }
+}
+
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -88,6 +101,7 @@
     [super viewDidUnload];
     [self setWebView:nil];
     [self setToolbar:nil];
+    [self setStatusView:nil];
     
     [_blackMask removeGestureRecognizer:self.closeReviewGesture];
 }
@@ -134,20 +148,35 @@
 }
 
 - (void) loadWebView{
-    [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
-            // 新闻不存在
-        }else if([responseObject isKindOfClass:[NSDictionary class]]){
-//            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
-            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
-            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
-//            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://tieba.baidu.com"]]];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-    [self.activityIndicationView startAnimating];
+    #warning 若有缓存可以从缓存读取
+    if (false /*有缓存*/) {
+        [self setCurrentState:ViewStatusLogo];
+    }else if( ![Reachability isEnableNetwork]){
+        [self setCurrentState:ViewStatusNoNetwork];
+    }else{
+        [self setCurrentState:ViewStatusLoading];
+        [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
+                // 新闻不存在
+                [self setCurrentState:ViewStatusRetry];
+            }else if([responseObject isKindOfClass:[NSDictionary class]]){
+                // 如果需要保存detailModel对象,可以在这里解析
+//                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDONewsDetailModel class]];
+//                JDONewsDetailModel *detailModel = [mapper parseDictionary:responseObject];
+                // 设置url短地址
+                self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
+                
+                NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
+                NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+                [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
+            }else{
+                // 返回结构不是json结构
+                [self setCurrentState:ViewStatusRetry];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self setCurrentState:ViewStatusRetry];
+        }];
+    }
 }
 
 #pragma mark - Webview delegate
@@ -161,16 +190,14 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView{
-    
-    
+
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-    [self.activityIndicationView stopAnimating];
-    [[self.view viewWithTag:108] removeFromSuperview];
+    [self setCurrentState:ViewStatusNormal];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    
+    [self setCurrentState:ViewStatusRetry];
 }
 @end

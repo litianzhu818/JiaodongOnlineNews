@@ -53,22 +53,32 @@
     
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-_toolbar.height)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
-    self.webView.delegate = self;
+//    self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
     [self.view addSubview:_webView];
     
-    // WebView加载mask
-    UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
-    [maskView setTag:108];
-    [maskView setBackgroundColor:[UIColor blackColor]];
-    [maskView setAlpha:0.3];
-    [self.view addSubview:maskView];
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView.delegate = self;
+    [self.view addSubview:self.statusView];
+}
+
+- (void) onRetryClicked:(JDOStatusView *) statusView{
+    [self loadWebView];
+}
+
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
+    [self loadWebView];
+}
+
+- (void) setCurrentState:(ViewStatusType)status{
+    _status = status;
     
-    self.activityIndicationView = [[UIActivityIndicatorView alloc] init];
-    self.activityIndicationView.center = self.webView.center;
-    self.activityIndicationView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    [self.view addSubview:_activityIndicationView];
-    
+    self.statusView.status = status;
+    if(status == ViewStatusNormal){
+        self.webView.hidden = false;
+    }else{
+        self.webView.hidden = true;
+    }
 }
 
 - (void)viewDidLoad{
@@ -101,6 +111,7 @@
     [super viewDidUnload];
     [self setWebView:nil];
     [self setToolbar:nil];
+    [self setStatusView:nil];
     
     [_blackMask removeGestureRecognizer:self.closeReviewGesture];
 }
@@ -134,29 +145,37 @@
 }
 
 - (void) loadWebView{
-    [[JDOJsonClient sharedClient] getPath:TOPIC_DETAIL_SERVICE parameters:@{@"aid":self.topicModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
-            // 新闻不存在
-        }else if([responseObject isKindOfClass:[NSDictionary class]]){
-            NSMutableDictionary *dict = [responseObject mutableCopy];
-            [dict setObject:self.topicModel.id forKey:@"id"];
-            NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:dict];
-            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-    [self.activityIndicationView startAnimating];
+#warning 若有缓存可以从缓存读取,话题涉及到动态的投票数量,是否缓存有待考虑
+    if (false /*有缓存*/) {
+        [self setCurrentState:ViewStatusLogo];
+    }else if( ![Reachability isEnableNetwork]){
+        [self setCurrentState:ViewStatusNoNetwork];
+    }else{
+        [self setCurrentState:ViewStatusLoading];
+        [[JDOJsonClient sharedClient] getPath:TOPIC_DETAIL_SERVICE parameters:@{@"aid":self.topicModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
+                // 新闻不存在
+                [self setCurrentState:ViewStatusRetry];
+            }else if([responseObject isKindOfClass:[NSDictionary class]]){
+                NSMutableDictionary *dict = [responseObject mutableCopy];
+                [dict setObject:self.topicModel.id forKey:@"id"];
+                self.topicModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
+                
+                NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:dict];
+                NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+                [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
+            }else{
+                [self setCurrentState:ViewStatusRetry];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self setCurrentState:ViewStatusRetry];
+        }];
+    }
 }
 
 #pragma mark - Webview delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-    //    NSString *scheme = request.URL.scheme;
-    //    NSString *host = request.URL.host;
-    //    NSString *query = request.URL.query;
-    //    NSNumber *port = request.URL.port;
     return true;
 }
 
@@ -166,11 +185,10 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-    [self.activityIndicationView stopAnimating];
-    [[self.view viewWithTag:108] removeFromSuperview];
+    [self setCurrentState:ViewStatusNormal];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    
+    [self setCurrentState:ViewStatusRetry]; 
 }
 @end
