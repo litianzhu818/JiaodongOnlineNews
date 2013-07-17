@@ -100,6 +100,10 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
+								<object class="NSCustomResource" key="IBUIBackground" id="18491659">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">textback.png</string>
+								</object>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="585470631">
 									<int key="type">1</int>
 									<double key="pointSize">14</double>
@@ -223,6 +227,7 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
+								<reference key="IBUIBackground" ref="18491659"/>
 								<reference key="IBUIFontDescription" ref="585470631"/>
 								<reference key="IBUIFont" ref="732943225"/>
 							</object>
@@ -635,10 +640,10 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">search.png</string>
-			<string key="NS.object.0">{594, 85}</string>
-		</object>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="search.png">{594, 85}</string>
+			<string key="textback.png">{290, 50}</string>
+		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>
