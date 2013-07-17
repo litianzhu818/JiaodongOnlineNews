@@ -11,11 +11,12 @@
 
 @class JDONewsModel;
 
-@interface JDONewsDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate>
+@interface JDONewsDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate,JDOStatusView,JDOStatusViewDelegate>
 
+@property (strong,nonatomic) JDOStatusView *statusView;
+@property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDONewsModel *newsModel;
-@property (nonatomic,strong) UIActivityIndicatorView *activityIndicationView;
 @property (nonatomic,strong) JDOToolBar *toolbar;
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;

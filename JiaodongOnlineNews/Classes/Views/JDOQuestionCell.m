@@ -32,7 +32,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.textLabel.font = [UIFont systemFontOfSize:Dept_Font_Size];
-        self.textLabel.textColor = [UIColor colorWithHex:@"1673ba"];
+        self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.backgroundColor = [UIColor clearColor];
         
         self.detailTextLabel.font = [UIFont systemFontOfSize:Title_Font_Size];
@@ -84,7 +84,7 @@
         self.replyLabel.text = nil;
         self.separatorLine.hidden = true;
     }else{
-        self.textLabel.textColor = [UIColor colorWithHex:@"1673ba"];
+        self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.text = [NSString stringWithFormat:@"处理部门：%@", questionModel.department];
         self.detailTextLabel.text = questionModel.title;
         self.codeLabel.text = [NSString stringWithFormat:@"编号：[%@]",questionModel.id];

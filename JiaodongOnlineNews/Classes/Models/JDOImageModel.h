@@ -15,6 +15,7 @@
 @property (nonatomic,strong) NSString *follownums;
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *pubtime;
+@property (nonatomic,strong) NSString *tinyurl;
 
 // protocol
 @property (nonatomic,strong) NSString *summary;

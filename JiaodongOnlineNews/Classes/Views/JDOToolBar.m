@@ -262,7 +262,7 @@
                                        defaultContent:nil
                                                 image:nil
                                                 title:[self.model title]
-                                                  url:@"http://m.jiaodong.net"
+                                                  url:[self.model tinyurl]
                                           description:[self.model summary]
                                             mediaType:SSPublishContentMediaTypeNews];
     
@@ -274,7 +274,7 @@
 }
 
 - (NSString *)defaultShareContent{
-    return [NSString stringWithFormat:@" //评论胶东在线新闻【%@】 http://m.jiaodong.net",[self.model title]];
+    return [NSString stringWithFormat:@" //评论胶东在线新闻【%@】 %@",[self.model title],[self.model tinyurl]];
 }
 
 #pragma mark - keyboard notification

@@ -86,11 +86,11 @@
 }
 
 -(void)viewDidUnload{
-    [super viewDidUnload];
-    
     [self.view.blackMask removeGestureRecognizer:self.closeReviewGesture];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super viewDidUnload];
 }
 
 - (void) loadWebView{

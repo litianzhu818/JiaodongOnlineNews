@@ -18,5 +18,7 @@
 @property (nonatomic,strong) NSString *summary;
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *reviewService;
+@property (nonatomic,strong) NSString *tinyurl;
+
 
 @end

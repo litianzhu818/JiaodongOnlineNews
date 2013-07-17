@@ -66,6 +66,7 @@
         _topicTime.textColor = [UIColor colorWithHex:@"646464"];
         _topicTime.font = [UIFont systemFontOfSize:14];
         _topicTime.textAlignment = UITextAlignmentRight;
+        _topicTime.backgroundColor = [UIColor clearColor];
         _topicTime.text = [JDOCommonUtil formatDate:[NSDate date] withFormatter:DateFormatYMDHM];
         [self addSubview:_topicTime];
         
@@ -76,7 +77,8 @@
         
         // 标题和内容
         _title = [[UILabel alloc] initWithFrame:CGRectMake(Padding, CGRectGetMaxY(_separatorLine.frame)+Padding, 320-2*Padding, font18Height)];
-        _title.textColor = [UIColor blackColor];
+        _title.textColor = [UIColor colorWithHex:@"323232"];
+        _title.backgroundColor = [UIColor clearColor];
         _title.font = [UIFont boldSystemFontOfSize:18];
         [self addSubview:_title];
         

@@ -9,14 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "NimbusPagingScrollView.h"
 
-@interface JDOLivehoodAskQuestion : NIPageView <JDOStatusView>
+@interface JDOLivehoodAskQuestion : NIPageView
 
-@property (strong,nonatomic) JDOStatusView *statusView;
-@property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,assign) NSDictionary *info;
 
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info;
 
-- (void)loadDataFromNetwork;
 
 @end

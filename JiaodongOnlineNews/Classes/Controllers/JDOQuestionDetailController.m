@@ -196,7 +196,7 @@
     UILabel *deptLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, startY, 320-20, 0)];
     deptLabel.font = [UIFont systemFontOfSize:14];
     deptLabel.text = [content objectAtIndex:0];
-    deptLabel.textColor = [UIColor colorWithHex:@"1673ba"];
+    deptLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
     deptLabel.backgroundColor = [UIColor clearColor];
     [deptLabel sizeToFit];
     [_mainView addSubview:deptLabel];

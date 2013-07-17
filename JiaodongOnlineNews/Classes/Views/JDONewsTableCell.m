@@ -103,6 +103,7 @@
     }];
     self.textLabel.text = newsModel.title;
     self.detailTextLabel.text = newsModel.summary;
+#warning 根据已读或者未读来区分文字的颜色
 }
 
 @end

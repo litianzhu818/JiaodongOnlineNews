@@ -39,7 +39,7 @@
             @{@"reuseId":@"Department",@"title":@"参与部门"},
             @{@"reuseId":@"QuestionList",@"title":@"相关问题"},
             @{@"reuseId":@"AskQuestion",@"title":@"我要提问"},
-            @{@"reuseId":@"MyQuestion",@"title":@"我的问题"}
+//            @{@"reuseId":@"MyQuestion",@"title":@"我的问题"}
         ];
     }
     return self;
@@ -116,7 +116,7 @@
         }
         case 1:{
             JDOLivehoodQuestionList *aPage = [[JDOLivehoodQuestionList alloc] initWithFrame:_scrollView.bounds info:itemInfo rootView:self.view];
-            [aPage setCurrentState:ViewStatusLogo];
+            [aPage loadDataFromNetwork];
             return aPage;
         }
         case 2:{
@@ -191,28 +191,28 @@
     lastCenterPageIndex = _scrollView.centerPageIndex;
     UIView<NIPagingScrollViewPage> *page = _scrollView.centerPageView;
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
-    NSDictionary *pageInfo = (NSDictionary *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
-    
-    switch (_scrollView.centerPageIndex) {
-        case 0:{
-            JDOLivehoodDeptList *aPage = (JDOLivehoodDeptList *)page;
-            break;
-        }
-        case 1:{
-            JDOLivehoodQuestionList *aPage = (JDOLivehoodQuestionList *)page;
-            break;
-        }
-        case 2:{
-            JDOLivehoodAskQuestion *aPage = (JDOLivehoodAskQuestion *)page;
-            break;
-        }
-        case 3:{
-            JDOLivehoodMyQuestion *aPage = (JDOLivehoodMyQuestion *)page;
-            break;
-        }
-        default:
-            break;
-    }
+//    NSDictionary *pageInfo = (NSDictionary *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
+//    
+//    switch (_scrollView.centerPageIndex) {
+//        case 0:{
+//            JDOLivehoodDeptList *aPage = (JDOLivehoodDeptList *)page;
+//            break;
+//        }
+//        case 1:{
+//            JDOLivehoodQuestionList *aPage = (JDOLivehoodQuestionList *)page;
+//            break;
+//        }
+//        case 2:{
+//            JDOLivehoodAskQuestion *aPage = (JDOLivehoodAskQuestion *)page;
+//            break;
+//        }
+//        case 3:{
+//            JDOLivehoodMyQuestion *aPage = (JDOLivehoodMyQuestion *)page;
+//            break;
+//        }
+//        default:
+//            break;
+//    }
     
     
     

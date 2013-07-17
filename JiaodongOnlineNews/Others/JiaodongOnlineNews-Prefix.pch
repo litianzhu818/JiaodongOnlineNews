@@ -61,6 +61,7 @@
 
 // 颜色
 #define Main_Background_Color @"f0f0f0"
+#define Light_Blue_Color @"1673ba"
 
 // 提示最少显示时间
 #define Hint_Min_Show_Time 0.8

@@ -18,6 +18,7 @@
 @property (nonatomic,copy) NSArray  *points;
 @property (nonatomic,copy) NSString *drawno;
 @property (nonatomic,copy) NSString *voteCounts;
+@property (nonatomic,copy) NSString *tinyurl;
 
 + (MGTemplateEngine *) sharedTemplateEngine;
 + (NSString *) mergeToHTMLTemplateFromDictionary:(NSDictionary *)dictionary;

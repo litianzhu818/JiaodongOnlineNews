@@ -96,6 +96,7 @@
         self.statusView = [[JDOStatusView alloc] initWithFrame:self.bounds];
         [self addSubview:self.statusView];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deptChanged:) name:kDeptChangedNotification object:nil];
+        
     }
     return self;
 }

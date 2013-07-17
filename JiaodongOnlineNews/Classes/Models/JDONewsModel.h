@@ -20,6 +20,7 @@
 @property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) NSString *spic;
 @property (nonatomic,strong) NSString *modifytime;
+@property (nonatomic,strong) NSString *tinyurl;
 
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *reviewService;
