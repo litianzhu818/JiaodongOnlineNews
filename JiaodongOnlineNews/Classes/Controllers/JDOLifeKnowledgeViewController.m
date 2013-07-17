@@ -38,7 +38,7 @@
         self.reuseId = @"27";
         self.channelid = @"27";
         self.currentPage = 1;
-        self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.height - 44) style:UITableViewStylePlain];
         //self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
@@ -335,11 +335,22 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
+    detailController.title = @"生活常识";
     JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
     [centerController pushViewController:detailController animated:true];
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
+
+- (void)setupNavigationView{
+    [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
+    [self.navigationView setTitle:@"生活常识"];
+}
+
+- (void) onBackBtnClick{
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+}
 
 - (void)viewDidLoad
 {

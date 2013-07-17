@@ -110,7 +110,11 @@
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
-    [self.navigationView setTitle:@"新闻详情"];
+    if (self.title.length > 0) {
+        [self.navigationView setTitle:self.title];
+    } else {
+        [self.navigationView setTitle:@"新闻详情"];
+    }
     [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
 }
 
