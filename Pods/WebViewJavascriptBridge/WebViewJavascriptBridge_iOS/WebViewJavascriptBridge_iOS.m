@@ -21,7 +21,7 @@
     return bridge;
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView {    
     if (webView != self.webView) { return; }
     
     if (![[self.webView stringByEvaluatingJavaScriptFromString:@"typeof WebViewJavascriptBridge == 'object'"] isEqualToString:@"true"]) {
@@ -29,18 +29,31 @@
         NSString *js = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
         [self.webView stringByEvaluatingJavaScriptFromString:js];
     }
+    else{
     
-    if (self.startupMessageQueue) {
-        for (id queuedMessage in self.startupMessageQueue) {
-            [self _dispatchMessage:queuedMessage];
+        if (self.startupMessageQueue) {
+            for (id queuedMessage in self.startupMessageQueue) {
+                [self _dispatchMessage:queuedMessage];
+            }
+            self.startupMessageQueue = nil;
         }
-        self.startupMessageQueue = nil;
-    }
-    
-    if (self.webViewDelegate && [self.webViewDelegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
-        [self.webViewDelegate webViewDidFinishLoad:webView];
+        if (self.webViewDelegate && [self.webViewDelegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+            [self.webViewDelegate webViewDidFinishLoad:webView];
+        }
     }
 }
+        
+//    if (self.startupMessageQueue) {
+//        for (id queuedMessage in self.startupMessageQueue) {
+//            [self _dispatchMessage:queuedMessage];
+//        }
+//        self.startupMessageQueue = nil;
+//    }
+//    
+//    if (self.webViewDelegate && [self.webViewDelegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+//        [self.webViewDelegate webViewDidFinishLoad:webView];
+//    }
+//}
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     if (webView != self.webView) { return; }
@@ -69,6 +82,7 @@
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     if (webView != self.webView) { return; }
     if (self.webViewDelegate && [self.webViewDelegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
+        
         [self.webViewDelegate webViewDidStartLoad:webView];
     }
 }
