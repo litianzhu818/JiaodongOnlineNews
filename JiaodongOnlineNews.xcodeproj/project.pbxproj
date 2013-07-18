@@ -326,6 +326,7 @@
 		2DA81F961796749C00A528BA /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA81F921796749C00A528BA /* success.png */; };
 		2DA81F971796749C00A528BA /* success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA81F931796749C00A528BA /* success@2x.png */; };
 		2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */; };
+		2DB4184F1798157900C9E56C /* JDORegxpUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DB4184E1798157900C9E56C /* JDORegxpUtil.m */; };
 		2DC1D2C6177D8ED600D31184 /* news_content_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2C4177D8ED600D31184 /* news_content_background.png */; };
 		2DC1D2C7177D8ED600D31184 /* news_content_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2C5177D8ED600D31184 /* news_content_background_selected.png */; };
 		2DC1D2CB177DA02100D31184 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2CA177DA02000D31184 /* icon.png */; };
@@ -936,6 +937,8 @@
 		2DA81F931796749C00A528BA /* success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "success@2x.png"; sourceTree = "<group>"; };
 		2DA81F9817967F1E00A528BA /* JDOWeatherForcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeatherForcast.h; sourceTree = "<group>"; };
 		2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeatherForcast.m; sourceTree = "<group>"; };
+		2DB4184D1798157900C9E56C /* JDORegxpUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDORegxpUtil.h; sourceTree = "<group>"; };
+		2DB4184E1798157900C9E56C /* JDORegxpUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDORegxpUtil.m; sourceTree = "<group>"; };
 		2DC1D2C4177D8ED600D31184 /* news_content_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_content_background.png; sourceTree = "<group>"; };
 		2DC1D2C5177D8ED600D31184 /* news_content_background_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_content_background_selected.png; sourceTree = "<group>"; };
 		2DC1D2CA177DA02000D31184 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -1103,6 +1106,8 @@
 				2D9678BA174AF78A008AC097 /* JDOImageUtil.m */,
 				2D86D5A917588E330000AA6A /* JDOCommonUtil.h */,
 				2D86D5AA17588E330000AA6A /* JDOCommonUtil.m */,
+				2DB4184D1798157900C9E56C /* JDORegxpUtil.h */,
+				2DB4184E1798157900C9E56C /* JDORegxpUtil.m */,
 				2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */,
 				2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */,
 			);
@@ -2645,6 +2650,7 @@
 				2D0DE2FC1796940500A7C813 /* ActionSheetDistancePicker.m in Sources */,
 				2D0DE2FD1796940500A7C813 /* ActionSheetStringPicker.m in Sources */,
 				2D0DE2FE1796940500A7C813 /* DistancePickerView.m in Sources */,
+				2DB4184F1798157900C9E56C /* JDORegxpUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

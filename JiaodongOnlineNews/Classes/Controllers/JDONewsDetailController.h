@@ -11,7 +11,7 @@
 
 @class JDONewsModel;
 
-@interface JDONewsDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate,JDOStatusView,JDOStatusViewDelegate>
+@interface JDONewsDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate,JDOStatusView,JDOStatusViewDelegate,SDWebImageManagerDelegate>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;

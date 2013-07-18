@@ -90,7 +90,12 @@
 
 - (void) backToViewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+    if(self.imageDetails) {//返回新闻详情
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:1] animated:true];
+    } else {
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+    }
+    
 }
 
 - (void)loadView{
@@ -170,9 +175,9 @@
     [self setupNavigationView];
     // 设置工具栏
     [self setupToolbar];
-    
-    [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":self.imageModel.id} success:^(NSArray *dataList) {
-        if(dataList.count >0){
+    if (self.imageDetails) {//本地图片
+        NSArray *dataList = self.imageDetails;
+        if(dataList.count > 0) {//本地图片集存在
             [self.photos removeAllObjects];
             [self.models removeAllObjects];
             JDOImageDetailModel *detailModel;
@@ -180,17 +185,37 @@
             for(int i=0; i<dataList.count; i++){
                 detailModel = [dataList objectAtIndex:i];
                 [_models addObject:detailModel];
-                photo = [MWPhoto photoWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:detailModel.imageurl] ]];
+                photo = [MWPhoto photoWithFilePath:detailModel.imageurl];
                 photo.title = self.imageModel.title;
                 photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,dataList.count];
                 photo.caption = detailModel.imagecontent;
                 [_photos addObject:photo];
             }
+            [_browser setCurrentPageIndex:self.imageIndex];
             [_browser reloadData];
         }
-    } failure:^(NSString *errorStr) {
-        [JDOCommonUtil showHintHUD:errorStr inView:self.view];
-    }];
+    } else {//从网络访问图片
+        [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":self.imageModel.id} success:^(NSArray *dataList) {
+            if(dataList.count >0){
+                [self.photos removeAllObjects];
+                [self.models removeAllObjects];
+                JDOImageDetailModel *detailModel;
+                MWPhoto *photo;
+                for(int i=0; i<dataList.count; i++){
+                    detailModel = [dataList objectAtIndex:i];
+                    [_models addObject:detailModel];
+                    photo = [MWPhoto photoWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:detailModel.imageurl] ]];
+                    photo.title = self.imageModel.title;
+                    photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,dataList.count];
+                    photo.caption = detailModel.imagecontent;
+                    [_photos addObject:photo];
+                }
+                [_browser reloadData];
+            }
+        } failure:^(NSString *errorStr) {
+            [JDOCommonUtil showHintHUD:errorStr inView:self.view];
+        }];
+    }
 }
 
 - (void)viewDidUnload{
