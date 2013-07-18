@@ -303,16 +303,20 @@
 }
 
 - (void)loadDataFromNetwork{
-    [self setCurrentState:ViewStatusLoading];
+    if(![Reachability isEnableNetwork]){
+        [self setCurrentState:ViewStatusNoNetwork];
+    }else{  // 从网络加载数据，切换到loading状态
+        [self setCurrentState:ViewStatusLoading];
+    }
 
 #warning 查询功能目前只在Test下可用
     [[JDOHttpClient sharedTestClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
-//        if(dataList != nil && dataList.count >0){
-            [self setCurrentState:ViewStatusNormal];
+        [self setCurrentState:ViewStatusNormal];
+        if(dataList == nil || dataList.count == 0){
+
+        }else{
             [self dataLoadFinished:dataList];
-//        }else{  
-//            // dataList.count == 0的情况需要在tableview的datasource中处理，例如评论列表中提示"暂无评论"
-//        }
+        }
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
@@ -320,16 +324,23 @@
 }
 
 - (void) refresh{
+    if(![Reachability isEnableNetwork]){
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self];
+        [self.tableView.pullToRefreshView stopAnimating];
+        return ;
+    }
+    
     self.currentPage = 1;
     
     [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList)  {
-//        if(dataList != nil && dataList.count >0){
-            [self.tableView.pullToRefreshView stopAnimating];
+        [self.tableView.pullToRefreshView stopAnimating];
+        if(dataList == nil || dataList.count == 0){
+
+        }else{
             [self dataLoadFinished:dataList];
-//        }else{
-//            // dataList.count == 0的情况需要在tableview的datasource中处理，例如评论列表中提示"暂无评论"
-//        }
+        }
     } failure:^(NSString *errorStr) {
+        [self.tableView.pullToRefreshView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
 }
@@ -356,14 +367,19 @@
 }
 
 - (void) loadMore{
+    if(![Reachability isEnableNetwork]){
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self];
+        [self.tableView.infiniteScrollingView stopAnimating];
+        return ;
+    }
     self.currentPage += 1;
 
     [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
+        [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;
         if(dataList == nil || dataList.count == 0){    // 数据加载完成
-            [self.tableView.infiniteScrollingView stopAnimating];
             finished = true;
-        }else if(dataList.count >0){
+        }else{
             NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:QuestionList_Page_Size];
             for(int i=0;i<dataList.count;i++){
                 [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
@@ -373,7 +389,6 @@
             [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
             [self.tableView endUpdates];
             
-            [self.tableView.infiniteScrollingView stopAnimating];
             if(dataList.count < QuestionList_Page_Size){
                 finished = true;
             }

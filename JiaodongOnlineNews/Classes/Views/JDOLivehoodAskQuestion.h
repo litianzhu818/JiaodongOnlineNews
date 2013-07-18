@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "NimbusPagingScrollView.h"
-#import "PopoverView.h"
+//#import "PopoverView.h"
 
-@interface JDOLivehoodAskQuestion : NIPageView <PopoverViewDelegate>
+@interface JDOLivehoodAskQuestion : NIPageView 
 
 @property (nonatomic,assign) NSDictionary *info;
 @property (assign,nonatomic) UIView *rootView;

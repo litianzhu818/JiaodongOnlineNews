@@ -70,16 +70,16 @@
 //        
 //    }];
     
-    self.reviewPanel.layer.borderColor = [UIColor colorWithHex:@"969696"].CGColor;
+    self.reviewPanel.layer.borderColor = [UIColor colorWithHex:Gray_Color_Type2].CGColor;
     self.reviewPanel.layer.borderWidth = 1.0;
-    self.textView2.layer.borderColor = [UIColor colorWithHex:@"969696"].CGColor;
+    self.textView2.layer.borderColor = [UIColor colorWithHex:Gray_Color_Type2].CGColor;
     self.textView2.layer.borderWidth = 1.0;
     [self.textView2 setPlaceholder:@"说点什么吧"];
     self.textView2.backgroundColor = [UIColor colorWithHex:@"E6E6E6"];
     // 图集中切换图片内容会跟着变,放到viewWillAppear中
 //    self.titleLabel.text = [self getShareTitleAndContent];
-    self.titleLabel.textColor = [UIColor colorWithHex:@"505050"];
-    self.remainWordLabel.textColor = [UIColor colorWithHex:@"969696"];
+    self.titleLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
+    self.remainWordLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
     
     [self.qqBtn setBackgroundImage:[UIImage imageNamed:@"QQ.png"] forState:UIControlStateNormal];
     [self.qqBtn setBackgroundImage:[UIImage imageNamed:@"QQ01.png"] forState:UIControlStateDisabled];

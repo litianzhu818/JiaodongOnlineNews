@@ -146,9 +146,11 @@
                 [self loadFinished];
                 [self dismissHUDOnLoadFinished];
             }
+        }else{
+            
         }
     } failure:^(NSString *errorStr) {
-        [self dismissHUDOnLoadFailed:errorStr];
+        [self handleLoadError:errorStr];
     }];
     
     // 加载列表
@@ -173,7 +175,7 @@
 #warning 暂时未考虑频道无数据的情况
         }
     } failure:^(NSString *errorStr) {
-        [self dismissHUDOnLoadFailed:errorStr];
+        [self handleLoadError:errorStr];
     }];
 }
 
@@ -194,6 +196,7 @@
 //        HUD.labelText = @"更新成功";
 //        [HUD hide:true afterDelay:1.0];
         HUDShowTime = nil;
+        HUD = nil;
     }
 }
 
@@ -210,6 +213,7 @@
         HUD.labelText = errorStr;
         [HUD hide:true afterDelay:1.0];
         HUDShowTime = nil;
+        HUD = nil;
     }
 }
 
@@ -223,8 +227,6 @@
     self.currentPage = 1;
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
-    __block bool headlineFailed = false;
-    __block bool newslistFailed = false;
     // 刷新头条
     [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
         if(dataList.count >0){
@@ -236,10 +238,8 @@
             }
         }
     } failure:^(NSString *errorStr) {
-        headlineFailed = true;
-        if(newslistFailed){
-            [self handleLoadError:errorStr];
-        }
+        [self.tableView.pullToRefreshView stopAnimating];
+        [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
     
     // 刷新列表
@@ -263,10 +263,8 @@
             // 无数据
         }
     } failure:^(NSString *errorStr) {
-        newslistFailed = true;
-        if(headlineFailed){
-            [self handleLoadError:errorStr];
-        }
+        [self.tableView.pullToRefreshView stopAnimating];
+        [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
 }
 
@@ -336,11 +334,11 @@
     
     // 加载列表
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
+        [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;
-        if(dataList == nil){    // 数据加载完成
-            [self.tableView.infiniteScrollingView stopAnimating];
+        if(dataList == nil || dataList.count == 0){    // 数据加载完成
             finished = true;
-        }else if(dataList.count >0){
+        }else{
             NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:NewsList_Page_Size];
             for(int i=0;i<dataList.count;i++){
                 [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:1]];
@@ -350,7 +348,6 @@
             [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
             [self.tableView endUpdates];
             
-            [self.tableView.infiniteScrollingView stopAnimating];
             if(dataList.count < NewsList_Page_Size){
                 finished = true;
             }
@@ -373,6 +370,7 @@
             });
         }
     } failure:^(NSString *errorStr) {
+        [self.tableView.infiniteScrollingView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
 

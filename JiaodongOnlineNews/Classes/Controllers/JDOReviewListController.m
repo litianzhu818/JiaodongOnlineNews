@@ -15,10 +15,12 @@
 #import "DCArrayMapping.h"
 #import "JDOArrayModel.h"
 #import "JDOQuestionCommentModel.h"
+#import "SVPullToRefresh.h"
 
 @interface JDOReviewListController ()
 
 @property (nonatomic,assign) JDOReviewType type;
+@property (nonatomic,strong) DCParserConfiguration *config;
 
 @end
 
@@ -27,17 +29,23 @@
 
 -(id)initWithType:(JDOReviewType)type params:(NSDictionary *)params{
     if( type == JDOReviewTypeNews ){
-        self = [super initWithServiceName:VIEW_COMMENT_SERVICE modelClass:@"JDOCommentModel" title:@"热门评论" params:[params mutableCopy] needRefreshControl:true];
+        self = [super initWithServiceName:VIEW_COMMENT_SERVICE modelClass:@"JDOCommentModel" title:@"新闻评论" params:[params mutableCopy] needRefreshControl:true];
     }else if( type == JDOReviewTypeLivehood ){
-        self = [super initWithServiceName:QUESTION_COMMENT_LIST_SERVICE modelClass:@"JDOArrayModel" title:@"热门评论" params:[params mutableCopy] needRefreshControl:true];
+        self = [super initWithServiceName:QUESTION_COMMENT_LIST_SERVICE modelClass:@"JDOArrayModel" title:@"问题评论" params:[params mutableCopy] needRefreshControl:true];
     }
     self.type = type;
+    
+    _config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOQuestionCommentModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [_config addArrayMapper:mapper];
+    
     return self;
 }
 
 - (void)loadView{
     [super loadView];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+
+    
 }
 
 - (void) setupNavigationView{
@@ -53,7 +61,7 @@
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.allowsSelection = false;
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+    self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewDidUnload{
@@ -71,23 +79,130 @@
     if( self.type == JDOReviewTypeNews ){
         [super loadDataFromNetwork];
     }else if( self.type == JDOReviewTypeLivehood ){
-        DCParserConfiguration *config = [DCParserConfiguration configuration];
-        DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOQuestionCommentModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
-        [config addArrayMapper:mapper];
-        
-        [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_COMMENT_LIST_SERVICE modelClass:@"JDOArrayModel" config:config params:self.listParam success:^(JDOArrayModel *dataModel) {
-            if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
+        self.noDataView.hidden = true;
+        if(![Reachability isEnableNetwork]){
+            [self setCurrentState:ViewStatusNoNetwork];
+        }else{  // 从网络加载数据，切换到loading状态
+            [self setCurrentState:ViewStatusLoading];
+        }
+        [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_COMMENT_LIST_SERVICE modelClass:@"JDOArrayModel" config:_config params:self.listParam success:^(JDOArrayModel *dataModel) {
+            [self setCurrentState:ViewStatusNormal];
+            if(dataModel != nil && [dataModel.status intValue] ==1 ){
                 NSArray *dataArray = (NSArray *)dataModel.data;
-                [self setCurrentState:ViewStatusNormal];
+                if (dataArray == nil || dataArray.count == 0){
+                    self.noDataView.hidden = false;
+                }else{
+                    
+                }
                 [self dataLoadFinished:dataArray];
             }else{
-                // 服务器端有错误
+                NSLog(@"服务器错误,错误代码:%d",[dataModel.status intValue]);
+                [super setCurrentState:ViewStatusRetry];
             }
         } failure:^(NSString *errorStr) {
             NSLog(@"错误内容--%@", errorStr);
             [super setCurrentState:ViewStatusRetry];
         }];
     }
+}
+
+- (void) refresh{
+    
+    if( self.type == JDOReviewTypeNews ){
+        [super refresh];
+    }else if( self.type == JDOReviewTypeLivehood ){
+        if(![Reachability isEnableNetwork]){
+            [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view];
+            [self.tableView.pullToRefreshView stopAnimating];
+            return ;
+        }
+        
+        self.currentPage = 1;
+        [self.listParam setObject:@1 forKey:@"p"];
+        
+        [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_COMMENT_LIST_SERVICE modelClass:@"JDOArrayModel" config:_config params:self.listParam success:^(JDOArrayModel *dataModel) {
+            [self.tableView.pullToRefreshView stopAnimating];
+            if(dataModel != nil && [dataModel.status intValue] ==1 ){
+                NSArray *dataArray = (NSArray *)dataModel.data;
+                if (dataArray == nil || dataArray.count == 0){
+                    self.noDataView.hidden = false;
+                }else{
+                    self.noDataView.hidden = true;
+                }
+                [self dataLoadFinished:dataArray];
+            }else{
+                NSLog(@"服务器错误,错误代码:%d",[dataModel.status intValue]);
+                [JDOCommonUtil showHintHUD:@"服务器错误" inView:self.view];
+            }
+            
+        } failure:^(NSString *errorStr) {
+            [self.tableView.pullToRefreshView stopAnimating];
+            [JDOCommonUtil showHintHUD:errorStr inView:self.view];
+        }];
+    }
+}
+
+- (void) loadMore{
+    if( self.type == JDOReviewTypeNews ){
+        [super loadMore];
+    }else if( self.type == JDOReviewTypeLivehood ){
+        if(![Reachability isEnableNetwork]){
+            [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view];
+            [self.tableView.infiniteScrollingView stopAnimating];
+            return ;
+        }
+        
+        self.currentPage += 1;
+        [self.listParam setObject:[NSNumber numberWithInt:self.currentPage] forKey:@"p"];
+        
+        [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_COMMENT_LIST_SERVICE modelClass:@"JDOArrayModel" config:_config params:self.listParam success:^(JDOArrayModel *dataModel) {
+            [self.tableView.infiniteScrollingView stopAnimating];
+            bool finished = false;
+            if(dataModel != nil && [dataModel.status intValue] ==1 ){
+                NSArray *dataList = (NSArray *)dataModel.data;
+                if(dataList == nil || dataList.count == 0){    // 数据加载完成
+                    finished = true;
+                }else{
+                    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:self.pageSize];
+                    for(int i=0;i<dataList.count;i++){
+                        [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
+                    }
+                    [self.listArray addObjectsFromArray:dataList];
+                    [self.tableView beginUpdates];
+                    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
+                    [self.tableView endUpdates];
+                    
+                    if(dataList.count < self.pageSize){
+                        finished = true;
+                    }
+                }
+            }else{
+                NSLog(@"服务器错误,错误代码:%d",[dataModel.status intValue]);
+                [JDOCommonUtil showHintHUD:@"服务器错误" inView:self.view];
+            }
+            if(finished){
+                // 延时执行是为了给insertRowsAtIndexPaths的动画留出时间
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    if([self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag]){
+                        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = false;
+                    }else{
+                        UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.infiniteScrollingView.bounds.size.width, self.tableView.infiniteScrollingView.bounds.size.height)];
+                        finishLabel.textAlignment = NSTextAlignmentCenter;
+                        finishLabel.text = All_Data_Load_Finished;
+                        finishLabel.tag = Finished_Label_Tag;
+                        finishLabel.backgroundColor = [UIColor clearColor];
+                        [self.tableView.infiniteScrollingView setEnabled:false];
+                        [self.tableView.infiniteScrollingView addSubview:finishLabel];
+                    }
+                });
+            }
+        } failure:^(NSString *errorStr) {
+            [self.tableView.infiniteScrollingView stopAnimating];
+            [JDOCommonUtil showHintHUD:errorStr inView:self.view];
+        }];
+    }
+    
     
 }
 
@@ -129,7 +244,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(self.listArray.count == 0){
-        return 30;
+        return 0; 
     }else{
         NSString *content;
         if(_type == JDOReviewTypeNews){

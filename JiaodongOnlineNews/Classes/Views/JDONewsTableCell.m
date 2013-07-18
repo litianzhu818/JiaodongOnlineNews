@@ -36,12 +36,12 @@
         self.detailTextLabel.font = [UIFont systemFontOfSize:13];
         self.detailTextLabel.numberOfLines = 2;
         
-        self.textLabel.textColor = [UIColor colorWithHex:@"323232"];
-        self.textLabel.highlightedTextColor = [UIColor colorWithHex:@"323232"];
+        self.textLabel.textColor = [UIColor colorWithHex:Black_Color_Type1];
+        self.textLabel.highlightedTextColor = [UIColor colorWithHex:Black_Color_Type1];
         self.textLabel.backgroundColor = [UIColor clearColor];
         
-        self.detailTextLabel.textColor = [UIColor colorWithHex:@"646464"];
-        self.detailTextLabel.highlightedTextColor = [UIColor colorWithHex:@"646464"];
+        self.detailTextLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
+        self.detailTextLabel.highlightedTextColor = [UIColor colorWithHex:Gray_Color_Type1];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         
         self.selectionStyle = UITableViewCellSelectionStyleGray;

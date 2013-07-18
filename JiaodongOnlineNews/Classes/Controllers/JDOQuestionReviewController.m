@@ -10,7 +10,7 @@
 #import "JDOQuestionModel.h"
 #import "InsetsTextField.h"
 
-#define Line_Height 28.0f
+#define Line_Height 35.0f
 #define Label_Wdith 80.0f
 #define Input_Wdith 210.0f
 
@@ -50,6 +50,7 @@
     
     _userInput = [[InsetsTextField alloc] initWithFrame:CGRectMake(Label_Wdith+20, 10, Input_Wdith, Line_Height)];
     _userInput.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+    _userInput.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _userInput.font = [UIFont systemFontOfSize:16];
     [self.mainView addSubview:_userInput];
     
@@ -62,6 +63,7 @@
     
     _telInput = [[InsetsTextField alloc] initWithFrame:CGRectMake(Label_Wdith+20, CGRectGetMaxY(userLabel.frame)+10, Input_Wdith, Line_Height)];
     _telInput.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+    _telInput.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _telInput.keyboardType = UIKeyboardTypePhonePad;
     _telInput.font = [UIFont systemFontOfSize:16];
     [self.mainView addSubview:_telInput];

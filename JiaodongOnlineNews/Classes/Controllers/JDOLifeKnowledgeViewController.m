@@ -103,7 +103,6 @@
 
 
 - (void)loadDataFromNetwork{
-    __block bool newslistFinished = false;
     
     if(self.status != ViewStatusLoading){   // 已经是loading状态就不需要HUD了，在没有缓存数据的时候发生
         HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
@@ -119,12 +118,11 @@
     
     // 加载列表
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
-        if(dataList == nil){
+        if(dataList == nil || dataList.count ==0){
             // 数据加载完成
-        }else if(dataList.count >0){
+        }else{
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
-            newslistFinished = true;
             [self loadFinished];
             [self dismissHUDOnLoadFinished];
         }
@@ -172,28 +170,26 @@
 
 - (void) refresh{
     if(![Reachability isEnableNetwork]){
-        [JDOCommonUtil showHintHUD:@"网络当前不可用" inView:self];
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view];
         [self.tableView.pullToRefreshView stopAnimating];
         return ;
     }
     self.currentPage = 1;
-    __block bool newslistFinished = false;
-    __block bool newslistFailed = false;
 
     // 刷新列表
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
-        if(dataList == nil){
+        [self.tableView.pullToRefreshView stopAnimating];
+        if(dataList == nil || dataList.count ==0){
             // 数据加载完成
-        }else if(dataList.count >0){
+        }else{
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
-            newslistFinished = true;
             [self loadFinished];
             [self.tableView.infiniteScrollingView setEnabled:true];
             [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
         }
     } failure:^(NSString *errorStr) {
-        newslistFailed = true;
+        [self.tableView.pullToRefreshView stopAnimating];
         [self handleLoadError:errorStr];
     }];
 }
@@ -215,7 +211,6 @@
 - (void) reloadTableView{
     [self setCurrentState:ViewStatusNormal];
     self.isShowingLocalCache = false;
-    [self.tableView.pullToRefreshView stopAnimating];
     [self updateLastRefreshTime];
     //    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,2)] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadData];
@@ -253,7 +248,7 @@
 
 - (void) loadMore{
     if(![Reachability isEnableNetwork]){
-        [JDOCommonUtil showHintHUD:@"网络当前不可用" inView:self];
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view];
         [self.tableView.infiniteScrollingView stopAnimating];
         return ;
     }
@@ -262,11 +257,11 @@
     
     // 加载列表
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
+        [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;
-        if(dataList == nil){    // 数据加载完成
-            [self.tableView.infiniteScrollingView stopAnimating];
+        if(dataList == nil || dataList.count ==0){    // 数据加载完成
             finished = true;
-        }else if(dataList.count >0){
+        }else{
             NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:NewsList_Page_Size];
             for(int i=0;i<dataList.count;i++){
                 [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
@@ -276,7 +271,6 @@
             [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
             [self.tableView endUpdates];
             
-            [self.tableView.infiniteScrollingView stopAnimating];
             if(dataList.count < NewsList_Page_Size){
                 finished = true;
             }
@@ -298,7 +292,8 @@
             });
         }
     } failure:^(NSString *errorStr) {
-        [JDOCommonUtil showHintHUD:errorStr inView:self];
+        [self.tableView.infiniteScrollingView stopAnimating];
+        [JDOCommonUtil showHintHUD:errorStr inView:self.view];
     }];
     
 }

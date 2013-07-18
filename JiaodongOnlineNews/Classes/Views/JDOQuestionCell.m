@@ -38,18 +38,18 @@
         self.detailTextLabel.font = [UIFont systemFontOfSize:Title_Font_Size];
         self.detailTextLabel.numberOfLines = 0;
         self.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
-        self.detailTextLabel.textColor = [UIColor colorWithHex:@"505050"];
+        self.detailTextLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         
         self.codeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.codeLabel.font = [UIFont systemFontOfSize:Code_Font_Size];
-        self.codeLabel.textColor = [UIColor colorWithHex:@"969696"];
+        self.codeLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
         self.codeLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.codeLabel];
         
         self.replyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.replyLabel.font = [UIFont systemFontOfSize:Reply_Font_Size];
-        self.replyLabel.textColor = [UIColor colorWithHex:@"969696"];
+        self.replyLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
         self.replyLabel.textAlignment = UITextAlignmentRight;
         self.replyLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.replyLabel];
@@ -93,7 +93,7 @@
             self.replyLabel.textColor = [UIColor colorWithHex:@"dd141c"];
         }else{
             self.replyLabel.text = @"未回复";
-            self.replyLabel.textColor = [UIColor colorWithHex:@"969696"];
+            self.replyLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
         }
         
         self.separatorLine.hidden = false;

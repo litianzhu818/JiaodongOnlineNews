@@ -11,12 +11,9 @@
 #import "NimbusPagingScrollView.h"
 
 #define Default_Page_Size 20
-#define Finished_Label_Tag 112
 
 @interface JDOListViewController ()
 @property (nonatomic,strong) NSDate *lastUpdateTime;
-@property (nonatomic,assign) int currentPage;
-@property (nonatomic,assign) int pageSize;
 @property (nonatomic,assign) BOOL needRefreshControl;
 @end
 
@@ -58,6 +55,7 @@
     
     CGRect frame = CGRectMake(0, 44, 320, App_Height-44);
     _tableView = [[UITableView alloc] initWithFrame:frame];
+    _tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
     if(self.needRefreshControl){
         __block JDOListViewController *blockSelf = self;
@@ -72,6 +70,12 @@
     self.statusView = [[JDOStatusView alloc] initWithFrame:frame];
     self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
+    
+    // 无数据提示
+    _noDataView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_no_data"]];
+    _noDataView.frame = CGRectMake(0, 44, 320, App_Height-44);
+    _noDataView.hidden = true;
+    [self.view addSubview:_noDataView];
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
@@ -82,22 +86,16 @@
     [self loadDataFromNetwork];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
-    
-    if(![Reachability isEnableNetwork]){
-        [self setCurrentState:ViewStatusNoNetwork];
-    }else{  // 从网络加载数据，切换到loading状态
-        [self setCurrentState:ViewStatusLoading];
-        [self loadDataFromNetwork];
-    }
+    [self loadDataFromNetwork];
 }
 
 - (void)viewDidUnload{
     [super viewDidUnload];
     self.statusView = nil;
     self.tableView = nil;
+    self.noDataView = nil;
 }
 
 - (void) setCurrentState:(ViewStatusType)status{
@@ -112,31 +110,45 @@
 }
 
 - (void)loadDataFromNetwork{
-    
+    _noDataView.hidden = true;
+    if(![Reachability isEnableNetwork]){
+        [self setCurrentState:ViewStatusNoNetwork];
+    }else{  // 从网络加载数据，切换到loading状态
+        [self setCurrentState:ViewStatusLoading];   
+    }
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
-        if(dataList == nil){
-            // 数据加载完成
-        }else{  // dataList.count == 0的情况需要在tableview的datasource中处理，例如评论列表中提示"暂无评论"
-            [self setCurrentState:ViewStatusNormal];
-            [self dataLoadFinished:dataList];
+        [self setCurrentState:ViewStatusNormal];
+        if(dataList == nil || dataList.count == 0){
+            _noDataView.hidden = false;
+        }else{
+
         }
+        [self dataLoadFinished:dataList];
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
     }];
 }
 - (void) refresh{
+    if(![Reachability isEnableNetwork]){
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view];
+        [self.tableView.pullToRefreshView stopAnimating];
+        return ;
+    }
+    
     self.currentPage = 1;
     [self.listParam setObject:@1 forKey:@"p"];
     
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList)  {
-        if(dataList == nil){
-
+        [self.tableView.pullToRefreshView stopAnimating];
+        if(dataList == nil || dataList.count == 0){
+            _noDataView.hidden = false;  
         }else{
-            [self.tableView.pullToRefreshView stopAnimating];
-            [self dataLoadFinished:dataList];
+            _noDataView.hidden = true;
         }
+        [self dataLoadFinished:dataList];
     } failure:^(NSString *errorStr) {
+        [self.tableView.pullToRefreshView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self.view];
     }];
 }
@@ -149,7 +161,7 @@
     [self updateLastRefreshTime];
     if( dataList.count<self.pageSize ){
         [self.tableView.infiniteScrollingView setEnabled:false];
-        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = false;
     }else{
         [self.tableView.infiniteScrollingView setEnabled:true];
         [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
@@ -163,14 +175,21 @@
 }
 
 - (void) loadMore{
+    if(![Reachability isEnableNetwork]){
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view];
+        [self.tableView.infiniteScrollingView stopAnimating];
+        return ;
+    }
+    
     self.currentPage += 1;
     [self.listParam setObject:[NSNumber numberWithInt:self.currentPage] forKey:@"p"];
+    
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
+        [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;
         if(dataList == nil || dataList.count == 0){    // 数据加载完成
-            [self.tableView.infiniteScrollingView stopAnimating];
             finished = true;
-        }else if(dataList.count >0){
+        }else{
             NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:self.pageSize];
             for(int i=0;i<dataList.count;i++){
                 [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:0]];
@@ -180,7 +199,6 @@
             [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
             [self.tableView endUpdates];
 
-            [self.tableView.infiniteScrollingView stopAnimating];
             if(dataList.count < self.pageSize){
                 finished = true;
             }
@@ -203,6 +221,7 @@
             });
         }
     } failure:^(NSString *errorStr) {
+        [self.tableView.infiniteScrollingView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self.view];
     }];
 }

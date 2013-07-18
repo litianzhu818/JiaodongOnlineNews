@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define Finished_Label_Tag 112
+
 @interface JDOListViewController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
@@ -19,8 +21,15 @@
 @property (nonatomic,copy) NSString *modelClass;
 @property (nonatomic,strong) NSMutableDictionary *listParam;
 
+@property (nonatomic,assign) int currentPage;
+@property (nonatomic,assign) int pageSize;
+
+@property (strong,nonatomic) UIImageView *noDataView;
+
 - (id)initWithServiceName:(NSString*)serviceName modelClass:(NSString*)modelClass title:(NSString*)title params:(NSMutableDictionary *)listParam needRefreshControl:(BOOL)needRefreshControl;
 - (void)loadDataFromNetwork;
+- (void) refresh;
+- (void) loadMore;
 - (void) dataLoadFinished:(NSArray *)dataList;
 
 @end

@@ -23,6 +23,8 @@
 #define Title_Label_Tag 102
 #define Subtitle_Label_Tag 103
 
+#define Content_Font_Size 14.0f
+
 
 @interface JDOQuestionDetailController ()
 
@@ -194,7 +196,7 @@
 
 - (CGFloat) buildContent:(NSArray *)content startY:(CGFloat)startY {
     UILabel *deptLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, startY, 320-20, 0)];
-    deptLabel.font = [UIFont systemFontOfSize:14];
+    deptLabel.font = [UIFont systemFontOfSize:Content_Font_Size];
     deptLabel.text = [content objectAtIndex:0];
     deptLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
     deptLabel.backgroundColor = [UIColor clearColor];
@@ -206,7 +208,7 @@
     titleLabel.numberOfLines = 0;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = [content objectAtIndex:1];
-    titleLabel.textColor = [UIColor colorWithHex:@"505050"];
+    titleLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
     titleLabel.backgroundColor = [UIColor clearColor];
     // 内容小于一行的情况下直接调用sizeToFit会导致居中对齐无效
     float infactHeight = [titleLabel.text sizeWithFont:[UIFont systemFontOfSize:18] constrainedToSize:CGSizeMake(300, MAXFLOAT) lineBreakMode:NSLineBreakByTruncatingTail].height;
@@ -218,21 +220,21 @@
         titleLabel.frame = CGRectMake(10, CGRectGetMaxY(deptLabel.frame), 320-20, 0);
     }
     
-    UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLabel.frame)+10, 320-20, [UIFont systemFontOfSize:14].lineHeight)];
-    subtitleLabel.font = [UIFont systemFontOfSize:14];
+    UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLabel.frame)+10, 320-20, [UIFont systemFontOfSize:Content_Font_Size].lineHeight)];
+    subtitleLabel.font = [UIFont systemFontOfSize:Content_Font_Size];
     subtitleLabel.textAlignment = NSTextAlignmentCenter;
     subtitleLabel.text = [content objectAtIndex:2];
-    subtitleLabel.textColor = [UIColor colorWithHex:@"969696"];
+    subtitleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
     subtitleLabel.backgroundColor = [UIColor clearColor];
     [_mainView addSubview:subtitleLabel];
     
     FXLabel *contentLabel = [[FXLabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(subtitleLabel.frame)+15, 320-20, 0)];
     contentLabel.lineSpacing = 0.2;
     contentLabel.lineBreakMode = NSLineBreakByCharWrapping;// 必须用CharWrapping,否则只有一行,默认英文是按空格分割的
-    contentLabel.font = [UIFont systemFontOfSize:14];
+    contentLabel.font = [UIFont systemFontOfSize:Content_Font_Size];
     contentLabel.numberOfLines = 0;
     contentLabel.text = [content objectAtIndex:3];
-    contentLabel.textColor = [UIColor colorWithHex:@"505050"];
+    contentLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
     contentLabel.backgroundColor = [UIColor clearColor];
     [contentLabel sizeToFit];
     [_mainView addSubview:contentLabel];
@@ -246,9 +248,9 @@
     [_mainView addSubview:separatorLine];
     
     UILabel *replyDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(separatorLine.frame)+15, 320-20, 0)];
-    replyDateLabel.font = [UIFont systemFontOfSize:14];
+    replyDateLabel.font = [UIFont systemFontOfSize:Content_Font_Size];
     replyDateLabel.text = [content objectAtIndex:4];
-    replyDateLabel.textColor = [UIColor colorWithHex:@"969696"];
+    replyDateLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
     replyDateLabel.backgroundColor = [UIColor clearColor];
     [replyDateLabel sizeToFit];
     [_mainView addSubview:replyDateLabel];
@@ -256,10 +258,10 @@
     FXLabel *replyLabel = [[FXLabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(replyDateLabel.frame)+10, 320-20, 0)];
     replyLabel.lineSpacing = 0.2;
     replyLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    replyLabel.font = [UIFont systemFontOfSize:14];
+    replyLabel.font = [UIFont systemFontOfSize:Content_Font_Size];
     replyLabel.numberOfLines = 0;
     replyLabel.text = [content objectAtIndex:5];
-    replyLabel.textColor = [UIColor colorWithHex:@"505050"];
+    replyLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
     replyLabel.backgroundColor = [UIColor clearColor];
     [replyLabel sizeToFit];
     [_mainView addSubview:replyLabel];

@@ -63,7 +63,7 @@
         
         float font14Height = [UIFont systemFontOfSize:14].lineHeight;
         _topicTime = [[UILabel alloc] initWithFrame:CGRectMake(self.bounds.size.width-Padding-150, CGRectGetMaxY(_imageMask.frame)+font18Height-font14Height, 150, font14Height)];
-        _topicTime.textColor = [UIColor colorWithHex:@"646464"];
+        _topicTime.textColor = [UIColor colorWithHex:Gray_Color_Type1];
         _topicTime.font = [UIFont systemFontOfSize:14];
         _topicTime.textAlignment = UITextAlignmentRight;
         _topicTime.backgroundColor = [UIColor clearColor];
@@ -77,14 +77,14 @@
         
         // 标题和内容
         _title = [[UILabel alloc] initWithFrame:CGRectMake(Padding, CGRectGetMaxY(_separatorLine.frame)+Padding, 320-2*Padding, font18Height)];
-        _title.textColor = [UIColor colorWithHex:@"323232"];
+        _title.textColor = [UIColor colorWithHex:Black_Color_Type1];
         _title.backgroundColor = [UIColor clearColor];
         _title.font = [UIFont boldSystemFontOfSize:18];
         [self addSubview:_title];
         
         // UITextView的内容本身有偏移,为对齐x设置为0
         _content = [[UITextView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_title.frame), 320-2*0, self.bounds.size.height-CGRectGetMaxY(_title.frame)-Padding)];
-        _content.textColor = [UIColor colorWithHex:@"646464"];
+        _content.textColor = [UIColor colorWithHex:Gray_Color_Type1];
         _content.backgroundColor = [UIColor clearColor];
         _content.font = [UIFont systemFontOfSize:16];
         _content.editable = false;

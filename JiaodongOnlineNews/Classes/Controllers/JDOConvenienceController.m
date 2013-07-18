@@ -87,7 +87,7 @@
     // 在NILauncherButtonView被设置为UIViewContentModeCenter:image不会被缩放到和imageView相同大小
     launcherButtonView.button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     launcherButtonView.label.font = [UIFont boldSystemFontOfSize:16];
-    launcherButtonView.label.textColor = [UIColor colorWithHex:@"323232"];
+    launcherButtonView.label.textColor = [UIColor colorWithHex:Black_Color_Type1];
     // bounds = 0 ,曲线路径无效
 //    launcherButtonView.label.layer.shadowPath = [UIBezierPath bezierPathWithRect:launcherButtonView.label.bounds].CGPath;
 //    launcherButtonView.label.layer.shadowColor = [UIColor blackColor].CGColor;

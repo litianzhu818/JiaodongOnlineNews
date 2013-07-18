@@ -35,12 +35,12 @@
         self.detailTextLabel.font = [UIFont systemFontOfSize:Review_Font_Size];
         self.detailTextLabel.numberOfLines = 0;
         self.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
-        self.detailTextLabel.textColor = [UIColor blackColor];
+        self.detailTextLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         
         self.pubtimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(320-Comment_Time_Width-10, 10, Comment_Time_Width, Comment_Name_Height)];
         self.pubtimeLabel.font = [UIFont systemFontOfSize:Review_Font_Size];
-        self.pubtimeLabel.textColor = [UIColor grayColor];
+        self.pubtimeLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
         self.pubtimeLabel.textAlignment = UITextAlignmentRight;
         self.pubtimeLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.pubtimeLabel];
@@ -64,13 +64,12 @@
 
 - (void)setNewsModel:(JDOCommentModel *)commentModel{
     if(commentModel == nil){
-        self.textLabel.textColor = [UIColor blackColor];
-        self.textLabel.text = @"暂无评论";
+        self.textLabel.text = nil;
         self.detailTextLabel.text = nil;
         self.pubtimeLabel.text = nil;
         self.separatorLine.hidden = true;
     }else{
-        self.textLabel.textColor = [UIColor blueColor];
+        self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.text = JDOIsEmptyString(commentModel.nickName) ? @"胶东在线网友" :commentModel.nickName;
         self.detailTextLabel.text = commentModel.content;
         self.pubtimeLabel.text = [commentModel.pubtime substringWithRange:NSMakeRange(5,11)]; //mm-dd hh:mi
@@ -80,13 +79,12 @@
 
 - (void)setQuestionModel:(JDOQuestionCommentModel *)commentModel{
     if(commentModel == nil){
-        self.textLabel.textColor = [UIColor blackColor];
-        self.textLabel.text = @"暂无评论";
+        self.textLabel.text = nil;
         self.detailTextLabel.text = nil;
         self.pubtimeLabel.text = nil;
         self.separatorLine.hidden = true;
     }else{
-        self.textLabel.textColor = [UIColor blueColor];
+        self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.text = JDOIsEmptyString(commentModel.username) ? @"胶东在线网友" :commentModel.username;
         self.detailTextLabel.text = commentModel.liuyan;
         self.pubtimeLabel.text = [commentModel.pubtime substringWithRange:NSMakeRange(5,11)]; //mm-dd hh:mi

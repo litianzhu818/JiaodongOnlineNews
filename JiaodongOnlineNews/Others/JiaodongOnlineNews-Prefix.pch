@@ -62,6 +62,10 @@
 // 颜色
 #define Main_Background_Color @"f0f0f0"
 #define Light_Blue_Color @"1673ba"
+#define Black_Color_Type1 @"323232"
+#define Black_Color_Type2 @"505050"
+#define Gray_Color_Type1 @"646464"
+#define Gray_Color_Type2 @"969696"
 
 // 提示最少显示时间
 #define Hint_Min_Show_Time 0.8

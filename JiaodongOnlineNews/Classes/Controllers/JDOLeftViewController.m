@@ -129,7 +129,7 @@
     }else{
         [self readWeatherFromLocalCache];
     }
-    
+    [self updateCalendar];
 }
 
 // 加载天气信息
@@ -174,52 +174,67 @@
 }
 
 - (void) refreshWeather{
+    @try {  // 防止webservice接口变动造成异常
 #warning 天气预报的第一天并不一定是当天，是否要加判断？
-    _forcast = [_weather.forecast objectAtIndex:0];
-    cityLabel.text = _weather.city;
-    [cityLabel sizeToFit];
-    UIImage *weatherImg = [UIImage imageNamed:[_forcast.weatherDetail stringByAppendingPathExtension:@"png"] ];
-    if( weatherImg ){
-        weatherIcon.image = weatherImg;
-    }else{  // xx转xx的情况,用前者的天气图标
-        NSString *firstWeather = [[_forcast.weatherDetail componentsSeparatedByString:@"转"] objectAtIndex:0];
-        weatherImg = [UIImage imageNamed:[firstWeather stringByAppendingPathExtension:@"png"] ];
-        if( weatherImg ){   // 没有对应的天气图标则使用默认.png
+        _forcast = [_weather.forecast objectAtIndex:0];
+        cityLabel.text = _weather.city;
+        [cityLabel sizeToFit];
+        UIImage *weatherImg = [UIImage imageNamed:[_forcast.weatherDetail stringByAppendingPathExtension:@"png"] ];
+        if( weatherImg ){
             weatherIcon.image = weatherImg;
+        }else{  // xx转xx的情况,用前者的天气图标
+            NSString *firstWeather = [[_forcast.weatherDetail componentsSeparatedByString:@"转"] objectAtIndex:0];
+            weatherImg = [UIImage imageNamed:[firstWeather stringByAppendingPathExtension:@"png"] ];
+            if( weatherImg ){   // 没有对应的天气图标则使用默认.png
+                weatherIcon.image = weatherImg;
+            }
         }
-    }
-    temperatureLabel.text = _forcast.temperature;
-    [temperatureLabel sizeToFit];
-    
-    // 天气状况部分
-    weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_forcast.weatherDetail,_forcast.wind];
-    float weatherLabelWidth = [weatherLabel.text sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(999, 15)].width;
-    if(weatherLabelWidth > 140){    // 若天气情况太长显示不开,则不显示风力部分的后半部分
-        NSArray *windComponents = [_forcast.wind componentsSeparatedByString:@"转"];
-        weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_forcast.weatherDetail,[windComponents objectAtIndex:0]];
-        weatherLabelWidth = [weatherLabel.text sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(999, 15)].width;
-        if (weatherLabelWidth > 140){   // 若还太长,则不显示风力部分
-            weatherLabel.text = _forcast.weatherDetail;
+        temperatureLabel.text = _forcast.temperature;
+        [temperatureLabel sizeToFit];
+        
+        // 天气状况部分
+        weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_forcast.weatherDetail,_forcast.wind];
+        float weatherLabelWidth = [weatherLabel.text sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(999, 15)].width;
+        if(weatherLabelWidth > 140){    // 若天气情况太长显示不开,则不显示风力部分的后半部分
+            NSArray *windComponents = [_forcast.wind componentsSeparatedByString:@"转"];
+            weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_forcast.weatherDetail,[windComponents objectAtIndex:0]];
+            weatherLabelWidth = [weatherLabel.text sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(999, 15)].width;
+            if (weatherLabelWidth > 140){   // 若还太长,则不显示风力部分
+                weatherLabel.text = _forcast.weatherDetail;
+            }
         }
+        [weatherLabel sizeToFit];
     }
-    [weatherLabel sizeToFit];
-    
+    @catch (NSException *exception) {
+        NSLog(@"刷新天气控件异常:%@,%@",exception.name,exception.reason);
+        temperatureLabel.text = @"无法获取天气信息";
+        [temperatureLabel sizeToFit];
+    }
+    @finally {
+        
+    }
+
+}
+
+- (void) updateCalendar{
     // 计算星期几和农历
     NSCalendar *calendar = [NSCalendar currentCalendar]; //gregorian GMT+8
     NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
     
-    NSString *dateString = [NSString stringWithFormat:@"%d年%@",dateComp.year,_forcast.date];
     NSString *weekDay = [weekDayNames objectAtIndex:dateComp.weekday-1]; //weekday从1开始，在gregorian历法中代表星期天
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
-    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];    //Asia/Shanghai
-    NSDate *aDate = [dateFormatter dateFromString:dateString];
+//    NSString *dateString = [NSString stringWithFormat:@"%d年%@",dateComp.year,_forcast.date];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
+//    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];    //Asia/Shanghai
+//    NSDate *aDate = [dateFormatter dateFromString:dateString];
+    // 用本地时间替换天气预报中获取的时间,因为:1 天气服务可能失效, 2 天气服务不能实时更新会导致日期显示不正确
+    NSDate *aDate = [NSDate date];
     
     dateComp = [calendar components:NSMonthCalendarUnit|NSDayCalendarUnit fromDate:aDate];
-    dateString = [NSString stringWithFormat:@"%d/%d",dateComp.month,dateComp.day]; //显示的日期样式 mm/dd
+    NSString *monthDay = [NSString stringWithFormat:@"%d/%d",dateComp.month,dateComp.day]; //显示的日期样式 mm/dd
     
-    dateLabel.text = [NSString stringWithFormat:@"%@ %@ 农历%@",dateString,weekDay,[[JDOCommonUtil getChineseCalendarWithDate:aDate] substringFromIndex:2] ]; //阴历不显示年份
+    dateLabel.text = [NSString stringWithFormat:@"%@ %@ 农历%@",monthDay,weekDay,[[JDOCommonUtil getChineseCalendarWithDate:aDate] substringFromIndex:2] ]; //阴历不显示年份
     [dateLabel sizeToFit];
 }
 
