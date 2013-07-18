@@ -45,6 +45,9 @@ typedef enum{
 @end
 
 BOOL JDOIsEmptyString(NSString *string);
+BOOL JDOIsNumber(NSString *string);
+BOOL JDOIsEmail(NSString *string);
+
 NSString* JDOGetHomeFilePath(NSString *fileName);
 NSString* JDOGetTmpFilePath(NSString *fileName);
 NSString* JDOGetCacheFilePath(NSString *fileName);

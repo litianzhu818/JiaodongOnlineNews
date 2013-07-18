@@ -142,7 +142,7 @@ NSArray *imageUrls;
 #pragma mark - Load WebView
      
 - (void) buildWebViewJavascriptBridge{
-    [WebViewJavascriptBridge enableLogging];
+//    [WebViewJavascriptBridge enableLogging];
     
     _bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView webViewDelegate:self handler:^(id data, WVJBResponseCallback responseCallback) {
         NSLog(@"ObjC received message from JS: %@", data);
@@ -179,19 +179,6 @@ NSArray *imageUrls;
 }
 
 - (void) loadWebView{
-    [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
-            // 新闻不存在
-        }else if([responseObject isKindOfClass:[NSDictionary class]]){
-//            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
-            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
-            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
-            //[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://tieba.baidu.com"]]];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
     #warning 若有缓存可以从缓存读取
     if (false /*有缓存*/) {
         [self setCurrentState:ViewStatusLogo];
@@ -210,7 +197,7 @@ NSArray *imageUrls;
                 // 设置url短地址
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
                 
-                NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:responseObject];
+                NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
             }else{
@@ -223,6 +210,7 @@ NSArray *imageUrls;
     }
 }
 
+# warning 需测试异步加载
 // 当下载完成后，调用回调方法，使下载的图片显示
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image {
     }
@@ -299,7 +287,6 @@ NSArray *imageUrls;
             }
         }
     }
-
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{

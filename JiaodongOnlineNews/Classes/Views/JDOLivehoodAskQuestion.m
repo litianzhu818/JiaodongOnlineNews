@@ -22,7 +22,7 @@
 #define Label_Font_Size 15.0f
 #define Content_Font_Size 15.0f
 
-@interface JDOLivehoodAskQuestion () <ActionSheetCustomPickerDelegate,UITextFieldDelegate>
+@interface JDOLivehoodAskQuestion () <ActionSheetCustomPickerDelegate,UITextFieldDelegate,UITextViewDelegate>
 
 @property (strong,nonatomic) TPKeyboardAvoidingScrollView *mainView;
 @property (nonatomic,strong) SSTextView *titleInput;
@@ -107,6 +107,7 @@
 //        titleHint.font = [UIFont systemFontOfSize:12];
         _titleInput = [self addTextViewOriginY:nextLineY height:Line_Height*1.3];
         _titleInput.placeholder = @"字数在5-25之间";
+        _titleInput.delegate = self;
         
         // 问题内容
         nextLineY += 1.3*Line_Height+Line_Padding;
@@ -188,8 +189,66 @@
 
 - (void) submitQuestion{
     // 校验数据合法性
-    // 提交数据
-    // 清空数据
+    
+    if([_titleInput.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length <5 ){
+        [JDOCommonUtil showHintHUD:@"标题字数不能少于5个字" inView:self];
+        return;
+    }
+    if( _titleInput.text.length>25 ){
+        [JDOCommonUtil showHintHUD:@"标题字数不能超过25个字" inView:self];
+        return;
+    }
+    if(JDOIsEmptyString(_contentInput.text)){
+        [JDOCommonUtil showHintHUD:@"请输入问题内容" inView:self];
+        return;
+    }
+    if( qTypeValue == nil ){
+        [JDOCommonUtil showHintHUD:@"请选择问题类型" inView:self];
+        return;
+    }
+    if( !_qPublicCB.isSelected && !_qNotPublicCB.isSelected ){
+        [JDOCommonUtil showHintHUD:@"请选择是否公开问题" inView:self];
+        return;
+    }
+    if(JDOIsEmptyString(_qPwdInput.text)){
+        [JDOCommonUtil showHintHUD:@"请输入查询密码" inView:self];
+        return;
+    }
+    if (!JDOIsNumber(_qPwdInput.text) || _qPwdInput.text.length!=6) {
+        [JDOCommonUtil showHintHUD:@"查询密码必须是6位数字" inView:self];
+        return;
+    }
+    if( _selectedDept == nil ){
+        [JDOCommonUtil showHintHUD:@"请选择部门" inView:self];
+        return;
+    }
+    if( qAreaValue == nil ){
+        [JDOCommonUtil showHintHUD:@"请选择所在区域" inView:self];
+        return;
+    }
+    if(JDOIsEmptyString(_qNameInput.text)){
+        [JDOCommonUtil showHintHUD:@"请输入姓名" inView:self];
+        return;
+    }
+    if(JDOIsEmptyString(_qTelInput.text)){
+        [JDOCommonUtil showHintHUD:@"请输入联系电话" inView:self];
+        return;
+    }
+    if( !_qTelPublicCB.isSelected && !_qTelNotPublicCB.isSelected ){
+        [JDOCommonUtil showHintHUD:@"请选择是否公开电话" inView:self];
+        return;
+    }
+    if(JDOIsEmptyString(_qEmailInput.text)){
+        [JDOCommonUtil showHintHUD:@"请输入电子邮件" inView:self];
+        return;
+    }
+    if(!JDOIsEmail(_qEmailInput.text)){
+        [JDOCommonUtil showHintHUD:@"请检查电子邮件格式" inView:self];
+        return;
+    }
+    
+    // 提交数据 HUD提示
+    // 清空数据 
     // 返回列表
 }
 
@@ -235,8 +294,6 @@
     aButton.titleLabel.font = [UIFont systemFontOfSize:Content_Font_Size];
 //    aButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 30);//留出下拉箭头的位置
-    aButton.adjustsImageWhenHighlighted = false;
-    aButton.showsTouchWhenHighlighted = true;
     [aButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [aButton setBackgroundImage:[UIImage imageNamed:@"inputFieldPopBtnBackground"] forState:UIControlStateNormal];
     [aButton setBackgroundImage:[UIImage imageNamed:@"inputFieldPopBtnBackground"] forState:UIControlStateHighlighted];
@@ -250,6 +307,7 @@
     UIButton *checkBoxBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat checkBoxSize = 18.0f;
     checkBoxBtn.frame = CGRectMake(0, (frame.size.height-checkBoxSize)/2, checkBoxSize, checkBoxSize);
+    checkBoxBtn.adjustsImageWhenHighlighted = false;
     [checkBoxBtn setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
     [checkBoxBtn setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_selected"] forState:UIControlStateSelected];
     [checkBoxBtn addTarget:self action:@selector(checkBoxBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -272,6 +330,8 @@
         return;
     }
     btn.selected = true;
+    // 防止在选中状态下再次选中时闪烁
+    [btn setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_selected"] forState:UIControlStateNormal];
     UIButton *converseBtn;
     if (btn == _qPublicCB ) {
         qPublicValue = [publicStrings objectAtIndex:0];
@@ -287,6 +347,7 @@
         converseBtn = _qTelPublicCB;
     }
     converseBtn.selected = false;
+    [converseBtn setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification{
@@ -500,6 +561,18 @@
 //    }
 //    return true;
 //}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+//    if ( textView == _titleInput ){  // 标题不能超过25字
+//        if (range.location>=25){
+//            return  NO;
+//        }else{
+//            return YES;
+//        }
+//    }
+    // 拼音输入的时候也触发该回调,会导致字数计算过多。
+    return true;
+}
 
 
 @end

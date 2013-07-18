@@ -9,6 +9,8 @@
 #import "JDOCommonUtil.h"
 #import "JDOShareViewDelegate.h"
 
+#define NUMBERS @"0123456789"
+
 @implementation JDOCommonUtil
 
 static NSDateFormatter *dateFormatter;
@@ -204,15 +206,26 @@ static NSDateFormatter *dateFormatter;
     hud.mode = MBProgressHUDModeText;
     hud.labelText = content;
     hud.margin = 10.f;
-    hud.yOffset = view.frame.size.height/2.0f-50;
+    hud.yOffset = view.frame.size.height/2.0f-60;
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:1];
+    [hud hide:YES afterDelay:1.5];
 }
 
 @end
 
 BOOL JDOIsEmptyString(NSString *string) {
     return string == NULL || [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""] || string.length == 0;
+}
+BOOL JDOIsNumber(NSString *string){
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:NUMBERS] invertedSet];
+    NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    BOOL basicTest = [string isEqualToString:filtered];
+    return basicTest;
+}
+BOOL JDOIsEmail(NSString *string){
+    NSString *Regex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *Test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
+    return [Test evaluateWithObject:string];
 }
 NSString* JDOGetHomeFilePath(NSString *fileName){
     return [NSHomeDirectory() stringByAppendingPathComponent:fileName];
