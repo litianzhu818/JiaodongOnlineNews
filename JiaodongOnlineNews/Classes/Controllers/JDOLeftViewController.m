@@ -9,6 +9,7 @@
 #import "JDOCenterViewController.h"
 //#import "JDOLeftMenuCell.h"
 #import "JDOXmlClient.h"
+#import "JDOWeatherForcast.h"
 #import "JDOWeather.h"
 
 #define Menu_Cell_Height 55.0f
@@ -20,10 +21,11 @@
 #define Weather_Icon_Width 180.0/130.0*56
 #define Separator_Y 324.0
 
-@interface JDOLeftViewController () 
+@interface JDOLeftViewController ()
 
 @property (strong) UIView *blackMask;
 @property (strong) JDOWeather *weather;
+@property (strong) JDOWeatherForcast *forcast;
 
 @end
 
@@ -118,37 +120,49 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
 #warning 天气增加"更新时间"字段,提供两个按钮分别显示预报和详情,预报可以用Flip+Scrollview
+#warning 若客户端直接访问天气webservice有问题，可以切换成在服务器端实现
     // 天气信息最小刷新间隔
     double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Weather_Update_Time];
     if (lastUpdateTime == 0 || [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Weather_Update_Interval){
+        [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:Weather_Update_Time];
         [self loadWeatherFromNetwork];
     }else{
         [self readWeatherFromLocalCache];
     }
-
+    
 }
 
 // 加载天气信息
 - (void) loadWeatherFromNetwork{
-    [[JDOJsonClient sharedClient] getPath:CONVENIENCE_SERVICE parameters:@{@"channelid": @"21"}
-        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                _weather = [[JDOWeather alloc] initWithData:responseObject];
-                if(_weather) {
-                    //天气请求成功之后，保存至本地，记录更新时间
-                    [JDOWeather saveToFile:_weather];
-                    [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:Weather_Update_Time];
-                    [self refreshWeather];
-                }else{
-                    [self readWeatherFromLocalCache];
-                }
+    JDOXmlClient *xmlClient = [[JDOXmlClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://webservice.webxml.com.cn"]];
+    [xmlClient getXMLByServiceName:@"/WebServices/WeatherWS.asmx/getWeather" params:@{@"theCityCode":@"909",@"theUserID":@""} success:^(NSXMLParser *xmlParser) {
+        _weather = [[JDOWeather alloc] initWithParser:xmlParser];
+        if([_weather parse]){
+            if(_weather.success){
+                [self refreshWeather];
+            }else{
+                NSLog(@"天气webservice超出访问次数限制,从本地缓存获取");
+                [self readWeatherFromLocalCache];
             }
+        }else{
+            NSLog(@"解析天气XML失败");
         }
-        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [self readWeatherFromLocalCache];
-        }];
-    
+    } failure:^(NSString *errorStr) {
+        NSLog(@"%@",errorStr);
+        [self readWeatherFromLocalCache];
+    }];
 }
+
+// 本地xml仅供测试用
+//- (void) readWeatherFromXML{
+//    NSString *xmlPath = [[NSBundle mainBundle] pathForResource:@"weather" ofType:@"xml"];
+//    NSData *xmlData = [NSData dataWithContentsOfFile:xmlPath];
+//    NSXMLParser *_parser = [[NSXMLParser alloc] initWithData:xmlData];
+//    _weather = [[JDOWeather alloc] initWithParser:_parser];
+//    if([_weather parse]){
+//        [self refreshWeather];
+//    }
+//}
 
 - (void) readWeatherFromLocalCache{
     if((_weather = [JDOWeather readFromFile])){
@@ -160,39 +174,50 @@
 }
 
 - (void) refreshWeather{
-    cityLabel.text = @"烟台";
+#warning 天气预报的第一天并不一定是当天，是否要加判断？
+    _forcast = [_weather.forecast objectAtIndex:0];
+    cityLabel.text = _weather.city;
     [cityLabel sizeToFit];
-    UIImage *weatherImg = [UIImage imageNamed:[_weather.weather stringByAppendingPathExtension:@"png"]];
+    UIImage *weatherImg = [UIImage imageNamed:[_forcast.weatherDetail stringByAppendingPathExtension:@"png"] ];
     if( weatherImg ){
         weatherIcon.image = weatherImg;
-    }else{ 
-        weatherImg = [UIImage imageNamed:@"默认.png" ];
+    }else{  // xx转xx的情况,用前者的天气图标
+        NSString *firstWeather = [[_forcast.weatherDetail componentsSeparatedByString:@"转"] objectAtIndex:0];
+        weatherImg = [UIImage imageNamed:[firstWeather stringByAppendingPathExtension:@"png"] ];
         if( weatherImg ){   // 没有对应的天气图标则使用默认.png
-            weatherIcon.image = weatherImg; 
+            weatherIcon.image = weatherImg;
         }
     }
-    temperatureLabel.text = [[[_weather.temp_low stringByAppendingString:@"~"] stringByAppendingString:_weather.temp_high] stringByAppendingString:@"℃"];
+    temperatureLabel.text = _forcast.temperature;
     [temperatureLabel sizeToFit];
-    weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_weather.weather,_weather.wind];
+    
+    // 天气状况部分
+    weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_forcast.weatherDetail,_forcast.wind];
+    float weatherLabelWidth = [weatherLabel.text sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(999, 15)].width;
+    if(weatherLabelWidth > 140){    // 若天气情况太长显示不开,则不显示风力部分的后半部分
+        NSArray *windComponents = [_forcast.wind componentsSeparatedByString:@"转"];
+        weatherLabel.text = [NSString stringWithFormat:@"%@ %@",_forcast.weatherDetail,[windComponents objectAtIndex:0]];
+        weatherLabelWidth = [weatherLabel.text sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(999, 15)].width;
+        if (weatherLabelWidth > 140){   // 若还太长,则不显示风力部分
+            weatherLabel.text = _forcast.weatherDetail;
+        }
+    }
     [weatherLabel sizeToFit];
     
     // 计算星期几和农历
-    
-    NSDateFormatter  *dateFormatter=[[NSDateFormatter alloc] init];
-    
-    [dateFormatter setDateFormat:@"YYYYMMdd"];
-    
     NSCalendar *calendar = [NSCalendar currentCalendar]; //gregorian GMT+8
-    NSDateComponents *dateComp = [calendar components:NSWeekdayCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
     
+    NSString *dateString = [NSString stringWithFormat:@"%d年%@",dateComp.year,_forcast.date];
     NSString *weekDay = [weekDayNames objectAtIndex:dateComp.weekday-1]; //weekday从1开始，在gregorian历法中代表星期天
     
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
     [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];    //Asia/Shanghai
-    //显示的日期样式 mm/dd
-    NSDate *aDate = [calendar dateFromComponents:dateComp];
-    dateComp = [calendar components:NSMonthCalendarUnit|NSDayCalendarUnit fromDate:aDate];
-    NSString *dateString = [NSString stringWithFormat:@"%d/%d",dateComp.month,dateComp.day];
+    NSDate *aDate = [dateFormatter dateFromString:dateString];
     
+    dateComp = [calendar components:NSMonthCalendarUnit|NSDayCalendarUnit fromDate:aDate];
+    dateString = [NSString stringWithFormat:@"%d/%d",dateComp.month,dateComp.day]; //显示的日期样式 mm/dd
     
     dateLabel.text = [NSString stringWithFormat:@"%@ %@ 农历%@",dateString,weekDay,[[JDOCommonUtil getChineseCalendarWithDate:aDate] substringFromIndex:2] ]; //阴历不显示年份
     [dateLabel sizeToFit];
@@ -200,7 +225,7 @@
 
 
 - (void)viewWillAppear:(BOOL)animated{
-//    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:false scrollPosition:UITableViewScrollPositionNone];
+    //    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:false scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void) transitionToAlpha:(float) alpha Scale:(float) scale{
@@ -213,6 +238,7 @@
     self.tableView = nil;
     self.blackMask = nil;
     self.weather = nil;
+    self.forcast = nil;
     cityLabel = nil;
     weatherIcon = nil;
     temperatureLabel = nil;
@@ -221,7 +247,6 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
-    // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -257,13 +282,13 @@
     if(indexPath.row == lastSelectedRow){
         imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
-//        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
+        //        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
     }else{
         imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
         cell.backgroundView = nil;
-//        cell.textLabel.textColor = [UIColor whiteColor];
+        //        cell.textLabel.textColor = [UIColor whiteColor];
     }
-//    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
+    //    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
     
     return cell;
 }
@@ -307,7 +332,7 @@
     } completion:^(IIViewDeckController *controller, BOOL success) {
         
     }];
-
+    
 }
 
 @end

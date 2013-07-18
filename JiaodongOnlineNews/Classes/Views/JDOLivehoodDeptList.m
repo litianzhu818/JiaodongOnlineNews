@@ -52,7 +52,7 @@
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
-        self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.tableView.backgroundColor = [UIColor colorWithHex:@"e8e8e8"];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;  // 分割线用背景图片实现
         self.tableView.rowHeight = Line_Height;
         [self addSubview:self.tableView];

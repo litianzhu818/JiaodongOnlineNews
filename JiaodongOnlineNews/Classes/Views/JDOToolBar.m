@@ -270,7 +270,11 @@
                        shareList:selectedClients
                      authOptions:JDOGetOauthOptions(nil)
                    statusBarTips:YES
-                          result:nil];
+                          result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                              if(error){
+                                  NSLog(@"平台:%@,错误代码:%d,描述:%@",[ShareSDK getClientNameWithType:type], [error errorCode],[error errorDescription]);
+                              }
+                          }];
 }
 
 - (NSString *)defaultShareContent{

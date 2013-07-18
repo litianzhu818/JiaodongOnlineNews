@@ -31,6 +31,12 @@
 		2D080CEF173CE4D9005653A7 /* JDONewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */; };
 		2D0D6162178FAA5A00934CCD /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0D6161178FAA5A00934CCD /* CoreText.framework */; };
 		2D0D6166178FE28900934CCD /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0D6165178FE28900934CCD /* FXLabel.m */; };
+		2D0DE2F91796940500A7C813 /* AbstractActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0DE2ED1796940500A7C813 /* AbstractActionSheetPicker.m */; };
+		2D0DE2FA1796940500A7C813 /* ActionSheetCustomPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0DE2EF1796940500A7C813 /* ActionSheetCustomPicker.m */; };
+		2D0DE2FB1796940500A7C813 /* ActionSheetDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0DE2F21796940500A7C813 /* ActionSheetDatePicker.m */; };
+		2D0DE2FC1796940500A7C813 /* ActionSheetDistancePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0DE2F41796940500A7C813 /* ActionSheetDistancePicker.m */; };
+		2D0DE2FD1796940500A7C813 /* ActionSheetStringPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0DE2F61796940500A7C813 /* ActionSheetStringPicker.m */; };
+		2D0DE2FE1796940500A7C813 /* DistancePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0DE2F81796940500A7C813 /* DistancePickerView.m */; };
 		2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D771762CAC30011C0D7 /* JDOCommentModel.m */; };
 		2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D115D7A1762F30A0011C0D7 /* JDOStatusView.m */; };
 		2D13EF92174E11D5007FF1CC /* JDOPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D13EF91174E11D5007FF1CC /* JDOPageControl.m */; };
@@ -312,6 +318,11 @@
 		2DA3C4C8178EA56D009817A6 /* JDOQuestionDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */; };
 		2DA3C4CA178EB481009817A6 /* full_separator_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA3C4C9178EB481009817A6 /* full_separator_line.png */; };
 		2DA3C4D0178EC0A6009817A6 /* InsetsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */; };
+		2DA81F941796749C00A528BA /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA81F901796749B00A528BA /* error.png */; };
+		2DA81F951796749C00A528BA /* error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA81F911796749C00A528BA /* error@2x.png */; };
+		2DA81F961796749C00A528BA /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA81F921796749C00A528BA /* success.png */; };
+		2DA81F971796749C00A528BA /* success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA81F931796749C00A528BA /* success@2x.png */; };
+		2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */; };
 		2DC1D2C6177D8ED600D31184 /* news_content_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2C4177D8ED600D31184 /* news_content_background.png */; };
 		2DC1D2C7177D8ED600D31184 /* news_content_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2C5177D8ED600D31184 /* news_content_background_selected.png */; };
 		2DC1D2CB177DA02100D31184 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC1D2CA177DA02000D31184 /* icon.png */; };
@@ -439,6 +450,19 @@
 		2D0D6161178FAA5A00934CCD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		2D0D6164178FE28900934CCD /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXLabel.h; sourceTree = "<group>"; };
 		2D0D6165178FE28900934CCD /* FXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXLabel.m; sourceTree = "<group>"; };
+		2D0DE2EC1796940500A7C813 /* AbstractActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractActionSheetPicker.h; sourceTree = "<group>"; };
+		2D0DE2ED1796940500A7C813 /* AbstractActionSheetPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractActionSheetPicker.m; sourceTree = "<group>"; };
+		2D0DE2EE1796940500A7C813 /* ActionSheetCustomPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetCustomPicker.h; sourceTree = "<group>"; };
+		2D0DE2EF1796940500A7C813 /* ActionSheetCustomPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetCustomPicker.m; sourceTree = "<group>"; };
+		2D0DE2F01796940500A7C813 /* ActionSheetCustomPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetCustomPickerDelegate.h; sourceTree = "<group>"; };
+		2D0DE2F11796940500A7C813 /* ActionSheetDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetDatePicker.h; sourceTree = "<group>"; };
+		2D0DE2F21796940500A7C813 /* ActionSheetDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetDatePicker.m; sourceTree = "<group>"; };
+		2D0DE2F31796940500A7C813 /* ActionSheetDistancePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetDistancePicker.h; sourceTree = "<group>"; };
+		2D0DE2F41796940500A7C813 /* ActionSheetDistancePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetDistancePicker.m; sourceTree = "<group>"; };
+		2D0DE2F51796940500A7C813 /* ActionSheetStringPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetStringPicker.h; sourceTree = "<group>"; };
+		2D0DE2F61796940500A7C813 /* ActionSheetStringPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetStringPicker.m; sourceTree = "<group>"; };
+		2D0DE2F71796940500A7C813 /* DistancePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistancePickerView.h; sourceTree = "<group>"; };
+		2D0DE2F81796940500A7C813 /* DistancePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistancePickerView.m; sourceTree = "<group>"; };
 		2D115D761762CAC30011C0D7 /* JDOCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCommentModel.h; sourceTree = "<group>"; };
 		2D115D771762CAC30011C0D7 /* JDOCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCommentModel.m; sourceTree = "<group>"; };
 		2D115D791762F30A0011C0D7 /* JDOStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOStatusView.h; sourceTree = "<group>"; };
@@ -888,6 +912,12 @@
 		2DA3C4C9178EB481009817A6 /* full_separator_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = full_separator_line.png; sourceTree = "<group>"; };
 		2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
 		2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetsTextField.m; sourceTree = "<group>"; };
+		2DA81F901796749B00A528BA /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error.png; sourceTree = "<group>"; };
+		2DA81F911796749C00A528BA /* error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error@2x.png"; sourceTree = "<group>"; };
+		2DA81F921796749C00A528BA /* success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = success.png; sourceTree = "<group>"; };
+		2DA81F931796749C00A528BA /* success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "success@2x.png"; sourceTree = "<group>"; };
+		2DA81F9817967F1E00A528BA /* JDOWeatherForcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeatherForcast.h; sourceTree = "<group>"; };
+		2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeatherForcast.m; sourceTree = "<group>"; };
 		2DC1D2C4177D8ED600D31184 /* news_content_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_content_background.png; sourceTree = "<group>"; };
 		2DC1D2C5177D8ED600D31184 /* news_content_background_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_content_background_selected.png; sourceTree = "<group>"; };
 		2DC1D2CA177DA02000D31184 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -1115,6 +1145,26 @@
 			path = FXLabel;
 			sourceTree = "<group>";
 		};
+		2D0DE2EB1796938D00A7C813 /* ActionSheetPicker */ = {
+			isa = PBXGroup;
+			children = (
+				2D0DE2EC1796940500A7C813 /* AbstractActionSheetPicker.h */,
+				2D0DE2ED1796940500A7C813 /* AbstractActionSheetPicker.m */,
+				2D0DE2EE1796940500A7C813 /* ActionSheetCustomPicker.h */,
+				2D0DE2EF1796940500A7C813 /* ActionSheetCustomPicker.m */,
+				2D0DE2F01796940500A7C813 /* ActionSheetCustomPickerDelegate.h */,
+				2D0DE2F11796940500A7C813 /* ActionSheetDatePicker.h */,
+				2D0DE2F21796940500A7C813 /* ActionSheetDatePicker.m */,
+				2D0DE2F31796940500A7C813 /* ActionSheetDistancePicker.h */,
+				2D0DE2F41796940500A7C813 /* ActionSheetDistancePicker.m */,
+				2D0DE2F51796940500A7C813 /* ActionSheetStringPicker.h */,
+				2D0DE2F61796940500A7C813 /* ActionSheetStringPicker.m */,
+				2D0DE2F71796940500A7C813 /* DistancePickerView.h */,
+				2D0DE2F81796940500A7C813 /* DistancePickerView.m */,
+			);
+			path = ActionSheetPicker;
+			sourceTree = "<group>";
+		};
 		2D141462176324E700A6A50A /* UniqueIdentifier */ = {
 			isa = PBXGroup;
 			children = (
@@ -1231,6 +1281,8 @@
 				2D9C249E1793D2B200EAB2E3 /* JDOQuestionCommentModel.m */,
 				A774BF21178D726100A3B866 /* JDOWeather.h */,
 				A774BF22178D726100A3B866 /* JDOWeather.m */,
+				2DA81F9817967F1E00A528BA /* JDOWeatherForcast.h */,
+				2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */,
 				2D98E21217924D8E0033951D /* JDODataModel.h */,
 				2D98E21317924D8E0033951D /* JDODataModel.m */,
 				2D9C24A01793D74E00EAB2E3 /* JDOArrayModel.h */,
@@ -1273,6 +1325,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2D0DE2EB1796938D00A7C813 /* ActionSheetPicker */,
 				2D3C03481794D8010050EA57 /* PopoverView */,
 				2D98E1DA1792456E0033951D /* KeyValueObjectMapping */,
 				2D9D81D71790458F00E69B0E /* MBSwitch */,
@@ -1569,6 +1622,10 @@
 				2D97A94917853D4C00CEEE82 /* gou.png */,
 				2D97A94A17853D4C00CEEE82 /* point_per.png */,
 				2D97A94B17853D4C00CEEE82 /* toupiao.png */,
+				2DA81F901796749B00A528BA /* error.png */,
+				2DA81F911796749C00A528BA /* error@2x.png */,
+				2DA81F921796749C00A528BA /* success.png */,
+				2DA81F931796749C00A528BA /* success@2x.png */,
 				2D953E03177AAC9900DF166B /* MWPhotoBrowser.bundle */,
 			);
 			name = Resources;
@@ -2294,6 +2351,10 @@
 				2D06C6D01795341B00B45B86 /* ship.png in Resources */,
 				2D06C6D11795341B00B45B86 /* transport.png in Resources */,
 				2D06C6D31795355900B45B86 /* airplane.png in Resources */,
+				2DA81F941796749C00A528BA /* error.png in Resources */,
+				2DA81F951796749C00A528BA /* error@2x.png in Resources */,
+				2DA81F961796749C00A528BA /* success.png in Resources */,
+				2DA81F971796749C00A528BA /* success@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2509,6 +2570,13 @@
 				2D9C249F1793D2B200EAB2E3 /* JDOQuestionCommentModel.m in Sources */,
 				2D9C24A21793D74E00EAB2E3 /* JDOArrayModel.m in Sources */,
 				2D3C034C1794D8430050EA57 /* PopoverView.m in Sources */,
+				2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */,
+				2D0DE2F91796940500A7C813 /* AbstractActionSheetPicker.m in Sources */,
+				2D0DE2FA1796940500A7C813 /* ActionSheetCustomPicker.m in Sources */,
+				2D0DE2FB1796940500A7C813 /* ActionSheetDatePicker.m in Sources */,
+				2D0DE2FC1796940500A7C813 /* ActionSheetDistancePicker.m in Sources */,
+				2D0DE2FD1796940500A7C813 /* ActionSheetStringPicker.m in Sources */,
+				2D0DE2FE1796940500A7C813 /* DistancePickerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

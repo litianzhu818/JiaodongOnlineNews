@@ -120,7 +120,7 @@
             return aPage;
         }
         case 2:{
-            JDOLivehoodAskQuestion *aPage = [[JDOLivehoodAskQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo];
+            JDOLivehoodAskQuestion *aPage = [[JDOLivehoodAskQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo rootView:self.view];
             return aPage;
         }
         case 3:{

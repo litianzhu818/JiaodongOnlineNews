@@ -396,6 +396,7 @@
             });
         }
     } failure:^(NSString *errorStr) {
+        [self.tableView.infiniteScrollingView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
 }

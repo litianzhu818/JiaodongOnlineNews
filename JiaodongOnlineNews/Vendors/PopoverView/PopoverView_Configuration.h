@@ -103,7 +103,7 @@
 // BORDER
 
 //bool that turns off/on the border
-#define kDrawBorder NO
+#define kDrawBorder YES
 
 //border color
 #define kBorderColor [UIColor blackColor]
