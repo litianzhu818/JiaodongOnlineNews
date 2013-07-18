@@ -11,11 +11,19 @@
 #import "JDONewsModel.h"
 #import "JDOWebClient.h"
 #import "JDONewsDetailModel.h"
+#import "JDOImageModel.h"
+#import "JDOImageDetailModel.h"
+#import "JDOImageDetailController.h"
 #import "JDOCenterViewController.h"
 #import "WebViewJavascriptBridge_iOS.h"
 #import "JDOReviewListController.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "SDImageCache.h"
+#import "JDORegxpUtil.h"
 #import "DCKeyValueObjectMapping.h"
+
+#define Default_Image @"news_head_placeholder.png"
+
 
 @interface JDONewsDetailController ()
 
@@ -26,6 +34,8 @@
 @end
 
 @implementation JDONewsDetailController
+
+NSArray *imageUrls;
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel{
     self = [super initWithNibName:nil bundle:nil];
@@ -87,8 +97,8 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    [self buildWebViewJavascriptBridge];
     [self loadWebView];
+    [self buildWebViewJavascriptBridge];
     
     _toolbar.bridge = self.bridge;
     
@@ -132,7 +142,7 @@
 #pragma mark - Load WebView
      
 - (void) buildWebViewJavascriptBridge{
-//    [WebViewJavascriptBridge enableLogging];
+    [WebViewJavascriptBridge enableLogging];
     
     _bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView webViewDelegate:self handler:^(id data, WVJBResponseCallback responseCallback) {
         NSLog(@"ObjC received message from JS: %@", data);
@@ -146,12 +156,42 @@
     }];
     [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        
+        JDOImageModel *imageModel = [[JDOImageModel alloc] init];
+        
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        for (int i=0; i<[imageUrls count]; i++) {
+            NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
+            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:localUrl andContent:self.newsModel.title];
+            [imageDetail setIsLocalUrl:TRUE];
+            [array addObject:imageDetail];
+        }
+        
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
+        detailController.imageIndex = [imageId integerValue];
+        detailController.imageDetails = array;
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+        [centerController pushViewController:detailController animated:true];
         // 显示图片详情
         responseCallback(imageId);
     }];
 }
 
 - (void) loadWebView{
+    [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
+            // 新闻不存在
+        }else if([responseObject isKindOfClass:[NSDictionary class]]){
+//            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
+            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
+            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
+            //[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://tieba.baidu.com"]]];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
     #warning 若有缓存可以从缓存读取
     if (false /*有缓存*/) {
         [self setCurrentState:ViewStatusLogo];
@@ -183,6 +223,50 @@
     }
 }
 
+// 当下载完成后，调用回调方法，使下载的图片显示
+- (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image {
+    }
+
+- (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image forURL:(NSURL *)url {
+    NSString *realUrl = [url absoluteString];
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache storeImage:image forKey:realUrl];
+    [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
+
+}
+
+- (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary{
+    NSString *html = [dictionary objectForKey:@"content"];
+    
+    //获取图片原始url进行异步加载，原图替换为占位图，加载结束后再替换
+    imageUrls = [JDORegxpUtil getXmlTagAttrib: html andTag:@"img" andAttr:@"src"];
+    for (int i=0; i<[imageUrls count]; i++) {
+        NSString *realUrl = [imageUrls objectAtIndex:i];
+        //更改图片为占位图
+        NSMutableString *replaceWithString = [[NSMutableString alloc] init];
+        [replaceWithString appendString:Default_Image];
+        [replaceWithString appendString:@"\" realUrl=\""];
+        [replaceWithString appendString:realUrl];
+        [replaceWithString appendString:@"\""];
+        html = [html stringByReplacingOccurrencesOfString:realUrl withString:replaceWithString];
+    }
+    NSMutableDictionary *newsDetail = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
+    [newsDetail setObject:html forKey:@"content"];
+    return newsDetail;
+}
+
+-(void) callJsToRefreshWebview:(NSString *)realUrl andLocal:(NSString *) localUrl {
+    //图片加载成功，调用js，刷新图片
+    NSMutableString *js = [[NSMutableString alloc] init];
+    [js appendString:@"refreshImg('"];
+    [js appendString:realUrl];
+    [js appendString:@"', '"];
+    [js appendString:localUrl];
+    [js appendString:@"')"];
+    [self.webView stringByEvaluatingJavaScriptFromString:js];
+
+}
+
 #pragma mark - Webview delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
@@ -199,6 +283,23 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
     [self setCurrentState:ViewStatusNormal];
+    //webview加载完成，再开始异步加载图片
+    if(imageUrls) {
+        //NSLog(@"webview finished");
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        for (int i=0; i<[imageUrls count]; i++) {
+            NSString *realUrl = [imageUrls objectAtIndex:i];
+            NSURL *url = [NSURL URLWithString:realUrl];
+            SDImageCache *imageCache = [SDImageCache sharedImageCache];
+            UIImage *cachedImage = [imageCache imageFromKey:realUrl fromDisk:YES]; // 将需要缓存的图片加载进来
+            if (cachedImage) {
+                [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
+            } else {
+                [manager downloadWithURL:url delegate:self];
+            }
+        }
+    }
+
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{

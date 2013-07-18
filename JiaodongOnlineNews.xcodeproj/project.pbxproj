@@ -383,6 +383,7 @@
 		2DEEAD591790555E00FB81EA /* menu_bind.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DEEAD571790555E00FB81EA /* menu_bind.png */; };
 		2DEEAD5A1790555E00FB81EA /* menu_rate.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DEEAD581790555E00FB81EA /* menu_rate.png */; };
 		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
+		A74C31621798596300B2E490 /* JDORegxpUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A74C31611798596300B2E490 /* JDORegxpUtil.m */; };
 		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
@@ -1007,6 +1008,8 @@
 		A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		A7341C7C178EB77C00ADD976 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		A7341C7F178EB7EC00ADD976 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		A74C31601798596300B2E490 /* JDORegxpUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDORegxpUtil.h; sourceTree = "<group>"; };
+		A74C31611798596300B2E490 /* JDORegxpUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDORegxpUtil.m; sourceTree = "<group>"; };
 		A774BF21178D726100A3B866 /* JDOWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeather.h; sourceTree = "<group>"; };
 		A774BF22178D726100A3B866 /* JDOWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeather.m; sourceTree = "<group>"; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1099,6 +1102,8 @@
 		2D01E67A1748D78300B81568 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A74C31601798596300B2E490 /* JDORegxpUtil.h */,
+				A74C31611798596300B2E490 /* JDORegxpUtil.m */,
 				2D01E67B1748D82E00B81568 /* Reachability.h */,
 				2D01E67C1748D82E00B81568 /* Reachability.m */,
 				2D9678B9174AF78A008AC097 /* JDOImageUtil.h */,
@@ -2649,6 +2654,7 @@
 				2D0DE2FC1796940500A7C813 /* ActionSheetDistancePicker.m in Sources */,
 				2D0DE2FD1796940500A7C813 /* ActionSheetStringPicker.m in Sources */,
 				2D0DE2FE1796940500A7C813 /* DistancePickerView.m in Sources */,
+				A74C31621798596300B2E490 /* JDORegxpUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

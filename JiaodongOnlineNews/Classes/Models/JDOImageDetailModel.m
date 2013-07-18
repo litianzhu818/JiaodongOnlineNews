@@ -9,5 +9,11 @@
 #import "JDOImageDetailModel.h"
 
 @implementation JDOImageDetailModel
-
+- (id) initWithUrl:(NSString *) imageUrl andContent:(NSString *)imageContent {
+    if(self = [super init]){
+        self.imagecontent = imageContent;
+        self.imageurl = imageUrl;
+    }
+    return self;
+}
 @end
