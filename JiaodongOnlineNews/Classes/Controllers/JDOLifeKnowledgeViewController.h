@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JDONewsCategoryInfo.h"
 
-@interface JDOLifeKnowledgeViewController : UIViewController <JDOStatusView, UITableViewDelegate, UITableViewDataSource>
+@interface JDOLifeKnowledgeViewController : JDONavigationController <JDOStatusView, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) NSString *reuseId;
