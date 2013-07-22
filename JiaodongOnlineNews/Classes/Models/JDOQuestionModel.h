@@ -20,4 +20,7 @@
 @property (nonatomic,strong) NSNumber *reply;
 @property (nonatomic,strong) NSString *pubtime;
 
+@property (nonatomic,strong) NSNumber *secret;
+@property (nonatomic,strong) NSString *pwd;
+
 @end

@@ -131,6 +131,7 @@
 //        HUD.minShowTime = Hint_Min_Show_Time;
 //        HUD.dimBackground = true;
         HUD.labelText = @"更新数据";
+        HUD.margin = 15.f;
         HUD.removeFromSuperViewOnHide = true;
         [HUD show:true];
         HUDShowTime = [NSDate date];
@@ -272,7 +273,7 @@
     if(self.status == ViewStatusLoading){
         [self setCurrentState:ViewStatusRetry];
     }else if(self.status == ViewStatusNormal){
-        [JDOCommonUtil showHintHUD:errorStr inView:self];
+        [self dismissHUDOnLoadFailed:errorStr];
     }
 }
 

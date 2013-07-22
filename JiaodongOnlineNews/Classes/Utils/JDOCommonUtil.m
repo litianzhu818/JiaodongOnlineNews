@@ -206,7 +206,7 @@ static NSDateFormatter *dateFormatter;
     hud.mode = MBProgressHUDModeText;
     hud.labelText = content;
     hud.margin = 10.f;
-    hud.yOffset = view.frame.size.height/2.0f-60;
+    hud.yOffset = view.frame.size.height/2.0f-40;
     hud.removeFromSuperViewOnHide = YES;
     [hud hide:YES afterDelay:1.5];
 }

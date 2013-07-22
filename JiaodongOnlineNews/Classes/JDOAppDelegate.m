@@ -93,7 +93,7 @@
                 advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320, App_Height)];
             }else{
                 // 从本地路径加载缓存广告图失败,使用默认广告图
-                advImage = [UIImage imageNamed:@"default_adv.jpg"];
+                advImage = [UIImage imageNamed:@"default_adv.png"];
             }
         }
         
@@ -111,7 +111,7 @@
             advImage = [UIImage imageWithData:imgData];
         }else{
             // 本地缓存尚不存在,加载默认广告图
-            advImage = [UIImage imageNamed:@"default_adv.jpg"];
+            advImage = [UIImage imageNamed:@"default_adv.png"];
         }
     }
     advView.image = advImage;
@@ -179,11 +179,12 @@
 //    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
 //    [NSURLCache setSharedURLCache:urlCache];
     
-    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
-        advImage = [UIImage imageNamed:@"default_adv.jpg"];
-    }else{  // 网络可用
-        [self asyncLoadAdvertise];
-    }
+#warning 测试广告位图片效果,暂时关闭异步网络加载
+//    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
+        advImage = [UIImage imageNamed:@"default_adv.png"];
+//    }else{  // 网络可用
+//        [self asyncLoadAdvertise];
+//    }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];

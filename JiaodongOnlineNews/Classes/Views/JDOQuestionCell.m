@@ -77,8 +77,7 @@
 
 - (void)setModel:(JDOQuestionModel *)questionModel{
     if(questionModel == nil){
-        self.textLabel.textColor = [UIColor blackColor];
-        self.textLabel.text = @"暂无相关问题";
+        self.textLabel.text = nil;
         self.detailTextLabel.text = nil;
         self.codeLabel.text = nil;
         self.replyLabel.text = nil;
@@ -86,7 +85,11 @@
     }else{
         self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.text = [NSString stringWithFormat:@"处理部门：%@", questionModel.department];
-        self.detailTextLabel.text = questionModel.title;
+        if ([questionModel.secret intValue] == 1){  // 保密
+            self.detailTextLabel.text = @"请通过密码查看处理情况";
+        }else{
+            self.detailTextLabel.text = questionModel.title;
+        }
         self.codeLabel.text = [NSString stringWithFormat:@"编号：[%@]",questionModel.id];
         if([(NSNumber *)questionModel.reply boolValue]){
             self.replyLabel.text = @"已回复";
@@ -95,7 +98,6 @@
             self.replyLabel.text = @"未回复";
             self.replyLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
         }
-        
         self.separatorLine.hidden = false;
     }
 }

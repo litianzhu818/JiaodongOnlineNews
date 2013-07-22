@@ -219,7 +219,7 @@
 
 - (void)submitReview:(id)sender{
     
-    if(JDOIsEmptyString(_reviewPanel.textView.text) || [[_reviewPanel.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:Review_Comment_Placeholder]){
+    if(JDOIsEmptyString(_reviewPanel.textView.text) /*|| [[_reviewPanel.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:Review_Comment_Placeholder]*/){
         return;
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:5];
@@ -450,6 +450,7 @@
         _progressHUD = [[MBProgressHUD alloc] initWithView:self.parentController.view];
 //        _progressHUD.minSize = CGSizeMake(120, 120);
         _progressHUD.minShowTime = 1;
+        _progressHUD.margin = 15.f;
 
         self.progressHUD.customView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/Checkmark.png"]];
         [self.parentController.view addSubview:_progressHUD];

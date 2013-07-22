@@ -14,12 +14,13 @@
 #import "JDOCenterViewController.h"
 #import "FXLabel.h"
 #import "InsetsTextField.h"
+#import "XYInputView.h"
 
 #define QuestionList_Page_Size 20
 #define Finished_Label_Tag 111
 #define Search_Placeholder @"请输入关键词或编号"
 
-@interface JDOLivehoodQuestionList ()
+@interface JDOLivehoodQuestionList () <UIAlertViewDelegate>
 
 @property (nonatomic,strong) NSDate *lastUpdateTime;
 @property (nonatomic,assign) int currentPage;
@@ -32,6 +33,9 @@
 @property (strong, nonatomic) UIImageView *searchPanel;
 @property (strong, nonatomic) UITapGestureRecognizer *closeInputGesture;
 @property (strong, nonatomic) UITapGestureRecognizer *openInputGesture;
+
+@property (strong,nonatomic) UIImageView *noDataView;
+@property (strong,nonatomic) XYInputView *alertView;
 
 @end
 
@@ -62,7 +66,7 @@
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
-        self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;  // 分割线用背景图片实现
         self.tableView.rowHeight = News_Cell_Height;
         [self addSubview:self.tableView];
@@ -96,6 +100,12 @@
         self.statusView = [[JDOStatusView alloc] initWithFrame:self.bounds];
         [self addSubview:self.statusView];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deptChanged:) name:kDeptChangedNotification object:nil];
+        
+        // 无数据提示
+        _noDataView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_no_data"]];
+        _noDataView.frame = CGRectMake(0, -44, 320, self.bounds.size.height);
+        _noDataView.hidden = true;
+        [self addSubview:_noDataView];
         
     }
     return self;
@@ -303,20 +313,26 @@
 }
 
 - (void)loadDataFromNetwork{
+    // 有可能再翻页之后再进行搜索,所以需要将页码置为1
+    
+    self.noDataView.hidden = true;
     if(![Reachability isEnableNetwork]){
         [self setCurrentState:ViewStatusNoNetwork];
     }else{  // 从网络加载数据，切换到loading状态
         [self setCurrentState:ViewStatusLoading];
     }
 
+    self.currentPage = 1;
 #warning 查询功能目前只在Test下可用
     [[JDOHttpClient sharedTestClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
         [self setCurrentState:ViewStatusNormal];
         if(dataList == nil || dataList.count == 0){
-
+            // 搜索时很有可能返回结果为空
+            _noDataView.hidden = false;
         }else{
-            [self dataLoadFinished:dataList];
+            
         }
+        [self dataLoadFinished:dataList];
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
@@ -335,10 +351,11 @@
     [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList)  {
         [self.tableView.pullToRefreshView stopAnimating];
         if(dataList == nil || dataList.count == 0){
-
+            self.noDataView.hidden = false;
         }else{
-            [self dataLoadFinished:dataList];
+            self.noDataView.hidden = true;
         }
+        [self dataLoadFinished:dataList];
     } failure:^(NSString *errorStr) {
         [self.tableView.pullToRefreshView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self];
@@ -350,10 +367,16 @@
     [self.listArray addObjectsFromArray:dataList];
 //    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadData];
+    
+    // 因为可能在翻了多页之后点查询,此时列表重新加载数据后会停留在最下方
+    if (self.listArray.count > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+    }
+    
     [self updateLastRefreshTime];
     if( dataList.count<QuestionList_Page_Size ){
         [self.tableView.infiniteScrollingView setEnabled:false];
-        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
+        [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = false;
     }else{
         [self.tableView.infiniteScrollingView setEnabled:true];
         [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
@@ -444,7 +467,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(self.listArray.count == 0){
-        return 30;
+        return 0;
     }else{
         JDOQuestionModel *questionModel = [self.listArray objectAtIndex:indexPath.row];
         return [self cellHeight:questionModel];
@@ -457,10 +480,47 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    JDOQuestionDetailController *detailController = [[JDOQuestionDetailController alloc] initWithQuestionModel:[self.listArray objectAtIndex:indexPath.row]];
-    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-    [centerController pushViewController:detailController animated:true];
-    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    JDOQuestionModel *questionModel = [self.listArray objectAtIndex:indexPath.row];
+    BOOL enable = false;
+    if ([questionModel.secret intValue] == 1) { // 保密
+//        if (_alertView == nil) {
+            // 不使用UIAlertView，原因如下:1.alertViewStyle属性需要iOS>5.0  2.弹出窗口并关闭后，再次点击所有屏幕事件都失效，再点一次就好了，原因不清楚。
+//            _alertView = [[UIAlertView alloc] initWithTitle:@"请输入查询密码" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认",nil];
+//            _alertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
+//            [_alertView textFieldAtIndex:0].keyboardType = UIKeyboardTypeNumberPad;
+            
+            _alertView = [XYInputView inputViewWithTitle:@"请输入查询密码" message:nil placeholder:@"6位数字" initialText:nil buttons:@[@"取消",@"确定"] afterDismiss:^(int buttonIndex, NSString *text) {
+                if(buttonIndex == 1){
+                    
+                }
+            }];
+            [_alertView setButtonStyle:XYButtonStyleGreen atIndex:1];
+//        }
+        [_alertView show];
+    }else{
+        enable = true;
+    }
+    
+    if(enable){
+        JDOQuestionDetailController *detailController = [[JDOQuestionDetailController alloc] initWithQuestionModel:questionModel];
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+        [centerController pushViewController:detailController animated:true];
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:false];
 }
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 0){
+        
+    }
+}
+- (void)alertViewCancel:(UIAlertView *)alertView{
+    
+}
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    
+}
+
 
 @end

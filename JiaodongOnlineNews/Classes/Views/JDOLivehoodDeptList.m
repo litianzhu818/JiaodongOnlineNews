@@ -176,6 +176,7 @@
     HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
     [SharedAppDelegate.window addSubview:HUD];
     HUD.labelText = @"更新数据";
+    HUD.margin = 15.f;
     HUD.removeFromSuperViewOnHide = true;
     [HUD show:true];
     HUDShowTime = [NSDate date];

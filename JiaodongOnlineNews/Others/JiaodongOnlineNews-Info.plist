@@ -8,6 +8,11 @@
 	<string>胶东在线</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>icon.png</string>
+		<string>icon@2x.png</string>
+	</array>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -15,6 +20,7 @@
 			<key>CFBundleIconFiles</key>
 			<array>
 				<string>icon.png</string>
+				<string>icon@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>

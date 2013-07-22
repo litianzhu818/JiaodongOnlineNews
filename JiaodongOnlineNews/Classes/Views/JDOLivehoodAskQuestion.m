@@ -12,6 +12,7 @@
 #import "ActionSheetCustomPicker.h"
 #import "ActionSheetStringPicker.h"
 #import "SSTextView.h"
+#import "XYAlertView.h"
 
 #define Line_Height 35.0f
 #define Label_Width 90.0f
@@ -62,6 +63,7 @@
     NSString *qTypeValue, *qPublicValue, *qAreaValue, *qTelPublicValue;
     BOOL isKeyboardShowing;
     MBProgressHUD *HUD;
+    NSDate *HUDShowTime;
 }
 
 #warning 输入框背景色若要调整需要替换图片,弹出框样式需要调整
@@ -246,11 +248,93 @@
         [JDOCommonUtil showHintHUD:@"请检查电子邮件格式" inView:self];
         return;
     }
+    // 网络可用性
+    if(![Reachability isEnableNetwork]){
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self];
+        return;
+    }
     
-    // 提交数据 HUD提示
-    // 清空数据 
-    // 返回列表
+    HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+    [SharedAppDelegate.window addSubview:HUD];
+    HUD.labelText = @"正在提交";
+    HUD.margin = 15.f;
+    HUD.removeFromSuperViewOnHide = true;
+    [HUD show:true];
+    HUDShowTime = [NSDate date];
+    
+    NSDictionary *params = @{@"title":_titleInput.text,@"question":_contentInput.text,@"info_type":qTypeValue,@"secret":qPublicValue,@"pwd":_qPwdInput.text,@"dept_code":[_selectedDept objectForKey:@"dept_code"],@"country_id":qAreaValue,@"petname":_qNameInput.text,@"contact":_qTelInput.text,@"contact_open":qTelPublicValue,@"email":_qEmailInput.text};
+    
+    [[JDOJsonClient sharedClient] getJSONByServiceName:REPORT_QUESTION_SERVICE modelClass:nil params:params success:^(NSDictionary *result) {
+        NSNumber *status = [result objectForKey:@"status"];
+        if([status longValue] != 0 ){
+            // 关闭HUD
+            if(HUD && HUDShowTime){
+                // 防止加载提示消失的太快
+                double delay = [[NSDate date] timeIntervalSinceDate:HUDShowTime];
+                if(delay < Hint_Min_Show_Time){
+                    usleep((Hint_Min_Show_Time-delay)*1000*1000);
+                }
+                [HUD hide:true];
+                HUDShowTime = nil;
+                HUD = nil;
+            }
+            // 弹出提示窗口提示记录问题id和查询密码
+            NSString *hintTitle = @"问题已提交,正在等待审核";
+            NSString *hintMessage = [NSString stringWithFormat:@"请牢记您的问题编号:%ld以及查询密码:%@",[status longValue],_qPwdInput.text];
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:hintTitle message:hintMessage delegate:nil cancelButtonTitle:@"我记住了" otherButtonTitles: nil];
+            XYAlertView *alertView = [XYAlertView alertViewWithTitle:hintTitle message:hintMessage buttons:@[@"我记住了"] afterDismiss:^(int buttonIndex) {
+
+            }];
+//            [alertView setButtonStyle:XYButtonStyleGray atIndex:1];
+            [alertView show];
+            // 清空所有输入框和变量的内容
+            _titleInput.text = nil;
+            _contentInput.text = nil;
+            qTypeValue = nil;
+            [_qTypeButton setTitle:@"" forState:UIControlStateNormal];
+            qPublicValue = nil;
+            _qPublicCB.selected = false;
+            _qNotPublicCB.selected = false;
+            [_qPublicCB setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
+            [_qNotPublicCB setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
+            _qPwdInput.text = nil;
+            _selectedDept = nil;
+            [_qDeptButton setTitle:@"" forState:UIControlStateNormal];
+            qAreaValue = nil;
+            [_qAreaButton setTitle:@"" forState:UIControlStateNormal];
+            _qNameInput.text = nil;
+            _qTelInput.text = nil;
+            qTelPublicValue = nil;
+            _qTelPublicCB.selected = false;
+            _qTelNotPublicCB.selected = false;
+            [_qTelPublicCB setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
+            [_qTelNotPublicCB setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
+            _qEmailInput.text = nil;
+        }else{  // 提交失败,服务器错误
+            [self dismissHUDOnLoadFailed:@"提交失败"];
+        }
+    } failure:^(NSString *errorStr) {
+        [self dismissHUDOnLoadFailed:errorStr];
+    }];
 }
+
+- (void)dismissHUDOnLoadFailed:(NSString *)errorStr{
+    if(HUD && HUDShowTime){
+        // 防止加载提示消失的太快
+        double delay = [[NSDate date] timeIntervalSinceDate:HUDShowTime];
+        if(delay < Hint_Min_Show_Time){
+            usleep(Hint_Min_Show_Time-delay*1000*1000);
+        }
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = errorStr;
+        [HUD hide:true afterDelay:1.0];
+        HUDShowTime = nil;
+        HUD = nil;
+    }
+}
+
+
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -334,16 +418,16 @@
     [btn setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_selected"] forState:UIControlStateNormal];
     UIButton *converseBtn;
     if (btn == _qPublicCB ) {
-        qPublicValue = [publicStrings objectAtIndex:0];
+        qPublicValue = [publicValues objectAtIndex:0];
         converseBtn = _qNotPublicCB;
     }else if(btn == _qNotPublicCB){
-        qPublicValue = [publicStrings objectAtIndex:1];
+        qPublicValue = [publicValues objectAtIndex:1];
         converseBtn = _qPublicCB;
     }else if(btn == _qTelPublicCB){
-        qTelPublicValue = [telPublicStrings objectAtIndex:0];
+        qTelPublicValue = [telPublicValues objectAtIndex:0];
         converseBtn = _qTelNotPublicCB;
     }else if(btn == _qTelNotPublicCB){
-        qTelPublicValue = [telPublicStrings objectAtIndex:1];
+        qTelPublicValue = [telPublicValues objectAtIndex:1];
         converseBtn = _qTelPublicCB;
     }
     converseBtn.selected = false;
@@ -436,8 +520,8 @@
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
     switch (component) {
-        case 0: return 100.0f;
-        case 1: return 200.0f;
+        case 0: return 90.0f;
+        case 1: return 210.0f;
     }
     return 0;
 }
@@ -457,9 +541,9 @@
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     if( component ==0 ){
         if(view == nil){
-            UILabel *deptKeyLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100-20, 35)];
+            UILabel *deptKeyLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 90-20, 35)];
             deptKeyLabel.textColor = [UIColor blackColor];
-            deptKeyLabel.font = [UIFont systemFontOfSize:15];
+            deptKeyLabel.font = [UIFont boldSystemFontOfSize:18];
             deptKeyLabel.text = [_deptKeys objectAtIndex:row];
             deptKeyLabel.backgroundColor = [UIColor clearColor];
             return deptKeyLabel;
@@ -469,9 +553,9 @@
         }
     }else{
         if(view == nil){
-            UILabel *deptLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200-20, 35)];
+            UILabel *deptLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 210-20, 35)];
             deptLabel.textColor = [UIColor blackColor];
-            deptLabel.font = [UIFont systemFontOfSize:15];
+            deptLabel.font = [UIFont boldSystemFontOfSize:18];
             deptLabel.text = [[_deptList objectAtIndex:row] objectForKey:@"dept_name"];
             deptLabel.backgroundColor = [UIColor clearColor];
             return deptLabel;
