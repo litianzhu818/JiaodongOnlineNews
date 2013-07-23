@@ -92,6 +92,7 @@ typedef NSString *(^CacheKeyFilter)(NSURL *url);
  */
 - (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate;
 
+- (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate storeDelegate:(id<SDWebImageStoreDelegate>) storeDelegate;
 /**
  * Downloads the image at the given URL if not present in cache or return the cached version otherwise.
  *

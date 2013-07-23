@@ -37,3 +37,8 @@
 - (void)imageCache:(SDImageCache *)imageCache didNotFindImageForKey:(NSString *)key userInfo:(NSDictionary *)info;
 
 @end
+
+@protocol SDWebImageStoreDelegate <NSObject>
+@optional
+- (void)didFinishStoreForKey:(NSString *)key;
+@end

@@ -149,17 +149,11 @@ NSArray *imageUrls;
         responseCallback(@"Response for message from ObjC");
     }];
     
-    [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
-        // 通过pushViewController 显示图集视图
-        responseCallback(linkId);
-    }];
     [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
+        NSLog(@"showImageDetail js  imageId: %@", imageId);
         NSMutableArray *array = [[NSMutableArray alloc] init];
-        
         JDOImageModel *imageModel = [[JDOImageModel alloc] init];
-        
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
@@ -175,6 +169,11 @@ NSArray *imageUrls;
         [centerController pushViewController:detailController animated:true];
         // 显示图片详情
         responseCallback(imageId);
+    }];
+    [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
+        // 通过pushViewController 显示图集视图
+        responseCallback(linkId);
     }];
 }
 
@@ -212,17 +211,6 @@ NSArray *imageUrls;
 
 # warning 需测试异步加载
 // 当下载完成后，调用回调方法，使下载的图片显示
-- (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image {
-    }
-
-- (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image forURL:(NSURL *)url {
-    NSString *realUrl = [url absoluteString];
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    [imageCache storeImage:image forKey:realUrl];
-    [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
-
-}
-
 - (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary{
     NSString *html = [dictionary objectForKey:@"content"];
     
@@ -265,6 +253,13 @@ NSArray *imageUrls;
     return true;
 }
 
+- (void)didFinishStoreForKey:(NSString *)key {
+    NSLog(@"didFinishStoreForKey ");
+    NSString *realUrl = key;
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
+}
+
 - (void)webViewDidStartLoad:(UIWebView *)webView{
 
 }
@@ -283,7 +278,7 @@ NSArray *imageUrls;
             if (cachedImage) {
                 [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
             } else {
-                [manager downloadWithURL:url delegate:self];
+                [manager downloadWithURL:url delegate:self storeDelegate:self];
             }
         }
     }
