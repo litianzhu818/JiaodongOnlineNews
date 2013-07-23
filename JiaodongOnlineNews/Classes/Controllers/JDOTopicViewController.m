@@ -94,16 +94,16 @@
     _horizontalScrollView.tag = ScrollView_Tag;
 	[self.view insertSubview:_horizontalScrollView belowSubview:self.navigationView];
 	
-    if(![Reachability isEnableNetwork]){
-        [self setCurrentState:ViewStatusNoNetwork];
-    }else{  // 从网络加载数据，切换到loading状态
-        [self setCurrentState:ViewStatusLoading];
-        [self loadDataFromNetwork];
-    }
-	
+    [self loadDataFromNetwork];
 }
 
 - (void)loadDataFromNetwork{
+    if(![Reachability isEnableNetwork]){
+        [self setCurrentState:ViewStatusNoNetwork];
+        return;
+    }else{  // 从网络加载数据，切换到loading状态
+        [self setCurrentState:ViewStatusLoading];
+    }
     
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
         if(dataList == nil){

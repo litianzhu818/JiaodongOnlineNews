@@ -82,6 +82,7 @@
         self.noDataView.hidden = true;
         if(![Reachability isEnableNetwork]){
             [self setCurrentState:ViewStatusNoNetwork];
+            return;
         }else{  // 从网络加载数据，切换到loading状态
             [self setCurrentState:ViewStatusLoading];
         }

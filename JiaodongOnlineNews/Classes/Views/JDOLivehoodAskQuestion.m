@@ -36,6 +36,10 @@
 @property (nonatomic,strong) UITextField *qTelInput;
 @property (nonatomic,strong) UITextField *qEmailInput;
 
+@property (nonatomic,strong) UIView *qPublicCBView;
+@property (nonatomic,strong) UIView *qNotPublicCBView;
+@property (nonatomic,strong) UIView *qTelPublicCBView;
+@property (nonatomic,strong) UIView *qTelNotPublicCBView;
 @property (nonatomic,strong) UIButton *qPublicCB;
 @property (nonatomic,strong) UIButton *qNotPublicCB;
 @property (nonatomic,strong) UIButton *qTelPublicCB;
@@ -126,8 +130,10 @@
         // 问题是否公开
         nextLineY += Line_Height+Line_Padding;
         [self addLabel:@"问题是否公开" originY:nextLineY];
-        _qPublicCB = [self addCheckboxTitle:@"公开" frame:CGRectMake(Label_Width+20, nextLineY, 100, Line_Height)];
-        _qNotPublicCB = [self addCheckboxTitle:@"保密" frame:CGRectMake(Label_Width+20+110, nextLineY, 120, Line_Height)];
+        _qPublicCBView = [self addCheckboxTitle:@"公开" frame:CGRectMake(Label_Width+20, nextLineY, 100, Line_Height)];
+        _qPublicCB = (UIButton *)[_qPublicCBView viewWithTag:100];
+        _qNotPublicCBView = [self addCheckboxTitle:@"保密" frame:CGRectMake(Label_Width+20+110, nextLineY, 120, Line_Height)];
+        _qNotPublicCB = (UIButton *)[_qNotPublicCBView viewWithTag:100];
 
         // 查询密码
         nextLineY += Line_Height+Line_Padding;
@@ -161,8 +167,10 @@
         // 电话是否公开
         nextLineY += Line_Height+Line_Padding;
         [self addLabel:@"电话是否公开" originY:nextLineY];
-        _qTelPublicCB = [self addCheckboxTitle:@"公开" frame:CGRectMake(Label_Width+20, nextLineY, 100, Line_Height)];
-        _qTelNotPublicCB = [self addCheckboxTitle:@"保密" frame:CGRectMake(Label_Width+20+110, nextLineY, 120, Line_Height)];
+        _qTelPublicCBView = [self addCheckboxTitle:@"公开" frame:CGRectMake(Label_Width+20, nextLineY, 100, Line_Height)];
+        _qTelPublicCB = (UIButton *)[_qTelPublicCBView viewWithTag:100];
+        _qTelNotPublicCBView = [self addCheckboxTitle:@"保密" frame:CGRectMake(Label_Width+20+110, nextLineY, 120, Line_Height)];
+        _qTelNotPublicCB = (UIButton *)[_qTelNotPublicCBView viewWithTag:100];
         
         // 电子邮件
         nextLineY += Line_Height+Line_Padding;
@@ -339,6 +347,31 @@
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    self.mainView = nil;
+    self.titleInput = nil;
+    self.contentInput = nil;
+    self.qTypeButton = nil;
+    self.qPwdInput = nil;
+    self.qDeptButton = nil;
+    self.qAreaButton = nil;
+    self.qNameInput = nil;
+    self.qTelInput = nil;
+    self.qEmailInput = nil;
+    self.qPublicCBView = nil;
+    self.qNotPublicCBView = nil;
+    self.qTelPublicCBView = nil;
+    self.qTelNotPublicCBView = nil;
+    self.qPublicCB = nil;
+    self.qNotPublicCB = nil;
+    self.qTelPublicCB = nil;
+    self.qTelNotPublicCB = nil;
+    self.deptPicker = nil;
+    self.typePicker = nil;
+    self.areaPicker = nil;
+    self.maskView = nil;
+    self.selectedDept = nil;
+    self.deptKeys = nil;
+    self.deptList = nil;
 }
 
 - (UILabel *) addLabel:(NSString *)text originY:(CGFloat) originY{
@@ -386,7 +419,7 @@
     return aButton;
 }
 
-- (UIButton *) addCheckboxTitle:(NSString *)title frame:(CGRect) frame{
+- (UIView *) addCheckboxTitle:(NSString *)title frame:(CGRect) frame{
     UIView *aCheckBox = [[UIView alloc] initWithFrame:frame];
     UIButton *checkBoxBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat checkBoxSize = 18.0f;
@@ -395,6 +428,7 @@
     [checkBoxBtn setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
     [checkBoxBtn setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_selected"] forState:UIControlStateSelected];
     [checkBoxBtn addTarget:self action:@selector(checkBoxBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    checkBoxBtn.tag = 100;
     [aCheckBox addSubview:checkBoxBtn];
     
     CGFloat labelX = CGRectGetMaxX(checkBoxBtn.frame)+10;
@@ -406,7 +440,7 @@
     [aCheckBox addSubview:aLabel];
     
     [_mainView addSubview:aCheckBox];
-    return checkBoxBtn;
+    return aCheckBox;
 }
 
 - (void) checkBoxBtnClicked:(UIButton *) btn{
@@ -656,6 +690,23 @@
 //    }
     // 拼音输入的时候也触发该回调,会导致字数计算过多。
     return true;
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
+    UIView *hitView = [super hitTest:point withEvent:event];
+    
+    // 扩大checkbox可以接受的点击范围,包括其superview的整个区域
+    if (hitView == _qPublicCBView){
+        return _qPublicCB;
+    }else if (hitView == _qNotPublicCBView){
+        return _qNotPublicCB;
+    }else if (hitView == _qTelPublicCBView){
+        return _qTelPublicCB;
+    }else if (hitView == _qTelNotPublicCBView){
+        return _qTelNotPublicCB;
+    }else{
+        return hitView;
+    }
 }
 
 
