@@ -48,7 +48,7 @@
 }
 
 - (void) onRetryClicked{
-    self.status = ViewStatusLoading;
+//    self.status = ViewStatusLoading;
     if([self.delegate respondsToSelector:@selector(onRetryClicked:)]){
         [self.delegate onRetryClicked:self];
     }
@@ -58,7 +58,7 @@
     if(![Reachability isEnableNetwork]){
         return;
     }
-    self.status = ViewStatusLoading;
+//    self.status = ViewStatusLoading;
     if([self.delegate respondsToSelector:@selector(onNoNetworkClicked:)]){
         [self.delegate onNoNetworkClicked:self];
     }

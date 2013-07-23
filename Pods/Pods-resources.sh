@@ -25,4 +25,5 @@ install_resource()
       ;;
   esac
 }
+install_resource 'NoticeView/NoticeView/WBNoticeView/NoticeView.bundle'
 install_resource 'WebViewJavascriptBridge/WebViewJavascriptBridgeAbstract/WebViewJavascriptBridge.js.txt'

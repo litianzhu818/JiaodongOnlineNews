@@ -236,20 +236,47 @@
             _reviewPanel.textView.text = nil;
             _reviewPanel.frame = [_reviewPanel initialFrame];
             [_reviewPanel.remainWordNum setHidden:true];
-            [self hideReviewView];
+            
+            if ([_reviewPanel superview]) {
+                [self performSelector:@selector(showSuccessNotice:) withObject:@"发表评论成功" afterDelay:0.2];
+            }else{
+                [self showSuccessNotice:@"发表评论成功"];
+            }
         }else if([status intValue] == 0){
             // 提交失败,服务器错误
-            NSLog(@"提交失败,服务器错误");
-            [JDOCommonUtil showHintHUD:@"服务器错误" inView:self.parentController.view];
+            if ([_reviewPanel superview]) {
+                [self performSelector:@selector(showErrorNotice:) withObject:@"服务器错误" afterDelay:0.2];
+            }else{
+                [self showErrorNotice:@"服务器错误"];
+            }
         }
     } failure:^(NSString *errorStr) {
-#warning 评论时的错误在页面上显示不出来提示
-        NSLog(@"错误内容--%@", errorStr);
-        [JDOCommonUtil showHintHUD:errorStr inView:self.parentController.view];
+        if ([_reviewPanel superview]) {
+            [self performSelector:@selector(showErrorNotice:) withObject:errorStr afterDelay:0.2];
+        }else{
+            [self showErrorNotice:errorStr];
+        }
     }];
+    [self hideReviewView];
     
     // 同时发布到微博
     [self shareReview];
+}
+
+- (void) showSuccessNotice:(NSString *)content{
+    // 为了跳过导航视图的高度,加载内容的webView视图上,结构上更好的办法对parentController设置协议
+    if ([self.parentController respondsToSelector:@selector(webView)]){
+        [JDOCommonUtil showSuccessHUD:content inView:[(id)self.parentController webView]];
+    }else{
+        [JDOCommonUtil showSuccessHUD:content inView:self.parentController.view];
+    }
+}
+- (void) showErrorNotice:(NSString *)content{
+    if ([self.parentController respondsToSelector:@selector(webView)]){
+        [JDOCommonUtil showHintHUD:content inView:[(id)self.parentController webView]];
+    }else{
+        [JDOCommonUtil showHintHUD:content inView:self.parentController.view];
+    }
 }
 
 - (void)shareReview{

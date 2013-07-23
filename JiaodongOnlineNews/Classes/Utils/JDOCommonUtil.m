@@ -8,6 +8,9 @@
 
 #import "JDOCommonUtil.h"
 #import "JDOShareViewDelegate.h"
+#import "iToast.h"
+#import "WBErrorNoticeView.h"
+#import "WBSuccessNoticeView.h"
 
 #define NUMBERS @"0123456789"
 
@@ -202,13 +205,49 @@ static NSDateFormatter *dateFormatter;
 #pragma mark - 提示窗口
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText = content;
-    hud.margin = 10.f;
-    hud.yOffset = view.frame.size.height/2.0f-40;
-    hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:1.5];
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+//    hud.mode = MBProgressHUDModeText;
+//    hud.labelText = content;
+//    hud.margin = 10.f;
+//    hud.yOffset = view.frame.size.height/2.0f-40;
+//    hud.removeFromSuperViewOnHide = YES;
+//    [hud hide:YES afterDelay:1.5];
+    
+    // Toast样式提示
+//    iToast *toast = [iToast makeText:content];
+//    iToastSettings *setting = toast.theSettings;
+//    setting.duration = 1500;
+//    setting.gravity = iToastGravityBottom;
+//    setting.imageLocation = iToastImageLocationLeft;
+//    [setting setImage:[UIImage imageNamed:@"error"] forType:iToastTypeError];
+//    [toast show:iToastTypeError];
+    
+    // Tweetbot样式notice提示
+    WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:view title:@"操作失败" message:content];
+    notice.sticky = false;
+    notice.alpha = 0.8;
+    [notice show];
+}
+
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY{
+    WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:view title:@"操作失败" message:content];
+    notice.sticky = false;
+    notice.alpha = 0.8;
+    notice.originY = originY;
+    [notice show];
+}
+
++ (void) showSuccessHUD:(NSString *)content inView:(UIView *)view{
+    [self showSuccessHUD:content inView:view originY:0];
+}
+
++ (void) showSuccessHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY{
+    // Tweetbot样式notice提示
+    WBSuccessNoticeView *notice = [WBSuccessNoticeView successNoticeInView:view title:content];
+    notice.sticky = false;
+    notice.alpha = 0.9;
+    notice.originY = originY;
+    [notice show];
 }
 
 @end

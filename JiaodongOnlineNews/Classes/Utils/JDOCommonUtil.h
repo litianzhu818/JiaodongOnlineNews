@@ -41,6 +41,9 @@ typedef enum{
 + (NSURL *)applicationSupportDirectoryURL;
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view;
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
++ (void) showSuccessHUD:(NSString *)content inView:(UIView *)view;
++ (void) showSuccessHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
 
 @end
 

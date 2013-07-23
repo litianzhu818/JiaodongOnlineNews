@@ -98,6 +98,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         
         self.statusView = [[JDOStatusView alloc] initWithFrame:self.bounds];
+        self.statusView.delegate = self;
         [self addSubview:self.statusView];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deptChanged:) name:kDeptChangedNotification object:nil];
         
@@ -313,15 +314,15 @@
 }
 
 - (void)loadDataFromNetwork{
-    // 有可能再翻页之后再进行搜索,所以需要将页码置为1
-    
     self.noDataView.hidden = true;
     if(![Reachability isEnableNetwork]){
         [self setCurrentState:ViewStatusNoNetwork];
+        return;
     }else{  // 从网络加载数据，切换到loading状态
         [self setCurrentState:ViewStatusLoading];
     }
 
+    // 有可能再翻页之后再进行搜索,所以需要将页码置为1
     self.currentPage = 1;
 #warning 查询功能目前只在Test下可用
     [[JDOHttpClient sharedTestClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {

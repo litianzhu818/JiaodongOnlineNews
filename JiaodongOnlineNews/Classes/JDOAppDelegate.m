@@ -23,6 +23,7 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "MobClick.h"
+#import "UIResponder+KeyboardCache.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -179,7 +180,7 @@
 //    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
 //    [NSURLCache setSharedURLCache:urlCache];
     
-#warning 测试广告位图片效果,暂时关闭异步网络加载
+#warning 测试广告位图片效果,暂时关闭异步网络加载，Defalut图片去掉上面的状态栏(图片问题)
 //    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
         advImage = [UIImage imageNamed:@"default_adv.png"];
 //    }else{  // 网络可用
@@ -188,6 +189,10 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
+    
+    // 键盘第一次出现时会有显著的延迟(1-2秒),使用此workround在不可见的位置强制触发一次键盘时间来提前加载。
+    // 据说此问题只出现在debug模式(和优化级别有关)，所以这不是一个真正的问题。
+    [UIResponder cacheKeyboard:true];
     
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
     splashView.image = [UIImage imageNamed:@"Default.png"];

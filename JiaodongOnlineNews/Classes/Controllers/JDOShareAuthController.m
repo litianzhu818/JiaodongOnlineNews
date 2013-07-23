@@ -12,7 +12,8 @@
 #import <AGCommon/UIColor+Common.h>
 #import "JDOShareViewDelegate.h"
 #import "JDORightViewController.h"
-#import "MBSwitch.h"
+//#import "MBSwitch.h"
+#import "TTFadeSwitch.h"
 
 #define TARGET_CELL_ID @"targetCell"
 #define BASE_TAG 100
@@ -196,11 +197,23 @@
         cell = [[AGShareCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TARGET_CELL_ID] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        MBSwitch *switchCtrl = [[MBSwitch alloc] initWithFrame:CGRectMake(0, 0, 53, 31)];
-        [switchCtrl setTintColor:[UIColor grayColor]];
-        [switchCtrl setOnTintColor:[UIColor yellowColor]];
-        [switchCtrl setOffTintColor:[UIColor grayColor]];
-        [switchCtrl setThumbTintColor:[UIColor colorWithRed:0.23f green:0.35f blue:0.60f alpha:1.00f]];
+//        MBSwitch *switchCtrl = [[MBSwitch alloc] initWithFrame:CGRectMake(0, 0, 53, 31)];
+//        [switchCtrl setTintColor:[UIColor grayColor]];
+//        [switchCtrl setOnTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"滑动02"]]];
+//        [switchCtrl setOffTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"滑动03"]]];
+//        [switchCtrl setThumbTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"滑动01"]]];
+        
+#warning 缺少高亮图和mask，缺少非2x比例图片，thumb图片要放大，即使圆圈不调大，周围也要加透明，为的是方便接受tap手势
+        TTFadeSwitch *switchCtrl = [[TTFadeSwitch alloc] initWithFrame:CGRectMake(0, 0, 65, 27)];
+        switchCtrl.thumbImage = [UIImage imageNamed:@"滑动01"];
+//        switchCtrl.thumbHighlightImage = [UIImage imageNamed:@"滑动01"];
+//        switchCtrl.trackMaskImage = [UIImage imageNamed:@"switchMask"];
+        switchCtrl.trackImageOn = [UIImage imageNamed:@"滑动02"];
+        switchCtrl.trackImageOff = [UIImage imageNamed:@"滑动03"];
+        
+        switchCtrl.thumbInsetX = -3.0;
+        switchCtrl.thumbOffsetY = -1.0;
+        
         [switchCtrl addTarget:self action:@selector(authSwitchChangeHandler:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = switchCtrl;
     }
