@@ -61,7 +61,7 @@
  * @param key The unique image cache key, usually it's image absolute URL
  * @param toDisk Store the image to disk cache if YES
  */
-- (void)storeImage:(UIImage *)image imageData:(NSData *)data forKey:(NSString *)key toDisk:(BOOL)toDisk;
+- (void)storeImage:(UIImage *)image imageData:(NSData *)data forKey:(NSString *)key toDisk:(BOOL)toDisk storeDelegate:(id<SDWebImageStoreDelegate>) storeDelegate;
 
 /**
  * Query the memory cache for an image at a given key and fallback to disk cache

@@ -123,7 +123,8 @@ static NSInteger cacheMaxCacheAge = 60*60*24*7; // 1 week
     NSFileManager *fileManager = [[NSFileManager alloc] init];
 
     NSString *key = [keyAndData objectAtIndex:0];
-    NSData *data = [keyAndData count] > 1 ? [keyAndData objectAtIndex:1] : nil;
+    id<SDWebImageStoreDelegate> storeDelegate = [keyAndData count] > 1 ? [keyAndData objectAtIndex:1] : nil;
+    NSData *data = [keyAndData count] > 2 ? [keyAndData objectAtIndex:2] : nil;
 
     if (data)
     {
@@ -148,6 +149,19 @@ static NSInteger cacheMaxCacheAge = 60*60*24*7; // 1 week
     }
 
     SDWIRelease(fileManager);
+    if ([storeDelegate respondsToSelector:@selector(didFinishStoreForKey:)])
+    {
+        //[storeDelegate performSelector:@selector(didFinishStoreForKey:) withObject:key];
+        NSDictionary *arg = [NSDictionary dictionaryWithObjects:@[storeDelegate, key] forKeys:@[@"storeDelegate", @"key"]];
+        //[[NSDictionary alloc] initWithObjects:(storeDelegate, key, nil) forKeys:(@"storeDelegate", @"key", nil)];
+        [self performSelectorOnMainThread:@selector(notifyStoreDelegate:) withObject:arg waitUntilDone:FALSE];
+    }
+}
+
+- (void)notifyStoreDelegate:(NSDictionary *)arguments {
+    id<SDWebImageStoreDelegate> storeDelegate = [arguments objectForKey:@"storeDelegate"];
+    NSString *key = [arguments objectForKey:@"key"];
+    [storeDelegate performSelector:@selector(didFinishStoreForKey:) withObject:key];
 }
 
 - (void)notifyDelegate:(NSDictionary *)arguments
@@ -198,7 +212,7 @@ static NSInteger cacheMaxCacheAge = 60*60*24*7; // 1 week
 
 #pragma mark ImageCache
 
-- (void)storeImage:(UIImage *)image imageData:(NSData *)data forKey:(NSString *)key toDisk:(BOOL)toDisk
+- (void)storeImage:(UIImage *)image imageData:(NSData *)data forKey:(NSString *)key toDisk:(BOOL)toDisk storeDelegate:(id<SDWebImageStoreDelegate>) storeDelegate
 {
     if (!image || !key)
     {
@@ -212,11 +226,11 @@ static NSInteger cacheMaxCacheAge = 60*60*24*7; // 1 week
         NSArray *keyWithData;
         if (data)
         {
-            keyWithData = [NSArray arrayWithObjects:key, data, nil];
+            keyWithData = [NSArray arrayWithObjects:key, storeDelegate, data, nil];
         }
         else
         {
-            keyWithData = [NSArray arrayWithObjects:key, nil];
+            keyWithData = [NSArray arrayWithObjects:key, storeDelegate, nil];
         }
 
         NSInvocationOperation *operation = SDWIReturnAutoreleased([[NSInvocationOperation alloc] initWithTarget:self

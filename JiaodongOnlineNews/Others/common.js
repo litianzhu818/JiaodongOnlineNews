@@ -12,7 +12,7 @@ function adjustImgSize(){
 }
 
 function clickImageEvent(event) {
-	if(this.attributes["src"].nodeValue!="icon.png" && this.attributes["src"].nodeValue!="img_set_flag.png"){
+	if(this.attributes["src"].nodeValue!="news_head_placeholder.png" && this.attributes["src"].nodeValue!="img_set_flag.png"){
 		var index = $.inArray(this,$("img[src!='img_set_flag.png']"));
 		var linkId = $(this).closest("p").attr("id");
 		if( linkId ){

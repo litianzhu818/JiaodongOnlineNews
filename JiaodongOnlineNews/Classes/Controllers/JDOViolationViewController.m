@@ -10,6 +10,7 @@
 #import "JDOJsonClient.h"
 #import "JDOSelectCarTypeViewController.h"
 #import "JDOViolationTableCell.h"
+#import "JDOCarManagerViewController.h"
 
 @interface JDOViolationViewController ()
 
@@ -33,7 +34,7 @@
 {
     [CarType setTitle:type forState:UIControlStateNormal];
     [CarType setTitle:type forState:UIControlStateSelected];
-    NSMutableString *tmp = @"0";
+    NSMutableString *tmp = [[NSMutableString alloc] initWithString:@"0"];
     if (index < 10) {
         [tmp appendString:[NSString stringWithFormat:@"%d", index]];
         CarTypeString = tmp;
@@ -46,6 +47,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [resultLabel setHidden:YES];
     
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
@@ -68,7 +71,7 @@
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [self.navigationView addRightButtonImage:@"" highlightImage:@"" target:self action:@selector(onRightBtnClick)];
+    [self.navigationView addRightButtonImage:@"vio_head_btn_share" highlightImage:@"vio_head_btn_share" target:self action:@selector(onRightBtnClick)];
     [self.navigationView setTitle:@"违章查询"];
 }
 
@@ -78,12 +81,18 @@
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
 }
 
+- (void) onRightBtnClick
+{
+    JDOCarManagerViewController *carmanager = [[JDOCarManagerViewController alloc] initWithNibName:nil bundle:nil];
+    carmanager.back = self;
+    [self.navigationController pushViewController:carmanager animated:YES];
+}
+
 - (IBAction)selectCarType:(id)sender
 {
     JDOSelectCarTypeViewController *controller = [[JDOSelectCarTypeViewController alloc] initWithNibName:nil bundle:nil];
     controller.violation = self;
     [self.navigationController pushViewController:controller animated:YES];
-    controller = nil;
 }
 
 - (IBAction)sendToServer:(id)sender
@@ -100,7 +109,7 @@
             if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
                 NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
                 if (datas.count > 0) {
-                    [resultArray removeAllObjects];
+                    //[resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
                     [result reloadData];
                 }

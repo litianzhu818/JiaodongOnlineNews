@@ -13,6 +13,7 @@
 #import "JDONewsDetailController.h"
 #import "NSDate+SSToolkitAdditions.h"
 #import "SDImageCache.h"
+#import "JDOBusDetailViewController.h"
 
 #define NewsList_Page_Size 20
 
@@ -328,9 +329,12 @@
     return News_Cell_Height;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{ 
+    JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
+    JDOBusDetailViewController *detailController = [[JDOBusDetailViewController alloc] initWithNibName:nil bundle:nil];
     detailController.title = @"生活常识";
+    detailController.aid = newsModel.id;
+    detailController.back = self;
     JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
     [centerController pushViewController:detailController animated:true];
     [tableView deselectRowAtIndexPath:indexPath animated:true];

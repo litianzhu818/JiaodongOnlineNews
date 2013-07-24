@@ -16,17 +16,23 @@
     if (self) {
         // Initialization code
         time = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        [time setBackgroundColor:[UIColor clearColor]];
         location = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        [location setBackgroundColor:[UIColor clearColor]];
         action = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        [action setBackgroundColor:[UIColor clearColor]];
         istreated = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        [istreated setBackgroundColor:[UIColor clearColor]];
         ispaid = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        [ispaid setBackgroundColor:[UIColor clearColor]];
     }
+    [self setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"vio_result"]]];
     return self;
 }
 
 - (void)setData:(NSDictionary *)data
 {
-    UIFont *font = [UIFont boldSystemFontOfSize:13];
+    UIFont *font = [UIFont systemFontOfSize:13.0];
     CGSize size = CGSizeMake(270, 480);
     CGSize labelsize = CGSizeMake(0, 0);
     

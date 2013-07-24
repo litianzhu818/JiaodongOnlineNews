@@ -17,6 +17,8 @@
     IBOutlet UITextField *ChassisNum;
     IBOutlet TPKeyboardAvoidingScrollView *tp;
     IBOutlet UITableView *result;
+    IBOutlet UIImageView *defaultback;
+    IBOutlet UILabel *resultLabel;
     
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
@@ -31,5 +33,7 @@
 - (void)setCartype:(NSString*) type index:(int)index;
 - (IBAction)selectCarType:(id)sender;
 - (IBAction)sendToServer:(id)sender;
+- (void) onBackBtnClick;
+- (void) onRightBtnClick;
 
 @end

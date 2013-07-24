@@ -12,7 +12,8 @@
 
 @interface JDOBusDetailViewController : JDONavigationController <UIWebViewDelegate,UITextFieldDelegate>
 
-@property (nonatomic,strong) JDOBusLIstViewController *back;
+@property (nonatomic,strong) JDONavigationController *back;
+@property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) UIActivityIndicatorView *activityIndicationView;
 @property (strong,nonatomic) NSString *aid;
