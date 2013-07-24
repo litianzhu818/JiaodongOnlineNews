@@ -479,7 +479,7 @@
         _progressHUD.minShowTime = 1;
         _progressHUD.margin = 15.f;
 
-        self.progressHUD.customView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/Checkmark.png"]];
+        self.progressHUD.customView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checkmark.png"]];
         [self.parentController.view addSubview:_progressHUD];
     }
     return _progressHUD;
