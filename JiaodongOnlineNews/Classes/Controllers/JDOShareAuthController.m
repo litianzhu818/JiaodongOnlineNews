@@ -203,13 +203,13 @@
 //        [switchCtrl setOffTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"滑动03"]]];
 //        [switchCtrl setThumbTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"滑动01"]]];
         
-#warning 缺少高亮图和mask，缺少非2x比例图片，thumb图片要放大，即使圆圈不调大，周围也要加透明，为的是方便接受tap手势
+#warning 缺少高亮图和mask，thumb图片要放大，即使圆圈不调大，周围也要加透明，为的是方便接受tap手势
         TTFadeSwitch *switchCtrl = [[TTFadeSwitch alloc] initWithFrame:CGRectMake(0, 0, 65, 27)];
-        switchCtrl.thumbImage = [UIImage imageNamed:@"滑动01"];
+        switchCtrl.thumbImage = [UIImage imageNamed:@"switch_thumb"];
 //        switchCtrl.thumbHighlightImage = [UIImage imageNamed:@"滑动01"];
 //        switchCtrl.trackMaskImage = [UIImage imageNamed:@"switchMask"];
-        switchCtrl.trackImageOn = [UIImage imageNamed:@"滑动02"];
-        switchCtrl.trackImageOff = [UIImage imageNamed:@"滑动03"];
+        switchCtrl.trackImageOn = [UIImage imageNamed:@"switch_on"];
+        switchCtrl.trackImageOff = [UIImage imageNamed:@"switch_off"];
         
         switchCtrl.thumbInsetX = -3.0;
         switchCtrl.thumbOffsetY = -1.0;
