@@ -12,8 +12,8 @@
 
 @interface JDOLivehoodAskQuestion : NIPageView 
 
-@property (nonatomic,assign) NSDictionary *info;
-@property (assign,nonatomic) UIView *rootView;
+@property (nonatomic,strong) NSDictionary *info;
+@property (strong,nonatomic) UIView *rootView;
 
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView;
 

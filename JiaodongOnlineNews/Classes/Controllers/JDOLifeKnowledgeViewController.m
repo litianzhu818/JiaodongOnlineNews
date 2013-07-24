@@ -68,18 +68,23 @@
             // 显示logo界面，不显示加载进度指示，当实际调用loadcurrentPage的时候才从网络加载并显示进度
             [self setCurrentState:ViewStatusLoading];
             _isShowingLocalCache = false;
+            [self loadDataFromNetwork];
         }else{
             [self setCurrentState:ViewStatusNormal];
             _isShowingLocalCache = true;
             // 上次刷新时间
             NSMutableDictionary *updateTimes = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:News_Update_Time] mutableCopy];
             if( updateTimes != nil && [updateTimes objectForKey:self.title] ){
-                double updateTime = [(NSNumber *)[updateTimes objectForKey:self.title] doubleValue];
-                NSString *updateTimeStr = [JDOCommonUtil formatDate:[NSDate dateWithTimeIntervalSince1970:updateTime] withFormatter:DateFormatYMDHM];
-                [self.tableView.pullToRefreshView setSubtitle:[NSString stringWithFormat:@"上次刷新于:%@",updateTimeStr] forState:SVPullToRefreshStateAll];
+                double lastUpdateTime = [(NSNumber *)[updateTimes objectForKey:self.title] doubleValue];
+                // 上次加载时间离现在超过时间间隔
+                if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Knowledge_Update_Interval){
+                    [self loadDataFromNetwork];
+                }else{
+                    NSString *updateTimeStr = [JDOCommonUtil formatDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime] withFormatter:DateFormatYMDHM];
+                    [self.tableView.pullToRefreshView setSubtitle:[NSString stringWithFormat:@"上次刷新于:%@",updateTimeStr] forState:SVPullToRefreshStateAll];
+                }
             }
         }
-        [self loadDataFromNetwork];
     }
     return self;
 }

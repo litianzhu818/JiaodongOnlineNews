@@ -273,6 +273,20 @@ BOOL JDOIsEmail(NSString *string){
     NSPredicate *Test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
     return [Test evaluateWithObject:string];
 }
+BOOL JDOIsVisiable(UIView *aView){
+    UIView *superView = aView.superview;
+    BOOL isVisiable = false;
+    while (superView) {
+        if ([SharedAppDelegate window] == superView){
+            isVisiable = true;
+            break;
+        }else{
+            superView = [superView superview];
+        }
+    }
+    return isVisiable;
+}
+
 NSString* JDOGetHomeFilePath(NSString *fileName){
     return [NSHomeDirectory() stringByAppendingPathComponent:fileName];
 }

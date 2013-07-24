@@ -139,6 +139,7 @@
                 _telInput.text = nil;
                 _contentInput.text = nil;
                 [self backToQuestionDetail];
+#warning 完善所有提交模块操作完成后的提示信息
             }else if([status intValue] == 0){
                 NSLog(@"提交失败,服务器错误");
                 [JDOCommonUtil showHintHUD:@"服务器错误" inView:self.view];
