@@ -168,6 +168,7 @@
     if((_weather = [JDOWeather readFromFile])){
         [self refreshWeather];
     }else{
+#warning 无法获取时应该可以点击重试
         temperatureLabel.text = @"无法获取天气信息";
         [temperatureLabel sizeToFit];
     }
