@@ -211,7 +211,15 @@
     NetworkStatus status = [curReach currentReachabilityStatus];
     
     if (status == NotReachable) {
-        NSLog(@"无法连接到%@",SERVER_URL);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"My App Name"
+                                                        message:@"NotReachable"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"YES" otherButtonTitles:nil];
+        [alert show];
+    } else {//有网络
+        NSLog(@"has net");
+        JDOLeftViewController *leftController = (JDOLeftViewController *)[[SharedAppDelegate deckController] leftController];
+        [leftController updateWeather];
     }
 }
 

@@ -11,6 +11,7 @@
 #import "JDOXmlClient.h"
 #import "JDOWeatherForcast.h"
 #import "JDOWeather.h"
+#import "JDOConvenienceItemController.h"
 
 #define Menu_Cell_Height 55.0f
 #define Menu_Image_Tag 101
@@ -79,6 +80,8 @@
     [self.view addSubview:_blackMask];
     
     // 天气部分
+    UITapGestureRecognizer *weatherSingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openWeather)];
+    
     float topMargin = Separator_Y+Top_Margin;
     cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 0, 0)];
     cityLabel.text = @"烟台";
@@ -90,6 +93,8 @@
     
     weatherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+cityLabel.bounds.size.width+Padding, topMargin, Weather_Icon_Width, Weather_Icon_Height)];
     weatherIcon.image = [UIImage imageNamed:@"默认.png"];
+    weatherIcon.userInteractionEnabled = YES;
+    [weatherIcon addGestureRecognizer:weatherSingleTap];
     [self.view addSubview:weatherIcon];
     
     temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height, 0, 0)];
@@ -117,19 +122,34 @@
     [self.view addSubview:dateLabel];
 }
 
+- (void)openWeather {
+    JDOConvenienceItemController *controller = nil;
+    controller = [[JDOConvenienceItemController alloc] initWithNibName:nil bundle:nil];
+    controller.title = @"烟台天气";
+    controller.channelid = @"21";
+    controller.deletetitle = NO;
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+
+    [centerController pushViewController:controller animated:YES];
+    [self.viewDeckController closeLeftViewAnimated:true];
+}
+
 - (void)viewDidLoad{
     [super viewDidLoad];
 #warning 天气增加"更新时间"字段,提供两个按钮分别显示预报和详情,预报可以用Flip+Scrollview
 #warning 若客户端直接访问天气webservice有问题，可以切换成在服务器端实现
+    [self updateWeather];
+    [self updateCalendar];
+}
+
+- (void) updateWeather {
     // 天气信息最小刷新间隔
     double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Weather_Update_Time];
     if (lastUpdateTime == 0 || [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Weather_Update_Interval){
-        [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:Weather_Update_Time];
         [self loadWeatherFromNetwork];
     }else{
         [self readWeatherFromLocalCache];
     }
-    [self updateCalendar];
 }
 
 // 加载天气信息
@@ -140,6 +160,7 @@
         if([_weather parse]){
             if(_weather.success){
                 [self refreshWeather];
+                [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:Weather_Update_Time];
             }else{
                 NSLog(@"天气webservice超出访问次数限制,从本地缓存获取");
                 [self readWeatherFromLocalCache];
