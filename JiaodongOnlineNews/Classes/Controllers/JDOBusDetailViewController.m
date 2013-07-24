@@ -65,7 +65,7 @@
 
 - (void)setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [self.navigationView setTitle:@"公交班次"];
+    [self.navigationView setTitle:self.title];
 }
 
 - (void) onBackBtnClick{
@@ -77,6 +77,7 @@
 {
     [super viewDidLoad];
     [self loadWebView];
+    [self buildWebViewJavascriptBridge];
     
     self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideReviewView)];
     [self.view.blackMask addGestureRecognizer:self.closeReviewGesture];
@@ -91,6 +92,28 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super viewDidUnload];
+}
+
+#pragma mark - Load WebView
+
+- (void) buildWebViewJavascriptBridge{
+    //    [WebViewJavascriptBridge enableLogging];
+    
+    _bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView webViewDelegate:self handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"ObjC received message from JS: %@", data);
+        responseCallback(@"Response for message from ObjC");
+    }];
+    
+    [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
+        // 通过pushViewController 显示图集视图
+        responseCallback(linkId);
+    }];
+    [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
+        // 显示图片详情
+        responseCallback(imageId);
+    }];
 }
 
 - (void) loadWebView{

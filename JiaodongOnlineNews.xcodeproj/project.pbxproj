@@ -416,22 +416,29 @@
 		D899316A1785020200F8E1E9 /* JDOBusDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */; };
 		D8A0C03717938777005A6307 /* JDOViolationTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A0C03617938777005A6307 /* JDOViolationTableCell.m */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
-		D8E44FB51796420200132A8A /* checkbox_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FA91796420200132A8A /* checkbox_selected.png */; };
-		D8E44FB61796420200132A8A /* checkbox.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAA1796420200132A8A /* checkbox.png */; };
-		D8E44FB71796420200132A8A /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAB1796420200132A8A /* line.png */; };
-		D8E44FB81796420200132A8A /* line1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAC1796420200132A8A /* line1.png */; };
-		D8E44FB91796420200132A8A /* line2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAD1796420200132A8A /* line2.png */; };
-		D8E44FBA1796420200132A8A /* line3.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAE1796420200132A8A /* line3.png */; };
-		D8E44FBB1796420200132A8A /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAF1796420200132A8A /* logo.png */; };
-		D8E44FBC1796420200132A8A /* none.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB01796420200132A8A /* none.png */; };
-		D8E44FBD1796420200132A8A /* result_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB11796420200132A8A /* result_none.png */; };
-		D8E44FBE1796420200132A8A /* result.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB21796420200132A8A /* result.png */; };
-		D8E44FBF1796420200132A8A /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB31796420200132A8A /* search.png */; };
-		D8E44FC01796420200132A8A /* textback.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB41796420200132A8A /* textback.png */; };
+		D8E44FB51796420200132A8A /* vio_checkbox_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FA91796420200132A8A /* vio_checkbox_selected.png */; };
+		D8E44FB61796420200132A8A /* vio_checkbox.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAA1796420200132A8A /* vio_checkbox.png */; };
+		D8E44FB71796420200132A8A /* vio_line.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAB1796420200132A8A /* vio_line.png */; };
+		D8E44FB81796420200132A8A /* vio_line1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAC1796420200132A8A /* vio_line1.png */; };
+		D8E44FB91796420200132A8A /* vio_line2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAD1796420200132A8A /* vio_line2.png */; };
+		D8E44FBA1796420200132A8A /* vio_line3.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAE1796420200132A8A /* vio_line3.png */; };
+		D8E44FBB1796420200132A8A /* vio_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FAF1796420200132A8A /* vio_logo.png */; };
+		D8E44FBC1796420200132A8A /* vio_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB01796420200132A8A /* vio_none.png */; };
+		D8E44FBD1796420200132A8A /* vio_result_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB11796420200132A8A /* vio_result_none.png */; };
+		D8E44FBE1796420200132A8A /* vio_result.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB21796420200132A8A /* vio_result.png */; };
+		D8E44FBF1796420200132A8A /* vio_search.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB31796420200132A8A /* vio_search.png */; };
+		D8E44FC01796420200132A8A /* vio_textback.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FB41796420200132A8A /* vio_textback.png */; };
+		D8E44FC2179642E200132A8A /* vio_head_btn_share.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FC1179642E200132A8A /* vio_head_btn_share.png */; };
+		D8E44FC61796448100132A8A /* JDOCarManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */; };
+		D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */; };
+		D8E96D9F17976FCE00D5B267 /* vio_btn_add_car.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E96D9E17976FCE00D5B267 /* vio_btn_add_car.png */; };
+		D8E96DA31797709800D5B267 /* JDOAddCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */; };
+		D8E96DA41797709800D5B267 /* JDOAddCarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
 		D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */; };
 		D8F68612178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */; };
+		D8FABEAF179E26E000BFB67A /* JDOCarTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
 		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
 		D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */; };
@@ -1075,18 +1082,26 @@
 		D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOBusDetailViewController.m; sourceTree = "<group>"; };
 		D8A0C03517938777005A6307 /* JDOViolationTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationTableCell.h; sourceTree = "<group>"; };
 		D8A0C03617938777005A6307 /* JDOViolationTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationTableCell.m; sourceTree = "<group>"; };
-		D8E44FA91796420200132A8A /* checkbox_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_selected.png; sourceTree = "<group>"; };
-		D8E44FAA1796420200132A8A /* checkbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox.png; sourceTree = "<group>"; };
-		D8E44FAB1796420200132A8A /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
-		D8E44FAC1796420200132A8A /* line1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line1.png; sourceTree = "<group>"; };
-		D8E44FAD1796420200132A8A /* line2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line2.png; sourceTree = "<group>"; };
-		D8E44FAE1796420200132A8A /* line3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line3.png; sourceTree = "<group>"; };
-		D8E44FAF1796420200132A8A /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		D8E44FB01796420200132A8A /* none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = none.png; sourceTree = "<group>"; };
-		D8E44FB11796420200132A8A /* result_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = result_none.png; sourceTree = "<group>"; };
-		D8E44FB21796420200132A8A /* result.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = result.png; sourceTree = "<group>"; };
-		D8E44FB31796420200132A8A /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
-		D8E44FB41796420200132A8A /* textback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textback.png; sourceTree = "<group>"; };
+		D8E44FA91796420200132A8A /* vio_checkbox_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_checkbox_selected.png; sourceTree = "<group>"; };
+		D8E44FAA1796420200132A8A /* vio_checkbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_checkbox.png; sourceTree = "<group>"; };
+		D8E44FAB1796420200132A8A /* vio_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_line.png; sourceTree = "<group>"; };
+		D8E44FAC1796420200132A8A /* vio_line1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_line1.png; sourceTree = "<group>"; };
+		D8E44FAD1796420200132A8A /* vio_line2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_line2.png; sourceTree = "<group>"; };
+		D8E44FAE1796420200132A8A /* vio_line3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_line3.png; sourceTree = "<group>"; };
+		D8E44FAF1796420200132A8A /* vio_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_logo.png; sourceTree = "<group>"; };
+		D8E44FB01796420200132A8A /* vio_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_none.png; sourceTree = "<group>"; };
+		D8E44FB11796420200132A8A /* vio_result_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_result_none.png; sourceTree = "<group>"; };
+		D8E44FB21796420200132A8A /* vio_result.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_result.png; sourceTree = "<group>"; };
+		D8E44FB31796420200132A8A /* vio_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_search.png; sourceTree = "<group>"; };
+		D8E44FB41796420200132A8A /* vio_textback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_textback.png; sourceTree = "<group>"; };
+		D8E44FC1179642E200132A8A /* vio_head_btn_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_head_btn_share.png; sourceTree = "<group>"; };
+		D8E44FC31796448100132A8A /* JDOCarManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarManagerViewController.h; sourceTree = "<group>"; };
+		D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCarManagerViewController.m; sourceTree = "<group>"; };
+		D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOCarManagerViewController.xib; sourceTree = "<group>"; };
+		D8E96D9E17976FCE00D5B267 /* vio_btn_add_car.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_btn_add_car.png; sourceTree = "<group>"; };
+		D8E96DA01797709800D5B267 /* JDOAddCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAddCarViewController.h; sourceTree = "<group>"; };
+		D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAddCarViewController.m; sourceTree = "<group>"; };
+		D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOAddCarViewController.xib; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLifeKnowledgeViewController.h; sourceTree = "<group>"; };
@@ -1094,6 +1109,8 @@
 		D8F6860E178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOSelectCarTypeViewController.h; sourceTree = "<group>"; };
 		D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOSelectCarTypeViewController.m; sourceTree = "<group>"; };
 		D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOSelectCarTypeViewController.xib; sourceTree = "<group>"; };
+		D8FABEAD179E26E000BFB67A /* JDOCarTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarTableCell.h; sourceTree = "<group>"; };
+		D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCarTableCell.m; sourceTree = "<group>"; };
 		D8FCACA6177C19E9001050EF /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
 		D8FCACA7177C19E9001050EF /* M13Checkbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13Checkbox.m; sourceTree = "<group>"; };
 		D8FFA10B178266A30026F0C1 /* JDOBusLIstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOBusLIstViewController.h; sourceTree = "<group>"; };
@@ -1594,6 +1611,8 @@
 				2D8DA2B11774A55F0021F482 /* JDORightMenuCell.m */,
 				D8A0C03517938777005A6307 /* JDOViolationTableCell.h */,
 				D8A0C03617938777005A6307 /* JDOViolationTableCell.m */,
+				D8FABEAD179E26E000BFB67A /* JDOCarTableCell.h */,
+				D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2019,11 +2038,11 @@
 			children = (
 				D89931681785020200F8E1E9 /* JDOBusDetailViewController.h */,
 				D89931691785020200F8E1E9 /* JDOBusDetailViewController.m */,
+				2D86D5AC175894970000AA6A /* JDOCenterViewController.h */,
+				2D86D5AD175894980000AA6A /* JDOCenterViewController.m */,
 				D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */,
 				D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */,
 				D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */,
-				2D86D5AC175894970000AA6A /* JDOCenterViewController.h */,
-				2D86D5AD175894980000AA6A /* JDOCenterViewController.m */,
 				2D080CED173CE4D9005653A7 /* JDONewsViewController.h */,
 				2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */,
 				2D5409DA175DEA5800718FFB /* JDONewsDetailController.h */,
@@ -2076,6 +2095,12 @@
 				D8F6860E178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.h */,
 				D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */,
 				D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */,
+				D8E44FC31796448100132A8A /* JDOCarManagerViewController.h */,
+				D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */,
+				D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */,
+				D8E96DA01797709800D5B267 /* JDOAddCarViewController.h */,
+				D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */,
+				D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2247,18 +2272,20 @@
 		D8E44FA8179641D800132A8A /* Violation */ = {
 			isa = PBXGroup;
 			children = (
-				D8E44FA91796420200132A8A /* checkbox_selected.png */,
-				D8E44FAA1796420200132A8A /* checkbox.png */,
-				D8E44FAB1796420200132A8A /* line.png */,
-				D8E44FAC1796420200132A8A /* line1.png */,
-				D8E44FAD1796420200132A8A /* line2.png */,
-				D8E44FAE1796420200132A8A /* line3.png */,
-				D8E44FAF1796420200132A8A /* logo.png */,
-				D8E44FB01796420200132A8A /* none.png */,
-				D8E44FB11796420200132A8A /* result_none.png */,
-				D8E44FB21796420200132A8A /* result.png */,
-				D8E44FB31796420200132A8A /* search.png */,
-				D8E44FB41796420200132A8A /* textback.png */,
+				D8E96D9E17976FCE00D5B267 /* vio_btn_add_car.png */,
+				D8E44FC1179642E200132A8A /* vio_head_btn_share.png */,
+				D8E44FA91796420200132A8A /* vio_checkbox_selected.png */,
+				D8E44FAA1796420200132A8A /* vio_checkbox.png */,
+				D8E44FAB1796420200132A8A /* vio_line.png */,
+				D8E44FAC1796420200132A8A /* vio_line1.png */,
+				D8E44FAD1796420200132A8A /* vio_line2.png */,
+				D8E44FAE1796420200132A8A /* vio_line3.png */,
+				D8E44FAF1796420200132A8A /* vio_logo.png */,
+				D8E44FB01796420200132A8A /* vio_none.png */,
+				D8E44FB11796420200132A8A /* vio_result_none.png */,
+				D8E44FB21796420200132A8A /* vio_result.png */,
+				D8E44FB31796420200132A8A /* vio_search.png */,
+				D8E44FB41796420200132A8A /* vio_textback.png */,
 			);
 			path = Violation;
 			sourceTree = "<group>";
@@ -2511,18 +2538,22 @@
 				2DA81F951796749C00A528BA /* error@2x.png in Resources */,
 				2DA81F961796749C00A528BA /* success.png in Resources */,
 				2DA81F971796749C00A528BA /* success@2x.png in Resources */,
-				D8E44FB51796420200132A8A /* checkbox_selected.png in Resources */,
-				D8E44FB61796420200132A8A /* checkbox.png in Resources */,
-				D8E44FB71796420200132A8A /* line.png in Resources */,
-				D8E44FB81796420200132A8A /* line1.png in Resources */,
-				D8E44FB91796420200132A8A /* line2.png in Resources */,
-				D8E44FBA1796420200132A8A /* line3.png in Resources */,
-				D8E44FBB1796420200132A8A /* logo.png in Resources */,
-				D8E44FBC1796420200132A8A /* none.png in Resources */,
-				D8E44FBD1796420200132A8A /* result_none.png in Resources */,
-				D8E44FBE1796420200132A8A /* result.png in Resources */,
-				D8E44FBF1796420200132A8A /* search.png in Resources */,
-				D8E44FC01796420200132A8A /* textback.png in Resources */,
+				D8E44FB51796420200132A8A /* vio_checkbox_selected.png in Resources */,
+				D8E44FB61796420200132A8A /* vio_checkbox.png in Resources */,
+				D8E44FB71796420200132A8A /* vio_line.png in Resources */,
+				D8E44FB81796420200132A8A /* vio_line1.png in Resources */,
+				D8E44FB91796420200132A8A /* vio_line2.png in Resources */,
+				D8E44FBA1796420200132A8A /* vio_line3.png in Resources */,
+				D8E44FBB1796420200132A8A /* vio_logo.png in Resources */,
+				D8E44FBC1796420200132A8A /* vio_none.png in Resources */,
+				D8E44FBD1796420200132A8A /* vio_result_none.png in Resources */,
+				D8E44FBE1796420200132A8A /* vio_result.png in Resources */,
+				D8E44FBF1796420200132A8A /* vio_search.png in Resources */,
+				D8E44FC01796420200132A8A /* vio_textback.png in Resources */,
+				D8E44FC2179642E200132A8A /* vio_head_btn_share.png in Resources */,
+				D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */,
+				D8E96D9F17976FCE00D5B267 /* vio_btn_add_car.png in Resources */,
+				D8E96DA41797709800D5B267 /* JDOAddCarViewController.xib in Resources */,
 				2D2C494517978C77005947F3 /* inputFieldBorder@2x.png in Resources */,
 				2D2C494617978C77005947F3 /* inputFieldPopBtnBackground.png in Resources */,
 				2D2C494917979441005947F3 /* checkbox_unselected.png in Resources */,
@@ -2760,6 +2791,8 @@
 				2D9C249F1793D2B200EAB2E3 /* JDOQuestionCommentModel.m in Sources */,
 				2D9C24A21793D74E00EAB2E3 /* JDOArrayModel.m in Sources */,
 				2D3C034C1794D8430050EA57 /* PopoverView.m in Sources */,
+				D8E44FC61796448100132A8A /* JDOCarManagerViewController.m in Sources */,
+				D8E96DA31797709800D5B267 /* JDOAddCarViewController.m in Sources */,
 				2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */,
 				2D0DE2F91796940500A7C813 /* AbstractActionSheetPicker.m in Sources */,
 				2D0DE2FA1796940500A7C813 /* ActionSheetCustomPicker.m in Sources */,
@@ -2773,6 +2806,7 @@
 				2DA5602D179AD5BA00BC58BF /* XYAlertViewManager.m in Sources */,
 				2DA5602E179AD5BA00BC58BF /* XYInputView.m in Sources */,
 				2DA5602F179AD5BA00BC58BF /* XYLoadingView.m in Sources */,
+				D8FABEAF179E26E000BFB67A /* JDOCarTableCell.m in Sources */,
 				2D9F37C8179CD37800A9D6E0 /* TTSwitch.m in Sources */,
 				2D9F37C9179CD37800A9D6E0 /* TTFadeSwitch.m in Sources */,
 				2D9F37CC179D2ED100A9D6E0 /* UIResponder+KeyboardCache.m in Sources */,

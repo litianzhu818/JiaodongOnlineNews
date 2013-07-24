@@ -39,9 +39,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.violation setCartype:[cartypes objectAtIndex:indexPath.row] index:indexPath.row + 1];
-    [self.navigationController popToViewController:self.violation animated:YES];
-    self.violation = nil;
+    if (self.violation != nil) {
+        [self.violation setCartype:[cartypes objectAtIndex:indexPath.row] index:indexPath.row + 1];
+        [self.navigationController popToViewController:self.violation animated:YES];
+        self.violation = nil;
+    }
+    if (self.addcar != nil) {
+        [self.addcar setCartype:[cartypes objectAtIndex:indexPath.row] index:indexPath.row + 1];
+        [self.navigationController popToViewController:self.addcar animated:YES];
+        self.addcar = nil;
+    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

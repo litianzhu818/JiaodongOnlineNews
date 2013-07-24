@@ -70,6 +70,7 @@
     static JDOBusDetailViewController *controller = nil;
     controller = [[JDOBusDetailViewController alloc] initWithNibName:nil bundle:nil];
     controller.aid = [[buslines objectAtIndex:indexPath.row] id];
+    controller.title = @"公交班次";
     controller.back = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -85,6 +86,7 @@
     UITableViewCell *cell = nil;
     cell = [[UITableViewCell alloc] init];
     if (buslines.count >= indexPath.row) {
+        cell.textLabel.font = [UIFont systemFontOfSize:15.0];
         cell.textLabel.text = [[buslines objectAtIndex:indexPath.row] title];
     }
 	return cell;

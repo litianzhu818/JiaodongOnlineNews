@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "JDOViolationViewController.h"
+#import "JDOAddCarViewController.h"
 
 @interface JDOSelectCarTypeViewController : JDONavigationController <UITableViewDataSource, UITableViewDelegate>
 {
@@ -17,5 +18,6 @@
 }
 
 @property (nonatomic,strong)JDOViolationViewController *violation;
+@property (nonatomic,strong)JDOAddCarViewController *addcar;
 
 @end
