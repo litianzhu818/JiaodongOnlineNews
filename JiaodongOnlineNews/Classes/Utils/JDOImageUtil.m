@@ -19,7 +19,6 @@
     float targetWidth = targetSize.width;
     float targetHeight = targetSize.height;
     
-    #warning 关于拉伸和压缩以及重定义原点的方法有待验证
     if (originWidth != targetWidth || originHeight != targetHeight){
         CGSize size;    // 绘图尺寸
         CGPoint origin; // 绘图原点

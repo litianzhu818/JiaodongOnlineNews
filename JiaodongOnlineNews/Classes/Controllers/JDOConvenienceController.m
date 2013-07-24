@@ -99,56 +99,55 @@
 #pragma mark - NILauncherDelegate
 
 - (void)launcherView:(NILauncherView *)launcher didSelectItemOnPage:(NSInteger)page atIndex:(NSInteger)index {
-    id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
+//    id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
     
     if (index == 4){
-        static JDOViolationViewController *violation = nil;
-        violation = [[JDOViolationViewController alloc] initWithNibName:nil bundle:nil];
+        JDOViolationViewController *violation = [[JDOViolationViewController alloc] init];
         [self.navigationController pushViewController:violation animated:YES];
     } else if (index == 0){
-        static JDOBusLIstViewController *buslist = nil;
-        buslist = [[JDOBusLIstViewController alloc] initWithNibName:nil bundle:nil];
+        JDOBusLIstViewController *buslist = [[JDOBusLIstViewController alloc] init];
         [self.navigationController pushViewController:buslist animated:YES];
     } else if (index == 7){
-        static JDOLifeKnowledgeViewController *lifeknowledge = nil;
-        lifeknowledge = [[JDOLifeKnowledgeViewController alloc] initWithNibName:nil bundle:nil];
+        JDOLifeKnowledgeViewController *lifeknowledge = [[JDOLifeKnowledgeViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:lifeknowledge animated:YES];
     } else {
-        static JDOConvenienceItemController *controller = nil;
-        controller = [[JDOConvenienceItemController alloc] initWithNibName:nil bundle:nil];
-
+        NSString *title ,*channelId;
+        BOOL deletetitle;
+        
         switch (index) {
             case 1:
-                controller.title = @"客运时刻";
-                controller.channelid = @"22";
-                controller.deletetitle = YES;
+                title = @"客运时刻";
+                channelId = @"22";
+                deletetitle = YES;
                 break;
             case 2:
-                controller.title = @"火车时刻";
-                controller.channelid = @"23";
-                controller.deletetitle = YES;
+                title = @"火车时刻";
+                channelId = @"23";
+                deletetitle = YES;
                 break;
             case 3:
-                controller.title = @"船运时刻";
-                controller.channelid = @"24";
-                controller.deletetitle = YES;
+                title = @"船运时刻";
+                channelId = @"24";
+                deletetitle = YES;
                 break;
             case 5:
-                controller.title = @"航空时刻";
-                controller.channelid = @"25";
-                controller.deletetitle = YES;
+                title = @"航空时刻";
+                channelId = @"25";
+                deletetitle = YES;
                 break;
             case 6:
-                controller.title = @"常用电话";
-                controller.channelid = @"26";
-                controller.deletetitle = NO;
+                title = @"常用电话";
+                channelId = @"26";
+                deletetitle = NO;
                 break;
             case 8:
-                controller.title = @"烟台天气";
-                controller.channelid = @"21";
-                controller.deletetitle = NO;
+                title = @"烟台天气";
+                channelId = @"21";
+                deletetitle = NO;
                 break;
         }
+        JDOConvenienceItemController *controller = [[JDOConvenienceItemController alloc] initWithService:CONVENIENCE_SERVICE params:@{@"channelid":channelId} title:title];
+        controller.deletetitle = deletetitle;
         [self.navigationController pushViewController:controller animated:YES];
     }
 }

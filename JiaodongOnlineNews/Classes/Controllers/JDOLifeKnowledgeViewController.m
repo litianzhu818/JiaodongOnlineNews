@@ -13,7 +13,7 @@
 #import "JDONewsDetailController.h"
 #import "NSDate+SSToolkitAdditions.h"
 #import "SDImageCache.h"
-#import "JDOBusDetailViewController.h"
+#import "JDOConvenienceItemController.h"
 
 #define NewsList_Page_Size 20
 
@@ -21,12 +21,12 @@
 
 #define News_Cache_Path(fileName) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName]
 
-#define Hint_Min_Show_Time 1.2
-
 
 @interface JDOLifeKnowledgeViewController ()
 
 @end
+
+#warning 重构为继承ListView,使行为统一
 
 @implementation JDOLifeKnowledgeViewController{
     MBProgressHUD *HUD;
@@ -56,8 +56,9 @@
             [blockSelf loadMore];
         }];
         
-        self.statusView = [[JDOStatusView alloc] initWithFrame:self.view.bounds];
-        //[self.view addSubview:self.statusView];
+        self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+        self.statusView.delegate = self;
+        [self.view addSubview:self.statusView];
         
         // 从本地缓存读取，本地缓存每个栏目只保存20条记录
         BOOL hasCache = [self readListFromLocalCache];
@@ -65,9 +66,8 @@
         if( !hasCache){
             self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
             // 显示logo界面，不显示加载进度指示，当实际调用loadcurrentPage的时候才从网络加载并显示进度
-            [self setCurrentState:ViewStatusLogo];
+            [self setCurrentState:ViewStatusLoading];
             _isShowingLocalCache = false;
-            [self loadDataFromNetwork];
         }else{
             [self setCurrentState:ViewStatusNormal];
             _isShowingLocalCache = true;
@@ -79,12 +79,23 @@
                 [self.tableView.pullToRefreshView setSubtitle:[NSString stringWithFormat:@"上次刷新于:%@",updateTimeStr] forState:SVPullToRefreshStateAll];
             }
         }
+        [self loadDataFromNetwork];
     }
     return self;
 }
 
 - (void)dealloc{
     [[SDImageCache sharedImageCache] clearMemory];
+}
+
+- (void) onRetryClicked:(JDOStatusView *) statusView{
+    [self setCurrentPage:ViewStatusLoading];
+    [self loadDataFromNetwork];
+}
+
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
+    [self setCurrentPage:ViewStatusLoading];
+    [self loadDataFromNetwork];
 }
 
 - (void) setCurrentState:(ViewStatusType)status{
@@ -137,17 +148,9 @@
         // 防止加载提示消失的太快
         double delay = [[NSDate date] timeIntervalSinceDate:HUDShowTime];
         if(delay < Hint_Min_Show_Time){
-            //            NSLog(@"%g",Hint_Min_Show_Time-delay);
-            //            NSDate *a = [NSDate date];
             usleep((Hint_Min_Show_Time-delay)*1000*1000);
-            //            NSLog(@"%g",[[NSDate date] timeIntervalSinceDate:a]);
         }
         [HUD hide:true];
-        // 更新成功就不需要在提示了,只需要在错误的时候提示
-        //        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
-        //        HUD.mode = MBProgressHUDModeCustomView;
-        //        HUD.labelText = @"更新成功";
-        //        [HUD hide:true afterDelay:1.0];
         HUDShowTime = nil;
     }
 }
@@ -199,7 +202,7 @@
     if(self.status == ViewStatusLoading){
         [self setCurrentState:ViewStatusRetry];
     }else if(self.status == ViewStatusNormal){
-        [JDOCommonUtil showHintHUD:errorStr inView:self];
+        [JDOCommonUtil showHintHUD:errorStr inView:self.tableView];
     }
 }
 
@@ -220,7 +223,6 @@
 // 更新下拉刷新控件的时间
 - (void) updateLastRefreshTime{
     self.lastUpdateTime = [NSDate date];
-#warning 使用NSDate+SSToolkitAdditions来表示文字描述的刷新时间,但没有办法使pullToRefreshView每次下拉时都刷新时间
     NSString *updateTimeStr = [JDOCommonUtil formatDate:self.lastUpdateTime withFormatter:DateFormatYMDHM];
     [self.tableView.pullToRefreshView setSubtitle:[NSString stringWithFormat:@"上次刷新于:%@",updateTimeStr] forState:SVPullToRefreshStateAll];
 }
@@ -238,13 +240,12 @@
 
 // 保存列表内容至本地缓存文件
 - (void) saveListToLocalCache{
-    [NSKeyedArchiver archiveRootObject:self.listArray toFile:News_Cache_Path([@"NewsListCache" stringByAppendingString:self.reuseId])];
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:News_Cache_Path(@"LifeKnowledgeCache")];
 }
 
 - (BOOL) readListFromLocalCache{
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: News_Cache_Path([@"NewsListCache" stringByAppendingString:self.reuseId])];
-    // 任何一个数组为空都任务本地缓存无效
-    return self.listArray;
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: News_Cache_Path(@"LifeKnowledgeCache")];
+    return self.listArray != nil;
 }
 
 - (void) loadMore{
@@ -285,8 +286,9 @@
                 }else{
                     UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.infiniteScrollingView.bounds.size.width, self.tableView.infiniteScrollingView.bounds.size.height)];
                     finishLabel.textAlignment = NSTextAlignmentCenter;
-                    finishLabel.text = @"数据已全部加载完成";
+                    finishLabel.text = All_Data_Load_Finished;
                     finishLabel.tag = Finished_Label_Tag;
+                    finishLabel.backgroundColor = [UIColor clearColor];
                     [self.tableView.infiniteScrollingView setEnabled:false];
                     [self.tableView.infiniteScrollingView addSubview:finishLabel];
                 }
@@ -312,7 +314,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *listIdentifier = @"listIdentifier";
-    #warning 测试时暂时不开启磁盘缓存 SDWebImageCacheMemoryOnly
+
     JDONewsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
     if (cell == nil){
         cell =[[JDONewsTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:listIdentifier];
@@ -331,10 +333,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{ 
     JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
-    JDOBusDetailViewController *detailController = [[JDOBusDetailViewController alloc] initWithNibName:nil bundle:nil];
-    detailController.title = @"生活常识";
-    detailController.aid = newsModel.id;
-    detailController.back = self;
+    JDOConvenienceItemController *detailController = [[JDOConvenienceItemController alloc] initWithService:NEWS_DETAIL_SERVICE params:@{@"aid":newsModel.id} title:@"生活常识"];
     JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
     [centerController pushViewController:detailController animated:true];
     [tableView deselectRowAtIndexPath:indexPath animated:true];

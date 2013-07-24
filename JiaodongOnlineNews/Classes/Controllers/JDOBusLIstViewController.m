@@ -9,22 +9,13 @@
 #import "JDOBusLIstViewController.h"
 #import "JDOHttpClient.h"
 #import "JDONewsModel.h"
-#import "JDOBusDetailViewController.h"
+#import "JDOConvenienceItemController.h"
 
 @interface JDOBusLIstViewController ()
 
 @end
 
 @implementation JDOBusLIstViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -67,11 +58,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static JDOBusDetailViewController *controller = nil;
-    controller = [[JDOBusDetailViewController alloc] initWithNibName:nil bundle:nil];
-    controller.aid = [[buslines objectAtIndex:indexPath.row] id];
-    controller.title = @"公交班次";
-    controller.back = self;
+    JDOConvenienceItemController *controller = [[JDOConvenienceItemController alloc] initWithService:NEWS_DETAIL_SERVICE params:@{@"aid":[[buslines objectAtIndex:indexPath.row] id]} title:@"公交班次"];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
