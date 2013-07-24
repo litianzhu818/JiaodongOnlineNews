@@ -7,6 +7,7 @@
 //
 
 #import "JDOCarManagerViewController.h"
+#import "JDOCarTableCell.h"
 
 @interface JDOCarManagerViewController ()
 
@@ -46,8 +47,55 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [self.listview setDelegate:self];
+    [self.listview setDataSource:self];
+    [self.listview reloadData];
 }
+
+
+
+
+#pragma mark UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    JDOCarTableCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 0.;
+}
+
+
+
+#pragma mark -
+#pragma mark UITableViewDataSource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellIdentifier = @"CarTableCell";
+    JDOCarTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[JDOCarTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
+    cell.selectedBackgroundView = backView;
+    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    NSDictionary *temp = @{@"carnum": @"鲁F6L930"};
+    [cell setData:temp];
+    return cell;
+
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 1;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
+
+
+
 
 - (void)didReceiveMemoryWarning
 {

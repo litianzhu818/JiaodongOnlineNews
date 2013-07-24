@@ -100,6 +100,8 @@
     CarNumString = CarNum.text;
     ChassisNumString = ChassisNum.text;
     if (!self.checkEmpty) {
+        [resultLabel setHidden:NO];
+        [defaultback setHidden:YES];
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
         [params setValue:CarNumString forKey:@"hphm"];
         [params setValue:CarTypeString forKey:@"cartype"];
@@ -109,7 +111,7 @@
             if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
                 NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
                 if (datas.count > 0) {
-                    //[resultArray removeAllObjects];
+                    [resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
                     [result reloadData];
                 }
