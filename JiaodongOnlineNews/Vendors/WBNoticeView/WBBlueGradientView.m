@@ -15,8 +15,8 @@
 - (void)drawRect:(CGRect)rect
 {
     
-    UIColor *redTop = [UIColor colorWithRed:37/255.0f green:185/255.0f blue:122/255.0f alpha:1.0];
-    UIColor *redBot = [UIColor colorWithRed:18/255.0f green:154/255.0f blue:96/255.0f alpha:1.0];
+    UIColor *redTop = [UIColor colorWithRed:37/255.0f green:122/255.0f blue:185/255.0f alpha:1.0];
+    UIColor *redBot = [UIColor colorWithRed:18/255.0f green:96/255.0f blue:154/255.0f alpha:1.0];
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.bounds;
@@ -30,6 +30,7 @@
                           nil];
     
     [self.layer insertSublayer:gradient atIndex:0];
+    self.layer.needsDisplayOnBoundsChange = YES;
     
     UIView *firstTopBlueLine = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.bounds.size.width, 1.0)];
     firstTopBlueLine.backgroundColor = [UIColor colorWithRed:105/255.0f green:163/255.0f blue:208/255.0f alpha:1.0];

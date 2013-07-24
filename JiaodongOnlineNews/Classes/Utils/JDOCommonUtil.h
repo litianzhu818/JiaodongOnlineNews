@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <ShareSDK/ShareSDK.h>
+#import "WBNoticeView.h"
 
 #define PROTOCOL	@"PROTOCOL"
 #define HOST		@"HOST"
@@ -41,6 +42,7 @@ typedef enum{
 + (NSURL *)applicationSupportDirectoryURL;
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view;
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view;
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;

@@ -114,11 +114,11 @@
 - (void)submitReview{
     
     if(JDOIsEmptyString(_userInput.text)){
-        [JDOCommonUtil showHintHUD:@"请输入用户昵称" inView:self.view];
+        [JDOCommonUtil showHintHUD:@"请输入用户昵称" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return;
     }
     if(JDOIsEmptyString(_contentInput.text)){
-        [JDOCommonUtil showHintHUD:@"请输入留言内容" inView:self.view];
+        [JDOCommonUtil showHintHUD:@"请输入留言内容" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return;
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:5];
