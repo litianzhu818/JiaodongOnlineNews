@@ -18,6 +18,7 @@
     IBOutlet TPKeyboardAvoidingScrollView *tp;
     IBOutlet UITableView *result;
     IBOutlet UIImageView *defaultback;
+    IBOutlet UILabel *resultLabel;
     
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;

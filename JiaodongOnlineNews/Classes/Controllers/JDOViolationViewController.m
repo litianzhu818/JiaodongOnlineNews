@@ -48,6 +48,8 @@
 {
     [super viewDidLoad];
     
+    [resultLabel setHidden:YES];
+    
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
     checkBox1.frame = CGRectMake(15, 144, checkBox1.frame.size.width, checkBox1.frame.size.height);
