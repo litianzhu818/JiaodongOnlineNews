@@ -14,10 +14,11 @@
 #import "JDOCenterViewController.h"
 #import "FXLabel.h"
 #import "InsetsTextField.h"
-#import "XYInputView.h"
+//#import "XYInputView.h"
 
 #define QuestionList_Page_Size 20
 #define Finished_Label_Tag 111
+#define Secret_Field_Tag 101
 #define Search_Placeholder @"请输入关键词或编号"
 
 @interface JDOLivehoodQuestionList () <UIAlertViewDelegate>
@@ -35,7 +36,7 @@
 @property (strong, nonatomic) UITapGestureRecognizer *openInputGesture;
 
 @property (strong,nonatomic) UIImageView *noDataView;
-@property (strong,nonatomic) XYInputView *alertView;
+@property (strong,nonatomic) UIAlertView *alertView;
 
 @end
 
@@ -48,6 +49,7 @@
     
     CGRect endFrame;
     NSTimeInterval timeInterval;
+    JDOQuestionModel *secretQuestionModel;
 }
 
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView{
@@ -484,19 +486,18 @@
     JDOQuestionModel *questionModel = [self.listArray objectAtIndex:indexPath.row];
     BOOL enable = false;
     if ([questionModel.secret intValue] == 1) { // 保密
-//        if (_alertView == nil) {
-            // 不使用UIAlertView，原因如下:1.alertViewStyle属性需要iOS>5.0  2.弹出窗口并关闭后，再次点击所有屏幕事件都失效，再点一次就好了，原因不清楚。
-//            _alertView = [[UIAlertView alloc] initWithTitle:@"请输入查询密码" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认",nil];
-//            _alertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
-//            [_alertView textFieldAtIndex:0].keyboardType = UIKeyboardTypeNumberPad;
-            
-            _alertView = [XYInputView inputViewWithTitle:@"请输入查询密码" message:nil placeholder:@"6位数字" initialText:nil buttons:@[@"取消",@"确定"] afterDismiss:^(int buttonIndex, NSString *text) {
-                if(buttonIndex == 1){
-                    
-                }
-            }];
-            [_alertView setButtonStyle:XYButtonStyleGreen atIndex:1];
-//        }
+        secretQuestionModel = questionModel;
+        if (_alertView == nil) {
+            _alertView = [[UIAlertView alloc] initWithTitle:@"请输入查询密码" message:@"\n\n" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认",nil];
+            InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(12.0f, 51.0f, 260.0f, 35.0f)];
+            secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+            secretTextField.secureTextEntry = YES;
+            secretTextField.placeholder = @"6位数字";
+            secretTextField.keyboardType = UIKeyboardTypeNumberPad;
+            secretTextField.tag = Secret_Field_Tag;
+            [_alertView addSubview:secretTextField];
+        }
         [_alertView show];
     }else{
         enable = true;
@@ -512,16 +513,46 @@
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex == 0){
+    if(buttonIndex == [alertView cancelButtonIndex]){
         
+    }else{
+        NSString *secret = [(UITextField *)[_alertView viewWithTag:Secret_Field_Tag] text];
+        if(JDOIsEmptyString(secret)){
+            return;
+        }
+        if ( [secret isEqualToString:secretQuestionModel.pwd] ) {   // 密码正确
+            JDOQuestionDetailController *detailController = [[JDOQuestionDetailController alloc] initWithQuestionModel:secretQuestionModel];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:detailController animated:true];
+        }else{
+            [JDOCommonUtil showHintHUD:@"密码错误,请重新输入" inView:self];
+            [(UITextField *)[_alertView viewWithTag:Secret_Field_Tag] setText:nil];
+        }
     }
 }
-- (void)alertViewCancel:(UIAlertView *)alertView{
-    
-}
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    if ( alertView == _alertView) {
+        [(UITextField *)[_alertView viewWithTag:Secret_Field_Tag] setText:nil];
+    }
+}
+
+- (void)willPresentAlertView:(UIAlertView *)alertView{
+    if ( alertView == _alertView) { // 显示键盘
+        [[_alertView viewWithTag:Secret_Field_Tag] becomeFirstResponder];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex{
     
 }
+
+- (void)alertViewCancel:(UIAlertView *)alertView{
+
+}
+
+
+
 
 
 @end

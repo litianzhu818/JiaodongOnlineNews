@@ -12,7 +12,7 @@
 #import "ActionSheetCustomPicker.h"
 #import "ActionSheetStringPicker.h"
 #import "SSTextView.h"
-#import "XYAlertView.h"
+//#import "XYAlertView.h"
 
 #define Line_Height 35.0f
 #define Label_Width 90.0f
@@ -70,7 +70,7 @@
     NSDate *HUDShowTime;
 }
 
-#warning 输入框背景色若要调整需要替换图片,弹出框样式需要调整
+#warning checkbox的背景色和边框需要修改
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView{
     if ((self = [super init])) {
         typeStrings = @[@"投诉",@"咨询",@"建议",@"反馈"];
@@ -289,11 +289,7 @@
             // 弹出提示窗口提示记录问题id和查询密码
             NSString *hintTitle = @"问题已提交,正在等待审核";
             NSString *hintMessage = [NSString stringWithFormat:@"请牢记您的问题编号:%ld以及查询密码:%@",[status longValue],_qPwdInput.text];
-//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:hintTitle message:hintMessage delegate:nil cancelButtonTitle:@"我记住了" otherButtonTitles: nil];
-            XYAlertView *alertView = [XYAlertView alertViewWithTitle:hintTitle message:hintMessage buttons:@[@"我记住了"] afterDismiss:^(int buttonIndex) {
-
-            }];
-//            [alertView setButtonStyle:XYButtonStyleGray atIndex:1];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:hintTitle message:hintMessage delegate:nil cancelButtonTitle:@"我记住了" otherButtonTitles: nil];
             [alertView show];
             // 清空所有输入框和变量的内容
             _titleInput.text = nil;
@@ -491,14 +487,15 @@
             }
         }
     }
-    [_maskView removeGestureRecognizer:self.closeInputGesture];
-    [_maskView removeFromSuperview];
-    [SharedAppDelegate deckController].enabled = true;
-    isKeyboardShowing = false;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
-
+    if(isKeyboardShowing){
+        [_maskView removeGestureRecognizer:self.closeInputGesture];
+        [_maskView removeFromSuperview];
+        [SharedAppDelegate deckController].enabled = true;
+        isKeyboardShowing = false;
+    }
 }
 
 #pragma mark 选择部门

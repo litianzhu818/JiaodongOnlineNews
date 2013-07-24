@@ -86,6 +86,7 @@
         self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.text = [NSString stringWithFormat:@"处理部门：%@", questionModel.department];
         if ([questionModel.secret intValue] == 1){  // 保密
+#warning 保密的行样式应该调整一下
             self.detailTextLabel.text = @"请通过密码查看处理情况";
         }else{
             self.detailTextLabel.text = questionModel.title;
