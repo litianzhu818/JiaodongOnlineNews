@@ -89,7 +89,7 @@
 }
 
 - (void)dealloc{
-    [[SDImageCache sharedImageCache] clearMemory];
+//    [[SDImageCache sharedImageCache] clearMemory];
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{

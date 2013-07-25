@@ -9,6 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "JDORightViewController.h"
 
+typedef enum {
+    JDOSettingItemPushService = 0,
+    JDOSettingItem3GSwitch,
+    JDOSettingItemClearCache,
+    JDOSettingItemDownload,
+    JDOSettingItemCheckVersion,
+    JDOSettingItemFeedback,
+    JDOSettingItemCount
+} JDOSettingItem;
+
 @interface JDOSettingViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;

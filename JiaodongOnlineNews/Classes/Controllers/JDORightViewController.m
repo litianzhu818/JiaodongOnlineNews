@@ -207,6 +207,8 @@ typedef enum {
                 _settingContrller = [[JDOSettingViewController alloc] init];
             }
             [self pushViewController:_settingContrller];
+            // 重载缓存部分的数据
+            [_settingContrller.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
         case RightMenuItemCollection:
             
@@ -234,8 +236,7 @@ typedef enum {
             if( _aboutUsController == nil){
                 _aboutUsController = [[JDOAboutUsViewController alloc] init];
             }
-//            [self pushViewController:_aboutUsController];
-            [SharedAppDelegate checkForNewVersion:nil];
+            [self pushViewController:_aboutUsController];
             break;
         default:
             break;

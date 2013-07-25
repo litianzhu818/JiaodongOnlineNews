@@ -25,6 +25,7 @@
 #import "MobClick.h"
 #import "UIResponder+KeyboardCache.h"
 #import "iVersion.h"
+#import "SDImageCache.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -184,6 +185,10 @@
 //    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
 //    [NSURLCache setSharedURLCache:urlCache];
     
+    // 清空图片内存缓存
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearImageCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    
+    
 #warning 测试广告位图片效果,暂时关闭异步网络加载，Defalut图片去掉上面的状态栏(图片问题)
 //    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
         advImage = [UIImage imageNamed:@"default_adv.png"];
@@ -209,17 +214,21 @@
     return YES;
 }
 
+- (void)clearImageCache{
+    [[SDImageCache sharedImageCache] clearMemory];
+}
+
 - (void)reachabilityChanged:(NSNotification *)note {
     Reachability* curReach = [note object];
     NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
     NetworkStatus status = [curReach currentReachabilityStatus];
     
     if (status == NotReachable) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"失去网络链接"
-                                                        message:@"请检查您的网络"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alert show];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"失去网络链接"
+//                                                        message:@"请检查您的网络"
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//        [alert show];
     } else {//有网络
         JDOLeftViewController *leftController = (JDOLeftViewController *)[[SharedAppDelegate deckController] leftController];
         [leftController updateWeather];
@@ -237,7 +246,7 @@
     [iVersion sharedInstance].remindPeriod = 1.0f;
     [iVersion sharedInstance].ignoreButtonLabel = @"忽略此版本";
     [iVersion sharedInstance].remindButtonLabel = @"以后提醒";
-    [iVersion sharedInstance].displayAppUsingStorekitIfAvailable = true;
+    [iVersion sharedInstance].displayAppUsingStorekitIfAvailable = false;
 //    [iVersion sharedInstance].checkAtLaunch = NO;
 }
 
