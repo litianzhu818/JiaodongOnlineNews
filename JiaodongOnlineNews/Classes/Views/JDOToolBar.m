@@ -312,6 +312,9 @@
 
 // 显示键盘和切换输入法时都会执行
 - (void)keyboardWillShow:(NSNotification *)notification{
+    if(!JDOIsVisiable(self)){
+        return;
+    }
     NSDictionary *userInfo = [notification userInfo];
     
     NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
@@ -333,6 +336,9 @@
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
+    if(!JDOIsVisiable(self)){
+        return;
+    }
     NSDictionary *userInfo = [notification userInfo];
     
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];

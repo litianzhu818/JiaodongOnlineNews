@@ -62,7 +62,7 @@
     [self addRightButtonImage:image highlightImage:highlightImage];
     [self.rightBtn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
-#warning 标题可以考虑用图片艺术字
+
 - (void) setTitle:(NSString *)title{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, 320-44*2, 44)];
     titleLabel.textAlignment = NSTextAlignmentCenter;

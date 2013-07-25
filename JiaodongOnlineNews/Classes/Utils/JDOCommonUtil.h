@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <ShareSDK/ShareSDK.h>
+#import "WBNoticeView.h"
 
 #define PROTOCOL	@"PROTOCOL"
 #define HOST		@"HOST"
@@ -41,6 +42,7 @@ typedef enum{
 + (NSURL *)applicationSupportDirectoryURL;
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view;
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view;
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
@@ -50,6 +52,7 @@ typedef enum{
 BOOL JDOIsEmptyString(NSString *string);
 BOOL JDOIsNumber(NSString *string);
 BOOL JDOIsEmail(NSString *string);
+BOOL JDOIsVisiable(UIView *view);
 
 NSString* JDOGetHomeFilePath(NSString *fileName);
 NSString* JDOGetTmpFilePath(NSString *fileName);

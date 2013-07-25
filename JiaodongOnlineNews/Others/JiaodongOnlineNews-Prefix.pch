@@ -52,12 +52,13 @@
 #define Review_Font_Size 14
 
 // 刷新时间间隔
-#define Weather_Update_Time @"Weather_Update_Time"
+#define Weather_Update_Time @"JDO_Weather_Update_Time"
 #define Weather_Update_Interval 60*60   //一小时
-#define News_Update_Time @"News_Update_Time"
+#define News_Update_Time @"JDO_News_Update_Time"
 #define News_Update_Interval 30*60  // 30分钟
-#define Dept_Update_Time @"Dept_Update_Time"
+#define Dept_Update_Time @"JDO_Dept_Update_Time"
 #define Dept_Update_Interval 24*60*60  // 一天
+#define Knowledge_Update_Interval 24*60*60  // 一天
 
 // 颜色
 #define Main_Background_Color @"f0f0f0"
@@ -70,7 +71,7 @@
 // 提示最少显示时间
 #define Hint_Min_Show_Time 0.8
 #define No_Network_Connection @"网络当前不可用"
-#define All_Data_Load_Finished @"数据已全部加载完成"
+#define All_Data_Load_Finished @"全部加载完成"
 
 // 自定义通知
 #define kDeptChangedNotification @"kDeptChangedNotification"

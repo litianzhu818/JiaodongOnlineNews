@@ -12,7 +12,7 @@
 
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *imagecontent;
-@property (nonatomic) BOOL *isLocalUrl;//url指向本地图片
+@property (nonatomic,assign) BOOL isLocalUrl;//url指向本地图片
 @property (nonatomic,strong) NSString *tinyurl;
 
 - (id) initWithUrl:(NSString *)imageUrl andContent: (NSString *)imageContent;

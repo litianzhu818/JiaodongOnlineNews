@@ -204,7 +204,11 @@ static NSDateFormatter *dateFormatter;
 
 #pragma mark - 提示窗口
 
-+ (void) showHintHUD:(NSString *)content inView:(UIView *)view{
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view {
+    [self showHintHUD:content inView:view withSlidingMode:WBNoticeViewSlidingModeDown];
+}
+
++ (void) showHintHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode{
 //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
 //    hud.mode = MBProgressHUDModeText;
 //    hud.labelText = content;
@@ -226,6 +230,7 @@ static NSDateFormatter *dateFormatter;
     WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:view title:@"操作失败" message:content];
     notice.sticky = false;
     notice.alpha = 0.8;
+    notice.slidingMode = slidingMode;
     [notice show];
     
     // NoticeView只能从上方弹出，更好的方案是使用TBHintView支持上下两个方向和多种动画
@@ -268,6 +273,20 @@ BOOL JDOIsEmail(NSString *string){
     NSPredicate *Test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
     return [Test evaluateWithObject:string];
 }
+BOOL JDOIsVisiable(UIView *aView){
+    UIView *superView = aView.superview;
+    BOOL isVisiable = false;
+    while (superView) {
+        if ([SharedAppDelegate window] == superView){
+            isVisiable = true;
+            break;
+        }else{
+            superView = [superView superview];
+        }
+    }
+    return isVisiable;
+}
+
 NSString* JDOGetHomeFilePath(NSString *fileName){
     return [NSHomeDirectory() stringByAppendingPathComponent:fileName];
 }

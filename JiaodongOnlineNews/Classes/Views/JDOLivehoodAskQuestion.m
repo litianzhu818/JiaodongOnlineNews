@@ -465,6 +465,9 @@
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification{
+    if(!JDOIsVisiable(self)){
+        return;
+    }
     if (isKeyboardShowing == false){
         _closeInputGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
         _maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , App_Height)];
@@ -490,6 +493,9 @@
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
+    if(!JDOIsVisiable(self)){
+        return;
+    }
     if(isKeyboardShowing){
         [_maskView removeGestureRecognizer:self.closeInputGesture];
         [_maskView removeFromSuperview];

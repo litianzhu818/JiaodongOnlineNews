@@ -23,7 +23,7 @@
 
 @implementation JDOImageViewController
 
-
+#warning 图片与话题增加本地文件缓存,其实图片可以将逻辑放在父类的ListViewController中，通过参数设置是否缓存及状态的变化
 -(id)init{
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setObject:@ImageList_Page_Size forKey:@"pageSize"];

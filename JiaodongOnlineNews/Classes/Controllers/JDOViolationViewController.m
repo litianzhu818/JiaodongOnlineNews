@@ -18,18 +18,6 @@
 
 @implementation JDOViolationViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        CarNumString = [[NSMutableString alloc] init];
-        CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
-        ChassisNumString = [[NSMutableString alloc] init];
-        resultArray = [[NSMutableArray alloc] init];
-    }
-    return self;
-}
-
 - (void)setCartype:(NSString *)type index:(int)index
 {
     [CarType setTitle:type forState:UIControlStateNormal];
@@ -48,6 +36,7 @@
 {
     [super viewDidLoad];
     
+    resultArray = [[NSMutableArray alloc] init];
     [resultLabel setHidden:YES];
     
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
@@ -141,10 +130,10 @@
 
 #pragma mark UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    JDOViolationTableCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.height;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    JDOViolationTableCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+//    return cell.height;
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     

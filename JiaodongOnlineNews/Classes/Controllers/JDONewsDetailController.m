@@ -154,7 +154,7 @@ NSArray *imageUrls;
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
             JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:localUrl andContent:self.newsModel.title];
-            [imageDetail setIsLocalUrl:TRUE];
+            [imageDetail setIsLocalUrl:true];
             [array addObject:imageDetail];
         }
         

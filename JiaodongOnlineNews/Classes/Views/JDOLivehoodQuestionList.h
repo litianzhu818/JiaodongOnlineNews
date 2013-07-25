@@ -18,7 +18,7 @@
 @property (nonatomic,strong) NSDictionary *info;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *listArray;
-@property (assign,nonatomic) UIView *rootView;
+@property (strong,nonatomic) UIView *rootView;
 
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView;
 

@@ -9,22 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "WebViewJavascriptBridge_iOS.h"
 
-@interface JDOConvenienceItemController : UIViewController <JDONavigationView,UIWebViewDelegate,UITextFieldDelegate>
+@interface JDOConvenienceItemController : JDONavigationController <JDOStatusView,JDOStatusViewDelegate,UIWebViewDelegate>
 
+@property (strong,nonatomic) JDOStatusView *statusView;
+@property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,strong) UIWebView *webView;
-@property (strong,nonatomic) JDONavigationView *navigationView;
-@property (nonatomic,strong) UIActivityIndicatorView *activityIndicationView;
-@property (strong,nonatomic) NSString *title;
 @property BOOL deletetitle;
-@property (strong,nonatomic) NSString *channelid;
 
-@property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
+@property (strong, nonatomic) NSString *service;
+@property (strong, nonatomic) NSDictionary *params;
+@property (strong, nonatomic) NSString *navTitle;
 
-@property (strong, nonatomic) WebViewJavascriptBridge *bridge;
-@property (strong, nonatomic) UIView *reviewPanel;
-@property (strong, nonatomic) UITextField *textField;
-@property (assign, nonatomic) BOOL isKeyboardShowing;
-
--(void)backToConvenienceList;
+- (id)initWithService:(NSString *)service params:(NSDictionary *)params title:(NSString *)title;
+-(void)backToParent;
 
 @end

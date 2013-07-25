@@ -29,7 +29,6 @@
 
 - (IBAction)clickCarType:(id)sender;
 - (IBAction)clickAddCar:(id)sender;
-- (BOOL)checkEmpty;
 - (void)setCartype:(NSString*) type index:(int)index;
 - (void) onBackBtnClick;
 
