@@ -13,14 +13,19 @@ function adjustImgSize(){
 
 function clickImageEvent(event) {
 	if(this.attributes["src"].nodeValue!="news_head_placeholder.png" && this.attributes["src"].nodeValue!="img_set_flag.png"){
-		var index = $.inArray(this,$("img[src!='img_set_flag.png']"));
-		var linkId = $(this).closest("p").attr("id");
-		if( linkId ){
-            window.newsDetail.redirectImage(linkId);
-		}else{
-			window.showimage.showimage(index ==-1?0:index);
-		}
-	}
+        var index = $.inArray(this,$("img[src!='img_set_flag.png']"));
+        var linkId = $(this).closest("p").attr("id");
+        
+        if( linkId ){
+            bridge.callHandler('showImageSet', {'linkId': linkId}, function(response) {
+                               
+                               });
+        }else{
+            bridge.callHandler('showImageDetail', {'imageId': index}, function(response) {
+                               
+                               });
+        }
+    }
 }
 
 function refreshImg(realURL, localURL) {
