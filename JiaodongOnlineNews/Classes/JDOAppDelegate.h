@@ -18,5 +18,6 @@
 @property (retain, nonatomic) IIViewDeckController *deckController;
 
 - (IIViewDeckController *)generateControllerStack;
+- (void)checkForNewVersion:(id)sender;
 
 @end

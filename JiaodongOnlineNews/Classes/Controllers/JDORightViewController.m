@@ -234,7 +234,8 @@ typedef enum {
             if( _aboutUsController == nil){
                 _aboutUsController = [[JDOAboutUsViewController alloc] init];
             }
-            [self pushViewController:_aboutUsController];
+//            [self pushViewController:_aboutUsController];
+            [SharedAppDelegate checkForNewVersion:nil];
             break;
         default:
             break;

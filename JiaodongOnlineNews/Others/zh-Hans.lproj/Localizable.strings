@@ -25,3 +25,11 @@
 "%d months" = "%d 月";
 "about 1 year" = "大约1年";
 "over %d years" = "超过%d 年";
+
+"iVersionInThisVersionTitle" = "更新说明";
+"iVersionUpdateAvailableTitle" = "有新的版本";
+"iVersionVersionLabelFormat" = "版本 %@";
+"iVersionIgnoreButton" = "忽略";
+"iVersionDownloadButton" = "下载更新";
+"iVersionRemindButton" = "回头再说";
+"iVersionOKButton" = "好的";
