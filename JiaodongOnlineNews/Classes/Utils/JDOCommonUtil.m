@@ -11,6 +11,7 @@
 #import "iToast.h"
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
+#import "Reachability.h"
 
 #define NUMBERS @"0123456789"
 
@@ -255,6 +256,13 @@ static NSDateFormatter *dateFormatter;
     notice.alpha = 0.9;
     notice.originY = originY;
     [notice show];
+}
+
++ (BOOL) ifNoImage {
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    BOOL noImage = [[userDefault objectForKey:@"noImage"] isEqualToString:@"on"]?TRUE:FALSE;
+    BOOL if3g = [Reachability isEnable3G];
+    return  noImage && if3g;
 }
 
 @end

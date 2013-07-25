@@ -9,6 +9,7 @@
 #import "JDOSettingViewController.h"
 //#import "JDOShareAuthController.h"
 #import "JDORightViewController.h"
+#import "TTFadeSwitch.h"
 
 @interface JDOSettingViewController ()
 
@@ -62,15 +63,55 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellAccessoryNone;
     }
-    cell.textLabel.text = @"设置项目";
+    cell.textLabel.text = @"3G网络下不显示图片";
+    TTFadeSwitch *switchCtrl = [[TTFadeSwitch alloc] initWithFrame:CGRectMake(0, 0, 65, 27)];
+    switchCtrl.thumbImage = [UIImage imageNamed:@"switch_thumb"];
+    switchCtrl.trackImageOn = [UIImage imageNamed:@"switch_on"];
+    switchCtrl.trackImageOff = [UIImage imageNamed:@"switch_off"];
+    
+    switchCtrl.thumbInsetX = -3.0;
+    switchCtrl.thumbOffsetY = -1.0;
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *noImage = [userDefault objectForKey:@"noImage"];
+    NSLog(@"%@",noImage);
+    switchCtrl.on = [noImage isEqualToString:@"on"]?TRUE:FALSE;
+    [switchCtrl addTarget:self action:@selector(NoImageSwitchChangeHandler:) forControlEvents:UIControlEventValueChanged];
+    cell.accessoryView = switchCtrl;
     return cell;
 }
 
+- (void)NoImageSwitchChangeHandler:(UISwitch *)sender {
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *noImage = sender.on?@"on":@"off";
+    NSLog(@"%@",noImage);
+    [userDefault setObject:noImage forKey:@"noImage"];
+    [userDefault synchronize];
+}
+
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
+//    switch (indexPath.row) {
+//        case 0:
+//            return UITableViewCellAccessoryCheckmark;
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//    return UITableViewCellAccessoryNone;
+//}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     switch (indexPath.row) {
-        case 0:{
+        case 0: {
+            UITableViewCell *settingCell = [tableView cellForRowAtIndexPath:indexPath];
+            if (settingCell.selectionStyle == UITableViewCellAccessoryCheckmark) {
+                settingCell.selectionStyle = UITableViewCellAccessoryNone;
+            } else {
+                settingCell.selectionStyle = UITableViewCellAccessoryCheckmark;
+            }
             break;
         }
         default:

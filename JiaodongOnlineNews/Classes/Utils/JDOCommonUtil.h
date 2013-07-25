@@ -47,6 +47,8 @@ typedef enum{
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view;
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
 
++ (BOOL)ifNoImage;
+
 @end
 
 BOOL JDOIsEmptyString(NSString *string);
