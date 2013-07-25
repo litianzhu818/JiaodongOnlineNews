@@ -36,6 +36,9 @@
 {
     [super viewDidLoad];
     
+    CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
+    resultArray = [[NSMutableArray alloc] init];
+    
     resultArray = [[NSMutableArray alloc] init];
     [resultLabel setHidden:YES];
     
@@ -86,8 +89,8 @@
 
 - (IBAction)sendToServer:(id)sender
 {
-    CarNumString = CarNum.text;
-    ChassisNumString = ChassisNum.text;
+    CarNumString = [[NSMutableString alloc] initWithString:CarNum.text];
+    ChassisNumString = [[NSMutableString alloc] initWithString:ChassisNum.text];
     if (!self.checkEmpty) {
         [resultLabel setHidden:NO];
         [defaultback setHidden:YES];
@@ -117,9 +120,13 @@
 - (BOOL)checkEmpty
 {
     if (CarNumString.length < 7) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车牌号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
         return YES;
     }
     if (ChassisNumString.length < 4){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车架号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
         return YES;
     }
     return NO;
@@ -130,10 +137,10 @@
 
 #pragma mark UITableViewDelegate
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    JDOViolationTableCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-//    return cell.height;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.height;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     

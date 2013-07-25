@@ -23,9 +23,9 @@
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
     
-    NSString *CarNumString;
-    NSString *CarTypeString;
-    NSString *ChassisNumString;
+    NSMutableString *CarNumString;
+    NSMutableString *CarTypeString;
+    NSMutableString *ChassisNumString;
     NSMutableArray *resultArray;
 }
 @property (nonatomic ,strong) NSMutableArray *listArray;
