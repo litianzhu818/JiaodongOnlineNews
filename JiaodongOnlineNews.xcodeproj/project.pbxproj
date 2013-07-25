@@ -553,6 +553,7 @@
 		D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
+		FF62176717A0943A0020A8A4 /* JDOCollectDB.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62176617A0943A0020A8A4 /* JDOCollectDB.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -1332,6 +1333,8 @@
 		FF1234C217631E5D00832AD2 /* JDOListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListViewController.m; sourceTree = "<group>"; };
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
 		FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageModel.m; sourceTree = "<group>"; };
+		FF62176517A0943A0020A8A4 /* JDOCollectDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JDOCollectDB.h; path = model/JDOCollectDB.h; sourceTree = "<group>"; };
+		FF62176617A0943A0020A8A4 /* JDOCollectDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JDOCollectDB.m; path = model/JDOCollectDB.m; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
 		FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAboutUsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1341,11 +1344,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D958590176E07F1009F5AE4 /* libsqlite3.dylib in Frameworks */,
 				2D0D6162178FAA5A00934CCD /* CoreText.framework in Frameworks */,
 				2DA3C4C5178E9B2F009817A6 /* libMobClickLibrary.a in Frameworks */,
 				A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */,
 				2D958592176E082E009F5AE4 /* CoreTelephony.framework in Frameworks */,
-				2D958590176E07F1009F5AE4 /* libsqlite3.dylib in Frameworks */,
 				2D95858E176E07D8009F5AE4 /* libstdc++.dylib in Frameworks */,
 				2D95858C176E07C7009F5AE4 /* libz.1.2.5.dylib in Frameworks */,
 				2D5409D9175DE62900718FFB /* libicucore.dylib in Frameworks */,
@@ -1450,6 +1453,8 @@
 				2D86D59317584E030000AA6A /* Models */,
 				2D8D44F9174DF21800786545 /* Views */,
 				2D01E67A1748D78300B81568 /* Utils */,
+				FF62176517A0943A0020A8A4 /* JDOCollectDB.h */,
+				FF62176617A0943A0020A8A4 /* JDOCollectDB.m */,
 			);
 			name = Classes;
 			path = JiaodongOnlineNews/Classes;
@@ -3234,6 +3239,7 @@
 				2D9F37C9179CD37800A9D6E0 /* TTFadeSwitch.m in Sources */,
 				2D9F37CC179D2ED100A9D6E0 /* UIResponder+KeyboardCache.m in Sources */,
 				2DBE84BA179D344700181141 /* iToast.m in Sources */,
+				FF62176717A0943A0020A8A4 /* JDOCollectDB.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
