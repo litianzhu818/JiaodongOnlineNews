@@ -29,7 +29,7 @@
             $("img[tapToLoad='true']").one("click", function(){
                 // 替换为加载提示图，并加载原图
                 $(this).attr('src' ,'loading.gif');		// 更换为加载效果gif
-                window.showimage.loadImage($(this).attr('realUrl'));
+                bridge.callHandler('loadImage',{'realUrl':this.attributes["realUrl"].nodeValue},function(response){});
                 $(this).click(clickImageEvent);
             });
             

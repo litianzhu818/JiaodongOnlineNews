@@ -21,6 +21,7 @@
 #import "SDImageCache.h"
 #import "JDORegxpUtil.h"
 #import "DCKeyValueObjectMapping.h"
+#import "JDOCommonUtil.h"
 
 #define Default_Image @"news_head_placeholder.png"
 
@@ -144,7 +145,11 @@ NSArray *imageUrls;
         NSLog(@"ObjC received message from JS: %@", data);
         responseCallback(@"Response for message from ObjC");
     }];
-    
+    [_bridge registerHandler:@"loadImage" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *realUrl = [(NSDictionary *)data valueForKey:@"realUrl"];
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        [manager downloadWithURL:realUrl delegate:self storeDelegate:self];
+    }];
     [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
         NSLog(@"showImageDetail js  imageId: %@", imageId);
@@ -206,7 +211,6 @@ NSArray *imageUrls;
 }
 
 # warning 需测试异步加载
-// 当下载完成后，调用回调方法，使下载的图片显示
 - (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary{
     NSString *html = [dictionary objectForKey:@"content"];
     
@@ -217,9 +221,11 @@ NSArray *imageUrls;
         //更改图片为占位图
         NSMutableString *replaceWithString = [[NSMutableString alloc] init];
         [replaceWithString appendString:Default_Image];
+        if ([JDOCommonUtil ifNoImage]) {
+            [replaceWithString appendString:@"\" tapToLoad=\"true"];
+        }
         [replaceWithString appendString:@"\" realUrl=\""];
         [replaceWithString appendString:realUrl];
-        [replaceWithString appendString:@"\""];
         html = [html stringByReplacingOccurrencesOfString:realUrl withString:replaceWithString];
     }
     NSMutableDictionary *newsDetail = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
@@ -249,6 +255,8 @@ NSArray *imageUrls;
     return true;
 }
 
+
+// 当下载完成并且保存成功后，调用回调方法，使下载的图片显示
 - (void)didFinishStoreForKey:(NSString *)key {
     NSLog(@"didFinishStoreForKey ");
     NSString *realUrl = key;
@@ -274,7 +282,11 @@ NSArray *imageUrls;
             if (cachedImage) {
                 [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
             } else {
-                [manager downloadWithURL:url delegate:self storeDelegate:self];
+                if ([JDOCommonUtil ifNoImage]) {//3g下，不下载图片
+                    [self callJsToRefreshWebview:realUrl andLocal:@"base_empty_view.png"];
+                } else {
+                    [manager downloadWithURL:url delegate:self storeDelegate:self];
+                }
             }
         }
     }
