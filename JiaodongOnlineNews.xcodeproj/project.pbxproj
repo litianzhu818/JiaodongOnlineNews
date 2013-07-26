@@ -41,6 +41,8 @@
 		2D29B276176065D300F116E4 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2D29B275176065D300F116E4 /* style.css */; };
 		2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D329AD41750A91100003EA2 /* JDOScrollView.m */; };
 		2D3C034C1794D8430050EA57 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D3C034B1794D8430050EA57 /* PopoverView.m */; };
+		2D43F8E517A266980048815C /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F8E417A266980048815C /* iRate.m */; };
+		2D43F8E617A273EC0048815C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D9D08E817A0AD8400AC1924 /* StoreKit.framework */; };
 		2D4C7A711781183300AA6280 /* JDOTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4C7A701781183300AA6280 /* JDOTopicViewController.m */; };
 		2D5409C4175DE5D300718FFB /* MGTemplateEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409BD175DE5D300718FFB /* MGTemplateEngine.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D5409C5175DE5D300718FFB /* MGTemplateStandardMarkers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409C1175DE5D300718FFB /* MGTemplateStandardMarkers.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -206,7 +208,6 @@
 		2D9C249A17938EB500EAB2E3 /* JDOQuestionReviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9C249917938EB500EAB2E3 /* JDOQuestionReviewController.m */; };
 		2D9C249F1793D2B200EAB2E3 /* JDOQuestionCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9C249E1793D2B200EAB2E3 /* JDOQuestionCommentModel.m */; };
 		2D9C24A21793D74E00EAB2E3 /* JDOArrayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9C24A11793D74E00EAB2E3 /* JDOArrayModel.m */; };
-		2D9D08E917A0AD8400AC1924 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D9D08E817A0AD8400AC1924 /* StoreKit.framework */; };
 		2D9D08EA17A0B09600AC1924 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D9D08EC17A0B09600AC1924 /* Localizable.strings */; };
 		2D9D08EF17A0B53400AC1924 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D08EE17A0B53400AC1924 /* iVersion.m */; };
 		2D9D81DA179047AF00E69B0E /* MBSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D81D9179047AF00E69B0E /* MBSwitch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -646,6 +647,8 @@
 		2D3C03491794D8430050EA57 /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
 		2D3C034A1794D8430050EA57 /* PopoverView_Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView_Configuration.h; sourceTree = "<group>"; };
 		2D3C034B1794D8430050EA57 /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
+		2D43F8E317A266980048815C /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
+		2D43F8E417A266980048815C /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		2D4C7A6F1781183300AA6280 /* JDOTopicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOTopicViewController.h; sourceTree = "<group>"; };
 		2D4C7A701781183300AA6280 /* JDOTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOTopicViewController.m; sourceTree = "<group>"; };
 		2D5409BC175DE5D300718FFB /* MGTemplateEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGTemplateEngine.h; sourceTree = "<group>"; };
@@ -1378,7 +1381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D9D08E917A0AD8400AC1924 /* StoreKit.framework in Frameworks */,
+				2D43F8E617A273EC0048815C /* StoreKit.framework in Frameworks */,
 				2D0D6162178FAA5A00934CCD /* CoreText.framework in Frameworks */,
 				2DA3C4C5178E9B2F009817A6 /* libMobClickLibrary.a in Frameworks */,
 				A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */,
@@ -1434,6 +1437,8 @@
 				2DBE84B9179D344700181141 /* iToast.m */,
 				2D9D08ED17A0B53400AC1924 /* iVersion.h */,
 				2D9D08EE17A0B53400AC1924 /* iVersion.m */,
+				2D43F8E317A266980048815C /* iRate.h */,
+				2D43F8E417A266980048815C /* iRate.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3316,6 +3321,7 @@
 				A7173D8C179FA8DD00AB2D43 /* WBStickyNoticeView.m in Sources */,
 				A7173D8D179FA8DD00AB2D43 /* WBSuccessNoticeView.m in Sources */,
 				2D9D08EF17A0B53400AC1924 /* iVersion.m in Sources */,
+				2D43F8E517A266980048815C /* iRate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

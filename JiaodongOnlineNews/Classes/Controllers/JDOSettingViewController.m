@@ -33,9 +33,11 @@
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) style:UITableViewStylePlain];
+    self.tableView.rowHeight = (App_Height-44.0f)/JDOSettingItemCount;
     self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.scrollEnabled = false;
     [self.view addSubview:self.tableView];
 }
 
@@ -197,15 +199,11 @@
 #warning 未实现离线下载
             break;
         case JDOSettingItemCheckVersion:
-            [SharedAppDelegate checkForNewVersion:sender];
+            [SharedAppDelegate checkForNewVersion];
             break;
         default:
             break;
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return (App_Height-44.0f)/JDOSettingItemCount;
 }
 
 //- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {

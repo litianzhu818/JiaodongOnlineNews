@@ -26,6 +26,7 @@
 #import "UIResponder+KeyboardCache.h"
 #import "iVersion.h"
 #import "SDImageCache.h"
+#import "iRate.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -237,7 +238,9 @@
 
 + (void)initialize{
 #warning 发布时替换bundleId,注释掉就可以
-    [iVersion sharedInstance].applicationBundleID = @"com.glavesoft.app.17lu";
+    NSString *bundleID = @"com.glavesoft.app.17lu";
+    [iVersion sharedInstance].applicationBundleID = bundleID;
+    [iRate sharedInstance].applicationBundleID = bundleID;
     
 //    [iVersion sharedInstance].applicationVersion = @"1.2.0.0"; // 覆盖bundle中的版本信息,测试用
     [iVersion sharedInstance].verboseLogging = false;   // 调试信息
@@ -249,11 +252,56 @@
     // 由于视图层级的原因,在程序内弹出appstore会被覆盖到下层导致看不到
     [iVersion sharedInstance].displayAppUsingStorekitIfAvailable = false;
 //    [iVersion sharedInstance].checkAtLaunch = NO;
+    
+    
+    [iRate sharedInstance].verboseLogging = false;
+    [iRate sharedInstance].appStoreCountry = @"CN";
+    [iRate sharedInstance].applicationName = @"胶东在线iPhone客户端";
+//    [iRate sharedInstance].daysUntilPrompt = 10;
+//    [iRate sharedInstance].usesUntilPrompt = 10;
+	[iRate sharedInstance].onlyPromptIfLatestVersion = false;
+    [iRate sharedInstance].displayAppUsingStorekitIfAvailable = false;
+    [iRate sharedInstance].promptAtLaunch = NO;
 }
+
+#pragma mark - 评价应用相关
+- (void)promptForRating{
+    if( ![Reachability isEnableNetwork]){
+        return;
+    }
+    [[iRate sharedInstance] promptIfNetworkAvailable];
+    HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+    [SharedAppDelegate.window addSubview:HUD];
+    HUD.margin = 15.f;
+    HUD.removeFromSuperViewOnHide = true;
+    HUD.labelText = @"连接AppStore";
+    [HUD show:true];
+}
+
+- (void)iRateCouldNotConnectToAppStore:(NSError *)error{
+#warning error图片
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    HUD.mode = MBProgressHUDModeCustomView;
+    HUD.labelText = @"无法连接";
+    [HUD hide:true afterDelay:1.0];
+    HUD = nil;
+}
+
+- (BOOL)iRateShouldPromptForRating{
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    HUD.mode = MBProgressHUDModeCustomView;
+    HUD.labelText = @"连接成功";
+    [HUD hide:true afterDelay:1.0];
+    HUD = nil;
+    [[iRate sharedInstance] performSelector:@selector(openRatingsPageInAppStore) withObject:nil afterDelay:1.0f];
+//    [[iRate sharedInstance] openRatingsPageInAppStore];
+    return false;
+}
+
 
 #pragma mark - 版本检查相关
 
-- (void)checkForNewVersion:(id)sender{
+- (void)checkForNewVersion{
     if( ![Reachability isEnableNetwork]){
         return;
     }
@@ -315,6 +363,16 @@
 
 - (BOOL)iVersionShouldDisplayNewVersion:(NSString *)version details:(NSString *)versionDetails{
 	return true;
+}
+
+// 不显示当前版本信息
+- (BOOL)iVersionShouldDisplayCurrentVersionDetails{
+    return false;  
+}
+
+// 延时执行防止在Splash和广告页时弹出版本提醒
+- (float) iVersionCheckUpdateDelayWhenLaunch{
+    return splash_stay_time+advertise_stay_time+splash_adv_fadetime;
 }
 
 #pragma mark - 分享相关
@@ -393,7 +451,7 @@
         authList = [NSMutableArray array];
     }
     
-    
+
     NSInteger plat = [[[notif userInfo] objectForKey:SSK_PLAT] integerValue];
     NSString *platName = [ShareSDK getClientNameWithType:plat];
     id<ISSUserInfo> userInfo = [[notif userInfo] objectForKey:SSK_USER_INFO];

@@ -230,13 +230,10 @@ typedef enum {
                 _shareAuthController = [[JDOShareAuthController alloc] init];
             }
             [self pushViewController:_shareAuthController];
+            [_shareAuthController updateAuth];
             break;
         case RightMenuItemRate:
-#warning 未实现
-            if( _aboutUsController == nil){
-                _aboutUsController = [[JDOAboutUsViewController alloc] init];
-            }
-            [self pushViewController:_aboutUsController];
+            [SharedAppDelegate promptForRating];
             break;
         default:
             break;

@@ -129,9 +129,11 @@
         ];
         
         shareViewDelegate = [[JDOShareViewDelegate alloc] initWithPresentView:nil backBlock:^{
-            [self authCompleted];
+//            [self.target writeReview];
+            // 立刻执行会造成输入框与键盘脱离，0.5是经过实验得到的比较合适的延时
+            [(NSObject *)self.target performSelector:@selector(writeReview) withObject:nil afterDelay:0.5];
         } completeBlock:^{
-            [self performSelector:@selector(authCompleted) withObject:nil afterDelay:0.15];
+            [(NSObject *)self.target performSelector:@selector(writeReview) withObject:nil afterDelay:0.5];
         }];
         
         // 在这里设置object参数无效,但在controller的viewDidLoad里可以,原因不明,暂时使用nil
@@ -149,10 +151,6 @@
 
 - (CGRect) initialFrame{
     return CGRectMake(0, App_Height, 320, Review_Text_Init_Height+Review_ShareBar_Height);
-}
-
-- (void) authCompleted{
-    [self.target writeReview];
 }
 
 - (NSArray *)selectedClients

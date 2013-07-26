@@ -308,8 +308,6 @@ static NSDateFormatter *dateFormatter;
     notice.alpha = 0.8;
     notice.slidingMode = slidingMode;
     [notice show];
-    
-    // NoticeView只能从上方弹出，更好的方案是使用TBHintView支持上下两个方向和多种动画
 }
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY{
