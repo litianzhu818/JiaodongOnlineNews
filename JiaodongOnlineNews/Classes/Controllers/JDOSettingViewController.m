@@ -93,13 +93,14 @@
         }
         case JDOSettingItemClearCache:{
             cell.textLabel.text = @"清除缓存";
-            float diskSize = [[SDImageCache sharedImageCache] getSize]/1000.0f;
+            float diskFileSize = [JDOCommonUtil getDiskCacheFileSize]/1000.0f;
             NSString *sizeUnit = @"K";
-            if (diskSize > 1000.0f) {
-                diskSize = diskSize/1000.0f;
+            if (diskFileSize > 1000.0f) {
+                diskFileSize = diskFileSize/1000.0f;
                 sizeUnit = @"M";
             }
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"清除缓存文件，目前缓存文件数量为%d，占用磁盘空间%.2f%@。",[[SDImageCache sharedImageCache] getDiskCount],diskSize,sizeUnit];
+            int diskFileCount = [JDOCommonUtil getDiskCacheFileCount];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"清除缓存文件，目前缓存文件数量为%d，占用磁盘空间%.2f%@。",diskFileCount,diskFileSize,sizeUnit];
             UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             clearButton.frame = CGRectMake(0, 0, 65, 27);
             clearButton.tag = JDOSettingItemClearCache;
@@ -173,10 +174,25 @@
 
 - (void)buttonClicked:(UIButton *)sender {
     switch (sender.tag) {
-        case JDOSettingItemClearCache:
-            [[SDImageCache sharedImageCache] clearDisk];
+        case JDOSettingItemClearCache:{
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+            [SharedAppDelegate.window addSubview:HUD];
+            HUD.labelText = @"正在清除缓存";
+            HUD.margin = 15.f;
+            HUD.removeFromSuperViewOnHide = true;
+            [HUD show:true];
+            [[SDImageCache sharedImageCache] clearDisk];    // 图片缓存
+            [JDOCommonUtil deleteJDOCacheDirectory];    // 文件缓存
+            [JDOCommonUtil createJDOCacheDirectory];
+            [JDOCommonUtil deleteURLCacheDirectory];    // URL在sqlite的缓存(cache.db)
+            HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+            HUD.mode = MBProgressHUDModeCustomView;
+            HUD.labelText = @"清除缓存完成";
+            [HUD hide:true afterDelay:1.0];
+            
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
+        }
         case JDOSettingItemDownload:
 #warning 未实现离线下载
             break;

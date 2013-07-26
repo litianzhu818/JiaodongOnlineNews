@@ -315,13 +315,13 @@
 
 // 保存列表内容至本地缓存文件
 - (void) saveListToLocalCache{
-    [NSKeyedArchiver archiveRootObject:self.headArray toFile:JDOGetCacheFilePath([@"NewsHeadCache" stringByAppendingString:self.info.reuseId])];
-    [NSKeyedArchiver archiveRootObject:self.listArray toFile:JDOGetCacheFilePath([@"NewsListCache" stringByAppendingString:self.info.reuseId])];
+    [NSKeyedArchiver archiveRootObject:self.headArray toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]];
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]];
 }
 
 - (BOOL) readListFromLocalCache{
-    self.headArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"NewsHeadCache" stringByAppendingString:self.info.reuseId])];
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"NewsListCache" stringByAppendingString:self.info.reuseId])];
+    self.headArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]];
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]];
     // 任何一个数组为空都任务本地缓存无效
     return self.headArray && self.listArray;
 }

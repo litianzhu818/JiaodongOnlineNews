@@ -27,7 +27,7 @@
     self.executing = YES;
     self.finished = NO;
 
-    __weak __typeof(&*self)weakSelf = self;
+    __typeof(&*self)weakSelf = self;
     self.noticeView.dismissalBlock = ^(BOOL dismissedInteractively) {
         [weakSelf willChangeValueForKey:@"isFinished"];
         [weakSelf willChangeValueForKey:@"isExecuting"];

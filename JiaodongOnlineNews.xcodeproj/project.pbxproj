@@ -537,8 +537,8 @@
 		A7173D86179FA8DD00AB2D43 /* WBBlueGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D73179FA8DD00AB2D43 /* WBBlueGradientView.m */; };
 		A7173D87179FA8DD00AB2D43 /* WBErrorNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D75179FA8DD00AB2D43 /* WBErrorNoticeView.m */; };
 		A7173D88179FA8DD00AB2D43 /* WBGrayGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D77179FA8DD00AB2D43 /* WBGrayGradientView.m */; };
-		A7173D89179FA8DD00AB2D43 /* WBNoticeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D79179FA8DD00AB2D43 /* WBNoticeOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A7173D8A179FA8DD00AB2D43 /* WBNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7C179FA8DD00AB2D43 /* WBNoticeView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A7173D89179FA8DD00AB2D43 /* WBNoticeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D79179FA8DD00AB2D43 /* WBNoticeOperation.m */; };
+		A7173D8A179FA8DD00AB2D43 /* WBNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7C179FA8DD00AB2D43 /* WBNoticeView.m */; };
 		A7173D8B179FA8DD00AB2D43 /* WBRedGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7E179FA8DD00AB2D43 /* WBRedGradientView.m */; };
 		A7173D8C179FA8DD00AB2D43 /* WBStickyNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D80179FA8DD00AB2D43 /* WBStickyNoticeView.m */; };
 		A7173D8D179FA8DD00AB2D43 /* WBSuccessNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D82179FA8DD00AB2D43 /* WBSuccessNoticeView.m */; };
@@ -961,7 +961,7 @@
 		2D9C24A01793D74E00EAB2E3 /* JDOArrayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOArrayModel.h; sourceTree = "<group>"; };
 		2D9C24A11793D74E00EAB2E3 /* JDOArrayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOArrayModel.m; sourceTree = "<group>"; };
 		2D9D08E817A0AD8400AC1924 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		2D9D08EB17A0B09600AC1924 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		2D9D08EB17A0B09600AC1924 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2D9D08ED17A0B53400AC1924 /* iVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iVersion.h; sourceTree = "<group>"; };
 		2D9D08EE17A0B53400AC1924 /* iVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iVersion.m; sourceTree = "<group>"; };
 		2D9D81D8179047AF00E69B0E /* MBSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBSwitch.h; sourceTree = "<group>"; };

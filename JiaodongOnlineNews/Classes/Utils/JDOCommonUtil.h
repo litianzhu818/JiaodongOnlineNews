@@ -41,6 +41,13 @@ typedef enum{
 + (NSURL *)libraryDirectoryURL;
 + (NSURL *)applicationSupportDirectoryURL;
 
++ (BOOL) createDiskDirectory:(NSString *)directoryPath;
++ (NSString *) createJDOCacheDirectory;
++ (void) deleteJDOCacheDirectory;
++ (void) deleteURLCacheDirectory;
++ (int) getDiskCacheFileCount;
++ (int) getDiskCacheFileSize;
+
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;

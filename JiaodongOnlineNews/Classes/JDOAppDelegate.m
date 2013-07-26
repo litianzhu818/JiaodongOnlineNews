@@ -139,8 +139,6 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     self.deckController = [self generateControllerStack];
     self.window.rootViewController = self.deckController;
-    // 测试单独的JDONewsViewController
-//    self.window.rootViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
     [advView removeFromSuperview];
 }
 
@@ -162,14 +160,18 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    // 创建磁盘缓存目录 /Library/caches/JDOCache
+    self.cachePath = [JDOCommonUtil createJDOCacheDirectory];
+    
+    // 标记检查更新的标志位(启动时标记为非手动检查)
     manualCheckUpdate = false;
     
+    // 注册ShareSDK相关服务
     [ShareSDK registerApp:@"4991b66e0ae"];
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
     [ShareSDK setInterfaceOrientationMask:SSInterfaceOrientationMaskPortrait];
     [self initializePlatform];
-    
     //监听用户信息变更
     [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
@@ -185,7 +187,7 @@
 //    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
 //    [NSURLCache setSharedURLCache:urlCache];
     
-    // 清空图片内存缓存
+    // 全局内存警告监听，清空图片内存缓存
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearImageCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     
     
@@ -208,8 +210,6 @@
     [self.window addSubview:splashView];
     
     [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
-    
-//    [self navigateToMainView];
     
     return YES;
 }
@@ -246,6 +246,7 @@
     [iVersion sharedInstance].remindPeriod = 1.0f;
     [iVersion sharedInstance].ignoreButtonLabel = @"忽略此版本";
     [iVersion sharedInstance].remindButtonLabel = @"以后提醒";
+    // 由于视图层级的原因,在程序内弹出appstore会被覆盖到下层导致看不到
     [iVersion sharedInstance].displayAppUsingStorekitIfAvailable = false;
 //    [iVersion sharedInstance].checkAtLaunch = NO;
 }

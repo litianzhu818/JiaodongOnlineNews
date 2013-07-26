@@ -12,6 +12,7 @@
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
 #import "Reachability.h"
+#import "SDImageCache.h"
 
 #define NUMBERS @"0123456789"
 
@@ -203,6 +204,80 @@ static NSDateFormatter *dateFormatter;
 	return [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+#pragma mark - 磁盘缓存相关
+
++ (BOOL) createDiskDirectory:(NSString *)directoryPath{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:directoryPath]){
+        NSError *error;
+        BOOL result = [fm createDirectoryAtPath:directoryPath withIntermediateDirectories:true attributes:nil error:&error];
+        if(result == false){
+            NSLog(@"创建缓存目录失败:%@",[error localizedDescription]);
+        }
+        return result;
+    }
+    return true;
+}
+
++ (NSString *) createJDOCacheDirectory{
+    NSString *diskCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *JDOCacheDirectory = [diskCachePath stringByAppendingPathComponent:@"JDOCache"];
+    BOOL success = [JDOCommonUtil createDiskDirectory:JDOCacheDirectory];
+    if ( success ) {
+        return JDOCacheDirectory;
+    }else{
+        return diskCachePath;
+    }
+}
+
++ (void) deleteJDOCacheDirectory{
+    NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
+    [[NSFileManager defaultManager] removeItemAtPath:JDOCachePath error:nil];
+}
+
++ (void) deleteURLCacheDirectory{
+    NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
+    [[NSFileManager defaultManager] removeItemAtPath:URLCachePath error:nil];
+}
+
++ (int) getDiskCacheFileCount{
+    int count = [[SDImageCache sharedImageCache] getDiskCount];
+    
+    NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
+    NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
+    
+    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:JDOCachePath];
+    for (NSString *fileName in fileEnumerator){
+        count += 1;
+    }
+    fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
+    for (NSString *fileName in fileEnumerator){
+        count += 1;
+    }
+    return count;
+}
+
++ (int) getDiskCacheFileSize{
+    int size = [[SDImageCache sharedImageCache] getSize];
+    
+    NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
+    NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
+    
+    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:JDOCachePath];
+    for (NSString *fileName in fileEnumerator){
+        NSString *filePath = [JDOCachePath stringByAppendingPathComponent:fileName];
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        size += [attrs fileSize];
+    }
+    fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
+    for (NSString *fileName in fileEnumerator){
+        NSString *filePath = [URLCachePath stringByAppendingPathComponent:fileName];
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        size += [attrs fileSize];
+    }
+    return size;
+}
+
 #pragma mark - 提示窗口
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view {
@@ -260,7 +335,7 @@ static NSDateFormatter *dateFormatter;
 
 + (BOOL) ifNoImage {
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    BOOL noImage = [[userDefault objectForKey:@"noImage"] isEqualToString:@"on"]?TRUE:FALSE;
+    BOOL noImage = [[userDefault objectForKey:@"JDO_No_Image"] boolValue];
     BOOL if3g = [Reachability isEnable3G];
     return  noImage && if3g;
 }
@@ -302,7 +377,7 @@ NSString* JDOGetTmpFilePath(NSString *fileName){
     return [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
 }
 NSString* JDOGetCacheFilePath(NSString *fileName){
-    return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
+    return [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
 }
 
 

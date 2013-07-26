@@ -56,7 +56,7 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
 
 #define SECONDS_IN_A_DAY 86400.0
 #define MAC_APP_STORE_REFRESH_DELAY 5.0
-#define REQUEST_TIMEOUT 60.0
+#define REQUEST_TIMEOUT 15.0
 
 
 @implementation NSString(iVersion)
