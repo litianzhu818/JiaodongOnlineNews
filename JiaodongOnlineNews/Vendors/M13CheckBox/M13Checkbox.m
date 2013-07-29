@@ -13,10 +13,10 @@
 
 #import "M13Checkbox.h"
 
-#define kBoxSize .9
-#define kCheckHorizontalExtention .1
-#define kCheckVerticalExtension .1
-#define kCheckBoxSpacing 0.3125
+#define kBoxSize .95
+#define kCheckHorizontalExtention .05
+#define kCheckVerticalExtension .05
+#define kCheckBoxSpacing 0.4
 #define kM13CheckboxMaxFontSize 100.0
 
 
@@ -105,7 +105,7 @@
         checkImage = [[CheckImageView alloc] initWithFrame:CGRectMake(self.frame.size.width - ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height)];
         checkImage.checkbox = self;
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkImage.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize)];
-        _titleLabel.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
+        _titleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
         _titleLabel.font = [UIFont systemFontOfSize:16];
         _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _titleLabel.backgroundColor = [UIColor clearColor];
@@ -160,8 +160,8 @@
         CGSize labelSize = [@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" sizeWithFont:font];
         tempHeight = labelSize.height;
     } while (tempHeight >= height);
-    
-    _titleLabel.font = [UIFont fontWithName:_titleLabel.font.fontName size:fontSize];
+    NSLog(@"%f", fontSize);
+    _titleLabel.font = [UIFont fontWithName:_titleLabel.font.fontName size:fontSize + 3];
 }
 
 - (void)autoFitWidthToText
@@ -206,15 +206,15 @@
 - (void)setEnabled:(BOOL)enabled
 {
     if (enabled) {
-        _titleLabel.textColor = labelColor;
+        _titleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
     } else {
-        labelColor = _titleLabel.textColor;
+        labelColor = [UIColor colorWithHex:Gray_Color_Type1];
         float r, g, b, a;
         [labelColor getRed:&r green:&g blue:&b alpha:&a];
         r = floorf(r * 100.0 + 0.5) / 100.0;
         g = floorf(g * 100.0 + 0.5) / 100.0;
         b = floorf(b * 100.0 + 0.5) / 100.0;
-        _titleLabel.textColor = [UIColor colorWithRed:(r + .4) green:(g + .4) blue:(b + .4) alpha:1];
+        _titleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
     }
     _enabled = enabled;
     [checkImage updateState];

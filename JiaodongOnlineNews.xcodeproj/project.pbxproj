@@ -549,6 +549,8 @@
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
 		D8A0C03717938777005A6307 /* JDOViolationTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A0C03617938777005A6307 /* JDOViolationTableCell.m */; };
 		D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */; };
+		D8A9BE5217A6087800F47D34 /* vio_lineshadow.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A9BE5117A6087800F47D34 /* vio_lineshadow.png */; };
+		D8A9BE5617A60FA700F47D34 /* vio_noresult.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A9BE5517A60FA600F47D34 /* vio_noresult.png */; };
 		D8E44FC61796448100132A8A /* JDOCarManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */; };
 		D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */; };
 		D8E96DA31797709800D5B267 /* JDOAddCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */; };
@@ -1338,6 +1340,8 @@
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
 		D8A0C03517938777005A6307 /* JDOViolationTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationTableCell.h; sourceTree = "<group>"; };
 		D8A0C03617938777005A6307 /* JDOViolationTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationTableCell.m; sourceTree = "<group>"; };
+		D8A9BE5117A6087800F47D34 /* vio_lineshadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_lineshadow.png; sourceTree = "<group>"; };
+		D8A9BE5517A60FA600F47D34 /* vio_noresult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_noresult.png; sourceTree = "<group>"; };
 		D8E44FC31796448100132A8A /* JDOCarManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarManagerViewController.h; sourceTree = "<group>"; };
 		D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCarManagerViewController.m; sourceTree = "<group>"; };
 		D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOCarManagerViewController.xib; sourceTree = "<group>"; };
@@ -2630,6 +2634,8 @@
 		D8E44FA8179641D800132A8A /* Violation */ = {
 			isa = PBXGroup;
 			children = (
+				D8A9BE5517A60FA600F47D34 /* vio_noresult.png */,
+				D8A9BE5117A6087800F47D34 /* vio_lineshadow.png */,
 				2DC49DD0179F9DB2008374F2 /* vio_btn_add_car.png */,
 				2DC49DD1179F9DB2008374F2 /* vio_btn_add_car@2x.png */,
 				2DC49DD2179F9DB2008374F2 /* vio_checkbox_selected.png */,
@@ -3063,6 +3069,8 @@
 				2DC49E2E179FA02D008374F2 /* icon02.png in Resources */,
 				2DC49E30179FA04F008374F2 /* img_set_flag.png in Resources */,
 				A7173D83179FA8DD00AB2D43 /* NoticeView.bundle in Resources */,
+				D8A9BE5217A6087800F47D34 /* vio_lineshadow.png in Resources */,
+				D8A9BE5617A60FA700F47D34 /* vio_noresult.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

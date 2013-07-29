@@ -35,29 +35,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [carnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
+    [cartypelabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
+    [chassisnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
+    [CarNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
+    [CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateNormal];
+    [CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateSelected];
+    [ChassisNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     resultArray = [[NSMutableArray alloc] init];
     
-    resultArray = [[NSMutableArray alloc] init];
-    [resultLabel setHidden:YES];
-    
-    checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:22];
+    checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:20];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox1.frame = CGRectMake(15, 144, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    checkBox1.frame = CGRectMake(10, 137, checkBox1.frame.size.width, checkBox1.frame.size.height);
     [tp addSubview:checkBox1];
     
-    checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:22];
+    checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:20];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox2.frame = CGRectMake(165, 144, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    checkBox2.frame = CGRectMake(165, 137, checkBox2.frame.size.width, checkBox2.frame.size.height);
     [tp addSubview:checkBox2];
     
     [tp setScrollEnabled:NO];
     
     [result setDataSource:self];
     [result setDelegate:self];
+    
     [result setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [result reloadData];
+    [result setHidden:YES];
+    [resultline setHidden:YES];
+    [resultline_shadow setHidden:YES];
+    [no_result_image setHidden:YES];
+    
+    
 }
 
 - (void)setupNavigationView
@@ -89,11 +99,11 @@
 
 - (IBAction)sendToServer:(id)sender
 {
+    save = checkBox1.isChecked;
+    receivepush = checkBox2.isChecked;
     CarNumString = [[NSMutableString alloc] initWithString:CarNum.text];
     ChassisNumString = [[NSMutableString alloc] initWithString:ChassisNum.text];
     if (!self.checkEmpty) {
-        [resultLabel setHidden:NO];
-        [defaultback setHidden:YES];
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
         [params setValue:CarNumString forKey:@"hphm"];
         [params setValue:CarTypeString forKey:@"cartype"];
@@ -102,14 +112,22 @@
         [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
                 NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
+                [defaultback setHidden:YES];
+                [resultline_shadow setHidden:NO];
+                [resultline setHidden:NO];
                 if (datas.count > 0) {
-                    [resultArray removeAllObjects];
+                    
+                    [result setHidden:NO];
+                    //[resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
                     [result reloadData];
+                } else if (datas.count == 0) {
+                    [no_result_image setHidden:NO];
                 }
             } else {
                 NSLog(@"wrongParams");
             }
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
@@ -165,8 +183,11 @@
         [cell setData:temp];
         return cell;
     }
-    return nil;
+    return [[UITableViewCell alloc] init];
 }
+    
+
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSLog(@"COUNT:%d", resultArray.count);
