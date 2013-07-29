@@ -250,6 +250,22 @@
                   qqApiCls:(Class)qqApiCls;
 
 /**
+ *	@brief	连接QQ应用以使用相关功能，此应用需要引用QQConnection.framework和TencentOAuthAPI.framework库
+ *          http://connect.qq.com上注册应用，并将相关信息填写到以下字段,
+ *          可以调用此接口来使QQ空间中申请的AppKey用于QQ好友分享
+ *
+ *  @since  ver2.2.4
+ *
+ *	@param 	qzoneAppKey 	QQ空间App标识
+ *	@param 	qqApiInterfaceCls 	QQAPI接口类型
+ *	@param 	tencentOAuthCls 	腾讯OAuth类型
+ */
++ (void)connectQQWithQZoneAppKey:(NSString *)qzoneAppKey
+               qqApiInterfaceCls:(Class)qqApiInterfaceCls
+                 tencentOAuthCls:(Class)tencentOAuthCls;
+
+
+/**
  *	@brief	连接微信应用以使用相关功能，此应用需要引用WeChatConnection.framework和微信官方SDK
  *          http://open.weixin.qq.com上注册应用，并将相关信息填写以下字段
  *
@@ -608,7 +624,7 @@
  *
  *	@return	用户信息字段
  */
-+ (id<ISSUserField>)userFieldWithType:(SSUserFieldType)type valeu:(NSString *)value;
++ (id<ISSUserField>)userFieldWithType:(SSUserFieldType)type value:(NSString *)value;
 
 /**
  *	@brief	显示顶部状态栏显示消息,此消息会一直显示，直到调用hideStatusbarMessage为止
@@ -903,6 +919,25 @@
               result:(SSPublishContentEventHandler)result;
 
 /**
+ *	@brief	分享内容
+ *
+ *  @since  ver2.2.5
+ *
+ *	@param 	content 	内容对象
+ *	@param 	type 	平台类型
+ *	@param 	authOptions 	授权选项，用于指定接口在需要授权时的一些属性（如：是否自动授权，授权视图样式等）,设置未nil则表示采用默认选项
+ *  @param  shareOptions    分享选项，用于定义分享视图部分属性（如：标题、一键分享列表、功能按钮等）,默认可传入nil
+ *  @param  statusBarTips   状态栏提示
+ *	@param 	result 	返回事件
+ */
++ (void)shareContent:(id<ISSContent>)content
+                type:(ShareType)type
+         authOptions:(id<ISSAuthOptions>)authOptions
+        shareOptions:(id<ISSShareOptions>)shareOptions
+       statusBarTips:(BOOL)statusBarTips
+              result:(SSPublishContentEventHandler)result;
+
+/**
  *	@brief	一键分享内容
  *
  *	@param 	content 	内容对象
@@ -914,6 +949,24 @@
 + (void)oneKeyShareContent:(id<ISSContent>)content
                  shareList:(NSArray *)shareList
                authOptions:(id<ISSAuthOptions>)authOptions
+             statusBarTips:(BOOL)statusBarTips
+                    result:(SSPublishContentEventHandler)result;
+
+/**
+ *	@brief	一键分享内容
+ *
+ *  @since  ver2.2.5
+ *
+ *	@param 	content 	内容对象
+ *	@param 	shareList 	平台类型列表（邮件、短信、微信、QQ、打印、拷贝除外）
+ *	@param 	authOptions 	授权选项，用于指定接口在需要授权时的一些属性（如：是否自动授权，授权视图样式等）,设置未nil则表示采用默认选项
+ *  @param  statusBarTips   状态栏提示
+ *	@param 	result 	返回事件
+ */
++ (void)oneKeyShareContent:(id<ISSContent>)content
+                 shareList:(NSArray *)shareList
+               authOptions:(id<ISSAuthOptions>)authOptions
+              shareOptions:(id<ISSShareOptions>)shareOptions
              statusBarTips:(BOOL)statusBarTips
                     result:(SSPublishContentEventHandler)result;
 

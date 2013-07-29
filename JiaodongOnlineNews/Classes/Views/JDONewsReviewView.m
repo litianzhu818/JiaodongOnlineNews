@@ -26,7 +26,7 @@
 
 @property (strong, nonatomic) CMHTableView *tableView;
 @property (strong, nonatomic) UILabel *textLabel;
-@property (strong, nonatomic) NSArray *oneKeyShareListArray;
+@property (strong, nonatomic) NSMutableArray *shareTypeArray;
 
 @end
 
@@ -116,20 +116,11 @@
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
         [self addSubview:_tableView];
         
-#warning 是否自动选中已经获得权限的项目?
-        _oneKeyShareListArray =  @[
-            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
-            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
-            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeQQSpace),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
-            [@{@"type":SHARE_TYPE_NUMBER(ShareType163Weibo),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
-            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeSohuWeibo),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
-            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeRenren),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
-            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeKaixin),@"selected":[NSNumber numberWithBool:NO]}mutableCopy],
-            [@{@"type":SHARE_TYPE_NUMBER(ShareTypeDouBan),@"selected":[NSNumber numberWithBool:NO]}mutableCopy]
-        ];
+        _shareTypeArray = [JDOCommonUtil getAuthList];
         
         shareViewDelegate = [[JDOShareViewDelegate alloc] initWithPresentView:nil backBlock:^{
 //            [self.target writeReview];
+#warning 偶尔会在返回评论界面时，无法关闭输入界面(点blackMask部分没有反应)
             // 立刻执行会造成输入框与键盘脱离，0.5是经过实验得到的比较合适的延时
             [(NSObject *)self.target performSelector:@selector(writeReview) withObject:nil afterDelay:0.5];
         } completeBlock:^{
@@ -157,9 +148,9 @@
 {
     NSMutableArray *clients = [NSMutableArray array];
     
-    for (int i = 0; i < [_oneKeyShareListArray count]; i++)
+    for (int i = 0; i < [_shareTypeArray count]; i++)
     {
-        NSDictionary *item = [_oneKeyShareListArray objectAtIndex:i];
+        NSDictionary *item = [_shareTypeArray objectAtIndex:i];
         if ([[item objectForKey:@"selected"] boolValue])
         {
             [clients addObject:[item objectForKey:@"type"]];
@@ -173,7 +164,7 @@
 
 - (NSInteger)itemNumberOfTableView:(CMHTableView *)tableView
 {
-    return [_oneKeyShareListArray count];
+    return [_shareTypeArray count];
 }
 
 - (UIView<ICMHTableViewItem> *)tableView:(CMHTableView *)tableView itemForIndexPath:(NSIndexPath *)indexPath
@@ -182,24 +173,28 @@
     AGCustomShareItemView *itemView = (AGCustomShareItemView *)[tableView dequeueReusableItemWithIdentifier:reuseId];
     if (itemView == nil){
         itemView = [[AGCustomShareItemView alloc] initWithReuseIdentifier:reuseId clickHandler:^(NSIndexPath *indexPath) {
-            if (indexPath.row < [_oneKeyShareListArray count]){
+            if (indexPath.row < [_shareTypeArray count]){
                 
-                NSMutableDictionary *item = [_oneKeyShareListArray objectAtIndex:indexPath.row];
+                NSMutableDictionary *item = [_shareTypeArray objectAtIndex:indexPath.row];
                 ShareType shareType = [[item objectForKey:@"type"] integerValue];
               
                 if ([ShareSDK hasAuthorizedWithType:shareType]){
                     BOOL selected = ! [[item objectForKey:@"selected"] boolValue];
                     [item setObject:[NSNumber numberWithBool:selected] forKey:@"selected"];
+                    // 保留选中的分享项目到文件中
+                    [_shareTypeArray writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
                     [_tableView reloadData];
                 }else{
-                    [self.target hideReviewView];
+                    [self.target hideReviewView];   // 进入绑定界面,绑定完成后重新显示键盘
                     id<ISSAuthOptions> authOptions = JDOGetOauthOptions(shareViewDelegate);
                   
-                    [ShareSDK authWithType:shareType options:authOptions result:^(SSAuthState state, id<ICMErrorInfo> error) {
-                        if (state == SSAuthStateSuccess){
+                    [ShareSDK getUserInfoWithType:shareType authOptions:authOptions result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
+                        if (result){
+                            [item setObject:[userInfo nickname] forKey:@"username"];
                             [item setObject:[NSNumber numberWithBool:YES] forKey:@"selected"];
+                            [_shareTypeArray writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
                             [_tableView reloadData];
-                        }else if(state == SSAuthStateFail){
+                        }else{
                             if ([error errorCode] != -103){
                                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
                                 [alertView show];
@@ -211,11 +206,12 @@
         }];
     }
     
-    if (indexPath.row < [_oneKeyShareListArray count]){
-        NSDictionary *item = [_oneKeyShareListArray objectAtIndex:indexPath.row];
+    if (indexPath.row < [_shareTypeArray count]){
+        NSDictionary *item = [_shareTypeArray objectAtIndex:indexPath.row];
         UIImage *icon = [ShareSDK getClientIconWithType:[[item objectForKey:@"type"] integerValue]];
         itemView.iconImageView.image = icon;
         
+#warning 可以根据未授权,已授权未选中,已选中区分为三种状态表示
         if ([[item objectForKey:@"selected"] boolValue]){
             itemView.iconImageView.alpha = 1;
         }else{

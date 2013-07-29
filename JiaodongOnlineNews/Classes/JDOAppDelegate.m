@@ -171,10 +171,12 @@
     [ShareSDK registerApp:@"4991b66e0ae"];
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
+#warning 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
+    [ShareSDK ssoEnabled:false];    // 禁用SSO
     [ShareSDK setInterfaceOrientationMask:SSInterfaceOrientationMaskPortrait];
     [self initializePlatform];
     //监听用户信息变更
-    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
+//    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
     //友盟统计
     [MobClick startWithAppkey:@"51de0ed156240bd3fb01d54c"];
@@ -397,8 +399,8 @@
      如果需要实现SSO，需要导入TencentOpenAPI.framework,并引入QQApiInterface.h和TencentOAuth.h，将QQApiInterface和TencentOAuth的类型传入接口
      **/
     // 应用管理账户383926109
-    [ShareSDK connectQZoneWithAppKey:@"100467475"
-                           appSecret:@"0cf7ac7fc2a78ffd3a63234f3b15846a"
+    [ShareSDK connectQZoneWithAppKey:@"100497289"
+                           appSecret:@"3373fc627de22237a075dd1a0b4757e2"
                    qqApiInterfaceCls:[QQApiInterface class]
                      tencentOAuthCls:[TencentOAuth class]];
 
@@ -445,37 +447,23 @@
     [ShareSDK connectWeChatWithAppId:@"wx1b4314c4cfb4239b" wechatCls:[WXApi class]];
 }
 
-- (void)userInfoUpdateHandler:(NSNotification *)notif{
-    NSMutableArray *authList = [NSMutableArray arrayWithContentsOfFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()]];
-    if (authList == nil){
-        authList = [NSMutableArray array];
-    }
-    
-
-    NSInteger plat = [[[notif userInfo] objectForKey:SSK_PLAT] integerValue];
-    NSString *platName = [ShareSDK getClientNameWithType:plat];
-    id<ISSUserInfo> userInfo = [[notif userInfo] objectForKey:SSK_USER_INFO];
-    
-    BOOL hasExists = NO;
-    for (int i = 0; i < [authList count]; i++)
-    {
-        NSMutableDictionary *item = [authList objectAtIndex:i];
-        ShareType type = [[item objectForKey:@"type"] integerValue];
-        if (type == plat)
-        {
-            [item setObject:[userInfo nickname] forKey:@"username"];
-            hasExists = YES;
-            break;
-        }
-    }
-    
-    if (!hasExists){
-        NSDictionary *newItem = @{@"title":platName,@"type":[NSNumber numberWithInteger:plat],@"username":[userInfo nickname]};
-        [authList addObject:newItem];
-    }
-    
-    [authList writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
-}
+//- (void)userInfoUpdateHandler:(NSNotification *)notif{
+//    NSMutableArray *authList = [JDOCommonUtil getAuthList];
+//
+//    NSInteger plat = [[[notif userInfo] objectForKey:SSK_PLAT] integerValue];
+//    id<ISSUserInfo> userInfo = [[notif userInfo] objectForKey:SSK_USER_INFO];
+//    
+//    for (int i = 0; i < [authList count]; i++){
+//        NSMutableDictionary *item = [authList objectAtIndex:i];
+//        ShareType type = [[item objectForKey:@"type"] integerValue];
+//        if (type == plat){
+//            [item setObject:[userInfo nickname] forKey:@"username"];
+//            [item setObject:[NSNumber numberWithBool:true] forKey:@"selected"];
+//            break;
+//        }
+//    }
+//    [authList writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
+//}
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     return [ShareSDK handleOpenURL:url wxDelegate:self];

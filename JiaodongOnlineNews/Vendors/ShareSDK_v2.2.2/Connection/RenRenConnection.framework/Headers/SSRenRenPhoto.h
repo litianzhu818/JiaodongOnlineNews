@@ -9,56 +9,52 @@
 
 #import <Foundation/Foundation.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
+#import <ShareSDKCoreService/SSCDataObject.h>
 
 /**
  *	@brief	照片信息
  */
-@interface SSRenRenPhoto : NSObject <NSCoding,
-                                     ISSCDataObject>
-{
-@private
-    NSMutableDictionary *_sourceData;
-}
-
-/**
- *	@brief	源数据
- */
-@property (nonatomic,retain) NSDictionary *sourceData;
+@interface SSRenRenPhoto : SSCDataObject
 
 /**
  *	@brief	照片的ID
  */
-@property (nonatomic,readonly) long long pid;
+@property (nonatomic,readonly) long long Id;
 
 /**
- *	@brief	照片所在相册的ID
+ *	@brief	照片所属相册的ID
  */
-@property (nonatomic,readonly) long long aid;
+@property (nonatomic,readonly) long long albumId;
 
 /**
- *	@brief	照片的所有者用户ID
+ *	@brief	照片所有者的ID
  */
-@property (nonatomic,readonly) long long uid;
+@property (nonatomic,readonly) long long ownerId;
 
 /**
- *	@brief	照片路径，宽度固定为100，长度按实际比例，相册列表中的大小
+ *	@brief	照片的描述
  */
-@property (nonatomic,readonly) NSString *src;
+@property (nonatomic,readonly) NSString *description;
 
 /**
- *	@brief	小图路径，宽度固定为200，长度按实际比例，封面大小
+ *	@brief	照片对应的各种类型图片
  */
-@property (nonatomic,readonly) NSString *srcSmall;
+@property (nonatomic,readonly) NSArray *images;
 
 /**
- *	@brief	大图路径，最大为720*720，正常相片
+ *	@brief	照片的创建时间
  */
-@property (nonatomic,readonly) NSString *srcBig;
+@property (nonatomic,readonly) NSString *createTime;
 
 /**
- *	@brief	照片的描述信息
+ *	@brief	照片被浏览的次数
  */
-@property (nonatomic,readonly) NSString *caption;
+@property (nonatomic,readonly) NSInteger viewCount;
+
+/**
+ *	@brief	照片被回复的次数
+ */
+@property (nonatomic,readonly) NSInteger commentCount;
 
 /**
  *	@brief	创建照片信息

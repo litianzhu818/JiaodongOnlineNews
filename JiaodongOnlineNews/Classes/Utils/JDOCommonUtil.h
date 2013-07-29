@@ -56,6 +56,9 @@ typedef enum{
 
 + (BOOL)ifNoImage;
 
++ (NSMutableArray *)getShareTypes;
++ (NSMutableArray *)getAuthList;
+
 @end
 
 BOOL JDOIsEmptyString(NSString *string);
@@ -66,6 +69,7 @@ BOOL JDOIsVisiable(UIView *view);
 NSString* JDOGetHomeFilePath(NSString *fileName);
 NSString* JDOGetTmpFilePath(NSString *fileName);
 NSString* JDOGetCacheFilePath(NSString *fileName);
+NSString* JDOGetDocumentFilePath(NSString *fileName);
 NSString* JDOGetUUID();
 
 id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate);

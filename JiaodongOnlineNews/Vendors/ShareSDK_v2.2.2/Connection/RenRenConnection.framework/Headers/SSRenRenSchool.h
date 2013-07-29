@@ -9,44 +9,52 @@
 
 #import <Foundation/Foundation.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
+#import <ShareSDKCoreService/SSCDataObject.h>
 
 /**
  *	@brief	大学信息
  */
-@interface SSRenRenUniversityInfo : NSObject <NSCoding,
-                                              ISSCDataObject>
-{
-@private
-    NSMutableDictionary *_sourceData;
-}
+@interface SSRenRenSchool : SSCDataObject
 
 /**
- *	@brief	源数据
- */
-@property (nonatomic,retain) NSDictionary *sourceData;
-
-/**
- *	@brief	名称
+ *	@brief	学校名称
  */
 @property (nonatomic,readonly) NSString *name;
 
 /**
- *	@brief	年份
+ *	@brief	入学日期
  */
 @property (nonatomic,readonly) NSString *year;
 
 /**
- *	@brief	部门
+ *	@brief	所在专业
  */
 @property (nonatomic,readonly) NSString *department;
 
 /**
- *	@brief	创建大学信息
+ *	@brief	学历
+ *  DOCTOR      博士
+ *  COLLEGE     本科
+ *  GVY         校工
+ *  PRIMARY     小学
+ *  OTHER       其他
+ *  TEACHER     教师
+ *  MASTER      硕士
+ *  HIGHSCHOOL	高中
+ *  TECHNICAL	中专技校
+ *  JUNIOR      初中
+ *  SECRET      保密
+ */
+@property (nonatomic,readonly) NSString *educationBackground;
+
+
+/**
+ *	@brief	创建学校信息
  *
  *	@param 	response 	回复数据
  *
- *	@return	大学信息
+ *	@return	学校信息
  */
-+ (SSRenRenUniversityInfo *)universityInfoWithResponse:(NSDictionary *)response;
++ (SSRenRenSchool *)schoolWithResponse:(NSDictionary *)response;
 
 @end

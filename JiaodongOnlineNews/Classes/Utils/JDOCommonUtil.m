@@ -338,6 +338,33 @@ static NSDateFormatter *dateFormatter;
     return  noImage && if3g;
 }
 
++ (NSMutableArray *)getShareTypes{
+    static NSMutableArray *shareTypeArray = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shareTypeArray = [[NSMutableArray alloc] initWithObjects:
+                           [@{@"title":@"新浪微博",@"type":[NSNumber numberWithInteger:ShareTypeSinaWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"腾讯微博",@"type":[NSNumber numberWithInteger:ShareTypeTencentWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"QQ空间",@"type":[NSNumber numberWithInteger:ShareTypeQQSpace],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"人人网",@"type":[NSNumber numberWithInteger:ShareTypeRenren],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"网易微博",@"type":[NSNumber numberWithInteger:ShareType163Weibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"搜狐微博",@"type":[NSNumber numberWithInteger:ShareTypeSohuWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"开心网",@"type":[NSNumber numberWithInteger:ShareTypeKaixin],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"豆瓣社区",@"type":[NSNumber numberWithInteger:ShareTypeDouBan],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           nil];
+    });
+    return shareTypeArray;
+}
+
++ (NSMutableArray *) getAuthList{
+    NSMutableArray *authList = [NSMutableArray arrayWithContentsOfFile:JDOGetDocumentFilePath(@"authListCache.plist")];
+    if (authList == nil){
+        [[self getShareTypes] writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
+        authList = [self getShareTypes];
+    }
+    return authList;
+}
+
 @end
 
 BOOL JDOIsEmptyString(NSString *string) {
@@ -377,6 +404,9 @@ NSString* JDOGetTmpFilePath(NSString *fileName){
 NSString* JDOGetCacheFilePath(NSString *fileName){
     return [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
 }
+NSString* JDOGetDocumentFilePath(NSString *fileName){
+    return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
+}
 
 
 NSString* JDOGetUUID(){
@@ -412,8 +442,9 @@ id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){
                                                           viewDelegate:_delegate
                                                authManagerViewDelegate:_delegate];
     //在授权页面中添加关注官方微博
+#warning 修改官方微博地址
     [authOptions setFollowAccounts:@{
-        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"naiyi1984"],
-        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"intotherainzy"]}];
+        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"naiyi1984"],
+        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"intotherainzy"]}];
     return authOptions;
 }

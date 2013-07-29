@@ -9,41 +9,35 @@
 
 #import <Foundation/Foundation.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
+#import <ShareSDKCoreService/SSCDataObject.h>
+#import "SSRenRenIndustry.h"
+#import "SSRenRenJob.h"
 
 /**
- *	@brief	工作信息
+ *	@brief	工作
  */
-@interface SSRenRenWorkInfo : NSObject <NSCoding,
-                                        ISSCDataObject>
-{
-@private
-    NSMutableDictionary *_sourceData;
-}
+@interface SSRenRenWork : SSCDataObject
 
 /**
- *	@brief	源数据
+ *	@brief	公司名称
  */
-@property (nonatomic,retain) NSDictionary *sourceData;
+@property (nonatomic,readonly) NSString *name;
 
 /**
- *	@brief	表示所在公司
+ *	@brief	入职日期
  */
-@property (nonatomic,readonly) NSString *companyName;
+@property (nonatomic,readonly) NSString *time;
 
 /**
- *	@brief	表示工作描述
+ *	@brief	行业
  */
-@property (nonatomic,readonly) NSString *workDescription;
+@property (nonatomic,readonly) SSRenRenIndustry *industry;
 
 /**
- *	@brief	表示入职时间
+ *	@brief	职位
  */
-@property (nonatomic,readonly) NSString *startDate;
+@property (nonatomic,readonly) SSRenRenJob *job;
 
-/**
- *	@brief	表示离职时间
- */
-@property (nonatomic,readonly) NSString *endDate;
 
 /**
  *	@brief	创建工作信息
@@ -52,6 +46,6 @@
  *
  *	@return	工作信息
  */
-+ (SSRenRenWorkInfo *)workInfoWithResponse:(NSDictionary *)response;
++ (SSRenRenWork *)workWithResponse:(NSDictionary *)response;
 
 @end

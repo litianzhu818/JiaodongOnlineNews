@@ -104,7 +104,7 @@
     }else{  // 从网络加载数据，切换到loading状态
         [self setCurrentState:ViewStatusLoading];
     }
-    
+    self.currentPage = 1;
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
         if(dataList == nil){
             isLoadFinised = true;   // 数据加载完成

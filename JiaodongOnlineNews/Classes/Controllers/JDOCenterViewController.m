@@ -292,6 +292,9 @@
 
     if (viewDeckSide == IIViewDeckLeftSide){
         [(JDOLeftViewController *)viewDeckController.leftController transitionToAlpha:Max_Alpah Scale:Min_Scale];
+        // 每次打开左侧边栏都刷新天气
+        [(JDOLeftViewController *)viewDeckController.leftController updateWeather];
+        [(JDOLeftViewController *)viewDeckController.leftController updateCalendar];
     }else if (viewDeckSide == IIViewDeckRightSide){
         [(JDORightViewController *)viewDeckController.rightController transitionToAlpha:Max_Alpah Scale:Min_Scale];
     }
