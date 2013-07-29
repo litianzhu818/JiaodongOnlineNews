@@ -24,6 +24,8 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "MobClick.h"
 #import "UIResponder+KeyboardCache.h"
+#import "iVersion.h"
+#import "SDImageCache.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -34,12 +36,14 @@
 #define advertise_img_width 320
 #define advertise_img_height App_Height
 
-@implementation JDOAppDelegate
-
+@implementation JDOAppDelegate{
     Reachability  *hostReach;
     UIImage *advImage;
     UIImageView *splashView;
-    UIImageView *advView; 
+    UIImageView *advView;
+    BOOL manualCheckUpdate;
+    MBProgressHUD *HUD;
+}
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
     
@@ -158,6 +162,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    manualCheckUpdate = false;
     
     [ShareSDK registerApp:@"4991b66e0ae"];
     [ShareSDK convertUrlEnabled:NO];
@@ -179,6 +184,10 @@
     // 开启内存与磁盘缓存
 //    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
 //    [NSURLCache setSharedURLCache:urlCache];
+    
+    // 清空图片内存缓存
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearImageCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    
     
 #warning 测试广告位图片效果,暂时关闭异步网络加载，Defalut图片去掉上面的状态栏(图片问题)
 //    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
@@ -205,23 +214,109 @@
     return YES;
 }
 
+- (void)clearImageCache{
+    [[SDImageCache sharedImageCache] clearMemory];
+}
+
 - (void)reachabilityChanged:(NSNotification *)note {
     Reachability* curReach = [note object];
     NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
     NetworkStatus status = [curReach currentReachabilityStatus];
     
     if (status == NotReachable) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"My App Name"
-                                                        message:@"NotReachable"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"YES" otherButtonTitles:nil];
-        [alert show];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"失去网络链接"
+//                                                        message:@"请检查您的网络"
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//        [alert show];
     } else {//有网络
-        NSLog(@"has net");
         JDOLeftViewController *leftController = (JDOLeftViewController *)[[SharedAppDelegate deckController] leftController];
         [leftController updateWeather];
     }
 }
+
++ (void)initialize{
+#warning 发布时替换bundleId,注释掉就可以
+    [iVersion sharedInstance].applicationBundleID = @"com.glavesoft.app.17lu";
+    
+//    [iVersion sharedInstance].applicationVersion = @"1.2.0.0"; // 覆盖bundle中的版本信息,测试用
+    [iVersion sharedInstance].verboseLogging = false;   // 调试信息
+    [iVersion sharedInstance].appStoreCountry = @"CN";
+    [iVersion sharedInstance].showOnFirstLaunch = false; // 不显示当前版本特性
+    [iVersion sharedInstance].remindPeriod = 1.0f;
+    [iVersion sharedInstance].ignoreButtonLabel = @"忽略此版本";
+    [iVersion sharedInstance].remindButtonLabel = @"以后提醒";
+    [iVersion sharedInstance].displayAppUsingStorekitIfAvailable = false;
+//    [iVersion sharedInstance].checkAtLaunch = NO;
+}
+
+#pragma mark - 版本检查相关
+
+- (void)checkForNewVersion:(id)sender{
+    if( ![Reachability isEnableNetwork]){
+        return;
+    }
+    manualCheckUpdate = true;
+    [iVersion sharedInstance].ignoredVersion = nil;
+    [iVersion sharedInstance].ignoreButtonLabel = @"暂不更新";
+    [iVersion sharedInstance].remindButtonLabel = @"";
+	[[iVersion sharedInstance] checkForNewVersion];
+    HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+    [SharedAppDelegate.window addSubview:HUD];
+    HUD.labelText = @"正在检查更新";
+    HUD.margin = 15.f;
+    HUD.removeFromSuperViewOnHide = true;
+    [HUD show:true];
+}
+
+- (void)iVersionUserDidIgnoreUpdate:(NSString *)version{
+    // 将手动检查更新中的“暂不更新”替换为原来的
+    if (manualCheckUpdate) {
+        [iVersion sharedInstance].ignoredVersion = nil;
+        [iVersion sharedInstance].remindButtonLabel = @"以后提醒";
+        [iVersion sharedInstance].ignoreButtonLabel = @"忽略此版本";
+    }
+}
+
+- (void)iVersionVersionCheckDidFailWithError:(NSError *)error{
+    if(manualCheckUpdate){
+#warning error图片
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"检查更新错误";
+        [HUD hide:true afterDelay:1.0];
+        HUD = nil;
+    }else{
+        NSLog(@"检查新版本错误:%@",error);
+    }
+}
+
+- (void)iVersionDidNotDetectNewVersion{
+    if(manualCheckUpdate){
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"已是最新版本";
+        [HUD hide:true afterDelay:1.0];
+        HUD = nil;
+    }else{
+        NSLog(@"没有新版本");
+    }
+}
+
+- (void)iVersionDidDetectNewVersion:(NSString *)version details:(NSString *)versionDetails{
+    if(manualCheckUpdate){
+        [HUD hide:true];
+        HUD = nil;
+    }else{
+        NSLog(@"找到新版本:%@,%@",version,versionDetails);
+    }
+}
+
+- (BOOL)iVersionShouldDisplayNewVersion:(NSString *)version details:(NSString *)versionDetails{
+	return true;
+}
+
+#pragma mark - 分享相关
 
 - (void)initializePlatform{
     // http://open.weibo.com上注册新浪微博开放平台应用，并将相关信息填写到以下字段
@@ -347,6 +442,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    manualCheckUpdate = false;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
