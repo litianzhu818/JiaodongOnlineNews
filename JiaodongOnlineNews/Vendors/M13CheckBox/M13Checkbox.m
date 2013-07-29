@@ -161,7 +161,7 @@
         tempHeight = labelSize.height;
     } while (tempHeight >= height);
     NSLog(@"%f", fontSize);
-    _titleLabel.font = [UIFont fontWithName:_titleLabel.font.fontName size:fontSize + 3];
+    _titleLabel.font = [UIFont fontWithName:_titleLabel.font.fontName size:fontSize + 2];
 }
 
 - (void)autoFitWidthToText

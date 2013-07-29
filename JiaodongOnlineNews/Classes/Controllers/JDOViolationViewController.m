@@ -46,14 +46,14 @@
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     resultArray = [[NSMutableArray alloc] init];
     
-    checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:20];
+    checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:18];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox1.frame = CGRectMake(10, 137, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    checkBox1.frame = CGRectMake(10, 145, checkBox1.frame.size.width, checkBox1.frame.size.height);
     [tp addSubview:checkBox1];
     
-    checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:20];
+    checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:18];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox2.frame = CGRectMake(165, 137, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    checkBox2.frame = CGRectMake(165, 145, checkBox2.frame.size.width, checkBox2.frame.size.height);
     [tp addSubview:checkBox2];
     
     [tp setScrollEnabled:NO];
@@ -67,7 +67,15 @@
     [resultline_shadow setHidden:YES];
     [no_result_image setHidden:YES];
     
-    
+    UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 294, 45)];
+    [header setImage:[UIImage imageNamed:@"vio_result_label"]];
+    UILabel *resultlabel = [[UILabel alloc] initWithFrame:CGRectMake(106, 12, 90, 20)];
+    [resultlabel setText:@"查询结果"];
+    [resultlabel setTextColor:[UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:1.0]];
+    [resultlabel setFont:[UIFont systemFontOfSize:20.0]];
+    [resultlabel setBackgroundColor:[UIColor clearColor]];
+    [header addSubview:resultlabel];
+    [result setTableHeaderView:header];
 }
 
 - (void)setupNavigationView
@@ -109,6 +117,11 @@
         [params setValue:CarTypeString forKey:@"cartype"];
         [params setValue:ChassisNumString forKey:@"vin"];
         
+        [result setHidden:YES];
+        [resultline setHidden:YES];
+        [resultline_shadow setHidden:YES];
+        [no_result_image setHidden:YES];
+        
         [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
                 NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
@@ -116,7 +129,6 @@
                 [resultline_shadow setHidden:NO];
                 [resultline setHidden:NO];
                 if (datas.count > 0) {
-                    
                     [result setHidden:NO];
                     //[resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
@@ -181,12 +193,18 @@
         }
         NSDictionary *temp = [resultArray objectAtIndex:indexPath.row];
         [cell setData:temp];
+        if (indexPath.row == resultArray.count - 1) {
+            [cell setSeparator:[UIImage imageNamed:@"vio_line_wavy"]];
+        } else {
+            [cell setSeparator:nil];
+        }
+        UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
+        cell.selectedBackgroundView = backView;
+        cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
         return cell;
     }
     return [[UITableViewCell alloc] init];
 }
-    
-
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
