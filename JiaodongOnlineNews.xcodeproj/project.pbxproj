@@ -531,16 +531,6 @@
 		2DE932071772E3E500A87ACC /* 中雨@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E71772E3E500A87ACC /* 中雨@2x.png */; };
 		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
 		A7173D83179FA8DD00AB2D43 /* NoticeView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A7173D6D179FA8DD00AB2D43 /* NoticeView.bundle */; };
-		A7173D84179FA8DD00AB2D43 /* NSOperationQueue+WBNoticeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D6F179FA8DD00AB2D43 /* NSOperationQueue+WBNoticeExtensions.m */; };
-		A7173D85179FA8DD00AB2D43 /* UILabel+WBExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D71179FA8DD00AB2D43 /* UILabel+WBExtensions.m */; };
-		A7173D86179FA8DD00AB2D43 /* WBBlueGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D73179FA8DD00AB2D43 /* WBBlueGradientView.m */; };
-		A7173D87179FA8DD00AB2D43 /* WBErrorNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D75179FA8DD00AB2D43 /* WBErrorNoticeView.m */; };
-		A7173D88179FA8DD00AB2D43 /* WBGrayGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D77179FA8DD00AB2D43 /* WBGrayGradientView.m */; };
-		A7173D89179FA8DD00AB2D43 /* WBNoticeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D79179FA8DD00AB2D43 /* WBNoticeOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A7173D8A179FA8DD00AB2D43 /* WBNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7C179FA8DD00AB2D43 /* WBNoticeView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A7173D8B179FA8DD00AB2D43 /* WBRedGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7E179FA8DD00AB2D43 /* WBRedGradientView.m */; };
-		A7173D8C179FA8DD00AB2D43 /* WBStickyNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D80179FA8DD00AB2D43 /* WBStickyNoticeView.m */; };
-		A7173D8D179FA8DD00AB2D43 /* WBSuccessNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D82179FA8DD00AB2D43 /* WBSuccessNoticeView.m */; };
 		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
 		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
