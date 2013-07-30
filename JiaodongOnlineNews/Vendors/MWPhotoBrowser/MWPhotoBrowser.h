@@ -38,7 +38,7 @@
 @property (nonatomic,strong) JDOToolBar *toolbar;
 @property (nonatomic,assign) BOOL showToolbar;
 @property (nonatomic,strong) MWCaptionView *captionView;
-@property (nonatomic)id <MWPhotoBrowserDelegate> _delegate;
+@property (nonatomic,strong)id <MWPhotoBrowserDelegate> _delegate;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated

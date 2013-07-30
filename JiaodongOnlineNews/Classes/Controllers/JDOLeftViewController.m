@@ -204,7 +204,9 @@
             weatherIcon.image = weatherImg;
         }else{  // xx转xx的情况,用前者的天气图标
             NSString *firstWeather = [[_forcast.weatherDetail componentsSeparatedByString:@"转"] objectAtIndex:0];
-            weatherImg = [UIImage imageNamed:[firstWeather stringByAppendingPathExtension:@"png"] ];
+            //xx到xx的情况，使用后者的天气图标
+            NSString *secondWeather = [[firstWeather componentsSeparatedByString:@"到"] objectAtIndex:1];
+            weatherImg = [UIImage imageNamed:[secondWeather stringByAppendingPathExtension:@"png"] ];
             if( weatherImg ){   // 没有对应的天气图标则使用默认.png
                 weatherIcon.image = weatherImg;
             }
