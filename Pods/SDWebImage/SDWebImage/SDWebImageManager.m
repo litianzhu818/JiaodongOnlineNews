@@ -105,6 +105,11 @@ static SDWebImageManager *instance;
     [self downloadWithURL:url delegate:delegate options:0];
 }
 
+- (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate options:(SDWebImageOptions)options userInfo:(NSDictionary *)info
+{
+    [self downloadWithURL:url delegate:delegate options:options userInfo:info storeDelegate:nil];
+}
+
 - (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate storeDelegate:(id<SDWebImageStoreDelegate>) storeDelegate
 {
     [self downloadWithURL:url delegate:delegate options:0 userInfo:nil storeDelegate:storeDelegate];

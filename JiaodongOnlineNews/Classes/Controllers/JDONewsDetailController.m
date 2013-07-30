@@ -147,14 +147,12 @@ NSArray *imageUrls;
     }];
     [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
-        NSLog(@"showImageDetail js  imageId: %@", imageId);
         NSMutableArray *array = [[NSMutableArray alloc] init];
         JDOImageModel *imageModel = [[JDOImageModel alloc] init];
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
-            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:localUrl andContent:self.newsModel.title];
-            [imageDetail setIsLocalUrl:true];
+            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title];
             [array addObject:imageDetail];
         }
         
@@ -169,7 +167,7 @@ NSArray *imageUrls;
     [_bridge registerHandler:@"loadImage" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *realUrl = [(NSDictionary *)data valueForKey:@"realUrl"];
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        [manager downloadWithURL:realUrl delegate:self storeDelegate:self];
+        [manager downloadWithURL:[NSURL URLWithString:realUrl] delegate:self storeDelegate:self];
     }];
     [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
@@ -228,7 +226,6 @@ NSArray *imageUrls;
         [replaceWithString appendString:@"\" realUrl=\""];
         [replaceWithString appendString:realUrl];
         html = [html stringByReplacingOccurrencesOfString:realUrl withString:replaceWithString];
-        NSLog(@"%@", html);
     }
     NSMutableDictionary *newsDetail = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
     [newsDetail setObject:html forKey:@"content"];
@@ -259,7 +256,6 @@ NSArray *imageUrls;
 
 // 当下载完成并且保存成功后，调用回调方法，使下载的图片显示
 - (void)didFinishStoreForKey:(NSString *)key {
-    NSLog(@"didFinishStoreForKey ");
     NSString *realUrl = key;
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
@@ -273,8 +269,6 @@ NSArray *imageUrls;
     [self setCurrentState:ViewStatusNormal];
     //webview加载完成，再开始异步加载图片
     if(imageUrls) {
-        //NSLog(@"webview finished");
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *realUrl = [imageUrls objectAtIndex:i];
             NSURL *url = [NSURL URLWithString:realUrl];
@@ -286,6 +280,7 @@ NSArray *imageUrls;
                 if ([JDOCommonUtil ifNoImage]) {//3g下，不下载图片
                     [self callJsToRefreshWebview:realUrl andLocal:@"base_empty_view.png"];
                 } else {
+                    SDWebImageManager *manager = [SDWebImageManager sharedManager];
                     [manager downloadWithURL:url delegate:self storeDelegate:self];
                 }
             }

@@ -154,8 +154,7 @@ NSArray *imageUrls;
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
-            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:localUrl andContent:self.topicModel.title];
-            [imageDetail setIsLocalUrl:true];
+            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.topicModel.title];
             [array addObject:imageDetail];
         }
         
@@ -170,7 +169,7 @@ NSArray *imageUrls;
     [_bridge registerHandler:@"loadImage" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *realUrl = [(NSDictionary *)data valueForKey:@"realUrl"];
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        [manager downloadWithURL:realUrl delegate:self storeDelegate:self];
+        [manager downloadWithURL:[NSURL URLWithString:realUrl] delegate:self storeDelegate:self];
     }];
 }
 
@@ -262,8 +261,6 @@ NSArray *imageUrls;
     [self setCurrentState:ViewStatusNormal];
     //webview加载完成，再开始异步加载图片
     if(imageUrls) {
-        //NSLog(@"webview finished");
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *realUrl = [imageUrls objectAtIndex:i];
             NSURL *url = [NSURL URLWithString:realUrl];
@@ -275,6 +272,7 @@ NSArray *imageUrls;
                 if ([JDOCommonUtil ifNoImage]) {//3g下，不下载图片
                     [self callJsToRefreshWebview:realUrl andLocal:@"base_empty_view.png"];
                 } else {
+                    SDWebImageManager *manager = [SDWebImageManager sharedManager];
                     [manager downloadWithURL:url delegate:self storeDelegate:self];
                 }
             }
