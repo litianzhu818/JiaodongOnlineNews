@@ -43,6 +43,20 @@
     [self.contentView addSubview:checkBox];
     
     self.frame = CGRectMake(0, 0, 320, checkBox.frame.size.height + 10);
+    [self setSeparator:nil];
+}
+
+- (void)setSeparator:(UIImage *)separator
+{
+    if (separator != nil) {
+        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 1, 320, 1)];
+        [imageseparator setImage:separator];
+        [self.contentView addSubview:imageseparator];
+    } else {
+        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 1, 320, 1)];
+        [imageseparator setImage:[UIImage imageNamed:@"vio_line2"]];
+        [self.contentView addSubview:imageseparator];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

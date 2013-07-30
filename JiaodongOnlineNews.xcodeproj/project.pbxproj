@@ -556,6 +556,7 @@
 		D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */; };
 		D8E96DA31797709800D5B267 /* JDOAddCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */; };
 		D8E96DA41797709800D5B267 /* JDOAddCarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */; };
+		D8EC8A0D17A73FC90007C887 /* vio_head_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
 		D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */; };
@@ -1351,6 +1352,7 @@
 		D8E96DA01797709800D5B267 /* JDOAddCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAddCarViewController.h; sourceTree = "<group>"; };
 		D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAddCarViewController.m; sourceTree = "<group>"; };
 		D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOAddCarViewController.xib; sourceTree = "<group>"; };
+		D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_head_btn.png; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLifeKnowledgeViewController.h; sourceTree = "<group>"; };
@@ -2642,6 +2644,7 @@
 		D8E44FA8179641D800132A8A /* Violation */ = {
 			isa = PBXGroup;
 			children = (
+				D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */,
 				D86423DF17A66B130075B221 /* vio_line_wavy.png */,
 				D86423DD17A6657D0075B221 /* vio_textfield_back.png */,
 				D86423DB17A651810075B221 /* vio_result_background.png */,
@@ -3076,6 +3079,7 @@
 				D86423DC17A651810075B221 /* vio_result_background.png in Resources */,
 				D86423DE17A6657E0075B221 /* vio_textfield_back.png in Resources */,
 				D86423E017A66B130075B221 /* vio_line_wavy.png in Resources */,
+				D8EC8A0D17A73FC90007C887 /* vio_head_btn.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

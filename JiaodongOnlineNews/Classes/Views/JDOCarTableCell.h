@@ -17,5 +17,6 @@
 }
 
 - (void)setData:(NSDictionary *)data;
+- (void)setSeparator:(UIImage *)separator;
 
 @end

@@ -81,7 +81,7 @@
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [self.navigationView addRightButtonImage:@"vio_head_btn_share" highlightImage:@"vio_head_btn_share" target:self action:@selector(onRightBtnClick)];
+    [self.navigationView addRightButtonImage:@"vio_head_btn" highlightImage:@"vio_head_btn" target:self action:@selector(onRightBtnClick)];
     [self.navigationView setTitle:@"违章查询"];
 }
 

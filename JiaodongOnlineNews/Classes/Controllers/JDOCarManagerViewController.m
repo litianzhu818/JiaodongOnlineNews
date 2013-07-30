@@ -47,6 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.listview setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.listview setDelegate:self];
     [self.listview setDataSource:self];
     [self.listview reloadData];
