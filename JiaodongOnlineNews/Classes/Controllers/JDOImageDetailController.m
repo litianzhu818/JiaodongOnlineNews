@@ -93,7 +93,7 @@
 
 - (void) backToViewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    if(self.imageDetails) {//返回新闻详情
+    if(self.fromNewsDetail) {//返回新闻详情
         [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:1] animated:true];
     } else {
         [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];

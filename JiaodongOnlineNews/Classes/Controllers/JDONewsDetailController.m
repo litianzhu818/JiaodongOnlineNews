@@ -148,15 +148,14 @@ NSArray *imageUrls;
     [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
         NSMutableArray *array = [[NSMutableArray alloc] init];
-        JDOImageModel *imageModel = [[JDOImageModel alloc] init];
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
             JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title];
             [array addObject:imageDetail];
         }
-        
-        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:nil];
+        detailController.fromNewsDetail = TRUE;
         detailController.imageIndex = [imageId integerValue];
         detailController.imageDetails = array;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
@@ -171,7 +170,13 @@ NSArray *imageUrls;
     }];
     [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
+        JDOImageModel *imageModel = [[JDOImageModel alloc] init];
+        imageModel.id = linkId;
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
+        detailController.fromNewsDetail = TRUE;
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         // 通过pushViewController 显示图集视图
+        [centerController pushViewController:detailController animated:true];
         responseCallback(linkId);
     }];
 }
