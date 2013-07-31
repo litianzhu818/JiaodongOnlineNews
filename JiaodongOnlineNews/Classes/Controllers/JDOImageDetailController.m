@@ -318,8 +318,12 @@
     if ([[_photos objectAtIndex:i] isImageHolder]) {
         MWPhoto *photo;
         JDOImageDetailModel *detailModel = [imageDataList objectAtIndex:i];
-        
-        NSString *realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl];
+        NSString *realUrl;
+        if ([detailModel.imageurl hasPrefix:SERVER_URL]) {
+            realUrl = detailModel.imageurl;
+        } else {
+            realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl]; 
+        }
         photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
         photo.title = self.imageModel.title;
         photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
