@@ -165,8 +165,14 @@ NSArray *imageUrls;
     }];
     [_bridge registerHandler:@"loadImage" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *realUrl = [(NSDictionary *)data valueForKey:@"realUrl"];
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        [manager downloadWithURL:[NSURL URLWithString:realUrl] delegate:self storeDelegate:self];
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        UIImage *cachedImage = [imageCache imageFromKey:realUrl fromDisk:YES]; // 将需要缓存的图片加载进来
+        if (cachedImage) {
+            [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
+        } else {
+            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            [manager downloadWithURL:[NSURL URLWithString:realUrl] delegate:self storeDelegate:self];
+        }
     }];
     [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
