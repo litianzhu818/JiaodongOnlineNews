@@ -110,11 +110,12 @@
 }
 
 - (void) saveListToLocalCache{
-    [NSKeyedArchiver archiveRootObject:self.listArray toFile:JDOGetCacheFilePath(@"TopicListCache")];
+    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"JDOCache/TopicListCache"];
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:cacheFilePath];
 }
 
 - (BOOL) readListFromLocalCache{
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath(@"TopicListCache")];
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:@"TopicListCache"])];
     // 任何一个数组为空都任务本地缓存无效
     return TRUE && self.listArray;
 }

@@ -42,6 +42,7 @@ typedef enum{
 + (NSURL *)applicationSupportDirectoryURL;
 
 + (BOOL) createDiskDirectory:(NSString *)directoryPath;
++ (NSString *) createDetailCacheDirectory:(NSString *)cachePathName;
 + (NSString *) createJDOCacheDirectory;
 + (void) deleteJDOCacheDirectory;
 + (void) deleteURLCacheDirectory;

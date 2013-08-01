@@ -20,6 +20,44 @@
     return _sharedEngine;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        self.id = [aDecoder decodeObjectForKey:@"id"];
+        self.title = [aDecoder decodeObjectForKey:@"title"];
+        self.subtitle = [aDecoder decodeObjectForKey:@"subtitle"];
+        self.summary = [aDecoder decodeObjectForKey:@"summary"];
+        self.source = [aDecoder decodeObjectForKey:@"source"];
+        self.content = [aDecoder decodeObjectForKey:@"content"];
+        self.author = [aDecoder decodeObjectForKey:@"author"];
+        self.commentCount = [aDecoder decodeObjectForKey:@"commentCount"];
+        self.mpic = [aDecoder decodeObjectForKey:@"mpic"];
+        self.channelid = [aDecoder decodeObjectForKey:@"channelid"];
+        self.addtime = [aDecoder decodeObjectForKey:@"addtime"];
+        self.clicknum = [aDecoder decodeObjectForKey:@"clicknum"];
+        self.relates = [aDecoder decodeObjectForKey:@"relates"];
+        self.tinyurl = [aDecoder decodeObjectForKey:@"tinyurl"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.id forKey:@"id"];
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.subtitle forKey:@"subtitle"];
+    [aCoder encodeObject:self.summary forKey:@"summary"];
+    [aCoder encodeObject:self.source forKey:@"source"];
+    [aCoder encodeObject:self.content forKey:@"content"];
+    [aCoder encodeObject:self.author forKey:@"author"];
+    [aCoder encodeObject:self.commentCount forKey:@"commentCount"];
+    [aCoder encodeObject:self.mpic forKey:@"mpic"];
+    [aCoder encodeObject:self.channelid forKey:@"channelid"];
+    [aCoder encodeObject:self.murl forKey:@"murl"];
+    [aCoder encodeObject:self.addtime forKey:@"addtime"];
+    [aCoder encodeObject:self.clicknum forKey:@"clicknum"];
+    [aCoder encodeObject:self.relates forKey:@"relates"];
+    [aCoder encodeObject:self.tinyurl forKey:@"tinyurl"];
+}
+
 + (NSString *) mergeToHTMLTemplateFromDictionary:(NSDictionary *)dictionary{
     MGTemplateEngine *engine = [[self class] sharedTemplateEngine];
     [engine setMatcher:[ICUTemplateMatcher matcherWithTemplateEngine:engine]];

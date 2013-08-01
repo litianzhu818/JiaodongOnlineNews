@@ -11,6 +11,34 @@
 
 @implementation JDOTopicDetailModel
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        self.id = [aDecoder decodeObjectForKey:@"id"];
+        self.title = [aDecoder decodeObjectForKey:@"title"];
+        self.date = [aDecoder decodeObjectForKey:@"date"];
+        self.issue = [aDecoder decodeObjectForKey:@"issue"];
+        self.content = [aDecoder decodeObjectForKey:@"content"];
+        self.points = [aDecoder decodeObjectForKey:@"points"];
+        self.drawno = [aDecoder decodeObjectForKey:@"drawno"];
+        self.voteCounts = [aDecoder decodeObjectForKey:@"voteCounts"];
+        self.tinyurl = [aDecoder decodeObjectForKey:@"tinyurl"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.id forKey:@"id"];
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.date forKey:@"date"];
+    [aCoder encodeObject:self.issue forKey:@"issue"];
+    [aCoder encodeObject:self.content forKey:@"content"];
+    [aCoder encodeObject:self.points forKey:@"points"];
+    [aCoder encodeObject:self.drawno forKey:@"drawno"];
+    [aCoder encodeObject:self.voteCounts forKey:@"voteCounts"];
+    [aCoder encodeObject:self.tinyurl forKey:@"tinyurl"];
+}
+
+
 + (MGTemplateEngine *) sharedTemplateEngine{
     static MGTemplateEngine *_sharedEngine = nil;
     static dispatch_once_t onceToken;

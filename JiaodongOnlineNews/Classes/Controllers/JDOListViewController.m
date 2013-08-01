@@ -186,14 +186,15 @@
 
 // 保存列表内容至本地缓存文件
 - (void) saveListToLocalCache{
-    [NSKeyedArchiver archiveRootObject:self.listArray toFile:JDOGetCacheFilePath(self.cacheFileName)];
+    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:self.cacheFileName];
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:cacheFilePath];
 }
 
 - (BOOL) readListFromLocalCache{
     if (!self.isCacheToMemory) {
         return FALSE;
     }
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath(self.cacheFileName)];
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:self.cacheFileName])];
     // 任何一个数组为空都任务本地缓存无效
     return TRUE && self.listArray;
 }

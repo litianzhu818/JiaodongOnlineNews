@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MGTemplateEngine.h"
 
-@interface JDONewsDetailModel : NSObject <MGTemplateEngineDelegate>
+@interface JDONewsDetailModel : NSObject <NSCoding, MGTemplateEngineDelegate>
 
 @property (nonatomic,copy) NSString *id;
 @property (nonatomic,copy) NSString *title;
