@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSString *cachePath;
 
 - (IIViewDeckController *)generateControllerStack;
+- (void)enterMainView;
 - (void)checkForNewVersion;
 - (void)promptForRating;
 

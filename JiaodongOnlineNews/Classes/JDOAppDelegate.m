@@ -27,6 +27,7 @@
 #import "iVersion.h"
 #import "SDImageCache.h"
 #import "iRate.h"
+#import "JDOGuideViewController.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -136,11 +137,23 @@
 }
 
 - (void)navigateToMainView{
+    [advView removeFromSuperview];
+    self.deckController = [self generateControllerStack];
+    
+    // 若第一次登陆，则进入新手引导页面
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    if([userDefault objectForKey:@"JDO_Guide"] == nil){
+        JDOGuideViewController *guideController = [[JDOGuideViewController alloc] init];
+        self.window.rootViewController = guideController;
+    }else{
+        [self enterMainView];
+    }
+}
+
+- (void)enterMainView{
     [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationNone];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-    self.deckController = [self generateControllerStack];
     self.window.rootViewController = self.deckController;
-    [advView removeFromSuperview];
 }
 
 - (IIViewDeckController *)generateControllerStack {
