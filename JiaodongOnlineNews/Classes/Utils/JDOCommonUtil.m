@@ -333,7 +333,7 @@ static NSDateFormatter *dateFormatter;
 
 + (BOOL) ifNoImage {
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    BOOL noImage = [userDefault boolForKey:@"JDO_No_Image"];
+    BOOL noImage = [[userDefault objectForKey:@"JDO_No_Image"] boolValue];
     BOOL if3g = [Reachability isEnable3G];
     return  noImage && if3g;
 }
