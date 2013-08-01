@@ -59,11 +59,16 @@
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
 
-    self.image = placeholder;
-
-    if (url && !noImage)
-    {
-        [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
+    
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    UIImage *cachedImage = [imageCache imageFromKey:[url absoluteString] fromDisk:YES]; // 将需要缓存的图片加载进来
+    if (cachedImage) {//有缓存，就先使用缓存
+        self.image = cachedImage;
+    } else {
+        self.image = placeholder;
+        if (url && !noImage) {
+            [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
+        }
     }
 }
 #endif

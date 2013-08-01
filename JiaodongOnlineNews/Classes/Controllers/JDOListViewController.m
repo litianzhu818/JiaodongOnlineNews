@@ -88,7 +88,19 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    [self loadDataFromNetwork];
+    BOOL hasCache = [self readListFromLocalCache];
+    if(hasCache) {
+        [self setCurrentState:ViewStatusNormal];
+        // 设置上次刷新时间
+        double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Image_Update_Time];
+        if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
+            [self loadDataFromNetwork];
+        }
+        [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
+    } else {
+        self.listArray = [[NSMutableArray alloc] initWithCapacity:Default_Page_Size];
+        [self loadDataFromNetwork];
+    }
 }
 
 - (void)viewDidUnload{
@@ -159,7 +171,10 @@
     [self.listArray addObjectsFromArray:dataList];
 //    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadData];
-    [self updateLastRefreshTime];
+    [self updateLastRefreshTimeWithDate:[NSDate date]];
+    if (self.isCacheToMemory) {
+        [self saveListToLocalCache];
+    }
     if( dataList.count<self.pageSize ){
         [self.tableView.infiniteScrollingView setEnabled:false];
         [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = false;
@@ -169,10 +184,32 @@
     }
 }
 
-- (void) updateLastRefreshTime{
-    self.lastUpdateTime = [NSDate date];
+// 保存列表内容至本地缓存文件
+- (void) saveListToLocalCache{
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:JDOGetCacheFilePath(self.cacheFileName)];
+}
+
+- (BOOL) readListFromLocalCache{
+    if (!self.isCacheToMemory) {
+        return FALSE;
+    }
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath(self.cacheFileName)];
+    // 任何一个数组为空都任务本地缓存无效
+    return TRUE && self.listArray;
+}
+
+- (void) setIsCacheToMemory:(BOOL)isCacheToMemory andCacheFileName:(NSString *)cacheFileName {
+    self.cacheFileName = cacheFileName;
+    self.isCacheToMemory = isCacheToMemory;
+}
+
+- (void) updateLastRefreshTimeWithDate:(NSDate *)lastUpdateTime{
+    self.lastUpdateTime = lastUpdateTime;
     NSString *updateTimeStr = [JDOCommonUtil formatDate:self.lastUpdateTime withFormatter:DateFormatYMDHM];
     [self.tableView.pullToRefreshView setSubtitle:[NSString stringWithFormat:@"上次刷新于:%@",updateTimeStr] forState:SVPullToRefreshStateAll];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setDouble:[self.lastUpdateTime timeIntervalSince1970] forKey:Image_Update_Time];
+    [userDefaults synchronize];
 }
 
 - (void) loadMore{

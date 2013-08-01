@@ -29,7 +29,7 @@
     [params setObject:@ImageList_Page_Size forKey:@"pageSize"];
     self = [super initWithServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" title:@"精选图片" params:params needRefreshControl:true];
     if(self){
-        
+        [self setIsCacheToMemory:TRUE andCacheFileName:@"ImageListCache"];
     }
     return self;
 }
