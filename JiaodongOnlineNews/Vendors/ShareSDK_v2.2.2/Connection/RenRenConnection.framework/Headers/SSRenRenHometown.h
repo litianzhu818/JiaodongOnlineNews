@@ -9,26 +9,12 @@
 
 #import <Foundation/Foundation.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
+#import <ShareSDKCoreService/SSCDataObject.h>
 
 /**
  *	@brief	家乡信息
  */
-@interface SSRenRenHometown : NSObject <NSCoding,
-                                        ISSCDataObject>
-{
-@private
-    NSMutableDictionary *_sourceData;
-}
-
-/**
- *	@brief	源数据
- */
-@property (nonatomic,retain) NSDictionary *sourceData;
-
-/**
- *	@brief	表示所在国家
- */
-@property (nonatomic,readonly) NSString *country;
+@interface SSRenRenHometown : SSCDataObject
 
 /**
  *	@brief	表示所在省份

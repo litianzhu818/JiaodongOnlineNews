@@ -26,11 +26,12 @@
     self.leftBtn = [self getButtonWithFrame:CGRectMake(0, 0, 44, 44) image:image highlightImage:highlightImage];
     [self addSubview:self.leftBtn];
     
-    // 有按钮有才增加分割线
-    UIImageView *separatorLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
-    separatorLine.frame = CGRectMake(44, 1, 1, 42);
-    [self addSubview:separatorLine];
-    
+    // 有按钮有才增加分割线,为了简便目前通过图片名判断,最好再加一个标志字段
+    if(![image isEqualToString:@"top_navigation_back_black"]){
+        UIImageView *separatorLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
+        separatorLine.frame = CGRectMake(44, 1, 1, 42);
+        [self addSubview:separatorLine];
+    }
 }
 - (void) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
     if(self.rightBtn ){

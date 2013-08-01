@@ -16,4 +16,12 @@
     }
     return self;
 }
+- (id) initWithUrl:(NSString *) imageUrl andLocalUrl:(NSString *)localUrl andContent:(NSString *)imageContent {
+    if(self = [super init]){
+        self.localUrl = localUrl;
+        self.imagecontent = imageContent;
+        self.imageurl = imageUrl;
+    }
+    return self;
+}
 @end

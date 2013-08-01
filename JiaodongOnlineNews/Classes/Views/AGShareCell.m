@@ -18,8 +18,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self)
     {
-        // Initialization code
         self.textLabel.backgroundColor = [UIColor clearColor];
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -32,6 +32,7 @@
     
     self.imageView.frame = CGRectMake(vg, vg, IMAGE_SIZE, IMAGE_SIZE);
     self.textLabel.frame = CGRectMake(self.imageView.left + self.imageView.width + vg, self.textLabel.top, self.textLabel.width, self.textLabel.height);
+    self.detailTextLabel.frame = CGRectMake(self.imageView.left + self.imageView.width + vg, self.detailTextLabel.top, self.detailTextLabel.width, self.detailTextLabel.height);
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "JDOImageCell.h"
 #import "JDOImageModel.h"
 #import "SSLineView.h"
+#import "JDOCommonUtil.h"
 
 #define Default_Image @"news_head_placeholder.png"
 
@@ -93,7 +94,7 @@
 
 - (void)setModel:(JDOImageModel *)imageModel{
     __block UIImageView *blockImageView = self.imageView;
-    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:imageModel.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:imageModel.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         if(!cached){    // 非缓存加载时使用渐变动画
             CATransition *transition = [CATransition animation];
             transition.duration = 0.3;

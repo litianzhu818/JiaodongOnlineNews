@@ -10,4 +10,6 @@
 
 @interface JDOShareAuthController : JDONavigationController <UITableViewDataSource, UITableViewDelegate>
 
+- (void) updateAuth;
+
 @end

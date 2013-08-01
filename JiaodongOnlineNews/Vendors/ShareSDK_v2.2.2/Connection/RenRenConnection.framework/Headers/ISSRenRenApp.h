@@ -154,12 +154,12 @@ SSRenRenRequestMethod;
  *	@brief	上传照片
  *
  *	@param 	file 	文件
- *	@param 	caption 	照片描述
- *	@param 	aid 	相册ID，如果为0,则上传至默认相册
+ *	@param 	description 	照片描述。不能超过200个字符
+ *	@param 	albumId 	相册ID,albumId省略时会上传到应用相册
  */
 - (void)uploadPhoto:(id<ISSCAttachment>)file
-            caption:(NSString *)caption
-                aid:(long)aid
+        description:(NSString *)description
+            albumId:(long)albumId
              result:(void(^)(BOOL result, SSRenRenPhoto *photo, SSRenRenErrorInfo *error))result;
 
 /**

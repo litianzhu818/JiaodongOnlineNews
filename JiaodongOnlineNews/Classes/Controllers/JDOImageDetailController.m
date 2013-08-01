@@ -9,6 +9,8 @@
 #import "JDOImageDetailController.h"
 #import "JDOImageModel.h"
 #import "JDOImageDetailModel.h"
+#import "SDImageCache.h"
+#import "JDOCommonUtil.h"
 
 @interface JDOImageDetailController ()
 
@@ -21,6 +23,7 @@
 
 @implementation JDOImageDetailController{
     bool _toPortrait;
+    NSArray *imageDataList;
 }
 
 - (id)initWithImageModel:(JDOImageModel *)imageModel{
@@ -90,7 +93,7 @@
 
 - (void) backToViewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    if(self.imageDetails) {//返回新闻详情
+    if(self.fromNewsDetail) {//返回新闻详情
         [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:1] animated:true];
     } else {
         [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
@@ -176,18 +179,24 @@
     // 设置工具栏
     [self setupToolbar];
     if (self.imageDetails) {//本地图片
-        NSArray *dataList = self.imageDetails;
-        if(dataList.count > 0) {//本地图片集存在
+        imageDataList = self.imageDetails;
+        if(imageDataList.count > 0) {//本地图片集存在
             [self.photos removeAllObjects];
             [self.models removeAllObjects];
             JDOImageDetailModel *detailModel;
             MWPhoto *photo;
-            for(int i=0; i<dataList.count; i++){
-                detailModel = [dataList objectAtIndex:i];
+            for(int i=0; i<imageDataList.count; i++){
+                detailModel = [imageDataList objectAtIndex:i];
                 [_models addObject:detailModel];
-                photo = [MWPhoto photoWithFilePath:detailModel.imageurl];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:detailModel.localUrl isDirectory:FALSE]) {
+                    photo = [MWPhoto photoWithFilePath:detailModel.localUrl];
+                } else {
+                    //这个图片本地不存在
+                    photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
+                    photo.isImageHolder = TRUE;
+                }
                 photo.title = self.imageModel.title;
-                photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,dataList.count];
+                photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
                 photo.caption = detailModel.imagecontent;
                 [_photos addObject:photo];
             }
@@ -196,6 +205,7 @@
         }
     } else {//从网络访问图片
         [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":self.imageModel.id} success:^(NSArray *dataList) {
+            imageDataList = dataList;
             if(dataList.count >0){
                 [self.photos removeAllObjects];
                 [self.models removeAllObjects];
@@ -204,7 +214,18 @@
                 for(int i=0; i<dataList.count; i++){
                     detailModel = [dataList objectAtIndex:i];
                     [_models addObject:detailModel];
-                    photo = [MWPhoto photoWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:detailModel.imageurl] ]];
+                    NSString *realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl];
+                    NSString *cacheUrl = [[SDImageCache sharedImageCache] cachePathForKey:realUrl];
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:cacheUrl isDirectory:FALSE]) {//图片本地存在缓存
+                        photo = [MWPhoto photoWithFilePath:cacheUrl];
+                    } else {//不存在缓存，则判断3g网络下是否下载图片
+                        if ([JDOCommonUtil ifNoImage]) {
+                            photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
+                            photo.isImageHolder = TRUE;
+                        } else {
+                            photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
+                        }
+                    }
                     photo.title = self.imageModel.title;
                     photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,dataList.count];
                     photo.caption = detailModel.imagecontent;
@@ -292,5 +313,28 @@
     return nil;
 }
 
+- (BOOL)tapToLoadImage {
+    NSInteger i = [_browser currentPageIndex];
+    if ([[_photos objectAtIndex:i] isImageHolder]) {
+        MWPhoto *photo;
+        JDOImageDetailModel *detailModel = [imageDataList objectAtIndex:i];
+        NSString *realUrl;
+        if ([detailModel.imageurl hasPrefix:SERVER_URL]) {
+            realUrl = detailModel.imageurl;
+        } else {
+            realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl]; 
+        }
+        photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
+        photo.title = self.imageModel.title;
+        photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
+        
+        photo.caption = detailModel.imagecontent;
+        [_photos setObject:photo atIndexedSubscript:i];
+        [_browser reloadData];
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
 
 @end

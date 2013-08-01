@@ -17,8 +17,18 @@
 {
 @private
     NSString *_errorUri;
+    NSString *_code;
 }
 
+/**
+ *	@brief	请求路径
+ */
 @property (nonatomic,copy) NSString *errorUri;
+
+/**
+ *	@brief	错误码
+ */
+@property (nonatomic,copy) NSString *code;
+
 
 @end

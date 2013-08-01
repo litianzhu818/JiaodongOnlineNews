@@ -56,6 +56,10 @@
 #define Weather_Update_Interval 60*60   //一小时
 #define News_Update_Time @"JDO_News_Update_Time"
 #define News_Update_Interval 30*60  // 30分钟
+#define Image_Update_Time @"JDO_Image_Update_Time"
+#define Image_Update_Interval 30*60  // 30分钟
+#define Topic_Update_Time @"JDO_Topic_Update_Time"
+#define Topic_Update_Interval 30*60  // 30分钟
 #define Dept_Update_Time @"JDO_Dept_Update_Time"
 #define Dept_Update_Interval 24*60*60  // 一天
 #define Knowledge_Update_Interval 24*60*60  // 一天

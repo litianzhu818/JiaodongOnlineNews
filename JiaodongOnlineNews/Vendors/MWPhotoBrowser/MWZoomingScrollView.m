@@ -35,14 +35,14 @@
         
 		// Tap view for background
 		_tapView = [[MWTapDetectingView alloc] initWithFrame:self.bounds];
-		_tapView.tapDelegate = self;
+        _tapView.tapDelegate = self;
 		_tapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_tapView.backgroundColor = [UIColor blackColor];
 		[self addSubview:_tapView];
 		
 		// Image view
 		_photoImageView = [[MWTapDetectingImageView alloc] initWithFrame:CGRectZero];
-		_photoImageView.tapDelegate = self;
+        _photoImageView.tapDelegate = self;
 		_photoImageView.contentMode = UIViewContentModeScaleAspectFit;
 		_photoImageView.backgroundColor = [UIColor blackColor];
 		[self addSubview:_photoImageView];
@@ -244,7 +244,13 @@
 #pragma mark - Tap Detection
 
 - (void)handleSingleTap:(CGPoint)touchPoint {
-	[_photoBrowser performSelector:@selector(toggleControls) withObject:nil afterDelay:0.2];
+    if ([_photoBrowser._delegate respondsToSelector:@selector(tapToLoadImage)]) {
+        if (![_photoBrowser._delegate tapToLoadImage]) {
+            [_photoBrowser performSelector:@selector(toggleControls) withObject:nil afterDelay:0.2];
+        }
+    } else {
+        [_photoBrowser performSelector:@selector(toggleControls) withObject:nil afterDelay:0.2];
+    }
 }
 
 - (void)handleDoubleTap:(CGPoint)touchPoint {

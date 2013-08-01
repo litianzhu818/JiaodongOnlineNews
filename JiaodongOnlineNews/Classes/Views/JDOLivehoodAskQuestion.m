@@ -606,7 +606,7 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     if (component == 0){
         // 从本地缓存读取部门列表
-        NSArray *deptList = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath( [@"LivehoodDeptCache" stringByAppendingFormat:@"%d",row+1] )];
+        NSArray *deptList = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"LivehoodDeptCache" stringByAppendingFormat:@"%d",row+1]] ];
         //本地json缓存不存在
         if( deptList == nil){
             // 从网络获取,并写入json缓存文件,记录上次更新时间
@@ -652,7 +652,7 @@
     [[JDOJsonClient sharedClient] getJSONByServiceName:BRANCHS_LIST_SERVICE modelClass:nil params:param success:^(NSArray *dataList) {
         if( dataList != nil && dataList.count > 0){  /* NSDictionary : dept_code,dept_name */
             [self recordLastUpdateSuccessTime:row];
-            [NSKeyedArchiver archiveRootObject:dataList toFile:JDOGetCacheFilePath( [@"LivehoodDeptCache" stringByAppendingFormat:@"%d",row+1] )];
+            [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"LivehoodDeptCache" stringByAppendingFormat:@"%d",row+1]]];
             _deptList = dataList;
             [(UIPickerView *)_deptPicker.pickerView reloadComponent:1];
             if (_deptList.count > 0){

@@ -132,7 +132,7 @@
 
 - (void) loadSection{
     // 从本地缓存读取部门列表
-    NSArray *deptList = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath( [@"LivehoodDeptCache" stringByAppendingFormat:@"%d",_currentSection] )];
+    NSArray *deptList = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"LivehoodDeptCache" stringByAppendingFormat:@"%d",_currentSection]]];
     //本地json缓存不存在
     if( deptList == nil){
         // 从网络获取,并写入json缓存文件,记录上次更新时间
@@ -191,7 +191,7 @@
             [self dismissHUDOnLoadFailed:@"没有部门"];
         }else{
             [self recordLastUpdateSuccessTime];
-            [NSKeyedArchiver archiveRootObject:dataList toFile:JDOGetCacheFilePath( [@"LivehoodDeptCache" stringByAppendingFormat:@"%d",_currentSection] )];
+            [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"LivehoodDeptCache" stringByAppendingFormat:@"%d",_currentSection]]];
             if(HUD && HUDShowTime){
                 [self delayHUD];
                 [HUD hide:true];

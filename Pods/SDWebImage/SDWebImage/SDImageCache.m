@@ -233,15 +233,15 @@ static NSInteger cacheMaxCacheAge = 60*60*24*7; // 1 week
     }
 }
 
-- (void)storeImage:(UIImage *)image forKey:(NSString *)key
-{
-    [self storeImage:image imageData:nil forKey:key toDisk:YES];
-}
-
-- (void)storeImage:(UIImage *)image forKey:(NSString *)key toDisk:(BOOL)toDisk
-{
-    [self storeImage:image imageData:nil forKey:key toDisk:toDisk];
-}
+//- (void)storeImage:(UIImage *)image forKey:(NSString *)key
+//{
+//    [self storeImage:image imageData:nil forKey:key toDisk:YES];
+//}
+//
+//- (void)storeImage:(UIImage *)image forKey:(NSString *)key toDisk:(BOOL)toDisk
+//{
+//    [self storeImage:image imageData:nil forKey:key toDisk:toDisk];
+//}
 
 
 - (UIImage *)imageFromKey:(NSString *)key

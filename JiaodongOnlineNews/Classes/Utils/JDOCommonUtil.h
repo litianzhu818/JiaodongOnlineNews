@@ -41,6 +41,13 @@ typedef enum{
 + (NSURL *)libraryDirectoryURL;
 + (NSURL *)applicationSupportDirectoryURL;
 
++ (BOOL) createDiskDirectory:(NSString *)directoryPath;
++ (NSString *) createJDOCacheDirectory;
++ (void) deleteJDOCacheDirectory;
++ (void) deleteURLCacheDirectory;
++ (int) getDiskCacheFileCount;
++ (int) getDiskCacheFileSize;
+
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
@@ -48,6 +55,9 @@ typedef enum{
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
 
 + (BOOL)ifNoImage;
+
++ (NSMutableArray *)getShareTypes;
++ (NSMutableArray *)getAuthList;
 
 @end
 
@@ -59,6 +69,7 @@ BOOL JDOIsVisiable(UIView *view);
 NSString* JDOGetHomeFilePath(NSString *fileName);
 NSString* JDOGetTmpFilePath(NSString *fileName);
 NSString* JDOGetCacheFilePath(NSString *fileName);
+NSString* JDOGetDocumentFilePath(NSString *fileName);
 NSString* JDOGetUUID();
 
 id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate);

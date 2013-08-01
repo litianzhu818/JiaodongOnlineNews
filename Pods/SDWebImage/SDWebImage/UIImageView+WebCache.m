@@ -49,16 +49,26 @@
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options success:(SDWebImageSuccessBlock)success failure:(SDWebImageFailureBlock)failure;
 {
+    [self setImageWithURL:url placeholderImage:placeholder noImage:FALSE options:options success:success failure:failure];
+}
+
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder noImage: (BOOL)noImage options:(SDWebImageOptions)options success:(SDWebImageSuccessBlock)success failure:(SDWebImageFailureBlock)failure 
+{
     SDWebImageManager *manager = [SDWebImageManager sharedManager];
 
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
 
-    self.image = placeholder;
-
-    if (url)
-    {
-        [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
+    
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    UIImage *cachedImage = [imageCache imageFromKey:[url absoluteString] fromDisk:YES]; // 将需要缓存的图片加载进来
+    if (cachedImage) {//有缓存，就先使用缓存
+        self.image = cachedImage;
+    } else {
+        self.image = placeholder;
+        if (url && !noImage) {
+            [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
+        }
     }
 }
 #endif

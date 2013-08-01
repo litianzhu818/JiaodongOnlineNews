@@ -14,4 +14,31 @@
     return COMMIT_COMMENT_SERVICE;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        self.id = [aDecoder decodeObjectForKey:@"id"];
+        self.pubtime = [aDecoder decodeObjectForKey:@"pubtime"];
+        self.summary = [aDecoder decodeObjectForKey:@"summary"];
+        self.title = [aDecoder decodeObjectForKey:@"title"];
+        self.follownums = [aDecoder decodeObjectForKey:@"follownums"];
+        self.tinyurl = [aDecoder decodeObjectForKey:@"tinyurl"];
+        self.imageurl = [aDecoder decodeObjectForKey:@"imageurl"];
+        self.drawno = [aDecoder decodeObjectForKey:@"drawno"];
+        self.modifytime = [aDecoder decodeObjectForKey:@"modifytime"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.id forKey:@"id"];
+    [aCoder encodeObject:self.pubtime forKey:@"pubtime"];
+    [aCoder encodeObject:self.summary forKey:@"summary"];
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.follownums forKey:@"follownums"];
+    [aCoder encodeObject:self.tinyurl forKey:@"tinyurl"];
+    [aCoder encodeObject:self.imageurl forKey:@"imageurl"];
+    [aCoder encodeObject:self.drawno forKey:@"drawno"];
+    [aCoder encodeObject:self.modifytime forKey:@"modifytime"];
+}
+
 @end

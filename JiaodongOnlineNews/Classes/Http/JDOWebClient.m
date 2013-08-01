@@ -17,6 +17,7 @@
 {
 	NSMutableURLRequest *request = [self requestWithMethod:@"GET" path:path parameters:parameters];
     request.timeoutInterval = 15.0;
+    request.cachePolicy = NSURLCacheStorageNotAllowed;  // 不启用url缓存，需要缓存的地方手工处理
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
