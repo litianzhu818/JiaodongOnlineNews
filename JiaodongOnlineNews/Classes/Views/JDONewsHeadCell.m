@@ -57,8 +57,10 @@
         _titleLabel.shadowOffset = CGSizeMake(0, 1);
         [self.contentView addSubview:_titleLabel];
         
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(width-PageControl_Width-Right_Margin, height-Title_Height, PageControl_Width, Title_Height)];
+        _pageControl = [[StyledPageControl alloc] initWithFrame:CGRectMake(width-PageControl_Width-Right_Margin, height-Title_Height, PageControl_Width, Title_Height)];
         _pageControl.backgroundColor = [UIColor clearColor];
+        _pageControl.coreNormalColor = [UIColor colorWithHex:@"A1A1A1"];
+        _pageControl.coreSelectedColor = [UIColor colorWithHex:@"006FD7"];
         _pageControl.numberOfPages = 0;
         [self.contentView addSubview:_pageControl];
         
@@ -111,7 +113,6 @@
             
         }];
     }
-#warning _pageControl图标样式需要改为蓝色
     _pageControl.numberOfPages = models.count;
     _pageControl.currentPage = _currentPage;
 }
