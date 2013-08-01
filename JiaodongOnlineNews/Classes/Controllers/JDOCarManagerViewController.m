@@ -24,7 +24,6 @@
     return self;
 }
 
-
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
@@ -81,14 +80,16 @@
     UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
     cell.selectedBackgroundView = backView;
     cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
-    NSDictionary *temp = @{@"carnum": @"鲁F6L930"};
+    NSDictionary *temp = [message objectAtIndex:indexPath.row];
     [cell setData:temp];
     return cell;
 
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 1;
+    message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    NSLog(@"COUNT:%d", message.count);
+	return message.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -96,6 +97,11 @@
 }
 
 
+- (void)update
+{
+    message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    [self.listview reloadData];
+}
 
 
 - (void)didReceiveMemoryWarning

@@ -32,16 +32,20 @@
     NSMutableString *CarTypeString;
     NSMutableString *ChassisNumString;
     NSMutableArray *resultArray;
+    NSMutableArray *carMessageArray;
     
     BOOL save;
     BOOL receivepush;
+    
 }
-@property (nonatomic ,strong) NSMutableArray *listArray;
+
 - (BOOL)checkEmpty;
-- (void)setCartype:(NSString*) type index:(int)index;
+- (void)setCartype:(NSString *) type index:(int)index;
 - (IBAction)selectCarType:(id)sender;
 - (IBAction)sendToServer:(id)sender;
 - (void) onBackBtnClick;
 - (void) onRightBtnClick;
+- (void) saveCarMessage:(NSDictionary *) carMessage;
+- (BOOL) readCarMessage;
 
 @end

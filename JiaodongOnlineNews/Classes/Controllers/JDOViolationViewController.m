@@ -143,8 +143,36 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
+        if (checkBox1.isChecked) {
+            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString}];
+        }
     }
     
+}
+
+- (void)saveCarMessage:(NSDictionary *)carMessage
+{
+    if (self.readCarMessage) {
+        BOOL isExisted = NO;
+        for (int i = 0; i < carMessageArray.count; i++) {
+            if ([[carMessageArray objectAtIndex:i] isEqualToDictionary:carMessage]) {
+                isExisted = YES;
+            }
+        }
+        if (!isExisted) {
+            [carMessageArray addObject:carMessage];
+        }
+    } else {
+        carMessageArray = [[NSMutableArray alloc] init];
+        [carMessageArray addObject:carMessage];
+    }
+    [NSKeyedArchiver archiveRootObject:carMessageArray toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    carMessageArray = nil;
+}
+
+- (BOOL) readCarMessage{
+    carMessageArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    return (carMessageArray != nil);
 }
 
 - (BOOL)checkEmpty
