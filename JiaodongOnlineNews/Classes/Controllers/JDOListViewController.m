@@ -107,7 +107,7 @@
     [super viewDidUnload];
     self.statusView = nil;
     self.tableView = nil;
-    self.noDataView = nil;
+//    self.noDataView = nil;
 }
 
 - (void) setCurrentState:(ViewStatusType)status{

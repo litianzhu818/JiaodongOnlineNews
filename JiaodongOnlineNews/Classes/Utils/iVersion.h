@@ -94,6 +94,7 @@ iVersionErrorCode;
 - (BOOL)iVersionShouldOpenAppStore;
 - (void)iVersionDidPresentStoreKitModal;
 - (void)iVersionDidDismissStoreKitModal;
+- (float)iVersionCheckUpdateDelayWhenLaunch;
 
 @end
 

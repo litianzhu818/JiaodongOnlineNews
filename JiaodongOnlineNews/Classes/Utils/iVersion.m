@@ -56,7 +56,7 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
 
 #define SECONDS_IN_A_DAY 86400.0
 #define MAC_APP_STORE_REFRESH_DELAY 5.0
-#define REQUEST_TIMEOUT 60.0
+#define REQUEST_TIMEOUT 15.0
 
 
 @implementation NSString(iVersion)
@@ -1113,6 +1113,11 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
 - (void)willPresentAlertView:(UIAlertView *)alertView
 {
     [self resizeAlertView:alertView];
+    // 让AlertView中的文字内容左对齐
+    UIView * view = [alertView.subviews objectAtIndex:2];
+    if([view isKindOfClass:[UILabel class]]){
+        [(UILabel *)view setTextAlignment:UITextAlignmentLeft];
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -1292,7 +1297,13 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
         [self checkIfNewVersion];
         if ([self shouldCheckForNewVersion])
         {
-            [self checkForNewVersion];
+            // 延时执行防止在Splash和广告页时弹出版本提醒
+            if ([self.delegate respondsToSelector:@selector(iVersionCheckUpdateDelayWhenLaunch)]){
+                float delay = [self.delegate iVersionCheckUpdateDelayWhenLaunch];
+                [self performSelector:@selector(checkForNewVersion) withObject:nil afterDelay:delay];
+            }else{
+                [self checkForNewVersion];
+            }
         }
     }
     else if (self.verboseLogging)

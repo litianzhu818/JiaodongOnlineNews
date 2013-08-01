@@ -12,6 +12,7 @@
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
 #import "Reachability.h"
+#import "SDImageCache.h"
 
 #define NUMBERS @"0123456789"
 
@@ -203,6 +204,80 @@ static NSDateFormatter *dateFormatter;
 	return [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+#pragma mark - 磁盘缓存相关
+
++ (BOOL) createDiskDirectory:(NSString *)directoryPath{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:directoryPath]){
+        NSError *error;
+        BOOL result = [fm createDirectoryAtPath:directoryPath withIntermediateDirectories:true attributes:nil error:&error];
+        if(result == false){
+            NSLog(@"创建缓存目录失败:%@",[error localizedDescription]);
+        }
+        return result;
+    }
+    return true;
+}
+
++ (NSString *) createJDOCacheDirectory{
+    NSString *diskCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *JDOCacheDirectory = [diskCachePath stringByAppendingPathComponent:@"JDOCache"];
+    BOOL success = [JDOCommonUtil createDiskDirectory:JDOCacheDirectory];
+    if ( success ) {
+        return JDOCacheDirectory;
+    }else{
+        return diskCachePath;
+    }
+}
+
++ (void) deleteJDOCacheDirectory{
+    NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
+    [[NSFileManager defaultManager] removeItemAtPath:JDOCachePath error:nil];
+}
+
++ (void) deleteURLCacheDirectory{
+    NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
+    [[NSFileManager defaultManager] removeItemAtPath:URLCachePath error:nil];
+}
+
++ (int) getDiskCacheFileCount{
+    int count = [[SDImageCache sharedImageCache] getDiskCount];
+    
+    NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
+    NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
+    
+    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:JDOCachePath];
+    for (NSString *fileName in fileEnumerator){
+        count += 1;
+    }
+    fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
+    for (NSString *fileName in fileEnumerator){
+        count += 1;
+    }
+    return count;
+}
+
++ (int) getDiskCacheFileSize{
+    int size = [[SDImageCache sharedImageCache] getSize];
+    
+    NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
+    NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
+    
+    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:JDOCachePath];
+    for (NSString *fileName in fileEnumerator){
+        NSString *filePath = [JDOCachePath stringByAppendingPathComponent:fileName];
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        size += [attrs fileSize];
+    }
+    fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
+    for (NSString *fileName in fileEnumerator){
+        NSString *filePath = [URLCachePath stringByAppendingPathComponent:fileName];
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        size += [attrs fileSize];
+    }
+    return size;
+}
+
 #pragma mark - 提示窗口
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view {
@@ -233,8 +308,6 @@ static NSDateFormatter *dateFormatter;
     notice.alpha = 0.8;
     notice.slidingMode = slidingMode;
     [notice show];
-    
-    // NoticeView只能从上方弹出，更好的方案是使用TBHintView支持上下两个方向和多种动画
 }
 
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY{
@@ -263,6 +336,33 @@ static NSDateFormatter *dateFormatter;
     BOOL noImage = [userDefault boolForKey:@"JDO_No_Image"];
     BOOL if3g = [Reachability isEnable3G];
     return  noImage && if3g;
+}
+
++ (NSMutableArray *)getShareTypes{
+    static NSMutableArray *shareTypeArray = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shareTypeArray = [[NSMutableArray alloc] initWithObjects:
+                           [@{@"title":@"新浪微博",@"type":[NSNumber numberWithInteger:ShareTypeSinaWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"腾讯微博",@"type":[NSNumber numberWithInteger:ShareTypeTencentWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"QQ空间",@"type":[NSNumber numberWithInteger:ShareTypeQQSpace],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"人人网",@"type":[NSNumber numberWithInteger:ShareTypeRenren],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"网易微博",@"type":[NSNumber numberWithInteger:ShareType163Weibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"搜狐微博",@"type":[NSNumber numberWithInteger:ShareTypeSohuWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"开心网",@"type":[NSNumber numberWithInteger:ShareTypeKaixin],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           [@{@"title":@"豆瓣社区",@"type":[NSNumber numberWithInteger:ShareTypeDouBan],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+                           nil];
+    });
+    return shareTypeArray;
+}
+
++ (NSMutableArray *) getAuthList{
+    NSMutableArray *authList = [NSMutableArray arrayWithContentsOfFile:JDOGetDocumentFilePath(@"authListCache.plist")];
+    if (authList == nil){
+        [[self getShareTypes] writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
+        authList = [self getShareTypes];
+    }
+    return authList;
 }
 
 @end
@@ -302,6 +402,9 @@ NSString* JDOGetTmpFilePath(NSString *fileName){
     return [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
 }
 NSString* JDOGetCacheFilePath(NSString *fileName){
+    return [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
+}
+NSString* JDOGetDocumentFilePath(NSString *fileName){
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
 }
 
@@ -339,8 +442,9 @@ id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){
                                                           viewDelegate:_delegate
                                                authManagerViewDelegate:_delegate];
     //在授权页面中添加关注官方微博
+#warning 修改官方微博地址
     [authOptions setFollowAccounts:@{
-        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"naiyi1984"],
-        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName valeu:@"intotherainzy"]}];
+        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"naiyi1984"],
+        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"intotherainzy"]}];
     return authOptions;
 }

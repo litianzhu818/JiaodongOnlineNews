@@ -197,5 +197,33 @@
  */
 - (void)setPicViewerViewDelegate:(id<ISSViewDelegate>)picViewerViewDelegate;
 
+/**
+ *	@brief	获取邮件视图委托
+ *
+ *	@return	协议委托
+ */
+- (id<ISSViewDelegate>)mailViewDelegate;
+
+/**
+ *	@brief	设置邮件视图委托
+ *
+ *	@param 	mailViewDelegate 	协议委托
+ */
+- (void)setMailViewDelegate:(id<ISSViewDelegate>)mailViewDelegate;
+
+/**
+ *	@brief	获取短信视图委托
+ *
+ *	@return	协议委托
+ */
+- (id<ISSViewDelegate>)smsViewDelegate;
+
+/**
+ *	@brief	设置短信视图委托
+ *
+ *	@param 	smsViewDelegate 	协议委托
+ */
+- (void)setSmsViewDelegate:(id<ISSViewDelegate>)smsViewDelegate;
+
 
 @end

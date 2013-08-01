@@ -146,7 +146,10 @@
     if (lastUpdateTime == 0 || [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Weather_Update_Interval){
         [self loadWeatherFromNetwork];
     }else{
-        [self readWeatherFromLocalCache];
+        BOOL hasCache = [self readWeatherFromLocalCache];
+        if (!hasCache) {    // 若缓存被清空,则继续从网络获取
+            [self loadWeatherFromNetwork];
+        }
     }
 }
 
@@ -183,13 +186,15 @@
 //    }
 //}
 
-- (void) readWeatherFromLocalCache{
+- (BOOL) readWeatherFromLocalCache{
     if((_weather = [JDOWeather readFromFile])){
         [self refreshWeather];
+        return true;
     }else{
 #warning 无法获取时应该可以点击重试
         temperatureLabel.text = @"无法获取天气信息";
         [temperatureLabel sizeToFit];
+        return false;
     }
 }
 

@@ -30,7 +30,7 @@
 @end
 
 @implementation JDOShareViewController{
-    int shareTypes[4];
+    NSMutableArray *_shareTypeArray;
     NSArray *enableImageNames;
     NSArray *disableImageNames;
 }
@@ -38,10 +38,7 @@
 - (id) initWithModel:(id<JDOToolbarModel>) model{
     self = [super initWithNibName:nil  bundle:nil];
     if (self) {
-        shareTypes[0] = ShareTypeSinaWeibo;
-        shareTypes[1] = ShareTypeTencentWeibo;
-        shareTypes[2] = ShareTypeQQSpace;
-        shareTypes[3] = ShareTypeRenren;
+        _shareTypeArray = [JDOCommonUtil getAuthList];
         self.model = model;
     }
     return self;
@@ -104,8 +101,8 @@
         [self.friendsBtn setEnabled:false];
     }
     
-    disableImageNames = @[@"sina.png",@"tencent.png",@"qzone.png",@"renren.png"];
-    enableImageNames = @[@"sina01.png",@"tencent01.png",@"qzone01.png",@"renren01.png"];
+    disableImageNames = @[@"sina.png",@"tencent.png",@"qzone.png",@"renren.png"];   // 亮色图标
+    enableImageNames = @[@"sina01.png",@"tencent01.png",@"qzone01.png",@"renren01.png"];    //灰色图标
     for(int i=0; i<4 ;i++){
         UIButton *shareImage = (UIButton *)[self.mainView viewWithTag:Image_Base_Tag+i];
         [shareImage setBackgroundImage:[UIImage imageNamed:[enableImageNames objectAtIndex:i]] forState:UIControlStateNormal];
@@ -115,13 +112,14 @@
         UIButton *shareBtn = (UIButton *)[self.mainView viewWithTag:Btn_Base_Tag+i];
         [shareBtn addTarget:self action:@selector(onBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         
-        if([ShareSDK hasAuthorizedWithType:shareTypes[i]] ){
-            [shareImage setEnabled:false];
-            [shareBtn setSelected:true];    // 默认选中有权限的
+        NSDictionary *item = [_shareTypeArray objectAtIndex:i];
+        if([ShareSDK hasAuthorizedWithType:[[item objectForKey:@"type"] intValue] ] ){
+            [shareImage setEnabled:false];  // 有授权时不能再次点击取消授权
+            [shareBtn setSelected:[[item objectForKey:@"selected"] boolValue]];    
         }else{
             [shareImage setEnabled:true];
+            [shareBtn setSelected:false];
         }
-        
     }
 }
 
@@ -135,20 +133,27 @@
     }];
 }
 
-- (void) getAuth:(UIButton *)sender{
-    int index = sender.tag - Image_Base_Tag;
-    ShareType shareType = shareTypes[index];
+- (void) getAuth:(UIButton *)imageBtn{
+    int index = imageBtn.tag - Image_Base_Tag;
+    UIButton *selectBtn = (UIButton *)[self.mainView viewWithTag:Btn_Base_Tag + index];
+    NSMutableDictionary *item = [_shareTypeArray objectAtIndex:index];
     
-    [ShareSDK authWithType:shareType options:JDOGetOauthOptions(nil) result:^(SSAuthState state, id<ICMErrorInfo> error) {
-        if (state == SSAuthStateSuccess){
-            [sender setEnabled:false];
-        }else if(state == SSAuthStateFail){
-            if ([error errorCode] != -103){
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-                [alertView show];
-            }
-        }
-    }];
+    [ShareSDK getUserInfoWithType:[[item objectForKey:@"type"] intValue]
+                      authOptions:JDOGetOauthOptions(nil)
+                           result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
+                               if (result){
+                                   [item setObject:[userInfo nickname] forKey:@"username"];
+                                   [item setObject:[NSNumber numberWithBool:true] forKey:@"selected"];
+                                   [_shareTypeArray writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
+                                   [imageBtn setEnabled:false];
+                                   [selectBtn setSelected:true];
+                               }else{
+                                   if ([error errorCode] != -103){
+                                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"绑定失败" message:[error errorDescription] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+                                       [alertView show];
+                                   }
+                               }
+                           }];
 }
 
 - (void) setupNavigationView{
@@ -221,7 +226,8 @@
     for(int i=0; i<4 ;i++){
         UIButton *shareBtn = (UIButton *)[self.mainView viewWithTag:Btn_Base_Tag+i];
         if(shareBtn.state & UIControlStateSelected){
-            [selectedClients addObject:[NSNumber numberWithInteger:shareTypes[i]]];
+            NSNumber *type = [[_shareTypeArray objectAtIndex:i] objectForKey:@"type"];
+            [selectedClients addObject:type];
         }
     }
 
@@ -259,31 +265,22 @@
 
 - (void)onBtnClicked:(UIButton *)sender {
     int index = sender.tag - Btn_Base_Tag;
-    ShareType shareType = shareTypes[index];
+    NSMutableDictionary *item = [_shareTypeArray objectAtIndex:index];
+    ShareType shareType = [[item objectForKey:@"type"] intValue];
     
     if([ShareSDK hasAuthorizedWithType:shareType] ){
         if (sender.state & UIControlStateSelected){
+            [item setObject:[NSNumber numberWithBool:false] forKey:@"selected"];
             [sender setSelected:false];
         }else{
+            [item setObject:[NSNumber numberWithBool:true] forKey:@"selected"];
             [sender setSelected:true];
         }
+        [_shareTypeArray writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
     }else{
-        if (sender.state & UIControlStateSelected){
-            [sender setSelected:false];
-        }else{
-            [ShareSDK authWithType:shareType options:JDOGetOauthOptions(nil) result:^(SSAuthState state, id<ICMErrorInfo> error) {
-                if (state == SSPublishContentStateSuccess){
-                    [sender setSelected:true];
-                    UIButton *shareImage = (UIButton *)[self.mainView viewWithTag:Image_Base_Tag+index];
-                    [shareImage setBackgroundImage:[UIImage imageNamed:[enableImageNames objectAtIndex:index]] forState:UIControlStateNormal];
-                    [shareImage setEnabled:false];
-                    
-                }else if (state == SSPublishContentStateFail){
-                    NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
-                }
-            }];
-        }
-        
+        UIButton *shareImage = (UIButton *)[self.mainView viewWithTag:Image_Base_Tag+index];
+        [shareImage setBackgroundImage:[UIImage imageNamed:[enableImageNames objectAtIndex:index]] forState:UIControlStateNormal];
+        [self getAuth:shareImage];
     }
     
 }

@@ -9,28 +9,27 @@
 
 #import <Foundation/Foundation.h>
 #import "SSRenRenHometown.h"
-#import "SSRenRenWorkInfo.h"
-#import "SSRenRenUniversityInfo.h"
-#import "SSRenRenHighSchoolInfo.h"
+#import "SSRenRenWork.h"
+#import "SSRenRenSchool.h"
 #import "SSRenRenCredential.h"
 #import <ShareSDKCoreService/ISSCUserDescriptor.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
+#import <ShareSDKCoreService/SSCDataObject.h>
+#import "SSRenRenBasicInformation.h"
 
 /**
  *	@brief	用户信息
  */
-@interface SSRenRenUser : NSObject <NSCoding,
-                                    ISSCDataObject>
+@interface SSRenRenUser : SSCDataObject
 {
 @private
-    NSMutableDictionary *_sourceData;
     SSRenRenCredential *_credential;
 }
 
 /**
  *	@brief	表示用户id
  */
-@property (nonatomic,readonly) long long uid;
+@property (nonatomic,readonly) long long Id;
 
 /**
  *	@brief	表示用户名
@@ -38,9 +37,9 @@
 @property (nonatomic,readonly) NSString *name;
 
 /**
- *	@brief	表示性别，值1表示男性；值0表示女性
+ *	@brief	用户头像列表
  */
-@property (nonatomic,readonly) NSInteger sex;
+@property (nonatomic,readonly) NSArray *avatar;
 
 /**
  *	@brief	表示是否为星级用户，值“1”表示“是”；值“0”表示“不是”
@@ -48,64 +47,37 @@
 @property (nonatomic,readonly) NSInteger star;
 
 /**
- *	@brief	表示是否为vip用户，值1表示是；值0表示不是
+ *	@brief	用户基本信息
  */
-@property (nonatomic,readonly) NSInteger zidou;
+@property (nonatomic,readonly) SSRenRenBasicInformation *basicInformation;
 
 /**
- *	@brief	表示是否为vip用户等级，前提是zidou节点必须为1
+ *	@brief	用户学校信息
  */
-@property (nonatomic,readonly) NSInteger vip;
+@property (nonatomic,readonly) NSArray *education;
 
 /**
- *	@brief	表示出生时间，格式为：yyyy-mm-dd，需要自行格式化日期显示格式。注：年份60后，实际返回1760-mm-dd；70后，返回1770-mm-dd；80后，返回1780-mm-dd；90后，返回1790-mm-dd
+ *	@brief	工作信息
  */
-@property (nonatomic,readonly) NSString *birthday;
+@property (nonatomic,readonly) NSArray *work;
 
 /**
- *	@brief	用户经过验证的email的信息字符串：email通过了connect.registerUsers接口。字符串包含的email经过了crc32和md5的编码
+ *	@brief	喜欢
  */
-@property (nonatomic,readonly) NSString *emailHash;
+@property (nonatomic,readonly) NSArray *like;
 
 /**
- *	@brief	表示头像链接 50*50大小
+ *	@brief	感情状态
+ *  INLOVE          恋爱中
+ *  OTHER           其他
+ *  SINGLE          单身
+ *  MARRIED         已婚
+ *  UNOBVIOUSLOVE	暗恋
+ *  DIVORCE         离异
+ *  ENGAGE          订婚
+ *  OUTLOVE         失恋
  */
-@property (nonatomic,readonly) NSString *tinyurl;
-
-/**
- *	@brief	表示头像链接 100*100大小
- */
-@property (nonatomic,readonly) NSString *headurl;
-
-/**
- *	@brief	表示头像链接 200*200大小
- */
-@property (nonatomic,readonly) NSString *mainurl;
-
-/**
- *	@brief	表示家乡信息
- */
-@property (nonatomic,readonly) SSRenRenHometown *hometownLocation;
-
-/**
- *	@brief	表示工作信息
- */
-@property (nonatomic,readonly) NSArray *workHistory;
-
-/**
- *	@brief	表示就读大学信息
- */
-@property (nonatomic,readonly) NSArray *universityHistory;
-
-/**
- *	@brief	表示就读高中学校信息
- */
-@property (nonatomic,readonly) SSRenRenHighSchoolInfo *hsInfo;
-
-/**
- *	@brief	源数据
- */
-@property (nonatomic,retain) NSDictionary *sourceData;
+@property (nonatomic,readonly) NSString *emotionalState;
 
 /**
  *	@brief	授权凭证

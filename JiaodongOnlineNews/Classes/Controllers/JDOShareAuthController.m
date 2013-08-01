@@ -28,96 +28,37 @@
     JDOShareViewDelegate *sharedDelegate;
 }
 
+#warning 分享绑定界面出现时稍微有点卡
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self){
         //监听用户信息变更
-        [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE
-                                   target:self
-                                   action:@selector(userInfoUpdateHandler:)];
+//        [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
         
-        _shareTypeArray = [[NSMutableArray alloc] initWithObjects:
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"新浪微博",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareTypeSinaWeibo],
-                            @"type",
-                            nil],
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"腾讯微博",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareTypeTencentWeibo],
-                            @"type",
-                            nil],
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"搜狐微博",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareTypeSohuWeibo],
-                            @"type",
-                            nil],
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"网易微博",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareType163Weibo],
-                            @"type",
-                            nil],
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"豆瓣社区",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareTypeDouBan],
-                            @"type",
-                            nil],
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"QQ空间",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareTypeQQSpace],
-                            @"type",
-                            nil],
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"人人网",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareTypeRenren],
-                            @"type",
-                            nil],
-                           [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"开心网",
-                            @"title",
-                            [NSNumber numberWithInteger:ShareTypeKaixin],
-                            @"type",
-                            nil],
-                           nil];
-        
-        NSArray *authList = [NSArray arrayWithContentsOfFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()]];
-        if (authList == nil){
-            [_shareTypeArray writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
-        }else{
-            for (int i = 0; i < [authList count]; i++){
-                NSDictionary *item = [authList objectAtIndex:i];
-                for (int j = 0; j < [_shareTypeArray count]; j++){
-                    if ([[[_shareTypeArray objectAtIndex:j] objectForKey:@"type"] integerValue] == [[item objectForKey:@"type"] integerValue]){
-                        [_shareTypeArray replaceObjectAtIndex:j withObject:[NSMutableDictionary dictionaryWithDictionary:item]];
-                        break;
-                    }
-                }
-            }
-        }
+        // 每次进入该功能界面都需要获得最新的authList,放到updateAuth中以避免重复
+//        _shareTypeArray = [JDOCommonUtil getAuthList];
     }
     return self;
 }
 
+- (void) updateAuth{    // 每次显示时都从文件重新读取,防止在其他界面授权造成不一致
+    _shareTypeArray = [JDOCommonUtil getAuthList];
+    if(_tableView){
+        [_tableView reloadData];
+    }
+}
+
 - (void)dealloc{
-    [ShareSDK removeNotificationWithName:SSN_USER_INFO_UPDATE target:self];
+//    [ShareSDK removeNotificationWithName:SSN_USER_INFO_UPDATE target:self];
 }
 
 - (void)loadView{
     [super loadView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.width, App_Height-44)
-                                              style:UITableViewStyleGrouped];
-    _tableView.rowHeight = 49.0;
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    _tableView.backgroundColor = [UIColor colorWithRGB:0xe1e0de];
-    _tableView.backgroundView = nil;
+                                              style:UITableViewStylePlain];
+    _tableView.rowHeight = (App_Height-44.0f)/8;
+    _tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.scrollEnabled = false;
@@ -165,7 +106,8 @@
                                    result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
                                        if (result){
                                            [item setObject:[userInfo nickname] forKey:@"username"];
-                                           [_shareTypeArray writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
+                                           [item setObject:[NSNumber numberWithBool:true] forKey:@"selected"];
+                                           [_shareTypeArray writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
                                            [_tableView reloadData];
                                        }else{
                                            sender.on = false;   // 从SSO点取消返回时
@@ -178,6 +120,9 @@
         }else{
             //取消授权
             [ShareSDK cancelAuthWithType:[[item objectForKey:@"type"] integerValue]];
+            [item setObject:[NSNumber numberWithBool:false] forKey:@"selected"];
+            [item removeObjectForKey:@"username"];
+            [_shareTypeArray writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
             [_tableView reloadData];
         }
         
@@ -194,8 +139,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TARGET_CELL_ID];
     if (cell == nil){
-        cell = [[AGShareCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TARGET_CELL_ID] ;
+        cell = [[AGShareCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:TARGET_CELL_ID] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
         
 //        MBSwitch *switchCtrl = [[MBSwitch alloc] initWithFrame:CGRectMake(0, 0, 53, 31)];
 //        [switchCtrl setTintColor:[UIColor grayColor]];
@@ -218,7 +164,7 @@
         cell.accessoryView = switchCtrl;
     }
     if (indexPath.row < [_shareTypeArray count]){
-        NSDictionary *item = [_shareTypeArray objectAtIndex:indexPath.row];
+        NSMutableDictionary *item = [_shareTypeArray objectAtIndex:indexPath.row];
         cell.imageView.image = [ShareSDK getClientIconWithType:[[item objectForKey:@"type"] integerValue]];
         
         UISwitch *accessoryView =  (UISwitch *)cell.accessoryView;
@@ -227,29 +173,32 @@
         
         if (accessoryView.on){
 #warning 是显示用户名还是"已授权"?若显示用户名，则需要在所有授权返回的位置都向authListCache.plist文件保存用户名信息
-            cell.textLabel.text = @"已授权";//[item objectForKey:@"username"];
+#warning 需要保证3处授权的地方都保存authListCache.plist，调整cell的内容，新浪微博:已授权(intotherainzy)
+            cell.textLabel.text = [item objectForKey:@"title"];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"已授权 [%@]",[item objectForKey:@"username"]];
         }else{
-            cell.textLabel.text = @"未授权";
+            cell.textLabel.text = [item objectForKey:@"title"];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"[未授权]"];
         }
     }
     return cell;
 }
 
-- (void)userInfoUpdateHandler:(NSNotification *)notif
-{
-    NSInteger plat = [[[notif userInfo] objectForKey:SSK_PLAT] integerValue];
-    id<ISSUserInfo> userInfo = [[notif userInfo] objectForKey:SSK_USER_INFO];
-    
-    for (int i = 0; i < [_shareTypeArray count]; i++)
-    {
-        NSMutableDictionary *item = [_shareTypeArray objectAtIndex:i];
-        ShareType type = [[item objectForKey:@"type"] integerValue];
-        if (type == plat)
-        {
-            [item setObject:[userInfo nickname] forKey:@"username"];
-            [_tableView reloadData];
-        }
-    }
-}
+//- (void)userInfoUpdateHandler:(NSNotification *)notif
+//{
+//    NSInteger plat = [[[notif userInfo] objectForKey:SSK_PLAT] integerValue];
+//    id<ISSUserInfo> userInfo = [[notif userInfo] objectForKey:SSK_USER_INFO];
+//    
+//    for (int i = 0; i < [_shareTypeArray count]; i++)
+//    {
+//        NSMutableDictionary *item = [_shareTypeArray objectAtIndex:i];
+//        ShareType type = [[item objectForKey:@"type"] integerValue];
+//        if (type == plat)
+//        {
+//            [item setObject:[userInfo nickname] forKey:@"username"];
+//            [_tableView reloadData];
+//        }
+//    }
+//}
 
 @end

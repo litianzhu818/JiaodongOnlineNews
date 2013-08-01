@@ -14,10 +14,11 @@
 @interface JDOAppDelegate : UIResponder <UIApplicationDelegate,UINavigationControllerDelegate,WXApiDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
 @property (retain, nonatomic) IIViewDeckController *deckController;
+@property (strong, nonatomic) NSString *cachePath;
 
 - (IIViewDeckController *)generateControllerStack;
-- (void)checkForNewVersion:(id)sender;
+- (void)checkForNewVersion;
+- (void)promptForRating;
 
 @end
