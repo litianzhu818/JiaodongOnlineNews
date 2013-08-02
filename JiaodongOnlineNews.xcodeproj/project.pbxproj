@@ -3380,6 +3380,7 @@
 				2D9D08EF17A0B53400AC1924 /* iVersion.m in Sources */,
 				2D43F8E517A266980048815C /* iRate.m in Sources */,
 				2DAADB3E17AA4EC4001EBD43 /* JDOGuideViewController.m in Sources */,
+                A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
