@@ -16,6 +16,7 @@
 #import "JDOArrayModel.h"
 #import "JDOQuestionCommentModel.h"
 #import "SVPullToRefresh.h"
+#import "JDONewsModel.h"
 
 @interface JDOReviewListController ()
 
@@ -44,8 +45,19 @@
 
 - (void)loadView{
     [super loadView];
-
     
+    self.tableView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
+    self.noDataView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
+
+    // 添加评论栏
+    NSArray *toolbarBtnConfig = @[
+        [NSNumber numberWithInt:ToolBarInputField],
+        [NSNumber numberWithInt:ToolBarButtonReview]
+    ];
+    JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+    newsModel.id = [self.listParam objectForKey:@"aid"];
+    JDOToolBar *toolbar = [[JDOToolBar alloc] initWithModel:newsModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    [self.view addSubview:toolbar];
 }
 
 - (void) setupNavigationView{
