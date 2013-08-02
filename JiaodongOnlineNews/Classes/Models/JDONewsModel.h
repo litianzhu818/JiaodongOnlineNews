@@ -10,7 +10,7 @@
 #import "JDOToolbarModel.h"
 
 @interface JDONewsModel : NSObject <NSCoding,JDOToolbarModel>
-
+@property (nonatomic,strong) NSString *type;
 @property (nonatomic,strong) NSString *atype;
 @property (nonatomic,strong) NSString *clicknum;
 @property (nonatomic,strong) NSString *id;

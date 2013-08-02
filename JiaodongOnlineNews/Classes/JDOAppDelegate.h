@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSString *topicDetailCachePath;
 
 - (IIViewDeckController *)generateControllerStack;
+- (void)enterMainView;
 - (void)checkForNewVersion;
 - (void)promptForRating;
 

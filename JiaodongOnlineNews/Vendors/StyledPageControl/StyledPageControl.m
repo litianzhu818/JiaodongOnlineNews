@@ -372,15 +372,17 @@
 
 - (void)setCurrentPage:(int)currentPoint
 {
-    // 当前点在总的第几页,从1开始
-    int currentPointInWhichPage = currentPoint/_pointPerPage+1 ;
-    // 总的页数,从1开始 
-    int pointTotalPages = (self.allNumberOfPoints+_pointPerPage-1)/_pointPerPage;
-    // numberOfPages 代表当前点所在页的总的点数
-    if(currentPointInWhichPage < pointTotalPages){
-        self.numberOfPages = _pointPerPage; 
-    }else{
-        self.numberOfPages = self.allNumberOfPoints - (pointTotalPages-1)*_pointPerPage;
+    if (_pointPerPage != 0){
+        // 当前点在总的第几页,从1开始
+        int currentPointInWhichPage = currentPoint/_pointPerPage+1 ;
+        // 总的页数,从1开始
+        int pointTotalPages = (self.allNumberOfPoints+_pointPerPage-1)/_pointPerPage;
+        // numberOfPages 代表当前点所在页的总的点数
+        if(currentPointInWhichPage < pointTotalPages){
+            self.numberOfPages = _pointPerPage;
+        }else{
+            self.numberOfPages = self.allNumberOfPoints - (pointTotalPages-1)*_pointPerPage;
+        }
     }
     _currentPage = currentPoint;
     [self setNeedsDisplay];

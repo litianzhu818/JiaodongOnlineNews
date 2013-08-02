@@ -12,6 +12,7 @@
 #import "JDOFeedbackViewController.h"
 #import "JDOAboutUsViewController.h"
 #import "JDOShareAuthController.h"
+#import "JDOCollectViewController.h"
 //#import "JDORightMenuCell.h"
 
 #define Menu_Cell_Height 55.0f
@@ -36,7 +37,7 @@ typedef enum {
 @property (nonatomic,strong) JDOFeedbackViewController *feedbackController;
 @property (nonatomic,strong) JDOAboutUsViewController *aboutUsController;
 @property (nonatomic,strong) JDOShareAuthController *shareAuthController;
-
+@property (nonatomic,strong) JDOCollectViewController *collectController;
 
 @property (nonatomic,strong) UIView *blackMask;
 @property (nonatomic,strong) NSMutableArray *controllerStack;
@@ -211,7 +212,11 @@ typedef enum {
             [_settingContrller.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
         case RightMenuItemCollection:
-            
+            if( _collectController == nil){
+                _collectController = [[JDOCollectViewController alloc] init];
+            }
+            [self pushViewController:_collectController];
+            break;
             break;
 //        case RightMenuItemfeedback:
 //            if( _feedbackController == nil){

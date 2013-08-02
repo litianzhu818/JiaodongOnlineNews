@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "StyledPageControl.h"
 
 @interface JDONewsHeadCell : UITableViewCell <UIScrollViewDelegate>
 
@@ -14,7 +15,7 @@
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) NSMutableArray *imageViews;
 @property (nonatomic,strong) UILabel *titleLabel;
-@property (nonatomic,strong) UIPageControl *pageControl;
+@property (nonatomic,strong) StyledPageControl *pageControl;
 @property (nonatomic,strong) UIImageView *titleBackground;
 
 @end
