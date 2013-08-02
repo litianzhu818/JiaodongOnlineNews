@@ -81,8 +81,7 @@
 #define kDeptChangedNotification @"kDeptChangedNotification"
 
 
-#define SERVER_URL @"http://p.jiaodong.net/jdmsys/"
-#define SERVER_URL_TEST @"http://p.jiaodong.net/jdmsys_test/"
+#define SERVER_URL @"http://p.jiaodong.net/mobileQuery/V10"
 #define ADV_SERVICE @"Data/getAdv"
 #define IMAGE_SERVICE @"Data/getImages"
 #define NEWS_SERVICE @"Data/getArticles"
