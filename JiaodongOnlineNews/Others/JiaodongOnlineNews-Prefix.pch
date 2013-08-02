@@ -81,7 +81,9 @@
 #define kDeptChangedNotification @"kDeptChangedNotification"
 
 
-#define SERVER_URL @"http://p.jiaodong.net/mobileQuery/V10"
+#define SERVER_QUERY_URL [NSString stringWithFormat:@"http://p.jiaodong.net/mobileQuery/V%@",[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""]]
+#define SERVER_RESOURCE_URL @"http://p.jiaodong.net/jdmsys/"
+
 #define ADV_SERVICE @"Data/getAdv"
 #define IMAGE_SERVICE @"Data/getImages"
 #define NEWS_SERVICE @"Data/getArticles"

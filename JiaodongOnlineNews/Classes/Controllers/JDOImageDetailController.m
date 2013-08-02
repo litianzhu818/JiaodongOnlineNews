@@ -228,7 +228,7 @@
         for(int i=0; i<imageDataList.count; i++){
             detailModel = [imageDataList objectAtIndex:i];
             [_models addObject:detailModel];
-            NSString *realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl];
+            NSString *realUrl = [SERVER_RESOURCE_URL stringByAppendingString:detailModel.imageurl];
             NSString *cacheUrl = [[SDImageCache sharedImageCache] cachePathForKey:realUrl];
             if ([[NSFileManager defaultManager] fileExistsAtPath:cacheUrl isDirectory:FALSE]) {//图片本地存在缓存
                 photo = [MWPhoto photoWithFilePath:cacheUrl];
@@ -339,10 +339,10 @@
         MWPhoto *photo;
         JDOImageDetailModel *detailModel = [imageDataList objectAtIndex:i];
         NSString *realUrl;
-        if ([detailModel.imageurl hasPrefix:SERVER_URL]) {
+        if ([detailModel.imageurl hasPrefix:SERVER_RESOURCE_URL]) {
             realUrl = detailModel.imageurl;
         } else {
-            realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl]; 
+            realUrl = [SERVER_RESOURCE_URL stringByAppendingString:detailModel.imageurl]; 
         }
         photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
         photo.title = self.imageModel.title;

@@ -14,7 +14,7 @@
     static JDOXmlClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[JDOXmlClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_URL]];
+        _sharedClient = [[JDOXmlClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_QUERY_URL]];
     });
     return _sharedClient;
 }
