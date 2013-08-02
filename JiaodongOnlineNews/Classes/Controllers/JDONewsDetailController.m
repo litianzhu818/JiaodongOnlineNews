@@ -187,10 +187,27 @@ NSArray *imageUrls;
     }];
 }
 
+- (void) saveNewsDetailToLocalCache:(NSDictionary *) newsDetail{
+    NSString *cacheFilePath = [[SharedAppDelegate newsDetailCachePath] stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:[newsDetail objectForKey:@"id"]]];
+    [NSKeyedArchiver archiveRootObject:newsDetail toFile:cacheFilePath];
+}
+
+- (id) readNewsDetailFromLocalCache{
+    NSDictionary *detailModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/NewsDetailCache" stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:self.newsModel.id]])];
+    return detailModel;
+}
+
 - (void) loadWebView{
     #warning 若有缓存可以从缓存读取
-    if (false /*有缓存*/) {
-        [self setCurrentState:ViewStatusLogo];
+    NSDictionary *detailModel = [self readNewsDetailFromLocalCache];
+    if (detailModel /*有缓存*/) {
+        [self setCurrentState:ViewStatusLoading];
+        // 设置url短地址
+        self.newsModel.tinyurl = [detailModel objectForKey:@"tinyurl"];
+        
+        NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:detailModel]];
+        NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+        [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
     }else if( ![Reachability isEnableNetwork]){
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
@@ -200,9 +217,7 @@ NSArray *imageUrls;
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
-                // 如果需要保存detailModel对象,可以在这里解析
-//                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDONewsDetailModel class]];
-//                JDONewsDetailModel *detailModel = [mapper parseDictionary:responseObject];
+                [self saveNewsDetailToLocalCache:responseObject];
                 // 设置url短地址
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
                 

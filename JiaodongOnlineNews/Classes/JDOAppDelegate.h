@@ -16,6 +16,9 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (retain, nonatomic) IIViewDeckController *deckController;
 @property (strong, nonatomic) NSString *cachePath;
+@property (strong, nonatomic) NSString *newsDetailCachePath;
+@property (strong, nonatomic) NSString *imageDetailCachePath;
+@property (strong, nonatomic) NSString *topicDetailCachePath;
 
 - (IIViewDeckController *)generateControllerStack;
 - (void)checkForNewVersion;

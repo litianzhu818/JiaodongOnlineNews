@@ -230,6 +230,18 @@ static NSDateFormatter *dateFormatter;
     }
 }
 
++ (NSString *) createDetailCacheDirectory:(NSString *)cachePathName{
+    NSString *diskCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *JDOCacheDirectory = [diskCachePath stringByAppendingPathComponent:@"JDOCache"];
+    NSString *detailCacheDir = [JDOCacheDirectory stringByAppendingPathComponent:cachePathName];
+    BOOL success = [JDOCommonUtil createDiskDirectory:detailCacheDir];
+    if ( success ) {
+        return detailCacheDir;
+    }else{
+        return diskCachePath;
+    }
+}
+
 + (void) deleteJDOCacheDirectory{
     NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
     [[NSFileManager defaultManager] removeItemAtPath:JDOCachePath error:nil];

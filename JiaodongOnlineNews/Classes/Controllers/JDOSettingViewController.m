@@ -12,6 +12,7 @@
 #import "TTFadeSwitch.h"
 #import "SDImageCache.h"
 #import "JDOFeedbackViewController.h"
+#import "JDOOffDownloadManager.h"
 
 @interface JDOSettingViewController ()
 
@@ -196,6 +197,7 @@
             break;
         }
         case JDOSettingItemDownload:
+            [self offDownload];
 #warning 未实现离线下载
             break;
         case JDOSettingItemCheckVersion:
@@ -229,6 +231,10 @@
         default:
             break;
     }
+}
+
+- (void) offDownload {
+    [[[JDOOffDownloadManager alloc] init] startOffDownload];
 }
 
 @end

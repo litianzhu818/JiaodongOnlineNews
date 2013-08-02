@@ -538,6 +538,7 @@
 		A7173D8C179FA8DD00AB2D43 /* WBStickyNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D80179FA8DD00AB2D43 /* WBStickyNoticeView.m */; };
 		A7173D8D179FA8DD00AB2D43 /* WBSuccessNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D82179FA8DD00AB2D43 /* WBSuccessNoticeView.m */; };
 		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
+		A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */; };
 		A76EC73D17A0C79E0063763C /* base_empty_view.png in Resources */ = {isa = PBXBuildFile; fileRef = A76EC73C17A0C79E0063763C /* base_empty_view.png */; };
 		A76EC73F17A0C9600063763C /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = A76EC73E17A0C9600063763C /* loading.gif */; };
 		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
@@ -1328,6 +1329,8 @@
 		A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		A7341C7C178EB77C00ADD976 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		A7341C7F178EB7EC00ADD976 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		A74328BF17AA4B89002B6CEA /* JDOOffDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOOffDownloadManager.h; sourceTree = "<group>"; };
+		A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOOffDownloadManager.m; sourceTree = "<group>"; };
 		A76EC73C17A0C79E0063763C /* base_empty_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base_empty_view.png; sourceTree = "<group>"; };
 		A76EC73E17A0C9600063763C /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		A774BF21178D726100A3B866 /* JDOWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeather.h; sourceTree = "<group>"; };
@@ -1441,6 +1444,8 @@
 				2D9D08EE17A0B53400AC1924 /* iVersion.m */,
 				2D43F8E317A266980048815C /* iRate.h */,
 				2D43F8E417A266980048815C /* iRate.m */,
+				A74328BF17AA4B89002B6CEA /* JDOOffDownloadManager.h */,
+				A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3327,6 +3332,7 @@
 				A7173D8D179FA8DD00AB2D43 /* WBSuccessNoticeView.m in Sources */,
 				2D9D08EF17A0B53400AC1924 /* iVersion.m in Sources */,
 				2D43F8E517A266980048815C /* iRate.m in Sources */,
+				A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
