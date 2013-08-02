@@ -8,6 +8,7 @@
 
 #import "JDOAddCarViewController.h"
 #import "JDOSelectCarTypeViewController.h"
+#import "JDOCarManagerViewController.h"
 
 @interface JDOAddCarViewController ()
 
@@ -25,7 +26,47 @@
 }
 
 - (void)clickAddCar:(id)sender
-{}
+{
+    if (self.checkEmpty) {
+        return;
+    }
+    NSDictionary *carMessage = @{@"hphm":carNum.text, @"vin":chassisNum.text, @"type":CarTypeString};
+    carMessageArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    if (carMessageArray != nil) {
+        BOOL isExisted = NO;
+        for (int i = 0; i < carMessageArray.count; i++) {
+            if ([[carMessageArray objectAtIndex:i] isEqualToDictionary:carMessage]) {
+                isExisted = YES;
+            }
+        }
+        if (!isExisted) {
+            [carMessageArray addObject:carMessage];
+        } else {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车辆信息已存在，无需添加" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }
+    } else {
+        carMessageArray = [[NSMutableArray alloc] init];
+        [carMessageArray addObject:carMessage];
+    }
+    [NSKeyedArchiver archiveRootObject:carMessageArray toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    carMessageArray = nil;
+}
+
+- (BOOL)checkEmpty
+{
+    if ([[carNum text] length] < 7) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车牌号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        return YES;
+    }
+    if ([[chassisNum text] length] < 4){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车架号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        return YES;
+    }
+    return NO;
+}
 
 - (void)setCartype:(NSString *)type index:(int)index
 {
@@ -56,6 +97,8 @@
 
 - (void) onBackBtnClick
 {
+    JDOCarManagerViewController *controller = (JDOCarManagerViewController *)self.back;
+    [controller update];
     [self.navigationController popToViewController:self.back animated:YES];
 }
 

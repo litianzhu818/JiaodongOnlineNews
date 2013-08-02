@@ -28,7 +28,7 @@
     CGSize size = CGSizeMake(270, 480);
     CGSize labelsize = CGSizeMake(0, 0);
     
-    carNumString = [data objectForKey:@"carnum"];
+    carNumString = [data objectForKey:@"hphm"];
     
     [carNum setNumberOfLines:0];
     [carNum setLineBreakMode:UILineBreakModeWordWrap];

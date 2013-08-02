@@ -83,8 +83,12 @@
 }
 
 - (void) onBackBtnClick{
-    [self.navigationController popToViewController:self.violation animated:YES];
-    self.violation = nil;
+    if (self.violation != nil) {
+        [self.navigationController popToViewController:self.violation animated:YES];
+    }
+    if (self.addcar != nil) {
+        [self.navigationController popToViewController:self.addcar animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning

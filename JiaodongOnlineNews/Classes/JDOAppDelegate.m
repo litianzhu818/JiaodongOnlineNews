@@ -177,7 +177,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     // 创建磁盘缓存目录 /Library/caches/JDOCache
     self.cachePath = [JDOCommonUtil createJDOCacheDirectory];
-    
+    self.newsDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"NewsDetailCache"];
+    self.imageDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"ImageDetailCache"];
+    self.topicDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"TopicDetailCache"];
     // 标记检查更新的标志位(启动时标记为非手动检查)
     manualCheckUpdate = false;
     

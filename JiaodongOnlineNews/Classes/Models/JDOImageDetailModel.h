@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDOImageDetailModel : NSObject
+@interface JDOImageDetailModel : NSObject<NSCoding>
 
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *imagecontent;

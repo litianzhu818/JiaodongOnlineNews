@@ -204,39 +204,59 @@
             [_browser reloadData];
         }
     } else {//从网络访问图片
-        [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":self.imageModel.id} success:^(NSArray *dataList) {
-            imageDataList = dataList;
-            if(dataList.count >0){
-                [self.photos removeAllObjects];
-                [self.models removeAllObjects];
-                JDOImageDetailModel *detailModel;
-                MWPhoto *photo;
-                for(int i=0; i<dataList.count; i++){
-                    detailModel = [dataList objectAtIndex:i];
-                    [_models addObject:detailModel];
-                    NSString *realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl];
-                    NSString *cacheUrl = [[SDImageCache sharedImageCache] cachePathForKey:realUrl];
-                    if ([[NSFileManager defaultManager] fileExistsAtPath:cacheUrl isDirectory:FALSE]) {//图片本地存在缓存
-                        photo = [MWPhoto photoWithFilePath:cacheUrl];
-                    } else {//不存在缓存，则判断3g网络下是否下载图片
-                        if ([JDOCommonUtil ifNoImage]) {
-                            photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
-                            photo.isImageHolder = TRUE;
-                        } else {
-                            photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
-                        }
-                    }
-                    photo.title = self.imageModel.title;
-                    photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,dataList.count];
-                    photo.caption = detailModel.imagecontent;
-                    [_photos addObject:photo];
-                }
-                [_browser reloadData];
-            }
-        } failure:^(NSString *errorStr) {
-            [JDOCommonUtil showHintHUD:errorStr inView:self.view];
-        }];
+        imageDataList = [self readImageDetailFromLocalCache];
+        if (imageDataList) {//有缓存
+            [self dealImageDataList];
+        } else {
+            [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":self.imageModel.id} success:^(NSArray *dataList) {
+                imageDataList = dataList;
+                [self dealImageDataList];
+                [self saveImageDetailToLocalCache:dataList];                
+            } failure:^(NSString *errorStr) {
+                [JDOCommonUtil showHintHUD:errorStr inView:self.view];
+            }];
+        }
     }
+}
+
+- (void)dealImageDataList {
+    if(imageDataList.count >0){
+        [self.photos removeAllObjects];
+        [self.models removeAllObjects];
+        JDOImageDetailModel *detailModel;
+        MWPhoto *photo;
+        for(int i=0; i<imageDataList.count; i++){
+            detailModel = [imageDataList objectAtIndex:i];
+            [_models addObject:detailModel];
+            NSString *realUrl = [SERVER_URL stringByAppendingString:detailModel.imageurl];
+            NSString *cacheUrl = [[SDImageCache sharedImageCache] cachePathForKey:realUrl];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:cacheUrl isDirectory:FALSE]) {//图片本地存在缓存
+                photo = [MWPhoto photoWithFilePath:cacheUrl];
+            } else {//不存在缓存，则判断3g网络下是否下载图片
+                if ([JDOCommonUtil ifNoImage]) {
+                    photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
+                    photo.isImageHolder = TRUE;
+                } else {
+                    photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
+                }
+            }
+            photo.title = self.imageModel.title;
+            photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
+            photo.caption = detailModel.imagecontent;
+            [_photos addObject:photo];
+        }
+        [_browser reloadData];
+    }
+}
+
+- (void) saveImageDetailToLocalCache:(NSArray *) imageDetail{
+    NSString *cacheFilePath = [[SharedAppDelegate imageDetailCachePath] stringByAppendingPathComponent:[@"ImageDetail_" stringByAppendingString:self.imageModel.id]];
+    [NSKeyedArchiver archiveRootObject:imageDetail toFile:cacheFilePath];
+}
+
+- (id) readImageDetailFromLocalCache{
+    NSArray *imageModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/ImageDetailCache" stringByAppendingPathComponent:[@"ImageDetail_" stringByAppendingString:self.imageModel.id]])];
+    return imageModel;
 }
 
 - (void)viewDidUnload{

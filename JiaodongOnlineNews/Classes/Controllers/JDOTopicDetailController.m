@@ -183,10 +183,25 @@ NSArray *imageUrls;
     }];
 }
 
+- (void) saveTopicDetailToLocalCache:(NSDictionary *) topicDetail{
+    NSString *cacheFilePath = [[SharedAppDelegate topicDetailCachePath] stringByAppendingPathComponent:[@"TopicDetail_" stringByAppendingString:[topicDetail objectForKey:@"id"]]];
+    [NSKeyedArchiver archiveRootObject:topicDetail toFile:cacheFilePath];
+}
+
+- (id) readTopicDetailFromLocalCache{
+    NSDictionary *topicModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/TopicDetailCache" stringByAppendingPathComponent:[@"TopicDetail_" stringByAppendingString:self.topicModel.id]])];
+    return topicModel;
+}
+
 - (void) loadWebView{
 #warning 若有缓存可以从缓存读取,话题涉及到动态的投票数量,是否缓存有待考虑
-    if (false /*有缓存*/) {
-        [self setCurrentState:ViewStatusLogo];
+    NSDictionary *topicModel = [self readTopicDetailFromLocalCache];
+    if (topicModel /*有缓存*/) {
+        [self setCurrentState:ViewStatusLoading];
+        self.topicModel.tinyurl = [topicModel objectForKey:@"tinyurl"];
+        NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:topicModel]];
+        NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+        [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
     }else if( ![Reachability isEnableNetwork]){
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
@@ -198,6 +213,7 @@ NSArray *imageUrls;
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
                 NSMutableDictionary *dict = [responseObject mutableCopy];
                 [dict setObject:self.topicModel.id forKey:@"id"];
+                [self saveTopicDetailToLocalCache:dict];
                 self.topicModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
                 
                 NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
