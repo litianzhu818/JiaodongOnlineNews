@@ -330,6 +330,14 @@ static NSDateFormatter *dateFormatter;
     [notice show];
 }
 
++ (void) showSuccessHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode{
+    WBSuccessNoticeView *notice = [WBSuccessNoticeView successNoticeInView:view title:content];
+    notice.sticky = false;
+    notice.alpha = 0.9;
+    notice.slidingMode = slidingMode;
+    [notice show];
+}
+
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view{
     [self showSuccessHUD:content inView:view originY:0];
 }
