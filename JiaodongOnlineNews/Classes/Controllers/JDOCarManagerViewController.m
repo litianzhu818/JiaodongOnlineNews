@@ -66,9 +66,13 @@
 	return 0.;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *data = [message objectAtIndex:indexPath.row];
+    [self.back setData:data];
+    [self onBackBtnClick];
+}
 
 
-#pragma mark -
 #pragma mark UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

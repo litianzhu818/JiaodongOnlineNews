@@ -20,7 +20,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        CarTypeString = [[NSMutableString alloc] init];
+        CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     }
     return self;
 }
@@ -30,7 +30,7 @@
     if (self.checkEmpty) {
         return;
     }
-    NSDictionary *carMessage = @{@"hphm":carNum.text, @"vin":chassisNum.text, @"type":CarTypeString};
+    NSDictionary *carMessage = @{@"hphm":carNum.text, @"vin":chassisNum.text, @"cartype":CarTypeString, @"cartypename":carType.titleLabel.text};
     carMessageArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
     if (carMessageArray != nil) {
         BOOL isExisted = NO;
