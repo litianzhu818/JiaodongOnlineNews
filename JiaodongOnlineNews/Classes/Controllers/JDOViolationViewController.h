@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "M13Checkbox.h"
 #import "TPKeyboardAvoidingScrollView.h"
+#import "ActionSheetStringPicker.h"
 
 @interface JDOViolationViewController : JDONavigationController <UITableViewDataSource, UITableViewDelegate>
 {
@@ -37,6 +38,8 @@
     BOOL save;
     BOOL receivepush;
     
+    ActionSheetStringPicker *stringpicker;
+    NSArray *types;
 }
 
 - (void)setData:(NSDictionary *)data;
@@ -44,9 +47,9 @@
 - (void)setCartype:(NSString *) type index:(int)index;
 - (IBAction)selectCarType:(id)sender;
 - (IBAction)sendToServer:(id)sender;
-- (void) onBackBtnClick;
-- (void) onRightBtnClick;
-- (void) saveCarMessage:(NSDictionary *) carMessage;
-- (BOOL) readCarMessage;
+- (void)onBackBtnClick;
+- (void)onRightBtnClick;
+- (void)saveCarMessage:(NSDictionary *) carMessage;
+- (BOOL)readCarMessage;
 
 @end

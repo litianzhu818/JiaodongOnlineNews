@@ -18,6 +18,16 @@
 
 @implementation JDOViolationViewController
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        types = [[NSArray alloc] init];
+        types = @[@"大型汽车",@"小型汽车",@"使馆汽车",@"领馆汽车",@"境外汽车",@"外籍汽车",@"两、三轮摩托车",@"轻便摩托车",@"使馆摩托车",@"领馆摩托车",@"境外摩托车",@"外籍摩托车",@"农用运输车",@"拖拉机",@"挂车",@"教练汽车",@"教练摩托车",@"实验汽车",@"实验摩托车",@"临时入境汽车",@"临时入境摩托车",@"临时行驶车",@"公安警车",@"公安警车",@"其他"];
+    }
+    return self;
+}
+
 - (void)setCartype:(NSString *)type index:(int)index
 {
     [CarType setTitle:type forState:UIControlStateNormal];
@@ -35,13 +45,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [ChassisNum setKeyboardType:UIKeyboardTypeNumberPad];
     [carnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
     [cartypelabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
     [chassisnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
-    [CarNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
-    [CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateNormal];
-    [CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateSelected];
-    [ChassisNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
+    //[CarNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
+    //[CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateNormal];
+    //[CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateSelected];
+    //[ChassisNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     resultArray = [[NSMutableArray alloc] init];
@@ -100,9 +111,21 @@
 
 - (IBAction)selectCarType:(id)sender
 {
-    JDOSelectCarTypeViewController *controller = [[JDOSelectCarTypeViewController alloc] initWithNibName:nil bundle:nil];
-    controller.violation = self;
-    [self.navigationController pushViewController:controller animated:YES];
+    stringpicker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择号牌种类" rows:types initialSelection:1 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+        [CarType setTitle:[types objectAtIndex:selectedIndex] forState:UIControlStateNormal];
+        [CarType setTitle:[types objectAtIndex:selectedIndex] forState:UIControlStateSelected];
+        NSMutableString *tmp = [[NSMutableString alloc] initWithString:@"0"];
+        if (selectedIndex < 9) {
+            [tmp appendString:[NSString stringWithFormat:@"%d", selectedIndex + 1]];
+            CarTypeString = tmp;
+        } else {
+            CarTypeString = [NSString stringWithFormat:@"%d", selectedIndex + 1];
+        }
+    } cancelBlock:^(ActionSheetStringPicker *picker) {
+        
+    } origin:sender];
+    
+    [stringpicker showActionSheetPicker];
 }
 
 - (IBAction)sendToServer:(id)sender
@@ -249,6 +272,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
+
+
 
 
 
