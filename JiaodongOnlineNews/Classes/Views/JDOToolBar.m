@@ -107,8 +107,10 @@
         xPosition += frameWidth;
         
         ToolBarControlType btnType = [(NSNumber *)[_typeConfig objectAtIndex:i] intValue];
-        if( btnType == ToolBarInputField ){
-            // 工具栏包含输入框的情况,暂时未做添加,遇到后在添加
+        if( btnType == ToolBarInputField ){ // 工具栏包含输入框的情况
+            [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateNormal];
+            [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateHighlighted];
+            [btn addTarget:self action:@selector(writeReview) forControlEvents:UIControlEventTouchUpInside];
         }else if( btnType == ToolBarButtonCollect && self.isCollected){
 #warning 替换收藏过的图片
             [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
@@ -264,16 +266,24 @@
 }
 
 - (void) showSuccessNotice:(NSString *)content{
-    // 为了跳过导航视图的高度,加载内容的webView视图上,结构上更好的办法对parentController设置协议
+#warning 为了跳过导航视图的高度,加载内容的webView视图上,结构上更好的办法对parentController设置协议
     if ([self.parentController respondsToSelector:@selector(webView)]){
-        [JDOCommonUtil showSuccessHUD:content inView:[(id)self.parentController webView]];
+        [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(webView)]];
+    }else if ([self.parentController respondsToSelector:@selector(tableView)]){
+        [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(tableView)]];
     }else{
         [JDOCommonUtil showSuccessHUD:content inView:self.parentController.view];
+    }
+    // 在评论列表页面,发表完评论后应该自动刷新
+    if( [self.parentController respondsToSelector:@selector(refresh)]){
+        [self.parentController performSelector:@selector(refresh)];
     }
 }
 - (void) showErrorNotice:(NSString *)content{
     if ([self.parentController respondsToSelector:@selector(webView)]){
-        [JDOCommonUtil showHintHUD:content inView:[(id)self.parentController webView]];
+        [JDOCommonUtil showHintHUD:content inView:[self.parentController performSelector:@selector(webView)]];
+    }else if ([self.parentController respondsToSelector:@selector(tableView)]){
+        [JDOCommonUtil showHintHUD:content inView:[self.parentController performSelector:@selector(tableView)]];
     }else{
         [JDOCommonUtil showHintHUD:content inView:self.parentController.view];
     }
