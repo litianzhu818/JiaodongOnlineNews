@@ -184,7 +184,6 @@
             _reviewPanel = [[JDONewsReviewView alloc] initWithTarget:self];
             [(HPTextViewInternal *)_reviewPanel.textView.internalTextView setPlaceholder:Review_Comment_Placeholder];
         }
-        _reviewPanel.frame = [_reviewPanel initialFrame];
         
         [self.parentController.view pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
             [_reviewPanel.textView becomeFirstResponder];

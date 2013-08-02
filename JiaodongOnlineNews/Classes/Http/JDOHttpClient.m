@@ -16,16 +16,16 @@
     static JDOHttpClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[JDOHttpClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_URL]];
+        _sharedClient = [[JDOHttpClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_QUERY_URL]];
     });
     return _sharedClient;
 }
 
-+ (JDOHttpClient *)sharedTestClient {
++ (JDOHttpClient *)sharedResourceClient {
     static JDOHttpClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[JDOHttpClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_URL_TEST]];
+        _sharedClient = [[JDOHttpClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_RESOURCE_URL]];
     });
     return _sharedClient;
 }

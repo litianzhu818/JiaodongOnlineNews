@@ -224,6 +224,7 @@
 		2DA566B917AB39E000987EDC /* JDOCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285A17A9887F0040F05F /* JDOCollectView.m */; };
 		2DA566BA17AB39E700987EDC /* JDOCollectDB.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62176617A0943A0020A8A4 /* JDOCollectDB.m */; };
 		2DA566BB17AB39F500987EDC /* JDOCollectNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285D17A98A1D0040F05F /* JDOCollectNewsView.m */; };
+		2DA6364817AB7C2F009D03AC /* libBPush-simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DA6364717AB7C2F009D03AC /* libBPush-simulator.a */; };
 		2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */; };
 		2DAADB3E17AA4EC4001EBD43 /* JDOGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAADB3D17AA4EC4001EBD43 /* JDOGuideViewController.m */; };
 		2DAADB4317AA4EE8001EBD43 /* Guide0.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB3F17AA4EE8001EBD43 /* Guide0.png */; };
@@ -1000,6 +1001,7 @@
 		2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
 		2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetsTextField.m; sourceTree = "<group>"; };
 		2DA566B617AB393B00987EDC /* ShareSDKLocalizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = ShareSDKLocalizable.strings; sourceTree = "<group>"; };
+		2DA6364717AB7C2F009D03AC /* libBPush-simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libBPush-simulator.a"; sourceTree = "<group>"; };
 		2DA81F9817967F1E00A528BA /* JDOWeatherForcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeatherForcast.h; sourceTree = "<group>"; };
 		2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeatherForcast.m; sourceTree = "<group>"; };
 		2DAADB3C17AA4EC4001EBD43 /* JDOGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOGuideViewController.h; sourceTree = "<group>"; };
@@ -1448,6 +1450,7 @@
 				2D9BCED5176D820C0040DDA0 /* libWeiboSDK.a in Frameworks */,
 				2D9BCED7176D820C0040DDA0 /* ShareSDK.framework in Frameworks */,
 				2DAADB5017AA7759001EBD43 /* libBPush.a in Frameworks */,
+				2DA6364817AB7C2F009D03AC /* libBPush-simulator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2546,6 +2549,7 @@
 			children = (
 				2DAADB4E17AA7759001EBD43 /* BPush.h */,
 				2DAADB4F17AA7759001EBD43 /* libBPush.a */,
+				2DA6364717AB7C2F009D03AC /* libBPush-simulator.a */,
 			);
 			path = BPush;
 			sourceTree = "<group>";

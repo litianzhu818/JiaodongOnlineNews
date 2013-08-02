@@ -51,7 +51,7 @@
 - (void)asyncLoadAdvertise{   // 异步加载广告页
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *advUrl = [SERVER_URL stringByAppendingString:ADV_SERVICE];
+        NSString *advUrl = [SERVER_QUERY_URL stringByAppendingString:ADV_SERVICE];
         NSError *error ;
         
         #warning 需要确认dataWithContentsOfURL不使用缓存
@@ -70,7 +70,7 @@
         // PS:如果每次广告图更新后的URL会变动，则URL缓存就能够区分出是从本地获取还是从网络获取，没有必要使用版本号机制。
         
         if(advLocalVersion ==nil || ![advLocalVersion isEqualToString:advServerVersion]){
-            NSString *advImgUrl = [SERVER_URL stringByAppendingString:[jsonObject valueForKey:@"path"]];
+            NSString *advImgUrl = [SERVER_RESOURCE_URL stringByAppendingString:[jsonObject valueForKey:@"path"]];
             // 同步方法不使用URLCache，若使用AFNetworking则无法禁用缓存
             NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advImgUrl] options:NSDataReadingUncached error:&error];
             if(error != nil){
@@ -199,7 +199,7 @@
     
     // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
-    hostReach = [Reachability reachabilityWithHostName:SERVER_URL];
+    hostReach = [Reachability reachabilityWithHostName:SERVER_QUERY_URL];
     [hostReach startNotifier];
     
     // 开启内存与磁盘缓存

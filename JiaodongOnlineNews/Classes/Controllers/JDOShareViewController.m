@@ -126,7 +126,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.titleLabel.text = [self getShareTitleAndContent];
-    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"news_image_placeholder.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]] placeholderImage:[UIImage imageNamed:@"news_image_placeholder.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         
     } failure:^(NSError *error) {
         
