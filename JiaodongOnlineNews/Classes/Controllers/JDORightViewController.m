@@ -208,6 +208,8 @@ typedef enum {
                 _settingContrller = [[JDOSettingViewController alloc] init];
             }
             [self pushViewController:_settingContrller];
+            // 重载缓存部分的数据
+            [_settingContrller.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
         case RightMenuItemCollection:
             if( _collectController == nil){
@@ -233,13 +235,10 @@ typedef enum {
                 _shareAuthController = [[JDOShareAuthController alloc] init];
             }
             [self pushViewController:_shareAuthController];
+            [_shareAuthController updateAuth];
             break;
         case RightMenuItemRate:
-#warning 未实现
-            if( _aboutUsController == nil){
-                _aboutUsController = [[JDOAboutUsViewController alloc] init];
-            }
-            [self pushViewController:_aboutUsController];
+            [SharedAppDelegate promptForRating];
             break;
         default:
             break;

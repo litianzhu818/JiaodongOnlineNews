@@ -24,7 +24,6 @@
     return self;
 }
 
-
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
@@ -47,6 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.listview setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.listview setDelegate:self];
     [self.listview setDataSource:self];
     [self.listview reloadData];
@@ -57,10 +57,10 @@
 
 #pragma mark UITableViewDelegate
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    JDOCarTableCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-//    return cell.height;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.height;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	return 0.;
@@ -80,14 +80,16 @@
     UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
     cell.selectedBackgroundView = backView;
     cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
-    NSDictionary *temp = @{@"carnum": @"鲁F6L930"};
+    NSDictionary *temp = [message objectAtIndex:indexPath.row];
     [cell setData:temp];
     return cell;
 
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 1;
+    message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    NSLog(@"COUNT:%d", message.count);
+	return message.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -95,6 +97,11 @@
 }
 
 
+- (void)update
+{
+    message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    [self.listview reloadData];
+}
 
 
 - (void)didReceiveMemoryWarning

@@ -64,11 +64,6 @@
     self.tableView.backgroundColor = [UIColor clearColor];
 }
 
-- (void)viewDidUnload{
-    [super viewDidUnload];
-    self.tableView = nil;
-}
-
 - (void) backToDetailList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];

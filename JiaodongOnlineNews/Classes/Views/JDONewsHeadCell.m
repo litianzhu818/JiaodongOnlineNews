@@ -57,8 +57,10 @@
         _titleLabel.shadowOffset = CGSizeMake(0, 1);
         [self.contentView addSubview:_titleLabel];
         
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(width-PageControl_Width-Right_Margin, height-Title_Height, PageControl_Width, Title_Height)];
+        _pageControl = [[StyledPageControl alloc] initWithFrame:CGRectMake(width-PageControl_Width-Right_Margin, height-Title_Height, PageControl_Width, Title_Height)];
         _pageControl.backgroundColor = [UIColor clearColor];
+        _pageControl.coreNormalColor = [UIColor colorWithHex:@"A1A1A1"];
+        _pageControl.coreSelectedColor = [UIColor colorWithHex:@"006FD7"];
         _pageControl.numberOfPages = 0;
         [self.contentView addSubview:_pageControl];
         
@@ -99,7 +101,7 @@
         }
             
         __block UIImageView *blockImageView = imageView;
-        [imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+        [imageView setImageWithURL:[NSURL URLWithString:[SERVER_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
             if(!cached){    // 非缓存加载时使用渐变动画
                 CATransition *transition = [CATransition animation];
                 transition.duration = 0.3;
@@ -111,7 +113,6 @@
             
         }];
     }
-#warning _pageControl图标样式需要改为蓝色
     _pageControl.numberOfPages = models.count;
     _pageControl.currentPage = _currentPage;
 }

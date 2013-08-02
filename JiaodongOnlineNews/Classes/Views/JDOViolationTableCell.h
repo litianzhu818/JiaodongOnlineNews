@@ -15,8 +15,15 @@
     UILabel *action;
     UILabel *istreated;
     UILabel *ispaid;
+    
+    UILabel *timelabel;
+    UILabel *locationlabel;
+    UILabel *actionlabel;
+    UILabel *istreatedlabel;
+    UILabel *ispaidlabel;
 }
 
 - (void)setData:(NSDictionary *)data;
+- (void)setSeparator:(UIImage *)separator;
 
 @end

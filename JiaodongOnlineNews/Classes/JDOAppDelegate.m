@@ -24,6 +24,11 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "MobClick.h"
 #import "UIResponder+KeyboardCache.h"
+#import "iVersion.h"
+#import "SDImageCache.h"
+#import "iRate.h"
+#import "JDOGuideViewController.h"
+#import "BPush.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -34,12 +39,14 @@
 #define advertise_img_width 320
 #define advertise_img_height App_Height
 
-@implementation JDOAppDelegate
-
+@implementation JDOAppDelegate{
     Reachability  *hostReach;
     UIImage *advImage;
     UIImageView *splashView;
-    UIImageView *advView; 
+    UIImageView *advView;
+    BOOL manualCheckUpdate;
+    MBProgressHUD *HUD;
+}
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
     
@@ -131,13 +138,23 @@
 }
 
 - (void)navigateToMainView{
+    [advView removeFromSuperview];
+    self.deckController = [self generateControllerStack];
+    
+    // 若第一次登陆，则进入新手引导页面
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    if([userDefault objectForKey:@"JDO_Guide"] == nil){
+        JDOGuideViewController *guideController = [[JDOGuideViewController alloc] init];
+        self.window.rootViewController = guideController;
+    }else{
+        [self enterMainView];
+    }
+}
+
+- (void)enterMainView{
     [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationNone];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-    self.deckController = [self generateControllerStack];
     self.window.rootViewController = self.deckController;
-    // 测试单独的JDONewsViewController
-//    self.window.rootViewController = [[JDONewsViewController alloc] initWithNibName:nil bundle:nil];
-    [advView removeFromSuperview];
 }
 
 - (IIViewDeckController *)generateControllerStack {
@@ -158,15 +175,24 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    // 创建磁盘缓存目录 /Library/caches/JDOCache
+    self.cachePath = [JDOCommonUtil createJDOCacheDirectory];
+    self.newsDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"NewsDetailCache"];
+    self.imageDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"ImageDetailCache"];
+    self.topicDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"TopicDetailCache"];
+    // 标记检查更新的标志位(启动时标记为非手动检查)
+    manualCheckUpdate = false;
     
+    // 注册ShareSDK相关服务
     [ShareSDK registerApp:@"4991b66e0ae"];
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
+#warning 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
+    [ShareSDK ssoEnabled:false];    // 禁用SSO
     [ShareSDK setInterfaceOrientationMask:SSInterfaceOrientationMaskPortrait];
     [self initializePlatform];
-    
     //监听用户信息变更
-    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
+//    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
     //友盟统计
     [MobClick startWithAppkey:@"51de0ed156240bd3fb01d54c"];
@@ -179,6 +205,10 @@
     // 开启内存与磁盘缓存
 //    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024*max_memory_cache diskCapacity:1024*1024*max_disk_cache    diskPath:[SDURLCache defaultCachePath]];
 //    [NSURLCache setSharedURLCache:urlCache];
+    
+    // 全局内存警告监听，清空图片内存缓存
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearImageCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    
     
 #warning 测试广告位图片效果,暂时关闭异步网络加载，Defalut图片去掉上面的状态栏(图片问题)
 //    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
@@ -200,9 +230,18 @@
     
     [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
     
-//    [self navigateToMainView];
+    // 注册百度推送
+    [BPush setupChannel:launchOptions]; // 必须
+    [BPush setDelegate:self]; // 必须。参数对象必须实现onMethod: response:方法
+    
+    // [BPush setAccessToken:@"3.ad0c16fa2c6aa378f450f54adb08039.2592000.1367133742.282335-602025"];  // 可选。api key绑定时不需要，也可在其它时机调用
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert| UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
     
     return YES;
+}
+
+- (void)clearImageCache{
+    [[SDImageCache sharedImageCache] clearMemory];
 }
 
 - (void)reachabilityChanged:(NSNotification *)note {
@@ -211,17 +250,157 @@
     NetworkStatus status = [curReach currentReachabilityStatus];
     
     if (status == NotReachable) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"My App Name"
-                                                        message:@"NotReachable"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"YES" otherButtonTitles:nil];
-        [alert show];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"失去网络链接"
+//                                                        message:@"请检查您的网络"
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//        [alert show];
     } else {//有网络
-        NSLog(@"has net");
         JDOLeftViewController *leftController = (JDOLeftViewController *)[[SharedAppDelegate deckController] leftController];
         [leftController updateWeather];
     }
 }
+
++ (void)initialize{
+#warning 发布时替换bundleId,注释掉就可以
+    NSString *bundleID = @"com.glavesoft.app.17lu";
+    [iVersion sharedInstance].applicationBundleID = bundleID;
+    [iRate sharedInstance].applicationBundleID = bundleID;
+    
+//    [iVersion sharedInstance].applicationVersion = @"1.2.0.0"; // 覆盖bundle中的版本信息,测试用
+    [iVersion sharedInstance].verboseLogging = false;   // 调试信息
+    [iVersion sharedInstance].appStoreCountry = @"CN";
+    [iVersion sharedInstance].showOnFirstLaunch = false; // 不显示当前版本特性
+    [iVersion sharedInstance].remindPeriod = 1.0f;
+    [iVersion sharedInstance].ignoreButtonLabel = @"忽略此版本";
+    [iVersion sharedInstance].remindButtonLabel = @"以后提醒";
+    // 由于视图层级的原因,在程序内弹出appstore会被覆盖到下层导致看不到
+    [iVersion sharedInstance].displayAppUsingStorekitIfAvailable = false;
+//    [iVersion sharedInstance].checkAtLaunch = NO;
+    
+    
+    [iRate sharedInstance].verboseLogging = false;
+    [iRate sharedInstance].appStoreCountry = @"CN";
+    [iRate sharedInstance].applicationName = @"胶东在线iPhone客户端";
+//    [iRate sharedInstance].daysUntilPrompt = 10;
+//    [iRate sharedInstance].usesUntilPrompt = 10;
+	[iRate sharedInstance].onlyPromptIfLatestVersion = false;
+    [iRate sharedInstance].displayAppUsingStorekitIfAvailable = false;
+    [iRate sharedInstance].promptAtLaunch = NO;
+}
+
+#pragma mark - 评价应用相关
+- (void)promptForRating{
+    if( ![Reachability isEnableNetwork]){
+        return;
+    }
+    [[iRate sharedInstance] promptIfNetworkAvailable];
+    HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+    [SharedAppDelegate.window addSubview:HUD];
+    HUD.margin = 15.f;
+    HUD.removeFromSuperViewOnHide = true;
+    HUD.labelText = @"连接AppStore";
+    [HUD show:true];
+}
+
+- (void)iRateCouldNotConnectToAppStore:(NSError *)error{
+#warning error图片
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    HUD.mode = MBProgressHUDModeCustomView;
+    HUD.labelText = @"无法连接";
+    [HUD hide:true afterDelay:1.0];
+    HUD = nil;
+}
+
+- (BOOL)iRateShouldPromptForRating{
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    HUD.mode = MBProgressHUDModeCustomView;
+    HUD.labelText = @"连接成功";
+    [HUD hide:true afterDelay:1.0];
+    HUD = nil;
+    [[iRate sharedInstance] performSelector:@selector(openRatingsPageInAppStore) withObject:nil afterDelay:1.0f];
+//    [[iRate sharedInstance] openRatingsPageInAppStore];
+    return false;
+}
+
+
+#pragma mark - 版本检查相关
+
+- (void)checkForNewVersion{
+    if( ![Reachability isEnableNetwork]){
+        return;
+    }
+    manualCheckUpdate = true;
+    [iVersion sharedInstance].ignoredVersion = nil;
+    [iVersion sharedInstance].ignoreButtonLabel = @"暂不更新";
+    [iVersion sharedInstance].remindButtonLabel = @"";
+	[[iVersion sharedInstance] checkForNewVersion];
+    HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+    [SharedAppDelegate.window addSubview:HUD];
+    HUD.labelText = @"正在检查更新";
+    HUD.margin = 15.f;
+    HUD.removeFromSuperViewOnHide = true;
+    [HUD show:true];
+}
+
+- (void)iVersionUserDidIgnoreUpdate:(NSString *)version{
+    // 将手动检查更新中的“暂不更新”替换为原来的
+    if (manualCheckUpdate) {
+        [iVersion sharedInstance].ignoredVersion = nil;
+        [iVersion sharedInstance].remindButtonLabel = @"以后提醒";
+        [iVersion sharedInstance].ignoreButtonLabel = @"忽略此版本";
+    }
+}
+
+- (void)iVersionVersionCheckDidFailWithError:(NSError *)error{
+    if(manualCheckUpdate){
+#warning error图片
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"检查更新错误";
+        [HUD hide:true afterDelay:1.0];
+        HUD = nil;
+    }else{
+        NSLog(@"检查新版本错误:%@",error);
+    }
+}
+
+- (void)iVersionDidNotDetectNewVersion{
+    if(manualCheckUpdate){
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"已是最新版本";
+        [HUD hide:true afterDelay:1.0];
+        HUD = nil;
+    }else{
+        NSLog(@"没有新版本");
+    }
+}
+
+- (void)iVersionDidDetectNewVersion:(NSString *)version details:(NSString *)versionDetails{
+    if(manualCheckUpdate){
+        [HUD hide:true];
+        HUD = nil;
+    }else{
+        NSLog(@"找到新版本:%@,%@",version,versionDetails);
+    }
+}
+
+- (BOOL)iVersionShouldDisplayNewVersion:(NSString *)version details:(NSString *)versionDetails{
+	return true;
+}
+
+// 不显示当前版本信息
+- (BOOL)iVersionShouldDisplayCurrentVersionDetails{
+    return false;  
+}
+
+// 延时执行防止在Splash和广告页时弹出版本提醒
+- (float) iVersionCheckUpdateDelayWhenLaunch{
+    return splash_stay_time+advertise_stay_time+splash_adv_fadetime;
+}
+
+#pragma mark - 分享相关
 
 - (void)initializePlatform{
     // http://open.weibo.com上注册新浪微博开放平台应用，并将相关信息填写到以下字段
@@ -243,8 +422,8 @@
      如果需要实现SSO，需要导入TencentOpenAPI.framework,并引入QQApiInterface.h和TencentOAuth.h，将QQApiInterface和TencentOAuth的类型传入接口
      **/
     // 应用管理账户383926109
-    [ShareSDK connectQZoneWithAppKey:@"100467475"
-                           appSecret:@"0cf7ac7fc2a78ffd3a63234f3b15846a"
+    [ShareSDK connectQZoneWithAppKey:@"100497289"
+                           appSecret:@"3373fc627de22237a075dd1a0b4757e2"
                    qqApiInterfaceCls:[QQApiInterface class]
                      tencentOAuthCls:[TencentOAuth class]];
 
@@ -291,37 +470,23 @@
     [ShareSDK connectWeChatWithAppId:@"wx1b4314c4cfb4239b" wechatCls:[WXApi class]];
 }
 
-- (void)userInfoUpdateHandler:(NSNotification *)notif{
-    NSMutableArray *authList = [NSMutableArray arrayWithContentsOfFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()]];
-    if (authList == nil){
-        authList = [NSMutableArray array];
-    }
-    
-    
-    NSInteger plat = [[[notif userInfo] objectForKey:SSK_PLAT] integerValue];
-    NSString *platName = [ShareSDK getClientNameWithType:plat];
-    id<ISSUserInfo> userInfo = [[notif userInfo] objectForKey:SSK_USER_INFO];
-    
-    BOOL hasExists = NO;
-    for (int i = 0; i < [authList count]; i++)
-    {
-        NSMutableDictionary *item = [authList objectAtIndex:i];
-        ShareType type = [[item objectForKey:@"type"] integerValue];
-        if (type == plat)
-        {
-            [item setObject:[userInfo nickname] forKey:@"username"];
-            hasExists = YES;
-            break;
-        }
-    }
-    
-    if (!hasExists){
-        NSDictionary *newItem = @{@"title":platName,@"type":[NSNumber numberWithInteger:plat],@"username":[userInfo nickname]};
-        [authList addObject:newItem];
-    }
-    
-    [authList writeToFile:[NSString stringWithFormat:@"%@/authListCache.plist",NSTemporaryDirectory()] atomically:YES];
-}
+//- (void)userInfoUpdateHandler:(NSNotification *)notif{
+//    NSMutableArray *authList = [JDOCommonUtil getAuthList];
+//
+//    NSInteger plat = [[[notif userInfo] objectForKey:SSK_PLAT] integerValue];
+//    id<ISSUserInfo> userInfo = [[notif userInfo] objectForKey:SSK_USER_INFO];
+//    
+//    for (int i = 0; i < [authList count]; i++){
+//        NSMutableDictionary *item = [authList objectAtIndex:i];
+//        ShareType type = [[item objectForKey:@"type"] integerValue];
+//        if (type == plat){
+//            [item setObject:[userInfo nickname] forKey:@"username"];
+//            [item setObject:[NSNumber numberWithBool:true] forKey:@"selected"];
+//            break;
+//        }
+//    }
+//    [authList writeToFile:JDOGetDocumentFilePath(@"authListCache.plist") atomically:YES];
+//}
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     return [ShareSDK handleOpenURL:url wxDelegate:self];
@@ -347,6 +512,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    manualCheckUpdate = false;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -369,6 +535,35 @@
 -(void) onResp:(BaseResp*)resp
 {
     
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    
+    [BPush registerDeviceToken:deviceToken]; // 必须
+    
+    [BPush bindChannel]; // 必须。可以在其它时机调用，只有在该方法返回（通过onMethod:response:回调）绑定成功时，app才能接收到Push消息。一个app绑定成功至少一次即可（如果access token变更请重新绑定）。
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [BPush handleNotification:userInfo]; // 可选
+}
+
+// 必须，如果正确调用了setDelegate，在bindChannel之后，结果在这个回调中返回。
+// 若绑定失败，请进行重新绑定，确保至少绑定成功一次
+- (void) onMethod:(NSString*)method response:(NSDictionary*)data
+{
+    if ([BPushRequestMethod_Bind isEqualToString:method])
+    {
+        NSDictionary* res = [[NSDictionary alloc] initWithDictionary:data];
+        
+        NSString *appid = [res valueForKey:BPushRequestAppIdKey];
+        NSString *userid = [res valueForKey:BPushRequestUserIdKey];
+        NSString *channelid = [res valueForKey:BPushRequestChannelIdKey];
+        int returnCode = [[res valueForKey:BPushRequestErrorCodeKey] intValue];
+        NSString *requestid = [res valueForKey:BPushRequestRequestIdKey];
+    }
 }
 
 

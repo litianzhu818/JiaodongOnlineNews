@@ -8,7 +8,7 @@
 
 #import "JDOToolbarModel.h"
 
-@interface JDOTopicModel : NSObject <JDOToolbarModel>
+@interface JDOTopicModel : NSObject <NSCoding, JDOToolbarModel>
 @property (nonatomic,strong) NSString *id;
 @property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) NSString *follownums;

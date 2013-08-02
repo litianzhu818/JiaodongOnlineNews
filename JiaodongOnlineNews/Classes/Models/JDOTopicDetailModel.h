@@ -8,7 +8,7 @@
 
 #import "MGTemplateEngine.h"
 
-@interface JDOTopicDetailModel : NSObject <MGTemplateEngineDelegate>
+@interface JDOTopicDetailModel : NSObject <NSCoding,MGTemplateEngineDelegate>
 
 @property (nonatomic,copy) NSString *id;
 @property (nonatomic,copy) NSString *title;

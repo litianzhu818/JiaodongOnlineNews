@@ -16,11 +16,7 @@
 #import "JDOConvenienceItemController.h"
 
 #define NewsList_Page_Size 20
-
 #define Finished_Label_Tag 111
-
-#define News_Cache_Path(fileName) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName]
-
 
 @interface JDOLifeKnowledgeViewController ()
 
@@ -90,7 +86,7 @@
 }
 
 - (void)dealloc{
-    [[SDImageCache sharedImageCache] clearMemory];
+//    [[SDImageCache sharedImageCache] clearMemory];
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
@@ -245,11 +241,11 @@
 
 // 保存列表内容至本地缓存文件
 - (void) saveListToLocalCache{
-    [NSKeyedArchiver archiveRootObject:self.listArray toFile:News_Cache_Path(@"LifeKnowledgeCache")];
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"LifeKnowledgeCache"] ];
 }
 
 - (BOOL) readListFromLocalCache{
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: News_Cache_Path(@"LifeKnowledgeCache")];
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"LifeKnowledgeCache"]];
     return self.listArray != nil;
 }
 

@@ -15,9 +15,9 @@
     <script type="text/javascript">
         
         document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
-        
+        var bridge;
         function onBridgeReady(event) {
-            var bridge = event.bridge;
+            bridge = event.bridge;
             var uniqueId = 1;
             bridge.init(function(message, responseCallback) {
                 var data = { 'Javascript Responds':'Wee!' };
@@ -25,31 +25,16 @@
             });
             
             // 调整图片尺寸
-            $("img").each(adjustImgSize);
+            //$("img").each(adjustImgSize);
             $("img[tapToLoad='true']").one("click", function(){
                 // 替换为加载提示图，并加载原图
                 $(this).attr('src' ,'loading.gif');		// 更换为加载效果gif
-                window.showimage.loadImage($(this).attr('realUrl'));
+                bridge.callHandler('loadImage',{'realUrl':this.attributes["realUrl"].nodeValue},function(response){});
                 $(this).click(clickImageEvent);
             });
             
             // 显示图集或图片详情
-            $("img[tapToLoad!='true']").click(function(e){
-                e.preventDefault()
-                if(this.attributes["src"].nodeValue!="icon.png" && this.attributes["src"].nodeValue!="img_set_flag.png"){
-                    var index = $.inArray(this,$("img[src!='img_set_flag.png']"));
-                    var linkId = $(this).closest("p").attr("id");
-                    if( linkId ){
-                        bridge.callHandler('showImageSet', {'linkId': linkId}, function(response) {
-                                 
-                                           });
-                    }else{
-                        bridge.callHandler('showImageDetail', {'imageId': index}, function(response) {
-                                 
-                                           });
-                    }
-                }
-            });
+            $("img[tapToLoad!='true']").click(clickImageEvent);
             
             // 修改字号
             bridge.registerHandler('changeFontSize', function(data, responseCallback) {

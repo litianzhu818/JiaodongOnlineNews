@@ -93,9 +93,40 @@
     _horizontalScrollView = [[[NSBundle mainBundle] loadNibNamed:@"HGPageScrollView" owner:self options:nil] objectAtIndex:0];
     _horizontalScrollView.tag = ScrollView_Tag;
 	[self.view insertSubview:_horizontalScrollView belowSubview:self.navigationView];
-	
-    [self loadDataFromNetwork];
+    BOOL hasCache = [self readListFromLocalCache];
+    if(hasCache) {
+        [self setCurrentState:ViewStatusNormal];
+        // 设置上次刷新时间
+        double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Image_Update_Time];
+        if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
+            [self loadDataFromNetwork];
+        }
+        [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
+        [self.horizontalScrollView reloadData];
+    } else {
+        self.listArray = [[NSMutableArray alloc] initWithCapacity:TopicList_Page_Size];
+        [self loadDataFromNetwork];
+    }
 }
+
+- (void) saveListToLocalCache{
+    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"JDOCache/TopicListCache"];
+    [NSKeyedArchiver archiveRootObject:self.listArray toFile:cacheFilePath];
+}
+
+- (BOOL) readListFromLocalCache{
+    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:@"TopicListCache"])];
+    // 任何一个数组为空都任务本地缓存无效
+    return TRUE && self.listArray;
+}
+
+- (void) updateLastRefreshTimeWithDate:(NSDate *)lastUpdateTime{
+    self.lastUpdateTime = lastUpdateTime;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setDouble:[self.lastUpdateTime timeIntervalSince1970] forKey:Image_Update_Time];
+    [userDefaults synchronize];
+}
+
 
 - (void)loadDataFromNetwork{
     if(![Reachability isEnableNetwork]){
@@ -104,23 +135,29 @@
     }else{  // 从网络加载数据，切换到loading状态
         [self setCurrentState:ViewStatusLoading];
     }
-    
+    self.currentPage = 1;
     [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
-        if(dataList == nil){
-            isLoadFinised = true;   // 数据加载完成
-        }else{
-            if(dataList.count < TopicList_Page_Size){   // 数据加载完成
-                isLoadFinised = true;   
-            }
-            [self setCurrentState:ViewStatusNormal];
-            [self.listArray removeAllObjects];
-            [self.listArray addObjectsFromArray:dataList];
-            [self.horizontalScrollView reloadData];
-        }
+        [self dataLoadFinished:dataList];
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
     }];
+}
+
+- (void) dataLoadFinished:(NSArray *)dataList{
+    if(dataList == nil){
+        isLoadFinised = true;   // 数据加载完成
+    }else{
+        if(dataList.count < TopicList_Page_Size){   // 数据加载完成
+            isLoadFinised = true;
+        }
+        [self setCurrentState:ViewStatusNormal];
+        [self.listArray removeAllObjects];
+        [self.listArray addObjectsFromArray:dataList];
+        [self updateLastRefreshTimeWithDate:[NSDate date]];
+        [self saveListToLocalCache];
+        [self.horizontalScrollView reloadData];
+    }
 }
 
 - (void) loadMore{

@@ -11,11 +11,14 @@
 #import "JDOAddCarViewController.h"
 
 @interface JDOCarManagerViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource>
-
+{
+    NSArray *message;
+}
 @property (nonatomic, strong) IBOutlet UITableView *listview;
 @property (nonatomic, strong) JDOViolationViewController *back;
 
 - (void)onBackBtnClick;
 - (void)onRightBtnClick;
+- (void)update;
 
 @end

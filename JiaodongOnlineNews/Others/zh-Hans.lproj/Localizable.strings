@@ -25,3 +25,18 @@
 "%d months" = "%d 月";
 "about 1 year" = "大约1年";
 "over %d years" = "超过%d 年";
+
+"iVersionInThisVersionTitle" = "更新说明";
+"iVersionUpdateAvailableTitle" = "有新的版本";
+"iVersionVersionLabelFormat" = "版本 %@";
+"iVersionIgnoreButton" = "忽略";
+"iVersionDownloadButton" = "下载更新";
+"iVersionRemindButton" = "回头再说";
+"iVersionOKButton" = "好的";
+
+"iRateMessageTitle" = "为“%@”评分";
+"iRateAppMessage" = "如果您觉得“%@”很好用，可否为其评一个分数？评分过程只需花费很少的时间。感谢您的支持！";
+"iRateGameMessage" = "如果您觉得“%@”很好玩，可否为其评一个分数？评分过程只需花费很少的时间。感谢您的支持！";
+"iRateCancelButton" = "不了，谢谢";
+"iRateRateButton" = "现在去评分";
+"iRateRemindButton" = "稍后再说";

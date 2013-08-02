@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString *caption;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *pages;
+@property (nonatomic) BOOL isImageHolder;
 
 // Class
 + (MWPhoto *)photoWithImage:(UIImage *)image;

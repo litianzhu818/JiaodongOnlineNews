@@ -9,8 +9,6 @@
 #import "JDOWeather.h"
 #import "JDOWeatherForcast.h"
 
-#define Weather_Cache_Path [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"WeatherCache"]
-
 @interface JDOWeather ()
 
 @property (strong) JDOWeatherForcast *forcast;
@@ -103,11 +101,11 @@
 }
 
 + (void) saveToFile:(JDOWeather *) weather{
-    [NSKeyedArchiver archiveRootObject:weather toFile:Weather_Cache_Path];
+    [NSKeyedArchiver archiveRootObject:weather toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"WeatherCache"]];
 }
 
 + (JDOWeather *) readFromFile{
-    return [NSKeyedUnarchiver unarchiveObjectWithFile: Weather_Cache_Path];
+    return [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"WeatherCache"]];
 }
 
 

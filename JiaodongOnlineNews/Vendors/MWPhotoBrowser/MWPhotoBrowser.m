@@ -26,7 +26,6 @@
 @interface MWPhotoBrowser () {
     
 	// Data
-    id <MWPhotoBrowserDelegate> _delegate;
     NSUInteger _photoCount;
     NSMutableArray *_photos;
 	NSArray *_depreciatedPhotoData; // Depreciated
@@ -129,7 +128,7 @@
 
 - (id)initWithDelegate:(id <MWPhotoBrowserDelegate>)delegate {
     if ((self = [self init])) {
-        _delegate = delegate;
+        self._delegate = delegate;
 	}
 	return self;
 }
@@ -302,7 +301,7 @@
 	// Adjust contentOffset to preserve page location based on values collected prior to location
 	_pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:indexPriorToLayout];
 	[self didStartViewingPageAtIndex:_currentPageIndex]; // initial
-    [_captionView setPhoto:[_delegate photoBrowser:self photoAtIndex:_currentPageIndex]];
+    [_captionView setPhoto:[self._delegate photoBrowser:self photoAtIndex:_currentPageIndex]];
     
     // captionview frame,转屏后重设frame
     _captionView.frame = CGRectMake(0, self.view.bounds.size.height-86.0-(_showToolbar?_toolbar.frame.size.height:0), self.view.bounds.size.width, 86.0);
@@ -365,8 +364,8 @@
 
 - (NSUInteger)numberOfPhotos {
     if (_photoCount == NSNotFound) {
-        if ([_delegate respondsToSelector:@selector(numberOfPhotosInPhotoBrowser:)]) {
-            _photoCount = [_delegate numberOfPhotosInPhotoBrowser:self];
+        if ([self._delegate respondsToSelector:@selector(numberOfPhotosInPhotoBrowser:)]) {
+            _photoCount = [self._delegate numberOfPhotosInPhotoBrowser:self];
         } else if (_depreciatedPhotoData) {
             _photoCount = _depreciatedPhotoData.count;
         }
@@ -379,8 +378,8 @@
     id <MWPhoto> photo = nil;
     if (index < _photos.count) {
         if ([_photos objectAtIndex:index] == [NSNull null]) {
-            if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
-                photo = [_delegate photoBrowser:self photoAtIndex:index];
+            if ([self._delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
+                photo = [self._delegate photoBrowser:self photoAtIndex:index];
             } else if (_depreciatedPhotoData && index < _depreciatedPhotoData.count) {
                 photo = [_depreciatedPhotoData objectAtIndex:index];
             }
@@ -648,7 +647,7 @@
 	_currentPageIndex = index;
 	if (_currentPageIndex != previousCurrentPage) {
         [self didStartViewingPageAtIndex:index];
-        [_captionView setPhoto:[_delegate photoBrowser:self photoAtIndex:_currentPageIndex]];
+        [_captionView setPhoto:[self._delegate photoBrowser:self photoAtIndex:_currentPageIndex]];
     }
 	
 }

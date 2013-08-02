@@ -9,7 +9,6 @@
 #import "JDONavigationController.h"
 #import "M13Checkbox.h"
 #import "TPKeyboardAvoidingScrollView.h"
-#import "JDOCarManagerViewController.h"
 
 @interface JDOAddCarViewController : JDONavigationController
 {
@@ -18,15 +17,20 @@
     IBOutlet UITextField *carNum;
     IBOutlet UITextField *chassisNum;
     IBOutlet TPKeyboardAvoidingScrollView *tp;
+    IBOutlet UILabel *cartypelabel;
+    IBOutlet UILabel *carnumlabel;
+    IBOutlet UILabel *chassisnumlabel;
     
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
     
     NSMutableString *CarTypeString;
+    NSMutableArray *carMessageArray;
 }
 
-@property JDONavigationController *back;
+@property (nonatomic, strong)JDONavigationController *back;
 
+- (BOOL)checkEmpty;
 - (IBAction)clickCarType:(id)sender;
 - (IBAction)clickAddCar:(id)sender;
 - (void)setCartype:(NSString*) type index:(int)index;

@@ -20,9 +20,30 @@
  *
  *  @param  account 帐号
  *	@param 	appId 	应用ID
+ *  @param  qqApiCls    QQ接口类型
  *
  *	@return	应用对象
  */
-+ (id<ISSQQApp>)registerApp:(id<ISSCAccount>)account appId:(NSString *)appId qqApiCls:(Class)qqApiCls;
++ (id<ISSQQApp>)registerApp:(id<ISSCAccount>)account
+                      appId:(NSString *)appId
+                   qqApiCls:(Class)qqApiCls;
+
+/**
+ *	@brief	注册QQ应用
+ *
+ *  @since  ver1.0.3    用于整合后的QQ互联接口
+ *
+ *	@param 	account 	帐号
+ *	@param 	qzoneAppKey 	QQ空间应用ID
+ *	@param 	qqApiInterfaceCls   QQ接口类型
+ *  @param  tencentOAuthCls     腾讯OAuth类型 
+ *
+ *	@return	应用对象
+ */
++ (id<ISSQQApp>)registerApp:(id<ISSCAccount>)account
+                qzoneAppKey:(NSString *)qzoneAppKey
+          qqApiInterfaceCls:(Class)qqApiInterfaceCls
+            tencentOAuthCls:(Class)tencentOAuthCls;
+
 
 @end

@@ -23,6 +23,8 @@
 
 @property (nonatomic,assign) int currentPage;
 @property (nonatomic,assign) int pageSize;
+@property (nonatomic) BOOL isCacheToMemory;
+@property (nonatomic, strong) NSString *cacheFileName;
 
 @property (strong,nonatomic) UIImageView *noDataView;
 
@@ -31,5 +33,6 @@
 - (void) refresh;
 - (void) loadMore;
 - (void) dataLoadFinished:(NSArray *)dataList;
+- (void) setIsCacheToMemory:(BOOL)isCacheToMemory andCacheFileName:(NSString *)cacheFileName;
 
 @end

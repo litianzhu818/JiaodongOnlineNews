@@ -332,8 +332,7 @@
 
     // 有可能再翻页之后再进行搜索,所以需要将页码置为1
     self.currentPage = 1;
-#warning 查询功能目前只在Test下可用
-    [[JDOHttpClient sharedTestClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
+    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
         [self setCurrentState:ViewStatusNormal];
         if(dataList == nil || dataList.count == 0){
             // 搜索时很有可能返回结果为空

@@ -21,6 +21,7 @@
 #import "SDImageCache.h"
 #import "JDORegxpUtil.h"
 #import "DCKeyValueObjectMapping.h"
+#import "JDOCommonUtil.h"
 
 #define Default_Image @"news_head_placeholder.png"
 
@@ -144,21 +145,17 @@ NSArray *imageUrls;
         NSLog(@"ObjC received message from JS: %@", data);
         responseCallback(@"Response for message from ObjC");
     }];
-    
     [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *imageId = [(NSDictionary *)data valueForKey:@"imageId"];
-        NSLog(@"showImageDetail js  imageId: %@", imageId);
         NSMutableArray *array = [[NSMutableArray alloc] init];
-        JDOImageModel *imageModel = [[JDOImageModel alloc] init];
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
-            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:localUrl andContent:self.newsModel.title];
-            [imageDetail setIsLocalUrl:true];
+            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title];
             [array addObject:imageDetail];
         }
-        
-        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:nil];
+        detailController.fromNewsDetail = TRUE;
         detailController.imageIndex = [imageId integerValue];
         detailController.imageDetails = array;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
@@ -166,17 +163,51 @@ NSArray *imageUrls;
         // 显示图片详情
         responseCallback(imageId);
     }];
+    [_bridge registerHandler:@"loadImage" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *realUrl = [(NSDictionary *)data valueForKey:@"realUrl"];
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        UIImage *cachedImage = [imageCache imageFromKey:realUrl fromDisk:YES]; // 将需要缓存的图片加载进来
+        if (cachedImage) {
+            [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
+        } else {
+            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            [manager downloadWithURL:[NSURL URLWithString:realUrl] delegate:self storeDelegate:self];
+        }
+    }];
     [_bridge registerHandler:@"showImageSet" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *linkId = [(NSDictionary *)data valueForKey:@"linkId"];
+        JDOImageModel *imageModel = [[JDOImageModel alloc] init];
+        imageModel.id = linkId;
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
+        detailController.fromNewsDetail = TRUE;
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         // 通过pushViewController 显示图集视图
+        [centerController pushViewController:detailController animated:true];
         responseCallback(linkId);
     }];
 }
 
+- (void) saveNewsDetailToLocalCache:(NSDictionary *) newsDetail{
+    NSString *cacheFilePath = [[SharedAppDelegate newsDetailCachePath] stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:[newsDetail objectForKey:@"id"]]];
+    [NSKeyedArchiver archiveRootObject:newsDetail toFile:cacheFilePath];
+}
+
+- (id) readNewsDetailFromLocalCache{
+    NSDictionary *detailModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/NewsDetailCache" stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:self.newsModel.id]])];
+    return detailModel;
+}
+
 - (void) loadWebView{
     #warning 若有缓存可以从缓存读取
-    if (false /*有缓存*/) {
-        [self setCurrentState:ViewStatusLogo];
+    NSDictionary *detailModel = [self readNewsDetailFromLocalCache];
+    if (detailModel /*有缓存*/) {
+        [self setCurrentState:ViewStatusLoading];
+        // 设置url短地址
+        self.newsModel.tinyurl = [detailModel objectForKey:@"tinyurl"];
+        
+        NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:detailModel]];
+        NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+        [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
     }else if( ![Reachability isEnableNetwork]){
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
@@ -186,9 +217,7 @@ NSArray *imageUrls;
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
-                // 如果需要保存detailModel对象,可以在这里解析
-//                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDONewsDetailModel class]];
-//                JDONewsDetailModel *detailModel = [mapper parseDictionary:responseObject];
+                [self saveNewsDetailToLocalCache:responseObject];
                 // 设置url短地址
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
                 
@@ -206,7 +235,6 @@ NSArray *imageUrls;
 }
 
 # warning 需测试异步加载
-// 当下载完成后，调用回调方法，使下载的图片显示
 - (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary{
     NSString *html = [dictionary objectForKey:@"content"];
     
@@ -217,9 +245,12 @@ NSArray *imageUrls;
         //更改图片为占位图
         NSMutableString *replaceWithString = [[NSMutableString alloc] init];
         [replaceWithString appendString:Default_Image];
+        UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromKey:realUrl fromDisk:YES];
+        if ([JDOCommonUtil ifNoImage] && !cachedImage) {
+            [replaceWithString appendString:@"\" tapToLoad=\"true"];
+        }
         [replaceWithString appendString:@"\" realUrl=\""];
         [replaceWithString appendString:realUrl];
-        [replaceWithString appendString:@"\""];
         html = [html stringByReplacingOccurrencesOfString:realUrl withString:replaceWithString];
     }
     NSMutableDictionary *newsDetail = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
@@ -249,8 +280,8 @@ NSArray *imageUrls;
     return true;
 }
 
+// 当下载完成并且保存成功后，调用回调方法，使下载的图片显示
 - (void)didFinishStoreForKey:(NSString *)key {
-    NSLog(@"didFinishStoreForKey ");
     NSString *realUrl = key;
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
@@ -264,8 +295,6 @@ NSArray *imageUrls;
     [self setCurrentState:ViewStatusNormal];
     //webview加载完成，再开始异步加载图片
     if(imageUrls) {
-        //NSLog(@"webview finished");
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *realUrl = [imageUrls objectAtIndex:i];
             NSURL *url = [NSURL URLWithString:realUrl];
@@ -274,7 +303,12 @@ NSArray *imageUrls;
             if (cachedImage) {
                 [self callJsToRefreshWebview:realUrl andLocal:[imageCache cachePathForKey:realUrl]];
             } else {
-                [manager downloadWithURL:url delegate:self storeDelegate:self];
+                if ([JDOCommonUtil ifNoImage]) {//3g下，不下载图片
+                    [self callJsToRefreshWebview:realUrl andLocal:@"base_empty_view.png"];
+                } else {
+                    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                    [manager downloadWithURL:url delegate:self storeDelegate:self];
+                }
             }
         }
     }

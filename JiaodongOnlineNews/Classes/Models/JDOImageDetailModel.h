@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDOImageDetailModel : NSObject
+@interface JDOImageDetailModel : NSObject<NSCoding>
 
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *imagecontent;
-@property (nonatomic,assign) BOOL isLocalUrl;//url指向本地图片
+@property (nonatomic,strong) NSString *localUrl;
 @property (nonatomic,strong) NSString *tinyurl;
 
 - (id) initWithUrl:(NSString *)imageUrl andContent: (NSString *)imageContent;
-
+- (id) initWithUrl:(NSString *) imageUrl andLocalUrl:(NSString *)localUrl andContent:(NSString *)imageContent;
 @end
