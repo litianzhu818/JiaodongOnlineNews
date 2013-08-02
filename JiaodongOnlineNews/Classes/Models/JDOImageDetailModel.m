@@ -9,6 +9,23 @@
 #import "JDOImageDetailModel.h"
 
 @implementation JDOImageDetailModel
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        self.imageurl = [aDecoder decodeObjectForKey:@"imageurl"];
+        self.imagecontent = [aDecoder decodeObjectForKey:@"imagecontent"];
+        self.localUrl = [aDecoder decodeObjectForKey:@"localUrl"];
+        self.tinyurl = [aDecoder decodeObjectForKey:@"tinyurl"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.imageurl forKey:@"imageurl"];
+    [aCoder encodeObject:self.imagecontent forKey:@"imagecontent"];
+    [aCoder encodeObject:self.localUrl forKey:@"localUrl"];
+    [aCoder encodeObject:self.tinyurl forKey:@"tinyurl"];
+}
 - (id) initWithUrl:(NSString *) imageUrl andContent:(NSString *)imageContent {
     if(self = [super init]){
         self.imagecontent = imageContent;
