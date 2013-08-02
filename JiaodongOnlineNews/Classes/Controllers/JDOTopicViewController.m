@@ -222,8 +222,8 @@
 #pragma mark HGPageScrollViewDelegate
 
 - (void)pageScrollView:(HGPageScrollView *)scrollView willSelectPageAtIndex:(NSInteger)index{
-    int _index = [scrollView indexForSelectedPage];
-    [scrollView pageAtIndex:_index].alpha = 0.6;
+//    int _index = [scrollView indexForSelectedPage];
+//    [scrollView pageAtIndex:_index].alpha = 0.6;
 }
 
 - (void)pageScrollView:(HGPageScrollView *)scrollView willDeselectPageAtIndex:(NSInteger)index{
