@@ -62,7 +62,7 @@
         _collected = false;
         _isKeyboardShowing = false;
         _reviewType = JDOReviewTypeNews;
-        
+        self.collectDB = [[JDOCollectDB alloc] initWithModel:model];
         [self setupToolBar];
     }
     return self;
@@ -432,10 +432,17 @@
     if(self.isCollected){
 #warning 取消收藏
         self.collected = false;
-        _collectPopTipView.message = @"  取消收藏!  ";
+        if([self.collectDB deleteById:self.model.id]){
+            _collectPopTipView.message = @"  取消收藏!  ";
+        }
+        
     }else{
         self.collected = true;
-        _collectPopTipView.message = @"  收藏成功!  ";
+        if([self.collectDB save:self.model]){
+            _collectPopTipView.message = @"  收藏成功!  ";
+        }
+        
+        
     }
     [_collectPopTipView presentPointingAtView:sender inView:self.parentController.view animated:YES];
     [_collectPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];

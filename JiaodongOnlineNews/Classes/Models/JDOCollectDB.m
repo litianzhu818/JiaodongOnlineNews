@@ -7,15 +7,16 @@
 //
 
 #import "JDOCollectDB.h"
+#import "JDOToolbarModel.h"
+
 
 @implementation JDOCollectDB
 
--(id)initWithEntityClassName:(NSString *)entityClassName delegate:(id<JDOCollectDBDelegate>)delegate{
+-(id)initWithModel: (id<JDOToolbarModel>)model{
     if (self = [super init]) {
-        self.tableName = [delegate tableName];
-        self.columns = [delegate columnsName];
-        self.className = entityClassName;
-        
+        self.tableName = @"collect";
+        self.columns = [NSArray arrayWithObjects:@"id",@"type",@"summary",@"title",@"imageurl",@"reviewService",@"tinyurl",@"mpic", nil];
+        self.model = model;
         //打开数据库
         NSArray *documentsPaths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory
                                                                     , NSUserDomainMask
@@ -31,9 +32,14 @@
         char *errorMsg;
         NSMutableString *createSql = [[NSMutableString alloc] init];
         NSArray *array = self.columns;
-        [createSql appendFormat:@"create table if not exists %@ (id text primary key",self.tableName] ;
+        [createSql appendFormat:@"create table if not exists %@ (",self.tableName] ;
+        int i = 0;
         for (NSString *key in array) {
-            [createSql appendFormat:@",%@ text",key];
+            if (i>0) {
+                [createSql appendString:@","];
+            }
+            [createSql appendFormat:@"%@ text",key];
+            ++i;
         }
         [createSql appendString:@")"];
         if (sqlite3_exec(db, [createSql cStringUsingEncoding:NSUTF8StringEncoding], NULL, NULL, &errorMsg)!=SQLITE_OK) {
@@ -58,7 +64,7 @@
         if (i>0) {
             [sql appendString:@","];
         }
-        [sql appendFormat:@"'%@'",key];
+        [sql appendFormat:@"%@",key];
         i++;
     }
     [sql appendString:@") values ("];
@@ -67,7 +73,12 @@
         if (i>0) {
             [sql appendString:@","];
         }
-        [sql appendFormat:@":'%@'",key];
+        SEL selector = NSSelectorFromString(key);
+        if(![self.model respondsToSelector:selector]){
+            [sql appendString:@""];
+        }else{
+            [sql appendFormat:@"'%@'",[self.model performSelector:selector]];
+        }
         i++;
     }
     [sql appendString:@")"];
@@ -91,7 +102,7 @@
     return false;
 }
 
--(NSArray*)selectAll{
+-(NSArray*)selectByType{
     NSMutableString *sql = [[NSMutableString alloc] init];
     NSMutableArray *resluts = [[NSMutableArray alloc] init];
     NSArray *array = self.columns;
@@ -104,7 +115,7 @@
         [sql appendFormat:@"%@",key];
         i++;
     }
-    [sql appendFormat:@" from %@",self.tableName];
+    [sql appendFormat:@" from %@ where type='%@'",self.tableName,[self.model type]];
     
     
     sqlite3_stmt *statement;
@@ -112,7 +123,7 @@
     if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
         //执行
         while (sqlite3_step(statement) == SQLITE_ROW) {
-            id obj = [[NSClassFromString(self.tableName) alloc] init];
+            id obj = [[NSClassFromString(NSStringFromClass(self.model))  alloc] init];
             for (int i=0; i<[self.columns count]; ++i) {
                 NSString* columnName = [self.columns objectAtIndex:i];
                 char *field1 = (char *) sqlite3_column_text(statement, i);

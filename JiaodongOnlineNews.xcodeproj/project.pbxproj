@@ -553,7 +553,20 @@
 		D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
+		FF34CE5917A7A71B003B00AA /* NSOperationQueue+WBNoticeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D6F179FA8DD00AB2D43 /* NSOperationQueue+WBNoticeExtensions.m */; };
+		FF34CE5A17A7A71F003B00AA /* UILabel+WBExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D71179FA8DD00AB2D43 /* UILabel+WBExtensions.m */; };
+		FF34CE5B17A7A725003B00AA /* WBBlueGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D73179FA8DD00AB2D43 /* WBBlueGradientView.m */; };
+		FF34CE5C17A7A729003B00AA /* WBErrorNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D75179FA8DD00AB2D43 /* WBErrorNoticeView.m */; };
+		FF34CE5D17A7A72D003B00AA /* WBGrayGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D77179FA8DD00AB2D43 /* WBGrayGradientView.m */; };
+		FF34CE5E17A7A730003B00AA /* WBNoticeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D79179FA8DD00AB2D43 /* WBNoticeOperation.m */; };
+		FF34CE5F17A7A734003B00AA /* WBNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7C179FA8DD00AB2D43 /* WBNoticeView.m */; };
+		FF34CE6017A7A738003B00AA /* WBRedGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7E179FA8DD00AB2D43 /* WBRedGradientView.m */; };
+		FF34CE6117A7A73C003B00AA /* WBStickyNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D80179FA8DD00AB2D43 /* WBStickyNoticeView.m */; };
+		FF34CE6217A7A740003B00AA /* WBSuccessNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D82179FA8DD00AB2D43 /* WBSuccessNoticeView.m */; };
 		FF62176717A0943A0020A8A4 /* JDOCollectDB.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62176617A0943A0020A8A4 /* JDOCollectDB.m */; };
+		FF62284D17A8AEF70040F05F /* JDOCollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62284C17A8AEF60040F05F /* JDOCollectViewController.m */; };
+		FF62285B17A9887F0040F05F /* JDOCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285A17A9887F0040F05F /* JDOCollectView.m */; };
+		FF62285E17A98A1D0040F05F /* JDOCollectNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285D17A98A1D0040F05F /* JDOCollectNewsView.m */; };
 		FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -679,7 +692,7 @@
 		2D86D5AA17588E330000AA6A /* JDOCommonUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCommonUtil.m; sourceTree = "<group>"; };
 		2D86D5AC175894970000AA6A /* JDOCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCenterViewController.h; sourceTree = "<group>"; };
 		2D86D5AD175894980000AA6A /* JDOCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCenterViewController.m; sourceTree = "<group>"; };
-		2D89BA4A1754825600960614 /* JDONewsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = JDONewsCategoryView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		2D89BA4A1754825600960614 /* JDONewsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = JDONewsCategoryView.h; sourceTree = "<group>"; };
 		2D89BA4B1754825600960614 /* JDONewsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = JDONewsCategoryView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2D8AC1521763854C006B4A22 /* JDOReviewListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOReviewListController.h; sourceTree = "<group>"; };
 		2D8AC1531763854C006B4A22 /* JDOReviewListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOReviewListController.m; sourceTree = "<group>"; };
@@ -1355,6 +1368,12 @@
 		FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageModel.m; sourceTree = "<group>"; };
 		FF62176517A0943A0020A8A4 /* JDOCollectDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCollectDB.h; sourceTree = "<group>"; };
 		FF62176617A0943A0020A8A4 /* JDOCollectDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCollectDB.m; sourceTree = "<group>"; };
+		FF62284B17A8AEF50040F05F /* JDOCollectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCollectViewController.h; sourceTree = "<group>"; };
+		FF62284C17A8AEF60040F05F /* JDOCollectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCollectViewController.m; sourceTree = "<group>"; };
+		FF62285917A988760040F05F /* JDOCollectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCollectView.h; sourceTree = "<group>"; };
+		FF62285A17A9887F0040F05F /* JDOCollectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCollectView.m; sourceTree = "<group>"; };
+		FF62285C17A98A1D0040F05F /* JDOCollectNewsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCollectNewsView.h; sourceTree = "<group>"; };
+		FF62285D17A98A1D0040F05F /* JDOCollectNewsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCollectNewsView.m; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
 		FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAboutUsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1837,6 +1856,8 @@
 		2D8D44F9174DF21800786545 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FF62285A17A9887F0040F05F /* JDOCollectView.m */,
+				FF62285917A988760040F05F /* JDOCollectView.h */,
 				2D5409DD175DEE2100718FFB /* UIWebView+RemoveShadow.h */,
 				2D5409DE175DEE2100718FFB /* UIWebView+RemoveShadow.m */,
 				2D8D44EF174DAB2800786545 /* JDONavigationView.h */,
@@ -1891,6 +1912,8 @@
 				D8A0C03617938777005A6307 /* JDOViolationTableCell.m */,
 				D8FABEAD179E26E000BFB67A /* JDOCarTableCell.h */,
 				D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */,
+				FF62285C17A98A1D0040F05F /* JDOCollectNewsView.h */,
+				FF62285D17A98A1D0040F05F /* JDOCollectNewsView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2359,6 +2382,8 @@
 				D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */,
 				2D080CED173CE4D9005653A7 /* JDONewsViewController.h */,
 				2D080CEE173CE4D9005653A7 /* JDONewsViewController.m */,
+				FF62284B17A8AEF50040F05F /* JDOCollectViewController.h */,
+				FF62284C17A8AEF60040F05F /* JDOCollectViewController.m */,
 				2D5409DA175DEA5800718FFB /* JDONewsDetailController.h */,
 				2D5409DB175DEA5800718FFB /* JDONewsDetailController.m */,
 				2D8AC1521763854C006B4A22 /* JDOReviewListController.h */,
@@ -3288,6 +3313,19 @@
 				2D9F37CC179D2ED100A9D6E0 /* UIResponder+KeyboardCache.m in Sources */,
 				2DBE84BA179D344700181141 /* iToast.m in Sources */,
 				FF62176717A0943A0020A8A4 /* JDOCollectDB.m in Sources */,
+				FF34CE5917A7A71B003B00AA /* NSOperationQueue+WBNoticeExtensions.m in Sources */,
+				FF34CE5A17A7A71F003B00AA /* UILabel+WBExtensions.m in Sources */,
+				FF34CE5B17A7A725003B00AA /* WBBlueGradientView.m in Sources */,
+				FF34CE5C17A7A729003B00AA /* WBErrorNoticeView.m in Sources */,
+				FF34CE5D17A7A72D003B00AA /* WBGrayGradientView.m in Sources */,
+				FF34CE5E17A7A730003B00AA /* WBNoticeOperation.m in Sources */,
+				FF34CE5F17A7A734003B00AA /* WBNoticeView.m in Sources */,
+				FF34CE6017A7A738003B00AA /* WBRedGradientView.m in Sources */,
+				FF34CE6117A7A73C003B00AA /* WBStickyNoticeView.m in Sources */,
+				FF34CE6217A7A740003B00AA /* WBSuccessNoticeView.m in Sources */,
+				FF62284D17A8AEF70040F05F /* JDOCollectViewController.m in Sources */,
+				FF62285B17A9887F0040F05F /* JDOCollectView.m in Sources */,
+				FF62285E17A98A1D0040F05F /* JDOCollectNewsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

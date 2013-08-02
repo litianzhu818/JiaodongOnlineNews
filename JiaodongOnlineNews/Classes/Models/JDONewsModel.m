@@ -10,9 +10,15 @@
 #import "JDOWebClient.h"
 
 @implementation JDONewsModel
-
+-(id)init{
+    if(self = [super init]){
+        self.type = @"news";
+    }
+    return self;
+}
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
+        self.type = [aDecoder decodeObjectForKey:@"type"];
         self.atype = [aDecoder decodeObjectForKey:@"atype"];
         self.clicknum = [aDecoder decodeObjectForKey:@"clicknum"];
         self.id = [aDecoder decodeObjectForKey:@"id"];
@@ -27,6 +33,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.type forKey:@"type"];
     [aCoder encodeObject:self.atype forKey:@"atype"];
     [aCoder encodeObject:self.clicknum forKey:@"clicknum"];
     [aCoder encodeObject:self.id forKey:@"id"];
@@ -45,5 +52,4 @@
 - (NSString *) reviewService{
     return COMMIT_COMMENT_SERVICE;
 }
-
 @end

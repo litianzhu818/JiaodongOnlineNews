@@ -10,28 +10,18 @@
 
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
-
-/**
- 
- */
-@protocol JDOCollectDBDelegate
--(NSString*)tableName;
--(NSArray*)columnsName;//实现时应当注意名称与相应的model类的属性名称一致,必须返回包含“id”字符串
-@end
+#import "JDOToolbarModel.h"
 
 
 @interface JDOCollectDB : NSObject{
     	    sqlite3 *db; //声明一个sqlite3数据库
-    NSString* tableName;
-    NSArray* columns;
-    NSString* className;
 }
 @property (nonatomic,copy) NSString *tableName;
-@property (nonatomic,copy) NSString *className;
 @property (nonatomic,strong) NSArray *columns;
--(id)initWithEntityClassName:(NSString*)entityClassName delegate:(id<JDOCollectDBDelegate>)delegate;
+@property (nonatomic,strong) id<JDOToolbarModel> model;
+-(id)initWithModel:(id<JDOToolbarModel>)model;
 -(BOOL)save:(NSObject*)obj;//保存一条数据，把值放入一个数组中传入,注意需要与columns对应
 -(BOOL)deleteById:(NSString*)idValue;
--(NSArray*)selectAll;
+-(NSArray*)selectByType:(NSString*)type;
 -(BOOL)isExistById:(NSString*)idValue;
 @end

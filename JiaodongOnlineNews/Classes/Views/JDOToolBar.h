@@ -10,7 +10,7 @@
 #import "JDOToolbarModel.h"
 #import "WebViewJavascriptBridge_iOS.h"
 #import "JDOCommentModel.h"
-
+#import "JDOCollectDB.h"
 typedef enum {
     ToolBarButtonReview = 0,
     ToolBarButtonShare,
@@ -70,7 +70,7 @@ typedef enum {
 @property (strong,nonatomic) id<JDODownloadTargetDelegate> downloadTarget;
 
 @property (nonatomic,assign) JDOReviewType reviewType;
-
+@property (nonatomic,strong) JDOCollectDB* collectDB;
 
 - (id)initWithModel:(id<JDOToolbarModel>)model parentController:(UIViewController *)parentController typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
 
