@@ -227,6 +227,8 @@
 		2DAADB4617AA4EE8001EBD43 /* Guide3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB4217AA4EE8001EBD43 /* Guide3.png */; };
 		2DAADB4A17AA5281001EBD43 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB4917AA5281001EBD43 /* Default@2x.png */; };
 		2DAADB4C17AA62B5001EBD43 /* Guide_Start.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB4B17AA62B5001EBD43 /* Guide_Start.png */; };
+		2DAADB5017AA7759001EBD43 /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DAADB4F17AA7759001EBD43 /* libBPush.a */; };
+		2DAADB5217AA7793001EBD43 /* BPushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB5117AA7793001EBD43 /* BPushConfig.plist */; };
 		2DAE40051798DB9E00AE4C34 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE40041798DB9E00AE4C34 /* icon@2x.png */; };
 		2DAE40071798E7BE00AE4C34 /* icon02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE40061798E7BE00AE4C34 /* icon02@2x.png */; };
 		2DAE4009179935FE00AE4C34 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE4008179935FE00AE4C34 /* icon.png */; };
@@ -1001,6 +1003,9 @@
 		2DAADB4217AA4EE8001EBD43 /* Guide3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide3.png; sourceTree = "<group>"; };
 		2DAADB4917AA5281001EBD43 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		2DAADB4B17AA62B5001EBD43 /* Guide_Start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide_Start.png; sourceTree = "<group>"; };
+		2DAADB4E17AA7759001EBD43 /* BPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPush.h; sourceTree = "<group>"; };
+		2DAADB4F17AA7759001EBD43 /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBPush.a; sourceTree = "<group>"; };
+		2DAADB5117AA7793001EBD43 /* BPushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BPushConfig.plist; sourceTree = "<group>"; };
 		2DAE40041798DB9E00AE4C34 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		2DAE40061798E7BE00AE4C34 /* icon02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon02@2x.png"; sourceTree = "<group>"; };
 		2DAE4008179935FE00AE4C34 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -1425,6 +1430,7 @@
 				2D9BCED1176D820B0040DDA0 /* TencentOpenAPI.framework in Frameworks */,
 				2D9BCED5176D820C0040DDA0 /* libWeiboSDK.a in Frameworks */,
 				2D9BCED7176D820C0040DDA0 /* ShareSDK.framework in Frameworks */,
+				2DAADB5017AA7759001EBD43 /* libBPush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1741,6 +1747,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2DAADB4D17AA7713001EBD43 /* BPush */,
 				A7173D6C179FA8DD00AB2D43 /* WBNoticeView */,
 				2D9F37C2179CD34F00A9D6E0 /* TTSwitch */,
 				2D0DE2EB1796938D00A7C813 /* ActionSheetPicker */,
@@ -2072,6 +2079,7 @@
 				2D29B275176065D300F116E4 /* style.css */,
 				2D97A94F1785547800CEEE82 /* vote.css */,
 				2DE932081772E99D00A87ACC /* weather.xml */,
+				2DAADB5117AA7793001EBD43 /* BPushConfig.plist */,
 			);
 			name = Others;
 			path = JiaodongOnlineNews/Others;
@@ -2503,6 +2511,15 @@
 				2DAADB4B17AA62B5001EBD43 /* Guide_Start.png */,
 			);
 			path = Guide;
+			sourceTree = "<group>";
+		};
+		2DAADB4D17AA7713001EBD43 /* BPush */ = {
+			isa = PBXGroup;
+			children = (
+				2DAADB4E17AA7759001EBD43 /* BPush.h */,
+				2DAADB4F17AA7759001EBD43 /* libBPush.a */,
+			);
+			path = BPush;
 			sourceTree = "<group>";
 		};
 		2DC49E08179F9DF2008374F2 /* Switch */ = {
@@ -3115,6 +3132,7 @@
 				2DAADB4617AA4EE8001EBD43 /* Guide3.png in Resources */,
 				2DAADB4A17AA5281001EBD43 /* Default@2x.png in Resources */,
 				2DAADB4C17AA62B5001EBD43 /* Guide_Start.png in Resources */,
+				2DAADB5217AA7793001EBD43 /* BPushConfig.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3470,6 +3488,7 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -3498,6 +3517,7 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
