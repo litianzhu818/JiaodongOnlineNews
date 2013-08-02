@@ -220,6 +220,10 @@
 		2DA3C4C8178EA56D009817A6 /* JDOQuestionDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */; };
 		2DA3C4D0178EC0A6009817A6 /* InsetsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */; };
 		2DA566B717AB393B00987EDC /* ShareSDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2DA566B617AB393B00987EDC /* ShareSDKLocalizable.strings */; };
+		2DA566B817AB39C800987EDC /* JDOCollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62284C17A8AEF60040F05F /* JDOCollectViewController.m */; };
+		2DA566B917AB39E000987EDC /* JDOCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285A17A9887F0040F05F /* JDOCollectView.m */; };
+		2DA566BA17AB39E700987EDC /* JDOCollectDB.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62176617A0943A0020A8A4 /* JDOCollectDB.m */; };
+		2DA566BB17AB39F500987EDC /* JDOCollectNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285D17A98A1D0040F05F /* JDOCollectNewsView.m */; };
 		2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */; };
 		2DAADB3E17AA4EC4001EBD43 /* JDOGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAADB3D17AA4EC4001EBD43 /* JDOGuideViewController.m */; };
 		2DAADB4317AA4EE8001EBD43 /* Guide0.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB3F17AA4EE8001EBD43 /* Guide0.png */; };
@@ -1895,8 +1899,8 @@
 		2D8D44F9174DF21800786545 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FF62285A17A9887F0040F05F /* JDOCollectView.m */,
 				FF62285917A988760040F05F /* JDOCollectView.h */,
+				FF62285A17A9887F0040F05F /* JDOCollectView.m */,
 				2D5409DD175DEE2100718FFB /* UIWebView+RemoveShadow.h */,
 				2D5409DE175DEE2100718FFB /* UIWebView+RemoveShadow.m */,
 				2D8D44EF174DAB2800786545 /* JDONavigationView.h */,
@@ -3401,6 +3405,10 @@
 				2D43F8E517A266980048815C /* iRate.m in Sources */,
 				2DAADB3E17AA4EC4001EBD43 /* JDOGuideViewController.m in Sources */,
 				A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */,
+				2DA566B817AB39C800987EDC /* JDOCollectViewController.m in Sources */,
+				2DA566B917AB39E000987EDC /* JDOCollectView.m in Sources */,
+				2DA566BA17AB39E700987EDC /* JDOCollectDB.m in Sources */,
+				2DA566BB17AB39F500987EDC /* JDOCollectNewsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
