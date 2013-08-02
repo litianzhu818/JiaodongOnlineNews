@@ -18,6 +18,9 @@
     IBOutlet UITextField *carNum;
     IBOutlet UITextField *chassisNum;
     IBOutlet TPKeyboardAvoidingScrollView *tp;
+    IBOutlet UILabel *cartypelabel;
+    IBOutlet UILabel *carnumlabel;
+    IBOutlet UILabel *chassisnumlabel;
     
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
