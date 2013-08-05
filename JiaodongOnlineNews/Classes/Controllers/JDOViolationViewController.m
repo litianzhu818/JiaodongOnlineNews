@@ -187,7 +187,7 @@
                 [resultline setHidden:NO];
                 if (datas.count > 0) {
                     [result setHidden:NO];
-                    //[resultArray removeAllObjects];
+                    [resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
                     [result reloadData];
                 } else if (datas.count == 0) {
