@@ -137,14 +137,14 @@
                     [no_result_image setHidden:NO];
                 }
             } else {
-                NSLog(@"wrongParams");
+                NSLog(@"wrongParams%@",params);
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
         if (checkBox1.isChecked) {
-            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString}];
+            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
         }
     }
     
@@ -190,7 +190,13 @@
     return NO;
 }
 
-
+- (void)setData:(NSDictionary *)data
+{
+    [CarType.titleLabel setText:[data objectForKey:@"cartypename"]];
+    CarTypeString = [data objectForKey:@"cartype"];
+    [CarNum setText:[data objectForKey:@"hphm"]];
+    [ChassisNum setText:[data objectForKey:@"vin"]];
+}
 
 
 #pragma mark UITableViewDelegate

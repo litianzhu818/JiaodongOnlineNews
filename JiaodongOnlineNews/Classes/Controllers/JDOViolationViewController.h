@@ -39,6 +39,7 @@
     
 }
 
+- (void)setData:(NSDictionary *)data;
 - (BOOL)checkEmpty;
 - (void)setCartype:(NSString *) type index:(int)index;
 - (IBAction)selectCarType:(id)sender;

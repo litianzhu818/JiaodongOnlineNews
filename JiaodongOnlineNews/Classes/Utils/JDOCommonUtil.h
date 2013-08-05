@@ -54,6 +54,7 @@ typedef enum{
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view;
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
++ (void) showSuccessHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode;
 
 + (BOOL)ifNoImage;
 

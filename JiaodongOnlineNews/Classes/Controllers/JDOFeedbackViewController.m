@@ -9,8 +9,9 @@
 #import "JDOFeedbackViewController.h"
 #import "JDOHttpClient.h"
 #import "JDORightViewController.h"
+#import "JDOCommonUtil.h"
 
-@interface JDOFeedbackViewController ()
+@interface JDOFeedbackViewController () <UITextFieldDelegate>
 
 @end
 
@@ -46,6 +47,7 @@
 
 - (void)sendToServer
 {
+    [self hiddenKeyBoard];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:contentString forKey:@"content"];
     if (nameString.length != 0) {
@@ -66,23 +68,18 @@
         if ([jsonvalue isKindOfClass:[NSNumber class]]) {
             int status = [[json objectForKey:@"status"] intValue];
             if (status == 1) {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交成功" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [av show];
+                [JDOCommonUtil showSuccessHUD:@"提交成功" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
             } else {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交失败" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [av show];
+                [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
             }
         } else {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交失败" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
+            [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *errorString = [JDOCommonUtil formatErrorWithOperation:operation error:error];
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"提交失败" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
+        [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         NSLog(@"status:%@", errorString);
     }];
-
 }
 
 - (void)viewDidLoad
@@ -96,10 +93,23 @@
     [self.navigationView setTitle:@"意见反馈"];
 }
 
-- (void) onBackBtnClick{
-    [(JDORightViewController *)self.stackViewController popViewController];
+- (void)hiddenKeyBoard{
+    [name resignFirstResponder];
+    [email resignFirstResponder];
+    [tel resignFirstResponder];
+    [content resignFirstResponder];
 }
 
+- (void)onBackBtnClick{
+    [self hiddenKeyBoard];
+    [(JDORightViewController *)self.stackViewController popViewController];
+}
+/*
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+}
+*/
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
