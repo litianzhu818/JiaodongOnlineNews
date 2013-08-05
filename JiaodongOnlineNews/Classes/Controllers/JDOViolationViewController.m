@@ -17,6 +17,12 @@
 
 @implementation JDOViolationViewController
 
+- (id)initwithStatus:(BOOL)isaddcar
+{
+    addCarStatus = isaddcar;
+    return [self initWithNibName:nil bundle:nil];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -45,21 +51,24 @@
 {
     [super viewDidLoad];
     [ChassisNum setKeyboardType:UIKeyboardTypeNumberPad];
-    [carnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
-    [cartypelabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
-    [chassisnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
+    [carnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
+    [cartypelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
+    [chassisnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateNormal];
     [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateSelected];
+    CarType.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 26);
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     resultArray = [[NSMutableArray alloc] init];
     
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:18];
+    [checkBox1 setTitleColor:Light_Blue_Color];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
     checkBox1.frame = CGRectMake(15, 145, checkBox1.frame.size.width, checkBox1.frame.size.height);
     [tp addSubview:checkBox1];
     
     checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:18];
+    [checkBox2 setTitleColor:Light_Blue_Color];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
     checkBox2.frame = CGRectMake(161, 145, checkBox2.frame.size.width, checkBox2.frame.size.height);
     [tp addSubview:checkBox2];
@@ -85,6 +94,14 @@
     [resultlabel setBackgroundColor:[UIColor clearColor]];
     [header addSubview:resultlabel];
     [result setTableHeaderView:header];
+    
+    
+    if (addCarStatus) {
+        [checkBox1 setHidden:YES];
+        [checkBox2 setHidden:YES];
+        [searchbutton setTitle:@"添  加" forState:UIControlStateNormal];
+        [searchbutton setTitle:@"添  加" forState:UIControlStateSelected];
+    }
 }
 
 - (void)setupNavigationView
@@ -97,7 +114,13 @@
 - (void) onBackBtnClick
 {
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+    if (addCarStatus) {
+        JDOCarManagerViewController *controller = (JDOCarManagerViewController *)[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2];
+        [controller update];
+        [centerViewController popToViewController:controller animated:true];
+    } else {
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];
+    }
 }
 
 - (void) onRightBtnClick
@@ -128,15 +151,22 @@
 
 - (IBAction)sendToServer:(id)sender
 {
-    save = checkBox1.isChecked;
-    receivepush = checkBox2.isChecked;
     CarNumString = [[NSMutableString alloc] initWithString:CarNum.text];
     ChassisNumString = [[NSMutableString alloc] initWithString:ChassisNum.text];
+    save = checkBox1.isChecked;
+    receivepush = checkBox2.isChecked;
+    
     if (!self.checkEmpty) {
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
         [params setValue:CarNumString forKey:@"hphm"];
         [params setValue:CarTypeString forKey:@"cartype"];
         [params setValue:ChassisNumString forKey:@"vin"];
+        
+        if (addCarStatus) {
+            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
+            [self onBackBtnClick];
+            return;
+        }
         
         [result setHidden:YES];
         [resultline setHidden:YES];

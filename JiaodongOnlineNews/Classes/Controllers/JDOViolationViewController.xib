@@ -254,7 +254,10 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="328166475"/>
-								<reference key="IBUINormalBackgroundImage" ref="806078268"/>
+								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">inputFieldPopBtnBackground.png</string>
+								</object>
 								<reference key="IBUIFontDescription" ref="1042537355"/>
 								<reference key="IBUIFont" ref="486840497"/>
 							</object>
@@ -472,6 +475,14 @@
 					<int key="connectionID">65</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">searchbutton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="471938153"/>
+					</object>
+					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">sendToServer:</string>
 						<reference key="source" ref="471938153"/>
@@ -625,7 +636,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">67</int>
+			<int key="maxID">68</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -666,6 +677,7 @@
 						<string key="result">UITableView</string>
 						<string key="resultline">UIImageView</string>
 						<string key="resultline_shadow">UIImageView</string>
+						<string key="searchbutton">UIButton</string>
 						<string key="tp">TPKeyboardAvoidingScrollView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -713,6 +725,10 @@
 							<string key="name">resultline_shadow</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="searchbutton">
+							<string key="name">searchbutton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="tp">
 							<string key="name">tp</string>
 							<string key="candidateClassName">TPKeyboardAvoidingScrollView</string>
@@ -738,6 +754,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="inputFieldPopBtnBackground.png">{192, 35}</string>
 			<string key="vio_line.png">{300, 6}</string>
 			<string key="vio_lineshadow.png">{600, 12}</string>
 			<string key="vio_logo@2x.png">{223, 121}</string>

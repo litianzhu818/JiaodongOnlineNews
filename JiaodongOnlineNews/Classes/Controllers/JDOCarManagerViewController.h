@@ -11,7 +11,8 @@
 
 @interface JDOCarManagerViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource>
 {
-    NSArray *message;
+    NSMutableArray *message;
+    IBOutlet UIButton *add;
 }
 @property (nonatomic, strong) IBOutlet UITableView *listview;
 @property (nonatomic, strong) JDOViolationViewController *back;
@@ -19,5 +20,6 @@
 - (void)onBackBtnClick;
 - (void)onRightBtnClick;
 - (void)update;
+- (IBAction)onAddButtonClick:(id)sender;
 
 @end

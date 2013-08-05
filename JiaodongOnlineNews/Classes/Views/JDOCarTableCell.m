@@ -17,6 +17,7 @@
         carNum = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0)];
         [carNum setBackgroundColor:[UIColor clearColor]];
         checkBox = [[M13Checkbox alloc] initWithTitle:@"自动提醒" andHeight:20.0];
+        [checkBox setTitleColor:Gray_Color_Type1];
         carNumString = [[NSString alloc] init];
     }
     return self;
@@ -47,14 +48,19 @@
     [self setSeparator:nil];
 }
 
+- (void)enterEditingMode
+{
+    [checkBox setHidden:YES];
+}
+
 - (void)setSeparator:(UIImage *)separator
 {
     if (separator != nil) {
-        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.frame.size.height - 1, 310, 1)];
+        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(-40, self.frame.size.height - 1, 400, 1)];
         [imageseparator setImage:separator];
         [self.contentView addSubview:imageseparator];
     } else {
-        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.frame.size.height - 1, 310, 1)];
+        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(-40, self.frame.size.height - 1, 400, 1)];
         [imageseparator setImage:[UIImage imageNamed:@"vio_line2"]];
         [self.contentView addSubview:imageseparator];
     }

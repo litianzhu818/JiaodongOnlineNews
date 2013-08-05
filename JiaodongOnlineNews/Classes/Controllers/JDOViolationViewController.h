@@ -25,6 +25,7 @@
     IBOutlet UIImageView *resultline;
     IBOutlet UIImageView *resultline_shadow;
     IBOutlet UIImageView *no_result_image;
+    IBOutlet UIButton *searchbutton;
     
     M13Checkbox *checkBox1;
     M13Checkbox *checkBox2;
@@ -40,6 +41,8 @@
     
     ActionSheetStringPicker *stringpicker;
     NSArray *types;
+    
+    BOOL addCarStatus;
 }
 
 - (void)setData:(NSDictionary *)data;
@@ -51,5 +54,7 @@
 - (void)onRightBtnClick;
 - (void)saveCarMessage:(NSDictionary *) carMessage;
 - (BOOL)readCarMessage;
+
+- (id)initwithStatus:(BOOL)isaddcar;
 
 @end
