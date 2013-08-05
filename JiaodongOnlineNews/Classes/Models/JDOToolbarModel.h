@@ -11,7 +11,6 @@
 
 @required
 @property (nonatomic,strong) NSString *id;
-@property (nonatomic,strong) NSString *type;//判断栏目类型，在收藏功能中根据这个字段分别展现新闻、图片、话题、便民
 @optional
 @property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) NSString *summary;
@@ -20,4 +19,13 @@
 @property (nonatomic,strong) NSString *tinyurl;
 @property (nonatomic,strong) NSString *mpic;
 
+@property (nonatomic,strong) NSString *department;
+@property (nonatomic,strong) NSString *dept_code;
+@property (nonatomic,strong) NSString *entry_date;
+@property (nonatomic,strong) NSString *info_type;
+@property (nonatomic,strong) NSNumber *reply;
+@property (nonatomic,strong) NSString *pubtime;
+
+@property (nonatomic,strong) NSNumber *secret;
+@property (nonatomic,strong) NSString *pwd;
 @end

@@ -20,7 +20,7 @@
 #import "JDOImageModel.h"
 #import "JDOImageDetailModel.h"
 #import "JDOImageDetailController.h"
-
+#import "JDORightViewController.h"
 #define Default_Image @"news_head_placeholder.png"
 
 @interface JDOTopicDetailController ()
@@ -110,10 +110,15 @@ NSArray *imageUrls;
 }
 
 - (void) backToListView{
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] orientation:JDOTransitionToRight animated:true complete:^{
-        [_pController returnFromDetail];
-    }];
+    if(_pController){
+        JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] orientation:JDOTransitionToRight animated:true complete:^{
+            [_pController returnFromDetail];
+        }];
+    }else{//如果为空，说明是从右菜单收藏列表进入
+        [(JDORightViewController *)self.stackViewController popViewController];
+    }
+    
 }
 
 -(void)viewDidUnload{

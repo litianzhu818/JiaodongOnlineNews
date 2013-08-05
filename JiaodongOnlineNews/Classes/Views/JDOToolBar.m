@@ -59,10 +59,11 @@
         self.theme = theme;
         self.frameHeight = frame.size.height;
 #warning 查询该新闻是否被收藏
-        _collected = false;
+        
         _isKeyboardShowing = false;
         _reviewType = JDOReviewTypeNews;
-        self.collectDB = [[JDOCollectDB alloc] initWithModel:model];
+        self.collectDB = [[JDOCollectDB alloc] init];
+        _collected = [self.collectDB isExistById:model.id];
         [self setupToolBar];
     }
     return self;
@@ -78,6 +79,7 @@
     [self setWidthConfig:nil];
     [self setBridge:nil];
     [self setShareViewController:nil];
+    self.collectDB = nil;
 }
 
 - (void) setupToolBar{
@@ -109,9 +111,6 @@
         ToolBarControlType btnType = [(NSNumber *)[_typeConfig objectAtIndex:i] intValue];
         if( btnType == ToolBarInputField ){
             // 工具栏包含输入框的情况,暂时未做添加,遇到后在添加
-        }else if( btnType == ToolBarButtonCollect && self.isCollected){
-#warning 替换收藏过的图片
-            [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
         }else{
             [self configButton:btn withType:btnType];
         }
@@ -174,6 +173,16 @@
     if( iconHighlightName != nil){
         [btn setBackgroundImage:[UIImage imageNamed:iconHighlightName] forState:UIControlStateHighlighted];
     }
+    if(btnType == ToolBarButtonCollect ){
+        [btn setBackgroundImage:[UIImage imageNamed:@"collect_save.png"] forState:UIControlStateSelected];
+        [btn setBackgroundImage:[UIImage imageNamed:@"collect_savehighlight.png"] forState:UIControlStateSelected | UIControlStateHighlighted];
+        if(self.isCollected){
+            [btn setSelected:TRUE];
+        }else{
+            [btn setSelected:FALSE];
+        }
+    }
+    
 }
 
 #pragma mark - Write Review
@@ -430,20 +439,20 @@
         _collectPopTipView.dismissTapAnywhere = NO;
     }
     if(self.isCollected){
-#warning 取消收藏
-        self.collected = false;
         if([self.collectDB deleteById:self.model.id]){
+            self.collected = false;
             _collectPopTipView.message = @"  取消收藏!  ";
+            [sender setSelected:FALSE];
         }
         
     }else{
-        self.collected = true;
         if([self.collectDB save:self.model]){
+            self.collected = true;
             _collectPopTipView.message = @"  收藏成功!  ";
+            [sender setSelected:TRUE];
         }
-        
-        
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCollectNotification object:nil];
     [_collectPopTipView presentPointingAtView:sender inView:self.parentController.view animated:YES];
     [_collectPopTipView autoDismissAnimated:true atTimeInterval:PoptipView_Autodismiss_Delay];
 }

@@ -12,6 +12,7 @@
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) UIImageView *noResultView;
 @property (nonatomic,strong) JDOCollectDB *collectDB;
+@property (nonatomic,strong) NSMutableArray *datas;
 - (id)initWithFrame:(CGRect)frame collectDB:(JDOCollectDB *)collectDB;
 -(void)loadData;
 @end
