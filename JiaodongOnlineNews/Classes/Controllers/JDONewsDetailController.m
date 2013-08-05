@@ -146,6 +146,7 @@ NSArray *imageUrls;
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeNews params:@{@"aid":self.newsModel.id,@"deviceId":[[UIDevice currentDevice] uniqueDeviceIdentifier]}];
+    reviewController.model = self.newsModel;
     [centerViewController pushViewController:reviewController animated:true];
 }
 

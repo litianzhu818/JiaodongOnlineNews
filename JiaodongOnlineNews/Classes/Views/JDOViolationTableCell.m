@@ -135,7 +135,7 @@
 - (void)setSeparator:(UIImage *)separator
 {
     if (separator != nil) {
-        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 1, 294, 2.5)];
+        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 2.5, 294, 2.5)];
         [imageseparator setImage:separator];
         [self.contentView addSubview:imageseparator];
     } else {

@@ -19,7 +19,7 @@ typedef enum {
 @protocol JDOStatusViewDelegate;
 
 @interface JDOStatusView : UIView
-
+#warning 背景图在不同高度下容易被压缩，可以考虑用同一个背景图，中间显示的文字通过程序添加
 @property (nonatomic,strong) UIImageView *noNetWorkView;
 @property (nonatomic,strong) UIImageView *logoView;
 @property (nonatomic,strong) UIImageView *retryView;

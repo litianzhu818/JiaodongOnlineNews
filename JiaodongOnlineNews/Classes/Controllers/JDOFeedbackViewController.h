@@ -21,7 +21,6 @@
     NSString *emailString;
     NSString *telString;
     NSString *contentString;
-
 }
 
 - (IBAction)reportButtonClick:(id)sender;

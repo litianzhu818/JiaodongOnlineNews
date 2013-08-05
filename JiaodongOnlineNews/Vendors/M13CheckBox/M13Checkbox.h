@@ -61,6 +61,7 @@ typedef enum {
 - (void)autoFitFontToHeight;//If you change the font, run this to change the font size to fit the frame.
 - (void)autoFitWidthToText;
 - (BOOL)isChecked;
+- (void)setTitleColor:(NSString *)titleColor;
 
 //- (UIBezierPath *)getDefaultShape;//One needs to subclass M13Checkbox and override this method to use a custom shape. see method for more details.
 

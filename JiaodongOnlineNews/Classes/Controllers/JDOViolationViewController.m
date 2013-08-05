@@ -8,15 +8,31 @@
 
 #import "JDOViolationViewController.h"
 #import "JDOJsonClient.h"
-#import "JDOSelectCarTypeViewController.h"
 #import "JDOViolationTableCell.h"
 #import "JDOCarManagerViewController.h"
+#import "JDOCommonUtil.h"
 
 @interface JDOViolationViewController ()
 
 @end
 
 @implementation JDOViolationViewController
+
+- (id)initwithStatus:(BOOL)isaddcar
+{
+    addCarStatus = isaddcar;
+    return [self initWithNibName:nil bundle:nil];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        types = [[NSArray alloc] init];
+        types = @[@"大型汽车",@"小型汽车",@"使馆汽车",@"领馆汽车",@"境外汽车",@"外籍汽车",@"两、三轮摩托车",@"轻便摩托车",@"使馆摩托车",@"领馆摩托车",@"境外摩托车",@"外籍摩托车",@"农用运输车",@"拖拉机",@"挂车",@"教练汽车",@"教练摩托车",@"实验汽车",@"实验摩托车",@"临时入境汽车",@"临时入境摩托车",@"临时行驶车",@"公安警车",@"公安警车",@"其他"];
+    }
+    return self;
+}
 
 - (void)setCartype:(NSString *)type index:(int)index
 {
@@ -35,29 +51,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [carnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
-    [cartypelabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
-    [chassisnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
-    [CarNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
-    [CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateNormal];
-    [CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateSelected];
-    [ChassisNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
+    [ChassisNum setKeyboardType:UIKeyboardTypeNumberPad];
+    [carnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
+    [cartypelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
+    [chassisnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
+    [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateNormal];
+    [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateSelected];
+    CarType.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 26);
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     resultArray = [[NSMutableArray alloc] init];
     
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:18];
+    [checkBox1 setTitleColor:Light_Blue_Color];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox1.frame = CGRectMake(10, 145, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    checkBox1.frame = CGRectMake(15, 145, checkBox1.frame.size.width, checkBox1.frame.size.height);
     [tp addSubview:checkBox1];
     
     checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:18];
+    [checkBox2 setTitleColor:Light_Blue_Color];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox2.frame = CGRectMake(165, 145, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    checkBox2.frame = CGRectMake(161, 145, checkBox2.frame.size.width, checkBox2.frame.size.height);
     [tp addSubview:checkBox2];
     
     [tp setScrollEnabled:NO];
     
+    [result setBounces:NO];
     [result setDataSource:self];
     [result setDelegate:self];
     
@@ -76,6 +95,14 @@
     [resultlabel setBackgroundColor:[UIColor clearColor]];
     [header addSubview:resultlabel];
     [result setTableHeaderView:header];
+    
+    
+    if (addCarStatus) {
+        [checkBox1 setHidden:YES];
+        [checkBox2 setHidden:YES];
+        [searchbutton setTitle:@"添  加" forState:UIControlStateNormal];
+        [searchbutton setTitle:@"添  加" forState:UIControlStateSelected];
+    }
 }
 
 - (void)setupNavigationView
@@ -88,7 +115,13 @@
 - (void) onBackBtnClick
 {
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+    if (addCarStatus) {
+        JDOCarManagerViewController *controller = (JDOCarManagerViewController *)[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2];
+        [controller update];
+        [centerViewController popToViewController:controller animated:true];
+    } else {
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];
+    }
 }
 
 - (void) onRightBtnClick
@@ -100,22 +133,46 @@
 
 - (IBAction)selectCarType:(id)sender
 {
-    JDOSelectCarTypeViewController *controller = [[JDOSelectCarTypeViewController alloc] initWithNibName:nil bundle:nil];
-    controller.violation = self;
-    [self.navigationController pushViewController:controller animated:YES];
+    stringpicker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择号牌种类" rows:types initialSelection:1 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+        [CarType setTitle:[types objectAtIndex:selectedIndex] forState:UIControlStateNormal];
+        [CarType setTitle:[types objectAtIndex:selectedIndex] forState:UIControlStateSelected];
+        NSMutableString *tmp = [[NSMutableString alloc] initWithString:@"0"];
+        if (selectedIndex < 9) {
+            [tmp appendString:[NSString stringWithFormat:@"%d", selectedIndex + 1]];
+            CarTypeString = tmp;
+        } else {
+            CarTypeString = [NSString stringWithFormat:@"%d", selectedIndex + 1];
+        }
+    } cancelBlock:^(ActionSheetStringPicker *picker) {
+        
+    } origin:sender];
+    
+    [stringpicker showActionSheetPicker];
 }
 
 - (IBAction)sendToServer:(id)sender
 {
-    save = checkBox1.isChecked;
-    receivepush = checkBox2.isChecked;
     CarNumString = [[NSMutableString alloc] initWithString:CarNum.text];
     ChassisNumString = [[NSMutableString alloc] initWithString:ChassisNum.text];
+    save = checkBox1.isChecked;
+    receivepush = checkBox2.isChecked;
+    
     if (!self.checkEmpty) {
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
         [params setValue:CarNumString forKey:@"hphm"];
         [params setValue:CarTypeString forKey:@"cartype"];
         [params setValue:ChassisNumString forKey:@"vin"];
+        
+        if (addCarStatus) {
+            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
+            [self onBackBtnClick];
+            return;
+        }
+        
+        if( ![Reachability isEnableNetwork]){
+            [JDOCommonUtil showHintHUD:@"网络不可用！" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+            return;
+        }
         
         [result setHidden:YES];
         [resultline setHidden:YES];
@@ -130,21 +187,24 @@
                 [resultline setHidden:NO];
                 if (datas.count > 0) {
                     [result setHidden:NO];
-                    //[resultArray removeAllObjects];
+                    [resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
                     [result reloadData];
                 } else if (datas.count == 0) {
                     [no_result_image setHidden:NO];
                 }
             } else {
-                NSLog(@"wrongParams");
+                NSLog(@"wrongParams%@",params);
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
+        
+        [CarNum resignFirstResponder];
+        [ChassisNum resignFirstResponder];
         if (checkBox1.isChecked) {
-            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString}];
+            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
         }
     }
     
@@ -190,7 +250,13 @@
     return NO;
 }
 
-
+- (void)setData:(NSDictionary *)data
+{
+    [CarType.titleLabel setText:[data objectForKey:@"cartypename"]];
+    CarTypeString = [data objectForKey:@"cartype"];
+    [CarNum setText:[data objectForKey:@"hphm"]];
+    [ChassisNum setText:[data objectForKey:@"vin"]];
+}
 
 
 #pragma mark UITableViewDelegate
@@ -243,6 +309,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
+
+
 
 
 

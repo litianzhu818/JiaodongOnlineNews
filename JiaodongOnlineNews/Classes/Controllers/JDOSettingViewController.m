@@ -102,43 +102,42 @@
                 diskFileSize = diskFileSize/1000.0f;
                 sizeUnit = @"M";
             }
-            int diskFileCount = [JDOCommonUtil getDiskCacheFileCount];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"清除缓存文件，目前缓存文件数量为%d，占用磁盘空间%.2f%@。",diskFileCount,diskFileSize,sizeUnit];
-            UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            clearButton.frame = CGRectMake(0, 0, 65, 27);
-            clearButton.tag = JDOSettingItemClearCache;
-            [clearButton setTitle:@"清除" forState:UIControlStateNormal];
-            [clearButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            cell.accessoryView = clearButton;
+//            int diskFileCount = [JDOCommonUtil getDiskCacheFileCount];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"目前缓存文件占用磁盘空间%.2f%@。",diskFileSize,sizeUnit];
+//            UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//            clearButton.frame = CGRectMake(0, 0, 65, 27);
+//            clearButton.tag = JDOSettingItemClearCache;
+//            [clearButton setTitle:@"清除" forState:UIControlStateNormal];
+//            [clearButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            cell.accessoryView = nil;
             break;
         }
         case JDOSettingItemDownload:{
             cell.textLabel.text = @"离线下载";
             cell.detailTextLabel.text = @"下载新闻、图片、话题等内容，在无网络时可离线阅读已经下载的内容。";
-            UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            downloadButton.frame = CGRectMake(0, 0, 65, 27);
-            downloadButton.tag = JDOSettingItemDownload;
-            [downloadButton setTitle:@"下载" forState:UIControlStateNormal];
-            [downloadButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            cell.accessoryView = downloadButton;
+//            UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//            downloadButton.frame = CGRectMake(0, 0, 65, 27);
+//            downloadButton.tag = JDOSettingItemDownload;
+//            [downloadButton setTitle:@"下载" forState:UIControlStateNormal];
+//            [downloadButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            cell.accessoryView = nil;
             break;
         }
         case JDOSettingItemCheckVersion:{
             cell.textLabel.text = @"检查更新";
             cell.detailTextLabel.text = @"从App Store获取程序的最新版本，获得更好的使用体验。";
-            UIButton *updateButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            updateButton.frame = CGRectMake(0, 0, 65, 27);
-            updateButton.tag = JDOSettingItemCheckVersion;
-            [updateButton setTitle:@"更新" forState:UIControlStateNormal];
-            [updateButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            cell.accessoryView = updateButton;
+//            UIButton *updateButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//            updateButton.frame = CGRectMake(0, 0, 65, 27);
+//            updateButton.tag = JDOSettingItemCheckVersion;
+//            [updateButton setTitle:@"更新" forState:UIControlStateNormal];
+//            [updateButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            cell.accessoryView = nil;
             break;
         }
         case JDOSettingItemFeedback:{
             cell.textLabel.text = @"意见反馈";
             cell.detailTextLabel.text = @"告诉我们您的意见和建议，我们将不断改进。";
             cell.accessoryView = nil;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
         default:
@@ -175,9 +174,54 @@
     [userDefault synchronize];
 }
 
-- (void)buttonClicked:(UIButton *)sender {
-    switch (sender.tag) {
-        case JDOSettingItemClearCache:{
+//- (void)buttonClicked:(UIButton *)sender {
+//    switch (sender.tag) {
+//        case JDOSettingItemClearCache:{
+//            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
+//            [SharedAppDelegate.window addSubview:HUD];
+//            HUD.labelText = @"正在清除缓存";
+//            HUD.margin = 15.f;
+//            HUD.removeFromSuperViewOnHide = true;
+//            [HUD show:true];
+//            [[SDImageCache sharedImageCache] clearDisk];    // 图片缓存
+//            [JDOCommonUtil deleteJDOCacheDirectory];    // 文件缓存
+//            [JDOCommonUtil createJDOCacheDirectory];
+//            [JDOCommonUtil deleteURLCacheDirectory];    // URL在sqlite的缓存(cache.db)
+//            HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+//            HUD.mode = MBProgressHUDModeCustomView;
+//            HUD.labelText = @"清除缓存完成";
+//            [HUD hide:true afterDelay:1.0];
+//            
+//            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//            break;
+//        }
+//        case JDOSettingItemDownload:
+//            [self offDownload];
+//            break;
+//        case JDOSettingItemCheckVersion:
+//            [SharedAppDelegate checkForNewVersion];
+//            break;
+//        default:
+//            break;
+//    }
+//}
+
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
+//    switch (indexPath.row) {
+//        case 0:
+//            return UITableViewCellAccessoryCheckmark;
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//    return UITableViewCellAccessoryNone;
+//}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    switch (indexPath.row) {
+        case JDOSettingItemClearCache: {
             MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
             [SharedAppDelegate.window addSubview:HUD];
             HUD.labelText = @"正在清除缓存";
@@ -198,31 +242,10 @@
         }
         case JDOSettingItemDownload:
             [self offDownload];
-#warning 未实现离线下载
             break;
         case JDOSettingItemCheckVersion:
             [SharedAppDelegate checkForNewVersion];
             break;
-        default:
-            break;
-    }
-}
-
-//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-//    switch (indexPath.row) {
-//        case 0:
-//            return UITableViewCellAccessoryCheckmark;
-//            break;
-//            
-//        default:
-//            break;
-//    }
-//    return UITableViewCellAccessoryNone;
-//}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    switch (indexPath.row) {
         case JDOSettingItemFeedback: {
             JDOFeedbackViewController *feedbackController = [[JDOFeedbackViewController alloc] init];
             [(JDORightViewController *)self.stackViewController pushViewController:feedbackController];

@@ -18,5 +18,6 @@
 
 - (void)setData:(NSDictionary *)data;
 - (void)setSeparator:(UIImage *)separator;
+- (void)enterEditingMode;
 
 @end

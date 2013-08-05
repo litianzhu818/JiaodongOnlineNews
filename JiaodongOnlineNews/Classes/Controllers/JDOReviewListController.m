@@ -16,12 +16,14 @@
 #import "JDOArrayModel.h"
 #import "JDOQuestionCommentModel.h"
 #import "SVPullToRefresh.h"
-#import "JDONewsModel.h"
 
 @interface JDOReviewListController ()
 
 @property (nonatomic,assign) JDOReviewType type;
 @property (nonatomic,strong) DCParserConfiguration *config;
+@property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
+@property (strong, nonatomic) UIView *blackMask;
+@property (nonatomic,strong) JDOToolBar *toolbar;
 
 @end
 
@@ -46,18 +48,16 @@
 - (void)loadView{
     [super loadView];
     
-    self.tableView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
-    self.noDataView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
-
-    // 添加评论栏
-    NSArray *toolbarBtnConfig = @[
-        [NSNumber numberWithInt:ToolBarInputField],
-        [NSNumber numberWithInt:ToolBarButtonReview]
-    ];
-    JDONewsModel *newsModel = [[JDONewsModel alloc] init];
-    newsModel.id = [self.listParam objectForKey:@"aid"];
-    JDOToolBar *toolbar = [[JDOToolBar alloc] initWithModel:newsModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
-    [self.view addSubview:toolbar];
+    if( self.type == JDOReviewTypeNews ){
+        self.tableView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
+        self.noDataView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
+        
+        // 添加评论栏
+        NSArray *toolbarBtnConfig = @[ [NSNumber numberWithInt:ToolBarInputField], [NSNumber numberWithInt:ToolBarButtonReview] ];
+        NSArray *widthConfig = @[ @{@"frameWidth":[NSNumber numberWithFloat:270.0f],@"controlWidth":[NSNumber numberWithFloat:240.0f],@"controlHeight":[NSNumber numberWithFloat:28.0f]}, @{@"frameWidth":[NSNumber numberWithFloat:50.0f],@"controlWidth":[NSNumber numberWithFloat:47.0f],@"controlHeight":[NSNumber numberWithFloat:47.0f]} ];
+        self.toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:toolbarBtnConfig widthConfig:widthConfig frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+        [self.view addSubview:self.toolbar];
+    }
 }
 
 - (void) setupNavigationView{
@@ -74,6 +74,18 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.allowsSelection = false;
     self.tableView.backgroundColor = [UIColor clearColor];
+    
+    self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
+    _blackMask = self.view.blackMask;
+    [_blackMask addGestureRecognizer:self.closeReviewGesture];
+}
+
+- (void)viewDidUnload{
+    [super viewDidUnload];
+    [self setToolbar:nil];
+    [self setStatusView:nil];
+    
+    [_blackMask removeGestureRecognizer:self.closeReviewGesture];
 }
 
 - (void) backToDetailList{

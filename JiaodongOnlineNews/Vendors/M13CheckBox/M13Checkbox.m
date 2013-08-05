@@ -105,7 +105,6 @@
         checkImage = [[CheckImageView alloc] initWithFrame:CGRectMake(self.frame.size.width - ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height)];
         checkImage.checkbox = self;
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkImage.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize)];
-        _titleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
         _titleLabel.font = [UIFont systemFontOfSize:16];
         _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _titleLabel.backgroundColor = [UIColor clearColor];
@@ -117,6 +116,11 @@
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
+}
+
+- (void)setTitleColor:(NSString *)titleColor
+{
+    [_titleLabel setTextColor:[UIColor colorWithHex:titleColor]];
 }
 
 
@@ -206,7 +210,7 @@
 - (void)setEnabled:(BOOL)enabled
 {
     if (enabled) {
-        _titleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
+
     } else {
         labelColor = [UIColor colorWithHex:Gray_Color_Type1];
         float r, g, b, a;
@@ -214,7 +218,6 @@
         r = floorf(r * 100.0 + 0.5) / 100.0;
         g = floorf(g * 100.0 + 0.5) / 100.0;
         b = floorf(b * 100.0 + 0.5) / 100.0;
-        _titleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
     }
     _enabled = enabled;
     [checkImage updateState];

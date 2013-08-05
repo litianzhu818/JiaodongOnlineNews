@@ -569,13 +569,9 @@
 		D8A9BE5617A60FA700F47D34 /* vio_noresult.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A9BE5517A60FA600F47D34 /* vio_noresult.png */; };
 		D8E44FC61796448100132A8A /* JDOCarManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */; };
 		D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */; };
-		D8E96DA31797709800D5B267 /* JDOAddCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */; };
-		D8E96DA41797709800D5B267 /* JDOAddCarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */; };
 		D8EC8A0D17A73FC90007C887 /* vio_head_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
-		D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */; };
-		D8F68612178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */; };
 		D8FABEAF179E26E000BFB67A /* JDOCarTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
 		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
@@ -1386,17 +1382,11 @@
 		D8E44FC31796448100132A8A /* JDOCarManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarManagerViewController.h; sourceTree = "<group>"; };
 		D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCarManagerViewController.m; sourceTree = "<group>"; };
 		D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOCarManagerViewController.xib; sourceTree = "<group>"; };
-		D8E96DA01797709800D5B267 /* JDOAddCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAddCarViewController.h; sourceTree = "<group>"; };
-		D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAddCarViewController.m; sourceTree = "<group>"; };
-		D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOAddCarViewController.xib; sourceTree = "<group>"; };
 		D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_head_btn.png; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLifeKnowledgeViewController.h; sourceTree = "<group>"; };
 		D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLifeKnowledgeViewController.m; sourceTree = "<group>"; };
-		D8F6860E178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOSelectCarTypeViewController.h; sourceTree = "<group>"; };
-		D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOSelectCarTypeViewController.m; sourceTree = "<group>"; };
-		D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOSelectCarTypeViewController.xib; sourceTree = "<group>"; };
 		D8FABEAD179E26E000BFB67A /* JDOCarTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarTableCell.h; sourceTree = "<group>"; };
 		D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCarTableCell.m; sourceTree = "<group>"; };
 		D8FCACA6177C19E9001050EF /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
@@ -2504,15 +2494,9 @@
 				D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */,
 				D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */,
 				D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */,
-				D8F6860E178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.h */,
-				D8F6860F178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m */,
-				D8F68610178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib */,
 				D8E44FC31796448100132A8A /* JDOCarManagerViewController.h */,
 				D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */,
 				D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */,
-				D8E96DA01797709800D5B267 /* JDOAddCarViewController.h */,
-				D8E96DA11797709800D5B267 /* JDOAddCarViewController.m */,
-				D8E96DA21797709800D5B267 /* JDOAddCarViewController.xib */,
 				2DAADB3C17AA4EC4001EBD43 /* JDOGuideViewController.h */,
 				2DAADB3D17AA4EC4001EBD43 /* JDOGuideViewController.m */,
 			);
@@ -2902,7 +2886,6 @@
 				D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */,
 				2D6316271782D6D300248FD6 /* HGPageScrollView.xib in Resources */,
 				D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */,
-				D8F68612178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.xib in Resources */,
 				2D97A94217850A4600CEEE82 /* image_background@2x.png in Resources */,
 				2D97A94317850A4600CEEE82 /* image_mask@2x.png in Resources */,
 				2D97A94817851C5200CEEE82 /* content_template.html in Resources */,
@@ -2911,7 +2894,6 @@
 				2D97A94E17853D4C00CEEE82 /* toupiao.png in Resources */,
 				2D97A9501785547800CEEE82 /* vote.css in Resources */,
 				D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */,
-				D8E96DA41797709800D5B267 /* JDOAddCarViewController.xib in Resources */,
 				2DAE40051798DB9E00AE4C34 /* icon@2x.png in Resources */,
 				2DAE40071798E7BE00AE4C34 /* icon02@2x.png in Resources */,
 				2DAE4009179935FE00AE4C34 /* icon.png in Resources */,
@@ -3373,7 +3355,6 @@
 				2D97A93E178506EA00CEEE82 /* JDOTopicDetailController.m in Sources */,
 				2D97A9461785113000CEEE82 /* JDOTopicDetailModel.m in Sources */,
 				D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */,
-				D8F68611178A4CDC00A22BD8 /* JDOSelectCarTypeViewController.m in Sources */,
 				2D9B54071786448F0027123D /* JDOLivehoodViewController.m in Sources */,
 				2D9B540E178667ED0027123D /* JDOLivehoodDeptList.m in Sources */,
 				2D9B541117867EF80027123D /* JDOLivehoodQuestionList.m in Sources */,
@@ -3412,7 +3393,6 @@
 				2D9C24A21793D74E00EAB2E3 /* JDOArrayModel.m in Sources */,
 				2D3C034C1794D8430050EA57 /* PopoverView.m in Sources */,
 				D8E44FC61796448100132A8A /* JDOCarManagerViewController.m in Sources */,
-				D8E96DA31797709800D5B267 /* JDOAddCarViewController.m in Sources */,
 				2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */,
 				2D0DE2F91796940500A7C813 /* AbstractActionSheetPicker.m in Sources */,
 				2D0DE2FA1796940500A7C813 /* ActionSheetCustomPicker.m in Sources */,
