@@ -38,9 +38,7 @@
 
 - (void) onRightBtnClick
 {
-    JDOAddCarViewController *controller = [[JDOAddCarViewController alloc] initWithNibName:nil bundle:nil];
-    controller.back = self;
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.listview setEditing:YES animated:YES];
 }
 
 - (void)viewDidLoad
@@ -52,7 +50,11 @@
     [self.listview reloadData];
 }
 
-
+- (IBAction)onAddButtonClick:(id)sender
+{
+    JDOViolationViewController *controller = [[JDOViolationViewController alloc] initwithStatus:YES];
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 
 #pragma mark UITableViewDelegate
@@ -71,6 +73,26 @@
     [self.back setData:data];
     [self onBackBtnClick];
 }
+
+
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
+           editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    JDOCarTableCell *cell = (JDOCarTableCell *)[self.listview cellForRowAtIndexPath:indexPath];
+    [cell enterEditingMode];
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSUInteger row = [indexPath row];
+        [message removeObjectAtIndex:row];
+        [NSKeyedArchiver archiveRootObject:message toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                         withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
 
 
 #pragma mark UITableViewDataSource

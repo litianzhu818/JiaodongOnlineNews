@@ -25,4 +25,6 @@
  */
 @property (nonatomic,strong) JDOPageControl *pageControl;
 
+-(void)refresh;
+
 @end

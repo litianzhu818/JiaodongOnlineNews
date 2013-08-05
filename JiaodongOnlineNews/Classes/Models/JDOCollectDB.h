@@ -18,10 +18,8 @@
 }
 @property (nonatomic,copy) NSString *tableName;
 @property (nonatomic,strong) NSArray *columns;
-@property (nonatomic,strong) id<JDOToolbarModel> model;
--(id)initWithModel:(id<JDOToolbarModel>)model;
--(BOOL)save:(NSObject*)obj;//保存一条数据，把值放入一个数组中传入,注意需要与columns对应
+-(BOOL)save:(NSObject*)obj;
 -(BOOL)deleteById:(NSString*)idValue;
--(NSArray*)selectByType:(NSString*)type;
+-(NSArray*)selectByModelClassString:(NSString*)modelClassString;
 -(BOOL)isExistById:(NSString*)idValue;
 @end

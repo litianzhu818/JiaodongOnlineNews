@@ -18,8 +18,9 @@
 @property (strong,nonatomic) UIScrollView *mainView;
 @property (nonatomic,strong) JDOToolBar *toolbar;
 
+@property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
 @property (nonatomic,strong) JDOQuestionModel *questionModel;
 
 - (id)initWithQuestionModel:(JDOQuestionModel *)questionModel;
-
+- (id)initWithQuestionModel:(JDOQuestionModel *)questionModel Collect:(BOOL)isCollect;
 @end

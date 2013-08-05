@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JDOStatusView.h"
 
-@interface JDOBusLIstViewController : JDONavigationController <UITableViewDataSource, UITableViewDelegate>
+@interface JDOBusLIstViewController : JDONavigationController <JDOStatusView, JDOStatusViewDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     IBOutlet UITableView *tablelist;
-    
     NSMutableArray *buslines;
 }
+
+@property (strong,nonatomic) JDOStatusView *statusView;
+@property (nonatomic,assign) ViewStatusType status;
 
 - (void)loadDataFromNetwork;
 

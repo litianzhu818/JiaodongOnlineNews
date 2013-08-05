@@ -22,7 +22,7 @@
 #import "JDORegxpUtil.h"
 #import "DCKeyValueObjectMapping.h"
 #import "JDOCommonUtil.h"
-
+#import "JDORightViewController.h"
 #define Default_Image @"news_head_placeholder.png"
 
 
@@ -46,6 +46,14 @@ NSArray *imageUrls;
     return self;
 }
 
+- (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        self.newsModel = newsModel;
+        self.isCollect = isCollect;
+    }
+    return self;
+}
 #pragma mark - View Life Cycle
 
 - (void)loadView{
@@ -126,8 +134,13 @@ NSArray *imageUrls;
 }
 
 - (void) backToViewList{
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+    if(self.isCollect){
+        [(JDORightViewController *)self.stackViewController popViewController];
+    }else{
+        JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+    }
+    
 }
 
 - (void) showReviewList{

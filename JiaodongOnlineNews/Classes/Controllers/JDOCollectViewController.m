@@ -11,31 +11,38 @@
 #import "JDOPageControl.h"
 #import "Math.h"
 #import "NIPagingScrollView.h"
-
+#import "JDOCollectNewsView.h"
+#import "JDOCollectImageView.h"
+#import "JDOCollectTopicView.h"
+#import "JDOCollectQuestionView.h"
+#import "JDOCollectDB.h"
 #define News_Navbar_Height 35.0f
 
 @interface JDOCollectViewController()
 
 @property (nonatomic,strong) NSArray *pageInfos; // 新闻页面基本信息
-
+@property (nonatomic,strong) JDOCollectDB *db;
 @end
 
 @implementation JDOCollectViewController{
     BOOL pageControlUsed;
     int lastCenterPageIndex;
 }
-
-- (void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
-    self.pageInfos = @[[NSDictionary dictionaryWithObject:@"新闻" forKey:@"title"],
-                       [NSDictionary dictionaryWithObject:@"图集" forKey:@"title"],
-                       [NSDictionary dictionaryWithObject:@"话题" forKey:@"title"],
-                       [NSDictionary dictionaryWithObject:@"民生" forKey:@"title"]];
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
+        self.pageInfos = @[[NSDictionary dictionaryWithObject:@"新闻" forKey:@"title"],
+                           [NSDictionary dictionaryWithObject:@"图集" forKey:@"title"],
+                           [NSDictionary dictionaryWithObject:@"话题" forKey:@"title"],
+                           [NSDictionary dictionaryWithObject:@"民生" forKey:@"title"]];
+    }
+    return self;
 }
+
 
 -(void)loadView{
     [super loadView];
     
+    self.db = [[JDOCollectDB alloc] init];
     _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos];
     [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_pageControl];
@@ -49,7 +56,10 @@
     _scrollView.pageMargin = 0;
     [self.view addSubview:_scrollView];
 }
-
+-(void)refresh{
+    JDOCollectView *page = (JDOCollectView *)_scrollView.centerPageView;
+    [page loadData];
+}
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -59,7 +69,6 @@
     
     [_scrollView reloadData];
     [_scrollView moveToPageAtIndex:0 animated:false];
-    
     [self changeCenterPageStatus];
 }
 
@@ -67,6 +76,7 @@
     [super viewDidUnload];
     [self setPageControl:nil];
     [self setScrollView:nil];
+    self.db = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
@@ -75,7 +85,7 @@
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [self.navigationView setTitle:@"设置"];
+    [self.navigationView setTitle:@"收藏"];
 }
 
 - (void) onBackBtnClick{
@@ -85,13 +95,43 @@
 #pragma mark - PagingScrollView delegate
 
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {
-    return 4;
+    return [self.pageInfos count];
 }
 
 - (UIView<NIPagingScrollViewPage> *)pagingScrollView:(NIPagingScrollView *)pagingScrollView
                                     pageViewForIndex:(NSInteger)pageIndex {
+    JDOCollectView *page = nil;
+    switch (pageIndex) {
+        case 0:
+            page = [pagingScrollView dequeueReusablePageWithIdentifier:@"news"];
+            if (nil == page) {
+                page = [[JDOCollectNewsView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+            }
+            break;
+        case 1:
+            page = [pagingScrollView dequeueReusablePageWithIdentifier:@"images"];
+            if (nil == page) {
+                page = [[JDOCollectImageView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+            }
+            break;
+        case 2:
+            page = [pagingScrollView dequeueReusablePageWithIdentifier:@"topic"];
+            if (nil == page) {
+                page = [[JDOCollectTopicView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+            }
+            break;
+        case 3:
+            page = [pagingScrollView dequeueReusablePageWithIdentifier:@"question"];
+            if (nil == page) {
+                page = [[JDOCollectQuestionView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+            }
+            break;
+            
+        default:
+            break;
+    }
     
-    return nil;
+    return page;
 }
 
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{
@@ -155,7 +195,8 @@
 
 - (void) changeCenterPageStatus{
     lastCenterPageIndex = _scrollView.centerPageIndex;
-    
+  //  JDOCollectView *page = (JDOCollectView *)_scrollView.centerPageView;
+    //[page loadData];
 }
 
 @end
