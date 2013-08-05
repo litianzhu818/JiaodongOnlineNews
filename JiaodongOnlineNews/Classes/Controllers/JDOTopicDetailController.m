@@ -65,6 +65,7 @@ NSArray *imageUrls;
     [self.view addSubview:_webView];
     
     _toolbar = [[JDOToolBar alloc] initWithModel:self.topicModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
     self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
@@ -117,6 +118,14 @@ NSArray *imageUrls;
     }];
 }
 
+- (BOOL) onSharedClicked {
+    if (self.topicModel == nil) {
+        [JDOCommonUtil showHintHUD:@"话题尚未加载！" inView:self.view];
+        return FALSE;
+    }
+    return TRUE;
+}
+
 -(void)viewDidUnload{
     [super viewDidUnload];
     [self setWebView:nil];
@@ -139,7 +148,6 @@ NSArray *imageUrls;
     //    [WebViewJavascriptBridge enableLogging];
     
     _bridge = [WebViewJavascriptBridge bridgeForWebView:self.webView webViewDelegate:self handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSLog(@"ObjC received message from JS: %@", data);
         responseCallback(@"Response for message from ObjC");
     }];
     [_bridge registerHandler:@"showImageDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -151,10 +159,9 @@ NSArray *imageUrls;
             JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.topicModel.title];
             [array addObject:imageDetail];
         }
-        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:nil];
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[[JDOImageModel alloc] init]];
         detailController.imageIndex = [imageId integerValue];
         detailController.imageDetails = array;
-        detailController.fromNewsDetail = TRUE;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         [centerController pushViewController:detailController animated:true];
         // 显示图片详情
@@ -162,7 +169,6 @@ NSArray *imageUrls;
     }];
     [_bridge registerHandler:@"loadImage" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *realUrl = [(NSDictionary *)data valueForKey:@"realUrl"];
-        NSLog(@"loadimage %@", realUrl);
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         UIImage *cachedImage = [imageCache imageFromKey:realUrl fromDisk:YES]; // 将需要缓存的图片加载进来
         if (cachedImage) {
@@ -177,7 +183,6 @@ NSArray *imageUrls;
         JDOImageModel *imageModel = [[JDOImageModel alloc] init];
         imageModel.id = linkId;
         JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
-        detailController.fromNewsDetail = TRUE;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         // 通过pushViewController 显示图集视图
         [centerController pushViewController:detailController animated:true];

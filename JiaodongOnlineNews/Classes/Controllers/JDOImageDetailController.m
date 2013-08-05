@@ -93,12 +93,7 @@
 
 - (void) backToViewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    if(self.fromNewsDetail) {//返回新闻详情
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:1] animated:true];
-    } else {
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
-    }
-    
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];    
 }
 
 - (void)loadView{
@@ -195,9 +190,9 @@
                     photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
                     photo.isImageHolder = TRUE;
                 }
-                photo.title = self.imageModel.title;
-                photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
+                photo.title = detailModel.imagecontent;
                 photo.caption = detailModel.imagecontent;
+                photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
                 [_photos addObject:photo];
             }
             [_browser setCurrentPageIndex:self.imageIndex];
@@ -297,16 +292,28 @@
 
 #pragma mark - share delegate
 
-- (void)onSharedClicked{
-    JDOImageDetailModel *model = (JDOImageDetailModel *)[_models objectAtIndex:_browser.currentPageIndex];
+- (BOOL)onSharedClicked{
+    NSInteger i = [_browser currentPageIndex];
+    if ([[_photos objectAtIndex:i] isImageHolder]) {
+        [JDOCommonUtil showHintHUD:@"图片尚未加载！" inView:self.view];
+        return FALSE;
+    }
+    JDOImageDetailModel *model = (JDOImageDetailModel *)[_models objectAtIndex:i];
     _toolbar.model.imageurl = model.imageurl;
-    _toolbar.model.summary = model.imagecontent;
-    _toolbar.model.tinyurl = model.tinyurl;
+    _toolbar.model.summary = [[_photos objectAtIndex:i] caption];
+    _toolbar.model.title = [[_photos objectAtIndex:i] title];
+    _toolbar.model.tinyurl = model.tinyurl?model.tinyurl:@"";
+    return TRUE;
 }
 
 #pragma mark - download delegate
 
 - (id) getDownloadObject{
+    NSInteger i = [_browser currentPageIndex];
+    if ([[_photos objectAtIndex:i] isImageHolder]) {
+        [JDOCommonUtil showHintHUD:@"图片尚未加载！" inView:self.view];
+        return nil;
+    }
     id<MWPhoto> photo = [_photos objectAtIndex:_browser.currentPageIndex];
     return [photo underlyingImage];
 }
@@ -345,9 +352,12 @@
             realUrl = [SERVER_RESOURCE_URL stringByAppendingString:detailModel.imageurl]; 
         }
         photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
-        photo.title = self.imageModel.title;
+        if (self.imageModel.title) {
+            photo.title = self.imageModel.title;
+        } else {
+            photo.title = detailModel.imagecontent;
+        }
         photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
-        
         photo.caption = detailModel.imagecontent;
         [_photos setObject:photo atIndexedSubscript:i];
         [_browser reloadData];

@@ -41,7 +41,7 @@ typedef enum {
 @protocol JDOShareTargetDelegate <NSObject>
 
 @required
-- (void) onSharedClicked;
+- (BOOL) onSharedClicked;
 
 @end
 

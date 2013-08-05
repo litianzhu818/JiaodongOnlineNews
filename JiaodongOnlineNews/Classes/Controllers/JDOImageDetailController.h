@@ -18,7 +18,6 @@
 @property (strong,nonatomic) JDONavigationView *navigationView;
 @property (strong,nonatomic) JDOToolBar *toolbar;
 @property (nonatomic,strong) NSArray *imageDetails;//构造本地图片集时用到，存放图片实体类
-@property (nonatomic) BOOL fromNewsDetail;
 @property int imageIndex;
 
 - (void) setupNavigationView;
