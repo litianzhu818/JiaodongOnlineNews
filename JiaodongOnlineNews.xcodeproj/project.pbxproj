@@ -38,6 +38,8 @@
 		2D1DDB58175E2AD10048F7A7 /* JDONewsDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB57175E2AD10048F7A7 /* JDONewsDetailModel.m */; };
 		2D1DDB5D175E33DC0048F7A7 /* sample_template.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5C175E33DC0048F7A7 /* sample_template.txt */; };
 		2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */ = {isa = PBXBuildFile; fileRef = 2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */; };
+		2D24737D17AF4B7F0025DB6F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D24737C17AF4B7F0025DB6F /* Default.png */; };
+		2D24737F17AF4C430025DB6F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D24737E17AF4C430025DB6F /* Default-568h@2x.png */; };
 		2D29B276176065D300F116E4 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2D29B275176065D300F116E4 /* style.css */; };
 		2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D329AD41750A91100003EA2 /* JDOScrollView.m */; };
 		2D3C034C1794D8430050EA57 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D3C034B1794D8430050EA57 /* PopoverView.m */; };
@@ -656,6 +658,8 @@
 		2D1DDB57175E2AD10048F7A7 /* JDONewsDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsDetailModel.m; sourceTree = "<group>"; };
 		2D1DDB5C175E33DC0048F7A7 /* sample_template.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample_template.txt; sourceTree = "<group>"; };
 		2D1DDB5E175E39EE0048F7A7 /* jquery.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.min.js; sourceTree = "<group>"; };
+		2D24737C17AF4B7F0025DB6F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		2D24737E17AF4C430025DB6F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		2D29B275176065D300F116E4 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 		2D329AD31750A91100003EA2 /* JDOScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOScrollView.h; sourceTree = "<group>"; };
 		2D329AD41750A91100003EA2 /* JDOScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOScrollView.m; sourceTree = "<group>"; };
@@ -2078,7 +2082,9 @@
 				2DC49E18179FA005008374F2 /* aboutus@2x.png */,
 				2DC49E19179FA005008374F2 /* default_adv.png */,
 				2DC49E1A179FA005008374F2 /* default_adv@2x.png */,
+				2D24737C17AF4B7F0025DB6F /* Default.png */,
 				2DAADB4917AA5281001EBD43 /* Default@2x.png */,
+				2D24737E17AF4C430025DB6F /* Default-568h@2x.png */,
 				2DC49E1D179FA006008374F2 /* full_separator_line.png */,
 				2DC49E1E179FA006008374F2 /* full_separator_line@2x.png */,
 				2DC49E1F179FA007008374F2 /* leftside_shadow_bg.png */,
@@ -3166,6 +3172,8 @@
 				2DAADB4C17AA62B5001EBD43 /* Guide_Start.png in Resources */,
 				2DAADB5217AA7793001EBD43 /* BPushConfig.plist in Resources */,
 				2DA566B717AB393B00987EDC /* ShareSDKLocalizable.strings in Resources */,
+				2D24737D17AF4B7F0025DB6F /* Default.png in Resources */,
+				2D24737F17AF4C430025DB6F /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3450,8 +3458,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3486,8 +3494,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
