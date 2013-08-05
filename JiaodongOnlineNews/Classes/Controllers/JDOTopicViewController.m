@@ -110,7 +110,7 @@
 }
 
 - (void) saveListToLocalCache{
-    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"JDOCache/TopicListCache"];
+    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"TopicListCache"];
     [NSKeyedArchiver archiveRootObject:self.listArray toFile:cacheFilePath];
 }
 

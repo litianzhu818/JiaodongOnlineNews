@@ -10,6 +10,7 @@
 #import "JDOHttpClient.h"
 #import "JDONewsModel.h"
 #import "JDOConvenienceItemController.h"
+#import "Reachability.h"
 
 @interface JDOBusLIstViewController ()
 
@@ -20,9 +21,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadDataFromNetwork];
+    if ([Reachability isEnableNetwork]) {
+        [self loadDataFromNetwork];
+    } else {//没有网络的话使用缓存
+        BOOL hasCache = [self readListFromLocalCache];
+        if (hasCache) {
+            [tablelist reloadData];
+        }
+    }
     tablelist.delegate = self;
     tablelist.dataSource = self;
+}
+
+- (void) saveListToLocalCache{
+    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"BusListCache"];
+    [NSKeyedArchiver archiveRootObject:buslines toFile:cacheFilePath];
+}
+
+- (BOOL) readListFromLocalCache{
+    buslines = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:@"BusListCache"])];
+    // 任何一个数组为空都任务本地缓存无效
+    return TRUE && buslines;
 }
 
 - (void)loadDataFromNetwork{
@@ -30,9 +49,13 @@
     NSDictionary *params = @{@"channelid" : @"19", @"pageSize" : @"1000"};
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:params success:^(NSArray *dataList) {
         if(dataList == nil){
-            
+            BOOL hasCache = [self readListFromLocalCache];
+            if (hasCache) {
+                [tablelist reloadData];
+            }
         }else if(dataList.count >0){
             [buslines addObjectsFromArray:dataList];
+            [self saveListToLocalCache];
             [tablelist reloadData];
         }
     } failure:^(NSString *errorStr) {
