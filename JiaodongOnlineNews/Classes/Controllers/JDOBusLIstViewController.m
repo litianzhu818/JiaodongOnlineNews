@@ -20,23 +20,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadDataFromNetwork];
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView.delegate = self;
+    [self.view addSubview:self.statusView];
     tablelist.delegate = self;
     tablelist.dataSource = self;
+    [self loadDataFromNetwork];
 }
 
 - (void)loadDataFromNetwork{
+    if( ![Reachability isEnableNetwork]){
+        [self setCurrentState:ViewStatusNoNetwork];
+        return;
+    }
+    [self setCurrentState:ViewStatusLoading];
     buslines = [[NSMutableArray alloc] init];
     NSDictionary *params = @{@"channelid" : @"19", @"pageSize" : @"1000"};
     [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:params success:^(NSArray *dataList) {
         if(dataList == nil){
-            
+            [self setCurrentState:ViewStatusNormal];
         }else if(dataList.count >0){
             [buslines addObjectsFromArray:dataList];
             [tablelist reloadData];
+            [self setCurrentState:ViewStatusNormal];
         }
     } failure:^(NSString *errorStr) {
-        
+        [self setCurrentState:ViewStatusRetry];
     }];
 }
 
@@ -50,6 +59,30 @@
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
 }
 
+
+
+- (void) onRetryClicked:(JDOStatusView *) statusView{
+    [self loadDataFromNetwork];
+}
+
+- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
+    [self loadDataFromNetwork];
+}
+
+- (void) setCurrentState:(ViewStatusType)status{
+    self.status = status;
+    [self.statusView setStatus:status];
+    
+    if(status == ViewStatusNormal){
+        [tablelist setHidden:NO];
+    }else{
+        [tablelist setHidden:YES];
+    }
+}
+
+
+
+
 #pragma mark UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -60,6 +93,7 @@
     
     JDOConvenienceItemController *controller = [[JDOConvenienceItemController alloc] initWithService:NEWS_DETAIL_SERVICE params:@{@"aid":[[buslines objectAtIndex:indexPath.row] id]} title:@"公交班次"];
     [self.navigationController pushViewController:controller animated:YES];
+    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

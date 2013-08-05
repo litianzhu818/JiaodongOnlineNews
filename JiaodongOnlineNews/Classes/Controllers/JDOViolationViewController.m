@@ -10,6 +10,7 @@
 #import "JDOJsonClient.h"
 #import "JDOViolationTableCell.h"
 #import "JDOCarManagerViewController.h"
+#import "JDOCommonUtil.h"
 
 @interface JDOViolationViewController ()
 
@@ -168,6 +169,11 @@
             return;
         }
         
+        if( ![Reachability isEnableNetwork]){
+            [JDOCommonUtil showHintHUD:@"网络不可用！" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+            return;
+        }
+        
         [result setHidden:YES];
         [resultline setHidden:YES];
         [resultline_shadow setHidden:YES];
@@ -194,6 +200,9 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
+        
+        [CarNum resignFirstResponder];
+        [ChassisNum resignFirstResponder];
         if (checkBox1.isChecked) {
             [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
         }
