@@ -8,7 +8,6 @@
 
 #import "JDONavigationController.h"
 #import "JDOViolationViewController.h"
-#import "JDOAddCarViewController.h"
 
 @interface JDOCarManagerViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource>
 {

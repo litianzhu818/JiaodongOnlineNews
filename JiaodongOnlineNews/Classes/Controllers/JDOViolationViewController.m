@@ -8,7 +8,6 @@
 
 #import "JDOViolationViewController.h"
 #import "JDOJsonClient.h"
-#import "JDOSelectCarTypeViewController.h"
 #import "JDOViolationTableCell.h"
 #import "JDOCarManagerViewController.h"
 
@@ -49,26 +48,25 @@
     [carnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
     [cartypelabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
     [chassisnumlabel setTextColor:[UIColor colorWithHex:Gray_Color_Type1]];
-    //[CarNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
-    //[CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateNormal];
-    //[CarType setTitleColor:[UIColor colorWithHex:@"c8c8c8"] forState:UIControlStateSelected];
-    //[ChassisNum setTextColor:[UIColor colorWithHex:@"c8c8c8"]];
+    [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateNormal];
+    [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateSelected];
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     resultArray = [[NSMutableArray alloc] init];
     
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:18];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox1.frame = CGRectMake(10, 145, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    checkBox1.frame = CGRectMake(15, 145, checkBox1.frame.size.width, checkBox1.frame.size.height);
     [tp addSubview:checkBox1];
     
     checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:18];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox2.frame = CGRectMake(165, 145, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    checkBox2.frame = CGRectMake(161, 145, checkBox2.frame.size.width, checkBox2.frame.size.height);
     [tp addSubview:checkBox2];
     
     [tp setScrollEnabled:NO];
     
+    [result setBounces:NO];
     [result setDataSource:self];
     [result setDelegate:self];
     

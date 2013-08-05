@@ -50,11 +50,11 @@
 - (void)setSeparator:(UIImage *)separator
 {
     if (separator != nil) {
-        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 1, 300, 1)];
+        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.frame.size.height - 1, 310, 1)];
         [imageseparator setImage:separator];
         [self.contentView addSubview:imageseparator];
     } else {
-        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 1, 300, 1)];
+        UIImageView *imageseparator = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.frame.size.height - 1, 310, 1)];
         [imageseparator setImage:[UIImage imageNamed:@"vio_line2"]];
         [self.contentView addSubview:imageseparator];
     }

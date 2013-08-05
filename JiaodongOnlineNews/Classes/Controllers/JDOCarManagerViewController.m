@@ -38,9 +38,7 @@
 
 - (void) onRightBtnClick
 {
-    JDOAddCarViewController *controller = [[JDOAddCarViewController alloc] initWithNibName:nil bundle:nil];
-    controller.back = self;
-    [self.navigationController pushViewController:controller animated:YES];
+
 }
 
 - (void)viewDidLoad
