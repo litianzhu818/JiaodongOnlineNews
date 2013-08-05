@@ -5,8 +5,8 @@
 	<key>PRODUCTION_MODE</key>
 	<false/>
 	<key>API_KEY</key>
-	<string>j6CWoRkLyzWSRqYxjrDf5mw6</string>
+	<string>dGD097MDL8IVSXmB04axZ76a</string>
 	<key>DEBUG</key>
-	<false/>
+	<true/>
 </dict>
 </plist>
