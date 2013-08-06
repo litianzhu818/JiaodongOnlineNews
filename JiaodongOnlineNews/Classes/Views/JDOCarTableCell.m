@@ -48,9 +48,9 @@
     [self setSeparator:nil];
 }
 
-- (void)enterEditingMode
+- (void)enterEditingMode:(BOOL)iseditting
 {
-    [checkBox setHidden:YES];
+    [checkBox setHidden:iseditting];
 }
 
 - (void)setSeparator:(UIImage *)separator

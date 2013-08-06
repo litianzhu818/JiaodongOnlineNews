@@ -25,5 +25,6 @@
 
 - (IBAction)reportButtonClick:(id)sender;
 - (void)sendToServer;
+- (void)getDeviceAndOSInfo;
 
 @end
