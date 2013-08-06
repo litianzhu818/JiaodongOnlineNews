@@ -68,11 +68,19 @@
 
 - (CGRect)contentFrame {
 	CGRect bubbleFrame = [self bubbleFrame];
-    //去掉了圆角
-	CGRect contentFrame = CGRectMake(bubbleFrame.origin.x + 0,
-									 bubbleFrame.origin.y + 0,
-									 bubbleFrame.size.width - 0*2,
-									 bubbleFrame.size.height - 0*2);
+    //有custom时不加边框，否则正常加边框
+    CGRect contentFrame;
+    if (self.customView) {
+        contentFrame = CGRectMake(bubbleFrame.origin.x,
+                                         bubbleFrame.origin.y,
+                                         bubbleFrame.size.width,
+                                         bubbleFrame.size.height);
+    } else {
+        contentFrame = CGRectMake(bubbleFrame.origin.x + 10,
+                                         bubbleFrame.origin.y + 10,
+                                         bubbleFrame.size.width - 10*2,
+                                         bubbleFrame.size.height - 10*2);
+    }
 	return contentFrame;
 }
 
@@ -309,22 +317,24 @@
 
 	CGSize textSize = CGSizeZero;
     
-    if (self.message!=nil) {
+    if (self.message!=nil) {       
         textSize= [self.message sizeWithFont:textFont
                            constrainedToSize:CGSizeMake(rectWidth, 99999.0)
                                lineBreakMode:UILineBreakModeWordWrap];
+        bubbleSize = CGSizeMake(textSize.width + 10*2, textSize.height + 10*2);
     }
+    
     if (self.customView != nil) {
         textSize = self.customView.frame.size;
+        bubbleSize = CGSizeMake(textSize.width, textSize.height);
     }
     if (self.title != nil) {
         textSize.height += [self.title sizeWithFont:self.titleFont
                                   constrainedToSize:CGSizeMake(rectWidth, 99999.0)
                                       lineBreakMode:UILineBreakModeClip].height;
+        bubbleSize = CGSizeMake(textSize.width + 10*2, textSize.height + 10*2);
     }
-    
-    //去掉了圆角
-	bubbleSize = CGSizeMake(textSize.width + 0*2, textSize.height + 0*2);
+
 	
 	UIView *superview = containerView.superview;
 	if ([superview isKindOfClass:[UIWindow class]])
@@ -567,7 +577,7 @@
 		sidePadding = 2.0;
         borderWidth = 1.0;
 		
-		self.textFont = [UIFont boldSystemFontOfSize:14.0];
+		self.textFont = [UIFont boldSystemFontOfSize:15.0];
 		self.textColor = [UIColor whiteColor];
 		self.textAlignment = UITextAlignmentCenter;
         self.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.95];

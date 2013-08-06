@@ -450,7 +450,6 @@
         _collectPopTipView = [[CMPopTipView alloc] initWithMessage:@""];
         _collectPopTipView.disableTapToDismiss = YES;
         _collectPopTipView.preferredPointDirection = PointDirectionDown;
-        //_collectPopTipView.backgroundColor = [UIColor darkGrayColor];
         _collectPopTipView.animation = CMPopTipAnimationPop;
         _collectPopTipView.dismissTapAnywhere = NO;
     }
