@@ -13,6 +13,7 @@
 {
     NSMutableArray *message;
     IBOutlet UIButton *add;
+    BOOL iseditting;
 }
 @property (nonatomic, strong) IBOutlet UITableView *listview;
 @property (nonatomic, strong) JDOViolationViewController *back;
