@@ -18,7 +18,7 @@
 #import "DCCustomParser.h"
 #import "DCKeyValueObjectMapping.h"
 #import "JDOQuestionDetailModel.h"
-
+#import "JDORightViewController.h"
 #define Dept_Label_Tag 101
 #define Title_Label_Tag 102
 #define Subtitle_Label_Tag 103
@@ -39,6 +39,14 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.questionModel = questionModel;
+    }
+    return self;
+}
+
+-(id)initWithQuestionModel:(JDOQuestionModel *)questionModel Collect:(BOOL)isCollect{
+    self = [self initWithQuestionModel:questionModel];
+    if(self){
+        self.isCollect = isCollect;
     }
     return self;
 }
@@ -109,8 +117,12 @@
 }
 
 - (void) backToViewList{
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];
+    if(self.isCollect){
+        [(JDORightViewController *)self.stackViewController popViewController];
+    }else{
+        JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];
+    }
 }
 
 - (void) showReviewList{

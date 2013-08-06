@@ -537,6 +537,10 @@
     
 }
 
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    NSLog(@"%@",error);
+}
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     
@@ -547,6 +551,18 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    NSLog(@"Receive Notify: %@", [userInfo JSONString]);
+    NSString *alert = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    if (application.applicationState == UIApplicationStateActive) {
+        // Nothing to do if applicationState is Inactive, the iOS already displayed an alert view.
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"接收到推送通知"
+                                                            message:[NSString stringWithFormat:@"%@", alert]
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
+    [application setApplicationIconBadgeNumber:0];
     [BPush handleNotification:userInfo]; // 可选
 }
 
@@ -554,6 +570,8 @@
 // 若绑定失败，请进行重新绑定，确保至少绑定成功一次
 - (void) onMethod:(NSString*)method response:(NSDictionary*)data
 {
+    NSLog(@"On method:%@", method);
+    NSLog(@"data:%@", [data description]);
     if ([BPushRequestMethod_Bind isEqualToString:method])
     {
         NSDictionary* res = [[NSDictionary alloc] initWithDictionary:data];
