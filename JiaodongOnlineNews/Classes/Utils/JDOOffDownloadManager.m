@@ -15,11 +15,15 @@
 #define Default_News_Size 20
 #define Default_Image_Size 10
 #define Default_Topic_Size 10
+#define Total_Size (Default_Head_Size+Default_News_Size)*5 + Default_Image_Size + Default_Topic_Size
 
-@implementation JDOOffDownloadManager
+@implementation JDOOffDownloadManager 
 
 NSArray *channelArray;
 NSArray *channelReuseIdArray;
+id target;
+SEL action;
+int downloadCount;
 
 - (NSDictionary *) newsListParamWithChannelIndex:(int)index{
     return @{@"channelid":[channelArray objectAtIndex:index],@"pageSize":@Default_News_Size,@"natype":@"a"};
@@ -29,13 +33,34 @@ NSArray *channelReuseIdArray;
     return @{@"channelid":[channelArray objectAtIndex:index],@"pageSize":@Default_Head_Size,@"atype":@"a"};
 }
 
--(void) main {
+-(void) start {
     [self startOffDownload];
+}
+
+-(BOOL)isConcurrent{
+    //返回yes表示支持异步调用，否则为支持同步调用
+    return YES;
+    
+}
+- (BOOL)isExecuting {
+    return target == nil;
+}
+- (BOOL)isFinished {
+    return downloadCount == Total_Size;
+}
+
+-(id) initWithTarget:(id)target1 action:(SEL)action1 {
+    if (self = [super init]) {
+        target = target1;
+        action = action1;
+    }
+    return self;
 }
 
 -(void) startOffDownload {
     channelArray = @[@"16",@"7",@"11",@"12",@"13"];
     channelReuseIdArray = @[@"Local",@"Important",@"Social",@"Entertainment",@"Sport"];
+    downloadCount = 0;
     [self downloadNewsHead];
     [self downloadNewsList];
     [self downloadImageList];
@@ -53,14 +78,15 @@ NSArray *channelReuseIdArray;
                         if([responseObject isKindOfClass:[NSDictionary class]]){
                             [self saveNewsDetailToLocalCache:responseObject];
                         }
+                        [self callBackToTarget];
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        
+                        [self callBackToTarget];
                     }];
-                    NSInteger i = downloadCount++;
-                    //[target performSelectorOnMainThread:action withObject: waitUntilDone:NO];
                 }
             }
+            [self callBackToTargetWithTitle:@"正在下载新闻"];
         } failure:^(NSString *errorStr) {
+            [self callBackToTargetWithTitle:@"下载新闻头条失败"];
         }];
     }
 }
@@ -68,7 +94,7 @@ NSArray *channelReuseIdArray;
 //下载新闻列表
 -(void) downloadNewsList{
     for (int i = 0; i<channelArray.count; i++) {
-        [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:[self headLineParamWithChannelIndex:i] success:^(NSArray *dataList) {
+        [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:[self newsListParamWithChannelIndex:i] success:^(NSArray *dataList) {
             if(dataList != nil && dataList.count >0){
                 [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:[channelReuseIdArray objectAtIndex:i]]]];
                 for (JDONewsModel *newsModel in dataList) {
@@ -76,38 +102,41 @@ NSArray *channelReuseIdArray;
                         if([responseObject isKindOfClass:[NSDictionary class]]){
                             [self saveNewsDetailToLocalCache:responseObject];
                         }
+                        [self callBackToTarget];
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        
+                        [self callBackToTarget];
                     }];
                 }
             }
+            [self callBackToTargetWithTitle:@"正在下载新闻"];
         } failure:^(NSString *errorStr) {
+            [self callBackToTargetWithTitle:@"下载新闻列表失败"];
         }];
     }
 }
 
 //下载图片列表
 -(void) downloadImageList{
-    for (int i = 0; i<channelArray.count; i++) {
         [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" params:@{@"pageSize":@Default_Image_Size} success:^(NSArray *dataList) {
             if(dataList != nil && dataList.count >0){
                 [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"ImageListCache"]];
                 for (JDOImageModel *imageModel in dataList) {
                     [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":imageModel.id} success:^(NSArray *dataList) {
                         [self saveImageDetailToLocalCache:dataList withId:imageModel.id];
+                        [self callBackToTarget];
                     } failure:^(NSString *errorStr) {
-                        
+                        [self callBackToTarget];
                     }];
                 }
             }
+            [self callBackToTargetWithTitle:@"正在下载图片"];
         } failure:^(NSString *errorStr) {
+            [self callBackToTargetWithTitle:@"下载图片列表失败"];
         }];
-    }
 }
 
 //下载话题列表
 -(void) downloadTopicList{
-    for (int i = 0; i<channelArray.count; i++) {
         [[JDOJsonClient sharedClient] getJSONByServiceName:TOPIC_LIST_SERVICE modelClass:@"JDOTopicModel" params:@{@"pageSize":@Default_Topic_Size} success:^(NSArray *dataList) {
             if(dataList != nil && dataList.count >0){
                 [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"TopicListCache"]];
@@ -118,13 +147,27 @@ NSArray *channelReuseIdArray;
                             [dict setObject:topicModel.id forKey:@"id"];
                             [self saveTopicDetailToLocalCache:dict];                           
                         }
+                        [self callBackToTarget];
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        [self callBackToTarget];
                     }];
                 }
             }
+            [self callBackToTargetWithTitle:@"正在下载话题"];
         } failure:^(NSString *errorStr) {
+            [self callBackToTargetWithTitle:@"下载话题列表失败"];
         }];
-    }
+}
+
+-(void) callBackToTargetWithTitle:(NSString *)title {
+    NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:title, @"title", nil];
+    [target performSelectorOnMainThread:action withObject:result waitUntilDone:YES];
+}
+
+-(void) callBackToTarget {
+    NSNumber *count = [NSNumber numberWithFloat:[[NSNumber numberWithInt:++downloadCount] floatValue]/[[NSNumber numberWithInt:Total_Size] floatValue]];
+    NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:count, @"count", nil];
+    [target performSelectorOnMainThread:action withObject:result waitUntilDone:YES];
 }
 
 // 保存列表内容至本地缓存文件

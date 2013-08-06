@@ -13,6 +13,7 @@
 #import "SDImageCache.h"
 #import "JDOFeedbackViewController.h"
 #import "JDOOffDownloadManager.h"
+#import "ITWLoadingPanel.h"
 
 @interface JDOSettingViewController ()
 
@@ -240,8 +241,13 @@
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
         }
-        case JDOSettingItemDownload:
-            [self offDownload];
+        case JDOSettingItemDownload: {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            [ITWLoadingPanel showPanelInView:cell title:@"开始下载" cancelTitle:@"取消"];
+            JDOOffDownloadManager *downloadOperation = [[JDOOffDownloadManager alloc] initWithTarget:self action:@selector(refreshProgressWithCount:)];
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [queue addOperation:downloadOperation];
+            }
             break;
         case JDOSettingItemCheckVersion:
             [SharedAppDelegate checkForNewVersion];
@@ -255,9 +261,22 @@
             break;
     }
 }
-
-- (void) offDownload {
-    [[[JDOOffDownloadManager alloc] init] startOffDownload];
+      
+- (void) refreshProgressWithCount:(NSDictionary *) result {
+    NSString *title = [result objectForKey:@"title"];
+    if (title) {
+        UILabel *titleLabel = [[ITWLoadingPanel sharedInstance] titleLabel];
+        titleLabel.text = title;
+    }
+    NSNumber *count = [result objectForKey:@"count"];
+    if (count) {
+        UIProgressView *progressView = [[ITWLoadingPanel sharedInstance] progressView];
+        
+        [ITWLoadingPanel setProgress:([count floatValue]) animated:YES];
+        if (1 == progressView.progress) {
+            [ITWLoadingPanel showSuccess];
+        }
+    }    
 }
 
 @end
