@@ -68,10 +68,11 @@
 
 - (CGRect)contentFrame {
 	CGRect bubbleFrame = [self bubbleFrame];
-	CGRect contentFrame = CGRectMake(bubbleFrame.origin.x + cornerRadius,
-									 bubbleFrame.origin.y + cornerRadius,
-									 bubbleFrame.size.width - cornerRadius*2,
-									 bubbleFrame.size.height - cornerRadius*2);
+    //去掉了圆角
+	CGRect contentFrame = CGRectMake(bubbleFrame.origin.x + 0,
+									 bubbleFrame.origin.y + 0,
+									 bubbleFrame.size.width - 0*2,
+									 bubbleFrame.size.height - 0*2);
 	return contentFrame;
 }
 
@@ -89,7 +90,7 @@
 	
 	CGContextRef c = UIGraphicsGetCurrentContext(); 
     
-    CGContextSetRGBStrokeColor(c, 0.0, 0.0, 0.0, 1.0);	// black
+    CGContextSetRGBStrokeColor(c, 0.0, 0.0, 0.0, 0.0);	// black
 	CGContextSetLineWidth(c, borderWidth);
     
 	CGMutablePathRef bubblePath = CGPathCreateMutable();
@@ -146,7 +147,7 @@
 	CGContextAddPath(c, bubblePath);
     CGContextSaveGState(c);
 	CGContextSetShadow(c, CGSizeMake(0, 3), 5);
-	CGContextSetRGBFillColor(c, 0.0, 0.0, 0.0, 0.9);
+	CGContextSetRGBFillColor(c, 0.0, 0.0, 0.0, 0.0);
 	CGContextFillPath(c);
     CGContextRestoreGState(c);
     
@@ -322,7 +323,8 @@
                                       lineBreakMode:UILineBreakModeClip].height;
     }
     
-	bubbleSize = CGSizeMake(textSize.width + cornerRadius*2, textSize.height + cornerRadius*2);
+    //去掉了圆角
+	bubbleSize = CGSizeMake(textSize.width + 0*2, textSize.height + 0*2);
 	
 	UIView *superview = containerView.superview;
 	if ([superview isKindOfClass:[UIWindow class]])
@@ -559,7 +561,7 @@
         // Initialization code
 		self.opaque = NO;
 		
-		cornerRadius = 10.0;
+		cornerRadius = 0.0;
 		topMargin = 2.0;
 		pointerSize = 12.0;
 		sidePadding = 2.0;
@@ -568,11 +570,12 @@
 		self.textFont = [UIFont boldSystemFontOfSize:14.0];
 		self.textColor = [UIColor whiteColor];
 		self.textAlignment = UITextAlignmentCenter;
-		self.backgroundColor = [UIColor colorWithRed:62.0/255.0 green:60.0/255.0 blue:154.0/255.0 alpha:1.0];
-        self.borderColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.95];
+        self.borderColor = [UIColor clearColor];
         self.animation = CMPopTipAnimationSlide;
         self.dismissTapAnywhere = NO;
         self.preferredPointDirection = PointDirectionAny;
+        
     }
     return self;
 }

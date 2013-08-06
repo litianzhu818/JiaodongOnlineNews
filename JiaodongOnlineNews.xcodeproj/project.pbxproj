@@ -560,6 +560,7 @@
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D81516C917B0761E008F32BA /* vio_done.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516C717B0761E008F32BA /* vio_done.png */; };
 		D81516CA17B0761E008F32BA /* vio_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516C817B0761E008F32BA /* vio_edit.png */; };
+		D81516CC17B0D6C4008F32BA /* background_black.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516CB17B0D6C4008F32BA /* background_black.png */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
@@ -1371,6 +1372,7 @@
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D81516C717B0761E008F32BA /* vio_done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_done.png; sourceTree = "<group>"; };
 		D81516C817B0761E008F32BA /* vio_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_edit.png; sourceTree = "<group>"; };
+		D81516CB17B0D6C4008F32BA /* background_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_black.png; sourceTree = "<group>"; };
 		D823DBC11762B88B0006F80B /* JDOConvenienceItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceItemController.h; sourceTree = "<group>"; };
 		D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOConvenienceItemController.m; sourceTree = "<group>"; };
 		D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationViewController.h; sourceTree = "<group>"; };
@@ -2598,6 +2600,7 @@
 		2DDC4D4B177986D0007CF9E0 /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
+				D81516CB17B0D6C4008F32BA /* background_black.png */,
 				FF89295D17AF4A68006AF819 /* collect_save.png */,
 				FF89295E17AF4A68006AF819 /* collect_save@2x.png */,
 				FF89295F17AF4A68006AF819 /* collect_savehighlight.png */,
@@ -3189,12 +3192,13 @@
 				2DA566B717AB393B00987EDC /* ShareSDKLocalizable.strings in Resources */,
 				2D24737D17AF4B7F0025DB6F /* Default.png in Resources */,
 				2D24737F17AF4C430025DB6F /* Default-568h@2x.png in Resources */,
-                FF89296117AF4A68006AF819 /* collect_save.png in Resources */,
+				FF89296117AF4A68006AF819 /* collect_save.png in Resources */,
 				FF89296217AF4A68006AF819 /* collect_save@2x.png in Resources */,
 				FF89296317AF4A68006AF819 /* collect_savehighlight.png in Resources */,
 				FF89296417AF4A68006AF819 /* collect_savehighlight@2x.png in Resources */,
 				D81516C917B0761E008F32BA /* vio_done.png in Resources */,
 				D81516CA17B0761E008F32BA /* vio_edit.png in Resources */,
+				D81516CC17B0D6C4008F32BA /* background_black.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
