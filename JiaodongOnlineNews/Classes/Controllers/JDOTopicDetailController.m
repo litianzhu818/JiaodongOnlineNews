@@ -221,9 +221,9 @@ NSArray *imageUrls;
                 NSMutableDictionary *dict = [responseObject mutableCopy];
                 [dict setObject:self.topicModel.id forKey:@"id"];
                 [self saveTopicDetailToLocalCache:dict];
-                self.topicModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
+                self.topicModel.tinyurl = [dict objectForKey:@"tinyurl"];
                 
-                NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
+                NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:dict]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
             }else{
