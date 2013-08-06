@@ -29,6 +29,10 @@ NSArray *channelReuseIdArray;
     return @{@"channelid":[channelArray objectAtIndex:index],@"pageSize":@Default_Head_Size,@"atype":@"a"};
 }
 
+-(void) main {
+    [self startOffDownload];
+}
+
 -(void) startOffDownload {
     channelArray = @[@"16",@"7",@"11",@"12",@"13"];
     channelReuseIdArray = @[@"Local",@"Important",@"Social",@"Entertainment",@"Sport"];
@@ -45,7 +49,15 @@ NSArray *channelReuseIdArray;
             if(dataList != nil && dataList.count >0){
                 [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:[channelReuseIdArray objectAtIndex:i]]]];
                 for (JDONewsModel *newsModel in dataList) {
-                    
+                    [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if([responseObject isKindOfClass:[NSDictionary class]]){
+                            [self saveNewsDetailToLocalCache:responseObject];
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        
+                    }];
+                    NSInteger i = downloadCount++;
+                    //[target performSelectorOnMainThread:action withObject: waitUntilDone:NO];
                 }
             }
         } failure:^(NSString *errorStr) {
@@ -60,7 +72,13 @@ NSArray *channelReuseIdArray;
             if(dataList != nil && dataList.count >0){
                 [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:[channelReuseIdArray objectAtIndex:i]]]];
                 for (JDONewsModel *newsModel in dataList) {
-                    
+                    [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if([responseObject isKindOfClass:[NSDictionary class]]){
+                            [self saveNewsDetailToLocalCache:responseObject];
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        
+                    }];
                 }
             }
         } failure:^(NSString *errorStr) {
@@ -75,7 +93,11 @@ NSArray *channelReuseIdArray;
             if(dataList != nil && dataList.count >0){
                 [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"ImageListCache"]];
                 for (JDOImageModel *imageModel in dataList) {
-                    
+                    [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":imageModel.id} success:^(NSArray *dataList) {
+                        [self saveImageDetailToLocalCache:dataList withId:imageModel.id];
+                    } failure:^(NSString *errorStr) {
+                        
+                    }];
                 }
             }
         } failure:^(NSString *errorStr) {
@@ -90,7 +112,14 @@ NSArray *channelReuseIdArray;
             if(dataList != nil && dataList.count >0){
                 [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"TopicListCache"]];
                 for (JDOTopicModel *topicModel in dataList) {
-                    
+                    [[JDOJsonClient sharedClient] getPath:TOPIC_DETAIL_SERVICE parameters:@{@"aid":topicModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if([responseObject isKindOfClass:[NSDictionary class]]){
+                            NSMutableDictionary *dict = [responseObject mutableCopy];
+                            [dict setObject:topicModel.id forKey:@"id"];
+                            [self saveTopicDetailToLocalCache:dict];                           
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    }];
                 }
             }
         } failure:^(NSString *errorStr) {
@@ -101,5 +130,18 @@ NSArray *channelReuseIdArray;
 // 保存列表内容至本地缓存文件
 - (void) saveListToLocalCacheWithArray:(NSArray *)dataList andCacheFileName:(NSString *) cacheFileName{
     [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:cacheFileName]];
+}
+
+- (void) saveNewsDetailToLocalCache:(NSDictionary *) newsDetail{
+    NSString *cacheFilePath = [[SharedAppDelegate newsDetailCachePath] stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:[newsDetail objectForKey:@"id"]]];
+    [NSKeyedArchiver archiveRootObject:newsDetail toFile:cacheFilePath];
+}
+- (void) saveImageDetailToLocalCache:(NSArray *) imageDetail withId:(NSString *)id{
+    NSString *cacheFilePath = [[SharedAppDelegate imageDetailCachePath] stringByAppendingPathComponent:[@"ImageDetail_" stringByAppendingString:id]];
+    [NSKeyedArchiver archiveRootObject:imageDetail toFile:cacheFilePath];
+}
+- (void) saveTopicDetailToLocalCache:(NSDictionary *) topicDetail{
+    NSString *cacheFilePath = [[SharedAppDelegate topicDetailCachePath] stringByAppendingPathComponent:[@"TopicDetail_" stringByAppendingString:[topicDetail objectForKey:@"id"]]];
+    [NSKeyedArchiver archiveRootObject:topicDetail toFile:cacheFilePath];
 }
 @end

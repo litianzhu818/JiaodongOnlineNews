@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDOOffDownloadManager : NSObject
+@interface JDOOffDownloadManager : NSOperation {
+    id target;
+    SEL action;
+    int downloadCount;
+}
 
 -(void) startOffDownload;
 @end
