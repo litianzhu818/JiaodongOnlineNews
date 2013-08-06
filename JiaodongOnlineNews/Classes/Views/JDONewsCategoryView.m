@@ -320,8 +320,9 @@
 }
 
 - (BOOL) readListFromLocalCache{
-    self.headArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]];
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]];
+    // 非常偶发的情况下,反序列化得到的是NSArray而不是NSMutableArray,为防止错误,在此加强制转换
+    self.headArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]] mutableCopy];
+    self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]] mutableCopy];
     // 任何一个数组为空都任务本地缓存无效
     return self.headArray && self.listArray;
 }

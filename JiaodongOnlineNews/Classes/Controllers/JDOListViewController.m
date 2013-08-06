@@ -194,7 +194,7 @@
     if (!self.isCacheToMemory) {
         return FALSE;
     }
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:self.cacheFileName])];
+    self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:self.cacheFileName])] mutableCopy];
     // 任何一个数组为空都任务本地缓存无效
     return TRUE && self.listArray;
 }
