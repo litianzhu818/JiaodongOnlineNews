@@ -136,7 +136,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
-    NSLog(@"COUNT:%d", message.count);
+    if (message.count == 0) {
+        [tableView setHidden:YES];
+        [nodate setHidden:NO];
+    } else {
+        [tableView setHidden:NO];
+        [nodate setHidden:YES];
+    }
 	return message.count;
 }
 

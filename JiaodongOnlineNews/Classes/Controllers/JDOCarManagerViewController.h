@@ -14,6 +14,7 @@
     NSMutableArray *message;
     IBOutlet UIButton *add;
     BOOL iseditting;
+    IBOutlet UIImageView *nodate;
 }
 @property (nonatomic, strong) IBOutlet UITableView *listview;
 @property (nonatomic, strong) JDOViolationViewController *back;
