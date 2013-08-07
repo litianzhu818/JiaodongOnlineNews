@@ -42,10 +42,10 @@
 					<object class="IBUIButton" id="773913346">
 						<reference key="NSNextResponder" ref="78101226"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{295, 9}, {20, 20}}</string>
+						<string key="NSFrame">{{291, 31}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="78101226"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="500216110"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -63,6 +63,10 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">cancelDownload.png</string>
+						</object>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">2</int>
 							<double key="pointSize">15</double>
@@ -76,10 +80,10 @@
 					<object class="IBUILabel" id="500216110">
 						<reference key="NSNextResponder" ref="78101226"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{256, 7}, {59, 21}}</string>
+						<string key="NSFrame">{{212, 7}, {59, 21}}</string>
 						<reference key="NSSuperview" ref="78101226"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="789453455"/>
+						<reference key="NSNextKeyView" ref="856918350"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -107,10 +111,10 @@
 					<object class="IBUILabel" id="789453455">
 						<reference key="NSNextResponder" ref="78101226"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{27, 7}, {73, 21}}</string>
+						<string key="NSFrame">{{41, 7}, {83, 21}}</string>
 						<reference key="NSSuperview" ref="78101226"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="540612582"/>
+						<reference key="NSNextKeyView" ref="500216110"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -121,7 +125,6 @@
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
-						<int key="IBUITextAlignment">2</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">1</int>
 							<double key="pointSize">14</double>
@@ -147,9 +150,10 @@
 					<object class="IBUIProgressView" id="856918350">
 						<reference key="NSNextResponder" ref="78101226"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{8, 36}, {307, 9}}</string>
+						<string key="NSFrame">{{8, 36}, {263, 9}}</string>
 						<reference key="NSSuperview" ref="78101226"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="773913346"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -159,22 +163,22 @@
 						<string key="NSFrame">{{8, 8}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="78101226"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="856918350"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
+						<reference key="NSNextKeyView" ref="789453455"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">downloadComplete.png</string>
+						</object>
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 54}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="773913346"/>
+				<reference key="NSNextKeyView" ref="540612582"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MC45NDExNzY0NzA2IDAuOTQxMTc2NDcwNiAwLjk0MTE3NjQ3MDYAA</bytes>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -262,10 +266,10 @@
 						<int key="objectID">2</int>
 						<reference key="object" ref="78101226"/>
 						<array class="NSMutableArray" key="children">
+							<reference ref="540612582"/>
+							<reference ref="206028298"/>
 							<reference ref="856918350"/>
 							<reference ref="773913346"/>
-							<reference ref="206028298"/>
-							<reference ref="540612582"/>
 							<reference ref="789453455"/>
 							<reference ref="500216110"/>
 						</array>
@@ -327,17 +331,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">ITWLoadingPanel</string>
 					<string key="superclassName">UIView</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">didPressCancel:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">didPressCancel:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">didPressCancel:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityView">UIActivityIndicatorView</string>
 						<string key="cancelBtn">UIButton</string>
@@ -383,6 +376,10 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="cancelDownload.png">{50, 50}</string>
+			<string key="downloadComplete.png">{50, 50}</string>
+		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

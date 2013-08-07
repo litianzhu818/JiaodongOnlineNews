@@ -15,6 +15,7 @@
 #import "JDOCenterViewController.h"
 #import "NSDate+SSToolkitAdditions.h"
 #import "SDImageCache.h"
+#import "Reachability.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -94,11 +95,15 @@
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
     [self setCurrentPage:ViewStatusLoading];
+    self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
+    self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
     [self loadDataFromNetwork];
 }
 
 - (void) onNoNetworkClicked:(JDOStatusView *) statusView{
     [self setCurrentPage:ViewStatusLoading];
+    self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
+    self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
     [self loadDataFromNetwork];
 }
 

@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDOOffDownloadManager : NSOperation 
+@interface JDOOffDownloadManager : NSOperation <SDWebImageManagerDelegate>
 -(id) initWithTarget:(id)target action:(SEL)action;
 @end

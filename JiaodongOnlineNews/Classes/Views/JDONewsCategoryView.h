@@ -38,4 +38,6 @@ typedef enum {
 
 - (void)loadDataFromNetwork;
 
+- (BOOL) readListFromLocalCache;
+
 @end

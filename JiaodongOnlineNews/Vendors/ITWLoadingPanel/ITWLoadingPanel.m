@@ -96,7 +96,7 @@ static id _sharedObject = nil;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 + (CFTimeInterval)disappearWaitTime {
-    return 2;
+    return 1;
 }
 
 
@@ -143,7 +143,7 @@ static id _sharedObject = nil;
     
     if (panel == nil) {
         panel = [self sharedInstance];
-        
+    }
         panel.titleLabel.text = title;
         panel.cancelLabel.text = cancelTitle;
         panel.onCancelBlock = cancel;
@@ -154,7 +154,7 @@ static id _sharedObject = nil;
         [view addSubview:panel];
         
         [panel animateAppearing];
-    }
+    
     
     return panel;
 }
