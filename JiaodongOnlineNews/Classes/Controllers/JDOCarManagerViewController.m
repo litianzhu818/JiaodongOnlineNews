@@ -26,8 +26,9 @@
 
 - (void)setupNavigationView
 {
+    iseditting = NO;
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [self.navigationView addRightButtonImage:@"vio_btn_add_car" highlightImage:@"vio_btn_add_car" target:self action:@selector(onRightBtnClick)];
+    [self.navigationView addRightButtonImage:@"vio_edit" highlightImage:@"vio_edit" target:self action:@selector(onRightBtnClick)];
     [self.navigationView setTitle:@"车辆管理"];
 }
 
@@ -38,7 +39,24 @@
 
 - (void) onRightBtnClick
 {
-    [self.listview setEditing:YES animated:YES];
+    if (iseditting) {
+        iseditting = NO;
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_edit"] forState:UIControlStateNormal];
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_edit"] forState:UIControlStateHighlighted];
+        [self.listview setEditing:NO animated:YES];
+        for (int i = 0; i < message.count; i++) {
+            JDOCarTableCell *cell = (JDOCarTableCell *)[self.listview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+            [cell enterEditingMode:iseditting];
+        }
+    } else {
+        if (message.count == 0) {
+            return;
+        }
+        iseditting = YES;
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_done"] forState:UIControlStateNormal];
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_done"] forState:UIControlStateHighlighted];
+        [self.listview setEditing:YES animated:YES];
+    }
 }
 
 - (void)viewDidLoad
@@ -79,9 +97,10 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     JDOCarTableCell *cell = (JDOCarTableCell *)[self.listview cellForRowAtIndexPath:indexPath];
-    [cell enterEditingMode];
+    [cell enterEditingMode:iseditting];
     return UITableViewCellEditingStyleDelete;
 }
+
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
@@ -90,6 +109,9 @@
         [NSKeyedArchiver archiveRootObject:message toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
                          withRowAnimation:UITableViewRowAnimationAutomatic];
+        if (message.count == 0) {
+            [self onRightBtnClick];
+        }
     }
 }
 
@@ -114,7 +136,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
-    NSLog(@"COUNT:%d", message.count);
+    if (message.count == 0) {
+        [tableView setHidden:YES];
+        [nodate setHidden:NO];
+    } else {
+        [tableView setHidden:NO];
+        [nodate setHidden:YES];
+    }
 	return message.count;
 }
 

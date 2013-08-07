@@ -384,7 +384,7 @@
 
 - (void) popupFontPanel:(UIButton *)sender{
     if(_fontPopTipView == nil){
-        UIView *fontView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 20)];
+        UIView *fontView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
         NSArray *fontLabelName = @[@"小",@"中",@"大"];
         NSArray *fontCSSName = @[@"small_font",@"normal_font",@"big_font"];
         NSArray *fontSize = @[@16,@18,@20];
@@ -392,12 +392,15 @@
         NSString *fontClass = [userDefault objectForKey:@"font_class"];
         if(fontClass == nil)    fontClass = @"normal_font";
         for(int i=0;i<3;i++){
-            UIButton *fontBtn = [[UIButton alloc] initWithFrame:CGRectMake(i*40, 0, 40, 20)];
+            UIButton *fontBtn = [[UIButton alloc] initWithFrame:CGRectMake(i*50, 0, 50, 40)];
             [fontBtn setTitle:[fontLabelName objectAtIndex:i] forState:UIControlStateNormal];
             [fontBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:[[fontSize objectAtIndex:i] intValue]]];
             [fontBtn addTarget:self action:@selector(changeFontSize:) forControlEvents:UIControlEventTouchUpInside];
-            [fontBtn setTitleColor:Font_Unselected_Color forState:UIControlStateNormal];
-            [fontBtn setTitleColor:Font_Selected_Color forState:UIControlStateSelected];
+            [fontBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [fontBtn setTitleColor:[UIColor colorWithHex:@"0078c8"] forState:UIControlStateSelected];
+            [fontBtn setBackgroundColor:[UIColor clearColor]];
+            [fontBtn setBackgroundImage:[UIImage imageNamed:@"background_black"] forState:UIControlStateSelected];
+
             if([fontClass isEqualToString:[fontCSSName objectAtIndex:i]]){
                 self.selectedFontBtn = fontBtn;
                 [fontBtn setSelected:true];
@@ -409,7 +412,7 @@
         _fontPopTipView = [[CMPopTipView alloc] initWithCustomView:fontView];
         _fontPopTipView.disableTapToDismiss = YES;
         _fontPopTipView.preferredPointDirection = PointDirectionDown;
-        _fontPopTipView.backgroundColor = [UIColor darkGrayColor];
+        //_fontPopTipView.backgroundColor = [UIColor clearColor];
         _fontPopTipView.animation = CMPopTipAnimationPop;
         _fontPopTipView.dismissTapAnywhere = YES;
     }
@@ -444,7 +447,6 @@
         _collectPopTipView = [[CMPopTipView alloc] initWithMessage:@""];
         _collectPopTipView.disableTapToDismiss = YES;
         _collectPopTipView.preferredPointDirection = PointDirectionDown;
-        _collectPopTipView.backgroundColor = [UIColor darkGrayColor];
         _collectPopTipView.animation = CMPopTipAnimationPop;
         _collectPopTipView.dismissTapAnywhere = NO;
     }
