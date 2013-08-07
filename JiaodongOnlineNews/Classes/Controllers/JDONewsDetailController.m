@@ -212,8 +212,10 @@ NSArray *imageUrls;
 }
 
 - (void) loadWebView{
-    #warning 若有缓存可以从缓存读取
     NSDictionary *detailModel = [self readNewsDetailFromLocalCache];
+    if (self.isPushNotification) {  // 推送消息忽略缓存
+        detailModel = nil;
+    }
     if (detailModel /*有缓存*/) {
         [self setCurrentState:ViewStatusLoading];
         // 设置url短地址
@@ -234,6 +236,13 @@ NSArray *imageUrls;
                 [self saveNewsDetailToLocalCache:responseObject];
                 // 设置url短地址
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
+                
+                // 推送新闻不是从列表导航进入,所以newsModel中只存在id,其他JDOToolbarMoedl需要的信息都要从detail的信息中复制
+                if (self.isPushNotification) {  
+                    self.newsModel.title = [responseObject objectForKey:@"title"];
+                    self.newsModel.summary = [responseObject objectForKey:@"summary"];
+                    self.newsModel.mpic =  [responseObject objectForKey:@"mpic"];
+                }
                 
                 NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
