@@ -63,9 +63,15 @@
     
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     float currentPage = self.guideView.contentOffset.x / 320.0f;
-    if (currentPage  > 3.3) {
+    NSLog(@"currentpage%f",currentPage);
+    if (currentPage  > 3.5) {
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        [userDefault setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Guide"];
+        [userDefault synchronize];
         [SharedAppDelegate enterMainView];
     }
 }
