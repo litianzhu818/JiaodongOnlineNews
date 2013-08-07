@@ -113,9 +113,6 @@
             [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateNormal];
             [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateHighlighted];
             [btn addTarget:self action:@selector(writeReview) forControlEvents:UIControlEventTouchUpInside];
-        }else if( btnType == ToolBarButtonCollect && self.isCollected){
-#warning 替换收藏过的图片
-            [btn setBackgroundImage:[UIImage imageNamed:@"isCollected"] forState:UIControlStateNormal];
         }else{
             [self configButton:btn withType:btnType];
         }

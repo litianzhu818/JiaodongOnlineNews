@@ -10,13 +10,13 @@
 #import "NIPagingScrollView.h"
 #import "JDONewsCategoryView.h"
 #import "JDONewsCategoryInfo.h"
-
+#import "JDOReadDB.h"
 #define News_Navbar_Height 35.0f
 
 @interface JDONewsViewController()
 
 @property (nonatomic,strong) NSArray *pageInfos; // 新闻页面基本信息
-
+@property (nonatomic,strong) JDOReadDB *readDB; // 新闻页面基本信息
 @end
 
 @implementation JDONewsViewController{
@@ -37,6 +37,7 @@
            [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
            [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"],
            ];
+        self.readDB = [[JDOReadDB alloc] init];
     }
     return self;
 }
@@ -100,8 +101,10 @@
     
     JDONewsCategoryView *page = (JDONewsCategoryView *)[pagingScrollView dequeueReusablePageWithIdentifier:newsCategoryInfo.reuseId];
     
+    
     if (nil == page) {
-        page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds info:newsCategoryInfo];
+        page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds info:newsCategoryInfo readDB:self.readDB];
+        //[page setReadDB:self.readDB];
     }
     
     return page;

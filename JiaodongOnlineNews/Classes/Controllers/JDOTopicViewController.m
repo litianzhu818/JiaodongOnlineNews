@@ -116,7 +116,7 @@
 }
 
 - (BOOL) readListFromLocalCache{
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:@"TopicListCache"])];
+    self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:@"TopicListCache"])] mutableCopy];
     // 任何一个数组为空都任务本地缓存无效
     return TRUE && self.listArray;
 }

@@ -19,7 +19,7 @@
         NSArray *documentsPaths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory
                                                                     , NSUserDomainMask
                                                                     , YES);
-        NSString *databaseFilePath=[[documentsPaths objectAtIndex:0] stringByAppendingPathComponent:@"mydb"];
+        NSString *databaseFilePath=[[documentsPaths objectAtIndex:0] stringByAppendingPathComponent:@"collectdb"];
         
         if (sqlite3_open([databaseFilePath UTF8String], &db)!=SQLITE_OK) {
             NSLog(@"open sqlite db false.");

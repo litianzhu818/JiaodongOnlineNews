@@ -14,6 +14,7 @@
 #import "JDOFeedbackViewController.h"
 #import "JDOOffDownloadManager.h"
 #import "ITWLoadingPanel.h"
+#import "BPush.h"
 
 @interface JDOSettingViewController ()
 
@@ -78,11 +79,11 @@ BOOL downloadItemClickable = TRUE;
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     switch (indexPath.row) {
         case JDOSettingItemPushService:{
-            cell.textLabel.text = @"新闻/违章推送";
-            cell.detailTextLabel.text = @"违章信息自动推送需要先在便民查询->违章查询中添加车辆。";
+            cell.textLabel.text = @"接收新闻推送";
+            cell.detailTextLabel.text = @"新闻推送服务，及时获取第一手新闻咨询。";
             TTFadeSwitch *pushSwitch = [self buildCustomSwitch];
             pushSwitch.tag = JDOSettingItemPushService;
-            pushSwitch.on = [(NSNumber *)[userDefault objectForKey:@"JDO_Push_Service"] boolValue];
+            pushSwitch.on = [userDefault boolForKey:@"JDO_Push_Enable"];
             [pushSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = pushSwitch;
             break;
@@ -156,20 +157,25 @@ BOOL downloadItemClickable = TRUE;
 }
 
 - (void)switchChanged:(UISwitch *)sender {
-    NSString *userDefaultKey ;
     switch (sender.tag) {
-        case JDOSettingItemPushService:
-            userDefaultKey = @"JDO_Push_Service";
+        case JDOSettingItemPushService:{
+            // 通知服务器开启或关闭推送服务
+            if (sender.on) {
+                [BPush setTag:@"ALL_NEWS_TAG"];
+            }else{
+                [BPush delTag:@"ALL_NEWS_TAG"];
+            }
             break;
-        case JDOSettingItem3GSwitch:
-            userDefaultKey = @"JDO_No_Image";
+        }
+        case JDOSettingItem3GSwitch:{
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            [userDefault setObject:[NSNumber numberWithBool:sender.on] forKey:@"JDO_No_Image"];
+            [userDefault synchronize];
             break;
+        }
         default:
             break;
     }
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setObject:[NSNumber numberWithBool:sender.on] forKey:userDefaultKey];
-    [userDefault synchronize];
 }
 
 //- (void)buttonClicked:(UIButton *)sender {
