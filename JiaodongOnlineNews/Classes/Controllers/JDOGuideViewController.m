@@ -31,12 +31,12 @@
     [super viewDidLoad];
     
     _guideView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
-    _guideView.contentSize = CGSizeMake(320*4, App_Height);
+    _guideView.contentSize = CGSizeMake(320*5, App_Height);
     _guideView.pagingEnabled = true;
     _guideView.showsHorizontalScrollIndicator = false;
-    _guideView.bounces = false;
+    _guideView.bounces = YES;
     _guideView.delegate = self;
-    for (int i=0; i<4; i++) {
+    for (int i=0; i<5; i++) {
         UIImageView *guidePage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"Guide%d",i]]];
         guidePage.frame = CGRectMake(i*320, 0, 320, App_Height);
         if(i == 3){
@@ -63,9 +63,24 @@
     
 }
 
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    float currentPage = self.guideView.contentOffset.x / 320.0f;
+    NSLog(@"currentpage%f",currentPage);
+    if (currentPage  > 3.5) {
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        [userDefault setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Guide"];
+        [userDefault synchronize];
+        [SharedAppDelegate enterMainView];
+    }
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     int currentPage = self.guideView.contentOffset.x / 320.0f;
-    _pageControl.currentPage = currentPage;
+    if (currentPage < 4) {
+        _pageControl.currentPage = currentPage;
+    }
 }
 
 - (void) onStartClicked:(UIButton *)sender{
