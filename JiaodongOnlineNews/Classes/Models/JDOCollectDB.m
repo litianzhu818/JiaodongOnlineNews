@@ -11,12 +11,10 @@
 
 
 @implementation JDOCollectDB
-
--(id)initWithModel: (id<JDOToolbarModel>)model{
+-(id)init{
     if (self = [super init]) {
         self.tableName = @"collect";
-        self.columns = [NSArray arrayWithObjects:@"id",@"type",@"summary",@"title",@"imageurl",@"reviewService",@"tinyurl",@"mpic", nil];
-        self.model = model;
+        self.columns = [NSArray arrayWithObjects:@"id",@"type",@"summary",@"title",@"imageurl",@"reviewService",@"tinyurl",@"mpic",@"department",@"dept_code",@"entry_date",@"info_type",@"reply",@"pubtime",@"secret",@"pwd", nil];
         //打开数据库
         NSArray *documentsPaths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory
                                                                     , NSUserDomainMask
@@ -73,12 +71,17 @@
         if (i>0) {
             [sql appendString:@","];
         }
-        SEL selector = NSSelectorFromString(key);
-        if(![self.model respondsToSelector:selector]){
-            [sql appendString:@""];
+        if([key isEqualToString:@"type"]){
+            [sql appendFormat:@"'%@'",NSStringFromClass([obj class])];
         }else{
-            [sql appendFormat:@"'%@'",[self.model performSelector:selector]];
+            SEL selector = NSSelectorFromString(key);
+            if(![obj respondsToSelector:selector]){
+                [sql appendString:@"''"];
+            }else{
+                [sql appendFormat:@"'%@'",[obj performSelector:selector]];
+            }
         }
+        
         i++;
     }
     [sql appendString:@")"];
@@ -102,7 +105,7 @@
     return false;
 }
 
--(NSArray*)selectByType{
+-(NSArray*)selectByModelClassString:(NSString*)modelClassString{
     NSMutableString *sql = [[NSMutableString alloc] init];
     NSMutableArray *resluts = [[NSMutableArray alloc] init];
     NSArray *array = self.columns;
@@ -115,7 +118,7 @@
         [sql appendFormat:@"%@",key];
         i++;
     }
-    [sql appendFormat:@" from %@ where type='%@'",self.tableName,[self.model type]];
+    [sql appendFormat:@" from %@ where type='%@'",self.tableName,modelClassString];
     
     
     sqlite3_stmt *statement;
@@ -123,7 +126,7 @@
     if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
         //执行
         while (sqlite3_step(statement) == SQLITE_ROW) {
-            id obj = [[NSClassFromString(NSStringFromClass(self.model))  alloc] init];
+            id obj = [[NSClassFromString(modelClassString)  alloc] init];
             for (int i=0; i<[self.columns count]; ++i) {
                 NSString* columnName = [self.columns objectAtIndex:i];
                 char *field1 = (char *) sqlite3_column_text(statement, i);

@@ -11,7 +11,7 @@
 #import "JDOImageDetailModel.h"
 #import "SDImageCache.h"
 #import "JDOCommonUtil.h"
-
+#import "JDORightViewController.h"
 @interface JDOImageDetailController ()
 
 @property (assign, nonatomic,getter = isCollected) BOOL collected;
@@ -41,7 +41,13 @@
     }
     return self;
 }
-
+-(id)initWithImageModel:(JDOImageModel *)imageModel Collect:(BOOL)isCollect{
+    self = [self initWithImageModel:imageModel];
+    if(self){
+        self.isCollect = isCollect;
+    }
+    return self;
+}
 - (void)dealloc{
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 //    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
@@ -87,11 +93,15 @@
     [self.navigationView addLeftButtonImage:@"top_navigation_back_black" highlightImage:@"top_navigation_back_black" target:self action:@selector(backToViewList)];
     [self.navigationView setTitle:@"浏览图集"];
     
-    [self.view addSubview:_navigationView];
+    [self.view addSubview:self.navigationView];
     _browser.navigationView = self.navigationView;
 }
 
 - (void) backToViewList{
+    if(self.isCollect){
+        [(JDORightViewController *)self.stackViewController popViewController];
+        return;
+    }
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];    
 }

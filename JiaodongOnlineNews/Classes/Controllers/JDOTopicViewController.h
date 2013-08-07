@@ -22,6 +22,7 @@
 @property (nonatomic,copy) NSString *serviceName;
 @property (nonatomic,copy) NSString *modelClass;
 @property (nonatomic,strong) NSMutableDictionary *listParam;
+@property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
 
 - (void) returnFromDetail;
 

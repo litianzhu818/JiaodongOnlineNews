@@ -7,7 +7,7 @@
 //
 
 #import "JDOCollectView.h"
-
+#import "JDOCollectDB.h"
 @implementation JDOCollectView
 
 - (id)initWithFrame:(CGRect)frame collectDB:(JDOCollectDB *)collectDB;
@@ -32,17 +32,18 @@
         //        self.retryView.center = self.center;
         self.noResultView.userInteractionEnabled = true;
         [self addSubview:self.noResultView];
+        self.datas = [[NSMutableArray alloc] init];
+        [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(loadData) name:kCollectNotification object:nil];
+        [self loadData];
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+-(void)loadData{
 }
-*/
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [self.datas count];
+}
 
 @end

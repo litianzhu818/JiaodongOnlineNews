@@ -18,7 +18,7 @@
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDONewsModel *newsModel;
 @property (nonatomic,strong) JDOToolBar *toolbar;
-
+@property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
-
+- (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect;
 @end
