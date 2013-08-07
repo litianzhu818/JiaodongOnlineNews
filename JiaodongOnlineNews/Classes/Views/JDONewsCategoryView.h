@@ -8,7 +8,7 @@
 
 #import "NimbusPagingScrollView.h"
 #import "JDONewsCategoryInfo.h"
-
+#import "JDOReadDB.h"
 
 typedef enum {
     NewsCategoryLocal = 0,      //本地
@@ -22,20 +22,15 @@ typedef enum {
 
 @interface JDONewsCategoryView : NIPageView <JDOStatusView, UITableViewDelegate, UITableViewDataSource,JDOStatusViewDelegate>
 
-- (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info;
+- (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info readDB:(JDOReadDB*)readDB;
 
 @property (nonatomic,assign) JDONewsCategoryInfo *info;
 @property (nonatomic,strong) UITableView *tableView;
-
-
 @property (nonatomic,strong) NSMutableArray *headArray;
 @property (nonatomic,strong) NSMutableArray *listArray;
-
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
-
 @property (nonatomic,assign) BOOL isShowingLocalCache;
-
+@property (nonatomic,strong) JDOReadDB* readDB;
 - (void)loadDataFromNetwork;
-
 @end

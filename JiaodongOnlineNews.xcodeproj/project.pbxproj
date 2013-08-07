@@ -577,6 +577,7 @@
 		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
 		D8FFA10F178266A30026F0C1 /* JDOBusLIstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */; };
 		FF1234C317631E5D00832AD2 /* JDOListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1234C217631E5D00832AD2 /* JDOListViewController.m */; };
+		FF1372DC17AF9C0F00645405 /* JDOReadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1372DB17AF9C0F00645405 /* JDOReadDB.m */; };
 		FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */; };
 		FF5BC8FB17AE7B9E00FA878B /* JDOCollectImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5BC8FA17AE7B9E00FA878B /* JDOCollectImageView.m */; };
 		FF5BC8FE17AE8FB600FA878B /* JDOCollectTopicView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5BC8FD17AE8FB600FA878B /* JDOCollectTopicView.m */; };
@@ -1396,6 +1397,8 @@
 		D8FFA10D178266A30026F0C1 /* JDOBusLIstViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOBusLIstViewController.xib; sourceTree = "<group>"; };
 		FF1234C117631E5D00832AD2 /* JDOListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOListViewController.h; sourceTree = "<group>"; };
 		FF1234C217631E5D00832AD2 /* JDOListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOListViewController.m; sourceTree = "<group>"; };
+		FF1372DA17AF9C0F00645405 /* JDOReadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOReadDB.h; sourceTree = "<group>"; };
+		FF1372DB17AF9C0F00645405 /* JDOReadDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOReadDB.m; sourceTree = "<group>"; };
 		FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageModel.h; sourceTree = "<group>"; };
 		FF14D0F517615D1500D6D4F4 /* JDOImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageModel.m; sourceTree = "<group>"; };
 		FF5BC8F917AE7B9E00FA878B /* JDOCollectImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCollectImageView.h; sourceTree = "<group>"; };
@@ -1416,6 +1419,7 @@
 		FF89295E17AF4A68006AF819 /* collect_save@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "collect_save@2x.png"; sourceTree = "<group>"; };
 		FF89295F17AF4A68006AF819 /* collect_savehighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collect_savehighlight.png; sourceTree = "<group>"; };
 		FF89296017AF4A68006AF819 /* collect_savehighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "collect_savehighlight@2x.png"; sourceTree = "<group>"; };
+		FF8FD44217B07B260035AE37 /* JDOReadModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JDOReadModel.h; sourceTree = "<group>"; };
 		FFD8B6831756DD69007B878C /* JDOAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAboutUsViewController.h; sourceTree = "<group>"; };
 		FFD8B6841756DD69007B878C /* JDOAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAboutUsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1685,6 +1689,9 @@
 			children = (
 				FF62176517A0943A0020A8A4 /* JDOCollectDB.h */,
 				FF62176617A0943A0020A8A4 /* JDOCollectDB.m */,
+				FF1372DA17AF9C0F00645405 /* JDOReadDB.h */,
+				FF1372DB17AF9C0F00645405 /* JDOReadDB.m */,
+				FF8FD44217B07B260035AE37 /* JDOReadModel.h */,
 				2D86D59417584E420000AA6A /* JDONewsCategoryInfo.h */,
 				2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */,
 				FF14D0F417615D1500D6D4F4 /* JDOImageModel.h */,
@@ -3427,6 +3434,7 @@
 				FF5BC8FB17AE7B9E00FA878B /* JDOCollectImageView.m in Sources */,
 				FF5BC8FE17AE8FB600FA878B /* JDOCollectTopicView.m in Sources */,
 				FF89295917AF2E21006AF819 /* JDOCollectQuestionView.m in Sources */,
+				FF1372DC17AF9C0F00645405 /* JDOReadDB.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

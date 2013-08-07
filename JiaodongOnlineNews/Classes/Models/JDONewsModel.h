@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "JDOToolbarModel.h"
-
-@interface JDONewsModel : NSObject <NSCoding,JDOToolbarModel>
+#import "JDOReadModel.h"
+@interface JDONewsModel : NSObject <NSCoding,JDOToolbarModel,JDOReadModel>
 @property (nonatomic,strong) NSString *atype;
 @property (nonatomic,strong) NSString *clicknum;
 @property (nonatomic,strong) NSString *id;
@@ -23,5 +23,5 @@
 
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *reviewService;
-
+@property (nonatomic,assign) BOOL read;
 @end

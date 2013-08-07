@@ -103,6 +103,14 @@
     }];
     self.textLabel.text = newsModel.title;
     self.detailTextLabel.text = newsModel.summary;
+   // NSLog(@"JDONewsTableCell read: %@  id:%@",newsModel.read?@"YES":@"NO", newsModel.id);
+    if([newsModel read]){
+        self.textLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
+        self.textLabel.highlightedTextColor = [UIColor colorWithHex:Gray_Color_Type1];
+    }else{
+        self.textLabel.textColor = [UIColor colorWithHex:Black_Color_Type1];
+        self.textLabel.highlightedTextColor = [UIColor colorWithHex:Black_Color_Type1];
+    }
 #warning 根据已读或者未读来区分文字的颜色
 }
 

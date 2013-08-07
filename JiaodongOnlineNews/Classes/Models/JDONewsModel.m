@@ -22,6 +22,7 @@
         self.title = [aDecoder decodeObjectForKey:@"title"];
         self.spic = [aDecoder decodeObjectForKey:@"spic"];
         self.modifytime = [aDecoder decodeObjectForKey:@"modifytime"];
+        self.read = [aDecoder decodeBoolForKey:@"read"];
     }
     return self;
 }
@@ -36,6 +37,7 @@
     [aCoder encodeObject:self.title forKey:@"title"];
     [aCoder encodeObject:self.spic forKey:@"spic"];
     [aCoder encodeObject:self.modifytime forKey:@"modifytime"];
+    [aCoder encodeBool:self.read forKey:@"read"];
 }
 
 - (NSString *) imageurl{

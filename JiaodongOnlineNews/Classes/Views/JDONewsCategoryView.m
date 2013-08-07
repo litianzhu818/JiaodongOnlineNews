@@ -36,12 +36,12 @@
     NSDate *HUDShowTime;
 }
 
-- (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info {
+- (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info readDB:(JDOReadDB*)readDB{
     if ((self = [super init])) {
         self.frame = frame;
         self.info = info;
         self.currentPage = 1;
-        
+        self.readDB = readDB;
         self.reuseIdentifier = info.reuseId;
         self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
@@ -161,6 +161,7 @@
         if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
+            [self.readDB isExistById:dataList];
             newslistFinished = true;
             if(headlineFinished){
                 [self loadFinished];
@@ -250,6 +251,7 @@
         if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
+            [self.readDB isExistById:dataList];
             newslistFinished = true;
             if(headlineFinished){
                 [self loadFinished];
@@ -322,6 +324,7 @@
 - (BOOL) readListFromLocalCache{
     self.headArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]];
     self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]];
+    [self.readDB isExistById:self.listArray];
     // 任何一个数组为空都任务本地缓存无效
     return self.headArray && self.listArray;
 }
@@ -342,6 +345,7 @@
         if(dataList == nil || dataList.count == 0){    // 数据加载完成
             finished = true;
         }else{
+            [self.readDB isExistById:dataList];
             NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:NewsList_Page_Size];
             for(int i=0;i<dataList.count;i++){
                 [indexPaths addObject:[NSIndexPath indexPathForRow:self.listArray.count+i inSection:1]];
@@ -441,7 +445,11 @@
     if(indexPath.section == 0){
         // section0 由于存在scrollView与didSelectRowAtIndexPath冲突，不会进入该函数，通过给UIImageView设置gesture的方式解决
     }else{
-        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.listArray objectAtIndex:indexPath.row]];
+        JDONewsModel* model = [self.listArray objectAtIndex:indexPath.row];
+        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:model];
+        [model setRead:TRUE];
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:nil];
+        [self.readDB save:[model id]];
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         [centerController pushViewController:detailController animated:true];
         [tableView deselectRowAtIndexPath:indexPath animated:true];
