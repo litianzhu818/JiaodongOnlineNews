@@ -51,6 +51,7 @@
 - (void)onRightBtnClick;
 - (void)saveCarMessage:(NSDictionary *) carMessage;
 - (BOOL)readCarMessage;
+- (void)cleanData;
 
 - (id)initwithStatus:(BOOL)isaddcar;
 

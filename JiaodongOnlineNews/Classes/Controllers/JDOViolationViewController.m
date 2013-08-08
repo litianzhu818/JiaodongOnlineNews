@@ -51,6 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [ChassisNum setKeyboardType:UIKeyboardTypeNumberPad];
     [carnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [cartypelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
@@ -108,7 +109,9 @@
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    [self.navigationView addRightButtonImage:@"vio_head_btn" highlightImage:@"vio_head_btn" target:self action:@selector(onRightBtnClick)];
+    if (!addCarStatus) {
+        [self.navigationView addRightButtonImage:@"vio_head_btn" highlightImage:@"vio_head_btn" target:self action:@selector(onRightBtnClick)];
+    }
     [self.navigationView setTitle:@"违章查询"];
 }
 
@@ -148,6 +151,15 @@
     } origin:sender];
     
     [stringpicker showActionSheetPicker];
+}
+
+- (void)cleanData
+{
+    [defaultback setHidden:NO];
+    [result setHidden:YES];
+    [resultline setHidden:YES];
+    [resultline_shadow setHidden:YES];
+    [no_result_image setHidden:YES];
 }
 
 - (IBAction)sendToServer:(id)sender
@@ -304,6 +316,11 @@
             cell = [[JDOViolationTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         }
         NSDictionary *temp = [resultArray objectAtIndex:indexPath.row];
+        if ((App_Height > 480)&&(resultArray.count == 1)) {
+            cell.iphone5Style = 85.0;
+        } else {
+            cell.iphone5Style = 0.0;
+        }
         [cell setData:temp];
         if (indexPath.row == resultArray.count - 1) {
             [cell setSeparator:[UIImage imageNamed:@"vio_line_wavy"]];
@@ -313,6 +330,7 @@
         UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
         cell.selectedBackgroundView = backView;
         cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+        
         return cell;
     }
     return [[UITableViewCell alloc] init];

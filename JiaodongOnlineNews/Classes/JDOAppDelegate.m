@@ -190,9 +190,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     // 创建磁盘缓存目录 /Library/caches/JDOCache
     self.cachePath = [JDOCommonUtil createJDOCacheDirectory];
-    self.newsDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"NewsDetailCache"];
-    self.imageDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"ImageDetailCache"];
-    self.topicDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"TopicDetailCache"];
+    self.newsDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"NewsDetailCache"];
+    self.imageDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"ImageDetailCache"];
+    self.topicDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"TopicDetailCache"];
+    self.convenienceCachePath = [self.cachePath stringByAppendingPathComponent:@"ConvenienceCache"];
     // 标记检查更新的标志位(启动时标记为非手动检查)
     manualCheckUpdate = false;
     
@@ -207,6 +208,7 @@
     //监听用户信息变更
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
+#warning 正式发布的时候，需要改友盟统计appkey
     //友盟统计
     [MobClick startWithAppkey:@"51de0ed156240bd3fb01d54c"];
     

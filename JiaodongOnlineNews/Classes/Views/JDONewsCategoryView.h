@@ -33,4 +33,6 @@ typedef enum {
 @property (nonatomic,assign) BOOL isShowingLocalCache;
 @property (nonatomic,strong) JDOReadDB* readDB;
 - (void)loadDataFromNetwork;
+
+- (BOOL) readListFromLocalCache;
 @end

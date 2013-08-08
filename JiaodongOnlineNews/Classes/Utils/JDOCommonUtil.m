@@ -224,6 +224,10 @@ static NSDateFormatter *dateFormatter;
     NSString *JDOCacheDirectory = [diskCachePath stringByAppendingPathComponent:@"JDOCache"];
     BOOL success = [JDOCommonUtil createDiskDirectory:JDOCacheDirectory];
     if ( success ) {
+        [JDOCommonUtil createDetailCacheDirectory:@"NewsDetailCache"];
+        [JDOCommonUtil createDetailCacheDirectory:@"ImageDetailCache"];
+        [JDOCommonUtil createDetailCacheDirectory:@"TopicDetailCache"];
+        [JDOCommonUtil createDetailCacheDirectory:@"ConvenienceCache"];
         return JDOCacheDirectory;
     }else{
         return diskCachePath;

@@ -75,12 +75,21 @@ NSArray *imageUrls;
     [self.view addSubview:_webView];
     
     _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
     self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
     self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
     
+}
+
+- (BOOL) onSharedClicked {
+    if (self.newsModel == nil) {
+        [JDOCommonUtil showHintHUD:@"新闻尚未加载！" inView:self.view];
+        return FALSE;
+    }
+    return TRUE;
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
@@ -168,8 +177,7 @@ NSArray *imageUrls;
             JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title];
             [array addObject:imageDetail];
         }
-        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:nil];
-        detailController.fromNewsDetail = TRUE;
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[[JDOImageModel alloc] init]];
         detailController.imageIndex = [imageId integerValue];
         detailController.imageDetails = array;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
@@ -193,7 +201,6 @@ NSArray *imageUrls;
         JDOImageModel *imageModel = [[JDOImageModel alloc] init];
         imageModel.id = linkId;
         JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
-        detailController.fromNewsDetail = TRUE;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         // 通过pushViewController 显示图集视图
         [centerController pushViewController:detailController animated:true];
