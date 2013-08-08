@@ -21,7 +21,10 @@
     UILabel *actionlabel;
     UILabel *istreatedlabel;
     UILabel *ispaidlabel;
+
 }
+
+@property (nonatomic) float iphone5Style;;
 
 - (void)setData:(NSDictionary *)data;
 - (void)setSeparator:(UIImage *)separator;

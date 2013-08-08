@@ -306,6 +306,11 @@
             cell = [[JDOViolationTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         }
         NSDictionary *temp = [resultArray objectAtIndex:indexPath.row];
+        if ((App_Height > 480)&&(resultArray.count == 1)) {
+            cell.iphone5Style = 85.0;
+        } else {
+            cell.iphone5Style = 0.0;
+        }
         [cell setData:temp];
         if (indexPath.row == resultArray.count - 1) {
             [cell setSeparator:[UIImage imageNamed:@"vio_line_wavy"]];
@@ -315,6 +320,7 @@
         UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
         cell.selectedBackgroundView = backView;
         cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+        
         return cell;
     }
     return [[UITableViewCell alloc] init];
