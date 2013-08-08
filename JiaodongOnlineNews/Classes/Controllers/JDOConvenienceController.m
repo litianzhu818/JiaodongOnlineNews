@@ -20,12 +20,11 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+        NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"ytweather",@"",@"",@""];
+        NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"烟台天气",@"",@"",@""];
         
-        NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"ytweather"];
-        NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"烟台天气"];
-        
-        NSMutableArray* contents = [[NSMutableArray alloc] initWithCapacity:9];
-        for( int i=0;i<8;i++){  // 暂时不包括天气
+        NSMutableArray *contents = [[NSMutableArray alloc] initWithCapacity:12];
+        for( int i=0;i<12;i++){  // 暂时不包括天气
             [contents addObject:[BadgedLauncherViewObject objectWithTitle:[titles objectAtIndex:i] image:[UIImage imageNamed:[icons objectAtIndex:i] ] badgeNumber:0]];
         }
         _model = [[NILauncherViewModel alloc] initWithArrayOfPages:@[contents] delegate:self];
@@ -34,7 +33,6 @@
 }
 
 - (void)loadView {
-    
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
     self.launcherView = [[NILauncherView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
     self.launcherView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
@@ -54,7 +52,10 @@
     self.launcherView.backgroundColor = [UIColor colorWithHex:Main_Background_Color]; // 236.0
     self.launcherView.delegate = self;
     self.launcherView.dataSource = self.model;
-    self.launcherView.numberOfRows = 3;
+    if (App_Height > 480)
+        self.launcherView.numberOfRows = 4;
+    else
+        self.launcherView.numberOfRows = 3;
     self.launcherView.numberOfColumns = 3;
 //    16号字行高20(85行设置),buttonSize的高度包括Label的高度(图片尺寸75*90),为适应航班图片(112.5*52)增加宽度,但不能超过总宽度320,否则会换行,所以取最大值320/3
     self.launcherView.buttonSize = CGSizeMake(107, 110);
@@ -75,6 +76,10 @@
               buttonIndex:(NSInteger)buttonIndex
                    object:(id<NILauncherViewObject>)object {
     NILauncherButtonView* launcherButtonView = (NILauncherButtonView *)buttonView;
+    
+    if (buttonIndex >= 8) {
+        [buttonView setHidden:YES];
+    }
     
     // 若不设置UIControlStateHighlighted状态，点击后图片会被缩放
     [launcherButtonView.button setImage:object.image forState:UIControlStateHighlighted];

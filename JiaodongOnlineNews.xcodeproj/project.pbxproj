@@ -579,7 +579,6 @@
 		D8A9BE5217A6087800F47D34 /* vio_lineshadow.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A9BE5117A6087800F47D34 /* vio_lineshadow.png */; };
 		D8A9BE5617A60FA700F47D34 /* vio_noresult.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A9BE5517A60FA600F47D34 /* vio_noresult.png */; };
 		D8E44FC61796448100132A8A /* JDOCarManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */; };
-		D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */; };
 		D8EC8A0D17A73FC90007C887 /* vio_head_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
@@ -1406,7 +1405,6 @@
 		D8A9BE5517A60FA600F47D34 /* vio_noresult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_noresult.png; sourceTree = "<group>"; };
 		D8E44FC31796448100132A8A /* JDOCarManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarManagerViewController.h; sourceTree = "<group>"; };
 		D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCarManagerViewController.m; sourceTree = "<group>"; };
-		D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOCarManagerViewController.xib; sourceTree = "<group>"; };
 		D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_head_btn.png; sourceTree = "<group>"; };
 		D8F10185177BB9890024A93A /* SBTableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBTableAlert.h; sourceTree = "<group>"; };
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
@@ -2534,7 +2532,6 @@
 				D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */,
 				D8E44FC31796448100132A8A /* JDOCarManagerViewController.h */,
 				D8E44FC41796448100132A8A /* JDOCarManagerViewController.m */,
-				D8E44FC51796448100132A8A /* JDOCarManagerViewController.xib */,
 				2DAADB3C17AA4EC4001EBD43 /* JDOGuideViewController.h */,
 				2DAADB3D17AA4EC4001EBD43 /* JDOGuideViewController.m */,
 			);
@@ -2945,7 +2942,6 @@
 				2D97A94D17853D4C00CEEE82 /* point_per.png in Resources */,
 				2D97A94E17853D4C00CEEE82 /* toupiao.png in Resources */,
 				2D97A9501785547800CEEE82 /* vote.css in Resources */,
-				D8E44FC71796448100132A8A /* JDOCarManagerViewController.xib in Resources */,
 				2DAE40051798DB9E00AE4C34 /* icon@2x.png in Resources */,
 				2DAE40071798E7BE00AE4C34 /* icon02@2x.png in Resources */,
 				2DAE4009179935FE00AE4C34 /* icon.png in Resources */,

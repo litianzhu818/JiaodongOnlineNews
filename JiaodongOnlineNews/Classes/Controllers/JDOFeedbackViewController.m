@@ -10,7 +10,6 @@
 #import "JDOHttpClient.h"
 #import "JDORightViewController.h"
 #import "JDOCommonUtil.h"
-#import "sys/utsname.h"
 
 @interface JDOFeedbackViewController () <UITextFieldDelegate>
 
@@ -22,7 +21,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self getDeviceAndOSInfo];
+        
     }
     return self;
 }
@@ -44,17 +43,6 @@
     } else {
         [self sendToServer];
     }
-}
-
-
-- (void)getDeviceAndOSInfo
-{
-    //here use sys/utsname.h
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    //get the device model and the system version
-    NSLog(@"%@", [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding]);
-    NSLog(@"%@", [[UIDevice currentDevice] systemVersion]);
 }
 
 
