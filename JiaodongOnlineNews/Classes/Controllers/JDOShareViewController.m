@@ -15,6 +15,7 @@
   
 #define Image_Base_Tag 100
 #define Btn_Base_Tag 200
+#define Label_Base_Tag 300
 
 @interface JDOShareViewController ()
 
@@ -104,6 +105,8 @@
     disableImageNames = @[@"sina.png",@"tencent.png",@"qzone.png",@"renren.png"];   // 亮色图标
     enableImageNames = @[@"sina01.png",@"tencent01.png",@"qzone01.png",@"renren01.png"];    //灰色图标
     for(int i=0; i<4 ;i++){
+        UILabel *shareLabel = (UILabel *)[self.mainView viewWithTag:Label_Base_Tag+i];
+        
         UIButton *shareImage = (UIButton *)[self.mainView viewWithTag:Image_Base_Tag+i];
         [shareImage setBackgroundImage:[UIImage imageNamed:[enableImageNames objectAtIndex:i]] forState:UIControlStateNormal];
         [shareImage setBackgroundImage:[UIImage imageNamed:[disableImageNames objectAtIndex:i]] forState:UIControlStateDisabled];
@@ -111,7 +114,15 @@
         
         UIButton *shareBtn = (UIButton *)[self.mainView viewWithTag:Btn_Base_Tag+i];
         [shareBtn addTarget:self action:@selector(onBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
+        /*
+        if (i%2 == 0) {
+            [shareImage setFrame:CGRectMake(10 + 160*i, self.textView2.bottom + 10, shareImage.frame.size.width, shareImage.frame.size.height)];
+            [shareLabel setFrame:CGRectMake(shareImage.right + 12, shareImage.top + 7, shareLabel.frame.size.width, shareLabel.frame.size.height)];
+            [shareBtn setFrame:CGRectMake(shareLabel.right + 10, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)]
+        } else {
+            
+        }
+        */
         NSDictionary *item = [_shareTypeArray objectAtIndex:i];
         if([ShareSDK hasAuthorizedWithType:[[item objectForKey:@"type"] intValue] ] ){
             [shareImage setEnabled:false];  // 有授权时不能再次点击取消授权

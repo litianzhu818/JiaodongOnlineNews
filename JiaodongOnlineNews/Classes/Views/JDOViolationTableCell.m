@@ -131,7 +131,7 @@
     [self.contentView addSubview:ispaid];
     
     [self setFrame:CGRectMake(0, 0, 294, 5 + time.height + 4 + location.height + 4 + action.height + 4 + istreated.height + 4 + ispaid.height
-                              + 5 +  + self.iphone5Style)];
+                              + 5 + self.iphone5Style)];
 }
 
 - (void)setIphone5Style

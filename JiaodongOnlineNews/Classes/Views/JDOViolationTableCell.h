@@ -24,7 +24,7 @@
 
 }
 
-@property (nonatomic) float iphone5Style;;
+@property (nonatomic) float iphone5Style;
 
 - (void)setData:(NSDictionary *)data;
 - (void)setSeparator:(UIImage *)separator;

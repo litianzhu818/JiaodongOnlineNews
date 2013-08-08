@@ -200,7 +200,7 @@
         
                 if (datas.count > 0) {
                     [result setHidden:NO];
-                    //[resultArray removeAllObjects];
+                    [resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
                     [result reloadData];
                     if (App_Height > 480) {
