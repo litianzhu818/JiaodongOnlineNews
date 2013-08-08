@@ -20,8 +20,8 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"ytweather",@"",@"",@""];
-        NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"烟台天气",@"",@"",@""];
+        NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"tobecontinued",@"",@"",@""];
+        NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"敬请期待",@"",@"",@""];
         
         NSMutableArray *contents = [[NSMutableArray alloc] initWithCapacity:12];
         for( int i=0;i<12;i++){  // 暂时不包括天气
@@ -77,10 +77,6 @@
                    object:(id<NILauncherViewObject>)object {
     NILauncherButtonView* launcherButtonView = (NILauncherButtonView *)buttonView;
     
-    if (buttonIndex >= 8) {
-        [buttonView setHidden:YES];
-    }
-    
     // 若不设置UIControlStateHighlighted状态，点击后图片会被缩放
     [launcherButtonView.button setImage:object.image forState:UIControlStateHighlighted];
     [launcherButtonView.button setBackgroundImage:[UIImage imageNamed:@"navigation_button_clicked"] forState:UIControlStateHighlighted];
@@ -93,6 +89,15 @@
     launcherButtonView.button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     launcherButtonView.label.font = [UIFont boldSystemFontOfSize:16];
     launcherButtonView.label.textColor = [UIColor colorWithHex:Black_Color_Type1];
+    
+    if (buttonIndex >= 9) {
+        [buttonView setHidden:YES];
+    }
+    
+    if (buttonIndex == 8) {
+        [(UIButton *)buttonView setEnabled:NO];
+        launcherButtonView.label.textColor = [UIColor colorWithRed:200.0f/255.0f green:200.0f/255.0f blue:200.0f/255.0f alpha:1.0];
+    }
     // bounds = 0 ,曲线路径无效
 //    launcherButtonView.label.layer.shadowPath = [UIBezierPath bezierPathWithRect:launcherButtonView.label.bounds].CGPath;
 //    launcherButtonView.label.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -145,11 +150,11 @@
                 channelId = @"26";
                 deletetitle = NO;
                 break;
+                
             case 8:
-                title = @"烟台天气";
-                channelId = @"21";
-                deletetitle = NO;
+                return;
                 break;
+                 
         }
         JDOConvenienceItemController *controller = [[JDOConvenienceItemController alloc] initWithService:CONVENIENCE_SERVICE params:@{@"channelid":channelId} title:title];
         controller.deletetitle = deletetitle;
