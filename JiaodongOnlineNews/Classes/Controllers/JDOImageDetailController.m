@@ -145,6 +145,7 @@
  * 若不覆盖NavigationController中的willRotateToInterfaceOrientation等方法,
  * 默认它会调用其topViewController中相应的方法。
  */
+
 // 除了Portrait方向以外，其他方向都不显示导航栏和工具栏，因为回退和分享都只做了Portrait方向的导航设置
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     _browser.captionView.alpha = 0;
@@ -155,6 +156,7 @@
         _browser.showToolbar = false;
         _toPortrait = false;
     }
+    [_browser willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
@@ -162,6 +164,7 @@
         [self.navigationView removeFromSuperview];
         [self.toolbar removeFromSuperview];
     }
+    [_browser didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
@@ -175,12 +178,11 @@
         self.navigationView.alpha = 0;
         self.toolbar.alpha = 0;
     }
+    [_browser willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    // 设置导航栏
-    [self setupNavigationView];
     // 设置工具栏
     [self setupToolbar];
     if (self.imageDetails) {//本地图片

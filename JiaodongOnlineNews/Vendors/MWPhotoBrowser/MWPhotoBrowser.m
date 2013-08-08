@@ -482,7 +482,7 @@
 			[_recycledPages addObject:page];
             [page prepareForReuse];
 			[page removeFromSuperview];
-			MWLog(@"Removed page at index %i", PAGE_INDEX(page));
+			NSLog(@"Removed page at index %i", PAGE_INDEX(page));
 		}
 	}
 	[_visiblePages minusSet:_recycledPages];
@@ -501,7 +501,7 @@
 			[self configurePage:page forIndex:index];
 			[_visiblePages addObject:page];
 			[_pagingScrollView addSubview:page];
-			MWLog(@"Added page at index %i", index);
+			NSLog(@"Added page at index %i", index);
             
 		}
 	}
