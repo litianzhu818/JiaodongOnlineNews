@@ -102,6 +102,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *data = [message objectAtIndex:indexPath.row];
+    [self.back cleanData];
     [self.back setData:data];
     [self onBackBtnClick];
 }

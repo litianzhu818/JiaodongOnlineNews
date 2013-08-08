@@ -582,6 +582,7 @@
 		D8EC8A0D17A73FC90007C887 /* vio_head_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
+		D8F8A91C17B37246002383D9 /* vio_noresult_iphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8A91B17B37246002383D9 /* vio_noresult_iphone5.png */; };
 		D8FABEAF179E26E000BFB67A /* JDOCarTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */; };
 		D8FCACA8177C19E9001050EF /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FCACA7177C19E9001050EF /* M13Checkbox.m */; };
 		D8FFA10E178266A30026F0C1 /* JDOBusLIstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFA10C178266A30026F0C1 /* JDOBusLIstViewController.m */; };
@@ -1410,6 +1411,7 @@
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLifeKnowledgeViewController.h; sourceTree = "<group>"; };
 		D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLifeKnowledgeViewController.m; sourceTree = "<group>"; };
+		D8F8A91B17B37246002383D9 /* vio_noresult_iphone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_noresult_iphone5.png; sourceTree = "<group>"; };
 		D8FABEAD179E26E000BFB67A /* JDOCarTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarTableCell.h; sourceTree = "<group>"; };
 		D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOCarTableCell.m; sourceTree = "<group>"; };
 		D8FCACA6177C19E9001050EF /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
@@ -2782,6 +2784,7 @@
 		D8E44FA8179641D800132A8A /* Violation */ = {
 			isa = PBXGroup;
 			children = (
+				D8F8A91B17B37246002383D9 /* vio_noresult_iphone5.png */,
 				D81516C717B0761E008F32BA /* vio_done.png */,
 				D81516C817B0761E008F32BA /* vio_edit.png */,
 				D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */,
@@ -3236,6 +3239,7 @@
 				D81516CE17B10BFB008F32BA /* Guide4.png in Resources */,
 				A733FE2517B234E30085DEDA /* cancelDownload.png in Resources */,
 				A733FE2617B234E30085DEDA /* downloadComplete.png in Resources */,
+				D8F8A91C17B37246002383D9 /* vio_noresult_iphone5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -51,6 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [ChassisNum setKeyboardType:UIKeyboardTypeNumberPad];
     [carnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [cartypelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
@@ -152,6 +153,15 @@
     [stringpicker showActionSheetPicker];
 }
 
+- (void)cleanData
+{
+    [defaultback setHidden:NO];
+    [result setHidden:YES];
+    [resultline setHidden:YES];
+    [resultline_shadow setHidden:YES];
+    [no_result_image setHidden:YES];
+}
+
 - (IBAction)sendToServer:(id)sender
 {
     CarNumString = [[NSMutableString alloc] initWithString:CarNum.text];
@@ -187,13 +197,21 @@
                 [defaultback setHidden:YES];
                 [resultline_shadow setHidden:NO];
                 [resultline setHidden:NO];
+        
                 if (datas.count > 0) {
                     [result setHidden:NO];
-                    [resultArray removeAllObjects];
+                    //[resultArray removeAllObjects];
                     [resultArray addObjectsFromArray:datas];
                     [result reloadData];
+                    if (App_Height > 480) {
+                        [result setFrame:CGRectMake(13, 224, 294, 270)];
+                    }
                 } else if (datas.count == 0) {
                     [no_result_image setHidden:NO];
+                    if (App_Height > 480) {
+                        [no_result_image setFrame:CGRectMake(13, 224, 294, 270)];
+                        [no_result_image setImage:[UIImage imageNamed:@"vio_noresult_iphone5"]];
+                    }
                 }
             } else {
                 NSLog(@"wrongParams%@",params);
