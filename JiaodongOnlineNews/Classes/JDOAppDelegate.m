@@ -576,7 +576,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    // {"aps":{"badge":0,"sound":"","alert":"1111"},"newsid":"222"}
+    // {"aps":{"badge":1,"sound":"default","alert":"1111"},"newsid":"222"}
     if (application.applicationState == UIApplicationStateActive) {
        // 运行态忽略通知
         return;
