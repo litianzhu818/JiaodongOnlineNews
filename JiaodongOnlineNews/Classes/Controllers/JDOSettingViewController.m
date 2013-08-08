@@ -78,11 +78,23 @@
         case JDOSettingItemPushService:{
             cell.textLabel.text = @"接收新闻推送";
             cell.detailTextLabel.text = @"新闻推送服务，及时获取第一手新闻咨询。";
-            TTFadeSwitch *pushSwitch = [self buildCustomSwitch];
-            pushSwitch.tag = JDOSettingItemPushService;
-            pushSwitch.on = [userDefault boolForKey:@"JDO_Push_Enable"];
-            [pushSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-            cell.accessoryView = pushSwitch;
+#warning 非正常状态可以将accessoryView替换为一个提醒图标,点击后通过弹出菜单提示信息
+            if ([userDefault objectForKey:@"JDO_Push_News"] == nil) {  // 可能是获取token失败或者bindChannel失败或者setTag失败,总之是当前推送不可到达。
+                cell.detailTextLabel.text = @"新闻推送服务尚未成功注册";
+                cell.accessoryView = nil;
+            }else{
+                UIRemoteNotificationType enabledType=[[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+                if( !(enabledType & UIRemoteNotificationTypeAlert) && !(enabledType & UIRemoteNotificationTypeBadge) ){
+                    cell.detailTextLabel.text = @"请在通知设置中开启提醒样式和图标标记，并开启通知中心以保留您未及时查看的通知。";
+                    cell.accessoryView = nil;
+                }else{
+                    TTFadeSwitch *pushSwitch = [self buildCustomSwitch];
+                    pushSwitch.tag = JDOSettingItemPushService;
+                    pushSwitch.on = [[userDefault objectForKey:@"JDO_Push_News"] boolValue];
+                    [pushSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+                    cell.accessoryView = pushSwitch;
+                }
+            }
             break;
         }
         case JDOSettingItem3GSwitch:{
@@ -164,8 +176,11 @@
             // 通知服务器开启或关闭推送服务
             if (sender.on) {
                 [BPush setTag:@"ALL_NEWS_TAG"];
+#warning 回调函数修正后下面一行应去掉
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
             }else{
                 [BPush delTag:@"ALL_NEWS_TAG"];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];
             }
             break;
         }

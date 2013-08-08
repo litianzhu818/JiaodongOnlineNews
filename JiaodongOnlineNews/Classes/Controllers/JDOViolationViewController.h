@@ -36,9 +36,6 @@
     NSMutableArray *resultArray;
     NSMutableArray *carMessageArray;
     
-    BOOL save;
-    BOOL receivepush;
-    
     ActionSheetStringPicker *stringpicker;
     NSArray *types;
     

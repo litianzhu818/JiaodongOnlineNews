@@ -41,6 +41,8 @@
 #define advertise_img_width 320
 #define advertise_img_height App_Height
 
+#define MAX_BIND_ERROR_TIMES 10
+
 @implementation JDOAppDelegate{
     Reachability  *hostReach;
     UIImage *advImage;
@@ -48,6 +50,7 @@
     UIImageView *advView;
     BOOL manualCheckUpdate;
     MBProgressHUD *HUD;
+    int bindErrorCount;
 }
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
@@ -151,9 +154,12 @@
     }else{
         [self enterMainView];
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
-        [JDOCommonUtil showHintHUD:[NSString stringWithFormat:@"launchOptions:%@",launchOptions ] inView:self.window withSlidingMode:WBNoticeViewSlidingModeUp];
-        if ([launchOptions objectForKey:@"a"]) {
-            [self openNewsDetail:@""];
+        if (launchOptions != nil){
+            NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+            if (dictionary != nil){
+                NSString *newsId = [dictionary objectForKey:@"newsid"];
+                [self openNewsDetail:newsId];
+            }
         }
     }
 }
@@ -194,7 +200,7 @@
     [ShareSDK registerApp:@"4991b66e0ae"];
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
-#warning 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
+    // 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
     [ShareSDK ssoEnabled:false];    // 禁用SSO
     [ShareSDK setInterfaceOrientationMask:SSInterfaceOrientationMaskPortrait];
     [self initializePlatform];
@@ -242,9 +248,25 @@
     [BPush setDelegate:self]; // 必须。参数对象必须实现onMethod: response:方法
     
     // [BPush setAccessToken:@"3.ad0c16fa2c6aa378f450f54adb08039.2592000.1367133742.282335-602025"];  // 可选。api key绑定时不需要，也可在其它时机调用
+    
+    /* 第一次注册推送时弹出的Alert窗口，选择"不允许"则会将提醒样式设置为无、关闭声音和标记，选择"好"则设置为横幅、打开声音和标记，
+     "是否在通知中心显示"，"是否在锁屏界面显示"不由程序决定，http://stackoverflow.com/questions/18120527/what-determined-ios-app-is-in-notification-center-or-not-in-notification-center，无论是否允许都不影响设备从APN获取token并执行回调。推送的开启是应用单方面决定的，只要didRegisterForRemoteNotificationsWithDeviceToken返回该设备token并且应用服务器持续向该token发送消息，就一直能到达。
+     */
+    bindErrorCount = 0;
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert| UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
     
+    [self clearNotifications];
+    
     return YES;
+}
+
+- (void) clearNotifications{
+    // 清除通知栏本应用的所有通知
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    NSArray* scheduledNotifications = [NSArray arrayWithArray:[UIApplication sharedApplication].scheduledLocalNotifications];
+    [UIApplication sharedApplication].scheduledLocalNotifications = scheduledNotifications;
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 - (void)clearImageCache{
@@ -547,10 +569,9 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    
     [BPush registerDeviceToken:deviceToken]; // 必须
-    
     [BPush bindChannel]; // 必须。可以在其它时机调用，只有在该方法返回（通过onMethod:response:回调）绑定成功时，app才能接收到Push消息。一个app绑定成功至少一次即可（如果access token变更请重新绑定）。
+    
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -560,12 +581,7 @@
        // 运行态忽略通知
         return;
     }
-    // 清除通知栏本应用的所有通知
-    [application setApplicationIconBadgeNumber:1];
-    [application setApplicationIconBadgeNumber:0];
-    NSArray* scheduledNotifications = [NSArray arrayWithArray:application.scheduledLocalNotifications];
-    application.scheduledLocalNotifications = scheduledNotifications;
-    [application cancelAllLocalNotifications];
+    [self clearNotifications];
     
     [BPush handleNotification:userInfo]; // 可选,百度后台统计用
 
@@ -574,6 +590,9 @@
 
 // 
 - (void) openNewsDetail:(NSString *) newsId{
+    if (newsId == nil) {    // 未传递newsId则不进行跳转
+        return;
+    }
     JDONewsModel *newsModel = [[JDONewsModel alloc] init];
     newsModel.id = newsId;
     
@@ -596,7 +615,12 @@
         int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
         if (returnCode != 0) {
             NSLog(@"推送服务绑定错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
+                NSLog(@"推送服务绑定失败次数超过最大值");
+                return;
+            }
             [BPush bindChannel];
+            bindErrorCount ++;
             return;
         }
         // 保存userId,用于设置违章推送的目标,违章推送永远处于开启状态
@@ -604,23 +628,53 @@
         [[NSUserDefaults standardUserDefaults] setObject:userid forKey:@"JDO_Push_UserId"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         // 默认启用新闻推送,是否接受推送在服务器端通过Tag来设置 ALL_NEWS_TAG
-        [BPush setTag:@"ALL_NEWS_TAG"];
-    }else if([BPushRequestMethod_SetTag isEqualToString:method]){
-        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-        if (returnCode != 0) {
-            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_News"] == nil) {
+            // 尚未成功设置新闻tag，只要有一次设置tag成功，则JDO_Push_News!=nil，就不需要在bindChannel时再次设置tag
+            // 目前尚不清楚bindChannel后userid改变的情况会造成怎样的影响
             [BPush setTag:@"ALL_NEWS_TAG"];
-            return;
+#warning 百度的api是错误的,调用delTag时回调的method参数依然是set_tag,目前唯一的解决办法只能忽略服务器返回状态，在调用setTag/delTag的时候就设置UserDefault
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
         }
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"JDO_Push_Enable"];
+    }else if([BPushRequestMethod_SetTag isEqualToString:method]){
+//        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+//        NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
+//        if (tag == nil) {   // 防止百度修改json的返回结构导致无法获得tag
+//            tag = @"ALL_NEWS_TAG";
+//        }
+//        
+//        if (returnCode != 0) {
+//            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+//            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
+//                NSLog(@"设置Tag失败次数超过最大值");
+//                return;
+//            }
+//            [BPush setTag:tag];
+//            bindErrorCount ++;
+//        }else{
+//            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {    
+//                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
+//            }
+//        }
     }else if([BPushRequestMethod_DelTag isEqualToString:method]){
-        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-        if (returnCode != 0) {
-            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-            [BPush delTag:@"ALL_NEWS_TAG"];
-            return;
-        }
-        [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"JDO_Push_Enable"];
+//        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+//        NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
+//        if (tag == nil) {   // 防止百度修改json的返回结构导致无法获得tag
+//            tag = @"ALL_NEWS_TAG";
+//        }
+//        
+//        if (returnCode != 0) {
+//            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+//            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
+//                NSLog(@"删除Tag失败次数超过最大值");
+//                return;
+//            }
+//            [BPush delTag:tag];
+//            bindErrorCount ++;
+//        }else{
+//            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {
+//                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];
+//            }
+//        }
     }
 }
 

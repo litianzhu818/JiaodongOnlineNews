@@ -154,60 +154,80 @@
 {
     CarNumString = [[NSMutableString alloc] initWithString:CarNum.text];
     ChassisNumString = [[NSMutableString alloc] initWithString:ChassisNum.text];
-    save = checkBox1.isChecked;
-    receivepush = checkBox2.isChecked;
     
-    if (!self.checkEmpty) {
-        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-        [params setValue:CarNumString forKey:@"hphm"];
-        [params setValue:CarTypeString forKey:@"cartype"];
-        [params setValue:ChassisNumString forKey:@"vin"];
-        
-        if (addCarStatus) {
-            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
-            [self onBackBtnClick];
-            return;
-        }
-        
-        if( ![Reachability isEnableNetwork]){
-            [JDOCommonUtil showHintHUD:@"网络不可用！" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
-            return;
-        }
-        
-        [result setHidden:YES];
-        [resultline setHidden:YES];
-        [resultline_shadow setHidden:YES];
-        [no_result_image setHidden:YES];
-        
-        [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
-                NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
-                [defaultback setHidden:YES];
-                [resultline_shadow setHidden:NO];
-                [resultline setHidden:NO];
-                if (datas.count > 0) {
-                    [result setHidden:NO];
-                    [resultArray removeAllObjects];
-                    [resultArray addObjectsFromArray:datas];
-                    [result reloadData];
-                } else if (datas.count == 0) {
-                    [no_result_image setHidden:NO];
-                }
-            } else {
-                NSLog(@"wrongParams%@",params);
-            }
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
-        
-        [CarNum resignFirstResponder];
-        [ChassisNum resignFirstResponder];
-        if (checkBox1.isChecked) {
-            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
-        }
+    if( ![Reachability isEnableNetwork]){
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+        return;
+    }
+    if ([self checkEmpty]) {
+        return;
     }
     
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:CarNumString forKey:@"hphm"];
+    [params setValue:CarTypeString forKey:@"cartype"];
+    [params setValue:ChassisNumString forKey:@"vin"];
+    
+    if (addCarStatus) {
+        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
+        [self onBackBtnClick];
+        return;
+    }
+    
+    [result setHidden:YES];
+    [resultline setHidden:YES];
+    [resultline_shadow setHidden:YES];
+    [no_result_image setHidden:YES];
+    
+    [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
+            NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
+            [defaultback setHidden:YES];
+            [resultline_shadow setHidden:NO];
+            [resultline setHidden:NO];
+            if (datas.count > 0) {
+                [result setHidden:NO];
+                [resultArray removeAllObjects];
+                [resultArray addObjectsFromArray:datas];
+                [result reloadData];
+            } else if (datas.count == 0) {
+                [no_result_image setHidden:NO];
+            }
+        } else {
+            NSLog(@"wrongParams%@",params);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    [CarNum resignFirstResponder];
+    [ChassisNum resignFirstResponder];
+    if (checkBox1.isChecked) {
+        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
+    }
+    // 设置违章推送
+    [[JDOJsonClient sharedClient] getPath:BINDVIOLATIONINFO_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
+            NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
+            [defaultback setHidden:YES];
+            [resultline_shadow setHidden:NO];
+            [resultline setHidden:NO];
+            if (datas.count > 0) {
+                [result setHidden:NO];
+                [resultArray removeAllObjects];
+                [resultArray addObjectsFromArray:datas];
+                [result reloadData];
+            } else if (datas.count == 0) {
+                [no_result_image setHidden:NO];
+            }
+        } else {
+            NSLog(@"wrongParams%@",params);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 
 - (void)saveCarMessage:(NSDictionary *)carMessage
@@ -238,13 +258,11 @@
 - (BOOL)checkEmpty
 {
     if (CarNumString.length < 7) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车牌号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
+        [JDOCommonUtil showHintHUD:@"车牌号输入错误" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
     if (ChassisNumString.length < 4){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车架号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
+        [JDOCommonUtil showHintHUD:@"车架号输入错误" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
     return NO;
