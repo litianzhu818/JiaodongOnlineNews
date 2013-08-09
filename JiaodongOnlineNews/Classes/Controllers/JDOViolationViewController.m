@@ -45,7 +45,7 @@
     } else {
         CarTypeString = [NSString stringWithFormat:@"%d", index];
     }
-        
+    
 }
 
 - (void)viewDidLoad
@@ -218,28 +218,42 @@
     if (checkBox1.isChecked) {
         [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
     }
+    
     // 设置违章推送
-    [[JDOJsonClient sharedClient] getPath:BINDVIOLATIONINFO_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
-            NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
-            [defaultback setHidden:YES];
-            [resultline_shadow setHidden:NO];
-            [resultline setHidden:NO];
-            if (datas.count > 0) {
-                [result setHidden:NO];
-                [resultArray removeAllObjects];
-                [resultArray addObjectsFromArray:datas];
-                [result reloadData];
-            } else if (datas.count == 0) {
-                [no_result_image setHidden:NO];
-            }
-        } else {
-            NSLog(@"wrongParams%@",params);
+    if (checkBox2.isChecked) {
+        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_UserId"];
+        if (userId == nil) {
+            [self showBindError];
+            [checkBox2 setCheckState:M13CheckboxStateUnchecked];
+        }else{
+            [params setObject:userId forKey:@"userid"];
+            [[JDOJsonClient sharedClient] getPath:BINDVIOLATIONINFO_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                id status = [(NSDictionary *)responseObject objectForKey:@"status"];
+                if ([status isKindOfClass:[NSNumber class]]) {
+                    int _status = [status intValue];
+                    if (_status == 1) { //绑定成功
+                        
+                    }else if(_status == 0){
+                        [self showBindError];
+                    }
+                } else if([status isKindOfClass:[NSString class]]){
+                    if ([status isEqualToString:@"wrongparam"]) {
+                        NSLog(@"参数错误:%@",status);
+                    }else if([status isEqualToString:@"exist"]){
+                        NSLog(@"已经存在绑定信息:%@",status);
+                    }
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self showBindError];
+            }];
         }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
+
+    }
+}
+
+- (void) showBindError{
+    [JDOCommonUtil showHintHUD:@"违章推送绑定失败，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
 }
 
 - (void)saveCarMessage:(NSDictionary *)carMessage
@@ -338,22 +352,11 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"COUNT:%d", resultArray.count);
 	return resultArray.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
-}
-
-
-
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

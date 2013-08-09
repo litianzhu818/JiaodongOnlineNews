@@ -31,6 +31,7 @@
 #import "BPush.h"
 #import "JDONewsDetailController.h"
 #import "JDONewsModel.h"
+#import "UIDevice+Hardware.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -240,7 +241,11 @@
     [UIResponder cacheKeyboard:true];
     
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
-    splashView.image = [UIImage imageNamed:@"Default.png"];
+    if([[UIScreen mainScreen] bounds].size.height == 480.f){
+        splashView.image = [UIImage imageNamed:@"Default"];
+    }else{
+        splashView.image = [UIImage imageNamed:@"Default-568h"];
+    }
     [self.window addSubview:splashView];
     
     [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];
@@ -545,7 +550,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-
+    [self clearNotifications];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
