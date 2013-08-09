@@ -39,7 +39,7 @@
             @{@"reuseId":@"Department",@"title":@"参与部门"},
             @{@"reuseId":@"QuestionList",@"title":@"相关问题"},
             @{@"reuseId":@"AskQuestion",@"title":@"我要提问"},
-//            @{@"reuseId":@"MyQuestion",@"title":@"我的问题"}
+            @{@"reuseId":@"MyQuestion",@"title":@"我的问题"}
         ];
     }
     return self;
@@ -124,7 +124,7 @@
             return aPage;
         }
         case 3:{
-            JDOLivehoodMyQuestion *aPage = [[JDOLivehoodMyQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo];
+            JDOLivehoodMyQuestion *aPage = [[JDOLivehoodMyQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo rootView:self.view];
             return aPage;
         }
         default:
@@ -191,7 +191,7 @@
     lastCenterPageIndex = _scrollView.centerPageIndex;
     UIView<NIPagingScrollViewPage> *page = _scrollView.centerPageView;
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
-//    NSDictionary *pageInfo = (NSDictionary *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
+    //NSDictionary *pageInfo = (NSDictionary *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
 //    
 //    switch (_scrollView.centerPageIndex) {
 //        case 0:{
@@ -213,7 +213,9 @@
 //        default:
 //            break;
 //    }
-    
+    if (_scrollView.centerPageIndex == 3) {
+        [(JDOLivehoodMyQuestion *)page loadDataFromNetwork];
+    }
     
     
 }

@@ -14,8 +14,11 @@
 
 @property (nonatomic,strong) NSDictionary *info;
 @property (strong,nonatomic) UIView *rootView;
+@property (strong,nonatomic) NSMutableArray *Quesids;
 
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView;
+- (void)saveQuesMessage:(NSString *)Message;
+- (BOOL)readQuesMessage;
 
 
 @end

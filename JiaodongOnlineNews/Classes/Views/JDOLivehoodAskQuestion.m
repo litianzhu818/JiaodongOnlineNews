@@ -314,6 +314,10 @@
             [_qTelPublicCB setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
             [_qTelNotPublicCB setBackgroundImage:[UIImage imageNamed:@"livehood_checkbox_unselected"] forState:UIControlStateNormal];
             _qEmailInput.text = nil;
+            
+            NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+            NSString *statusString = [numberFormatter stringFromNumber:status];
+            [self saveQuesMessage:statusString];
         }else{  // 提交失败,服务器错误
             [self dismissHUDOnLoadFailed:@"提交失败"];
         }
@@ -712,5 +716,19 @@
     }
 }
 
+
+- (void)saveQuesMessage:(NSString *)Message
+{
+    if (!self.readQuesMessage) {
+        self.Quesids = [[NSMutableArray alloc] init];
+    }
+    [self.Quesids addObject:Message];
+    [NSKeyedArchiver archiveRootObject:self.Quesids toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"QuesMessage"]];
+}
+
+- (BOOL) readQuesMessage{
+    self.Quesids = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"QuesMessage"]];
+    return (self.Quesids != nil);
+}
 
 @end
