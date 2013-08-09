@@ -111,7 +111,6 @@
         self.textLabel.textColor = [UIColor colorWithHex:Black_Color_Type1];
         self.textLabel.highlightedTextColor = [UIColor colorWithHex:Black_Color_Type1];
     }
-#warning 根据已读或者未读来区分文字的颜色
 }
 
 @end

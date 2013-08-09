@@ -14,7 +14,14 @@
 @implementation JDOCollectNewsView
 -(void)loadData{
     self.datas = [NSMutableArray arrayWithArray: [self.collectDB selectByModelClassString:@"JDONewsModel"]];
-    [self.tableView reloadData];
+    if([self.datas count] == 0){
+        [self.tableView setHidden:TRUE];
+        [self.noResultView setHidden:FALSE];
+    }else{
+        [self.tableView setHidden:FALSE];
+        [self.noResultView setHidden:TRUE];
+        [self.tableView reloadData];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
