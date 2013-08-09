@@ -101,7 +101,7 @@
 #define CONVENIENCE_SERVICE @"Data/convenience"
 #define TOPIC_LIST_SERVICE @"Data/getTopics"
 #define TOPIC_DETAIL_SERVICE @"Data/getTopicDetail"
-#define VOTE_SERVICE @"Data/vote"
+#define VOTE_SERVICE @"/Data/vote"
 #define IMAGE_DETAIL_SERVICE @"Data/getImageDetail"
 #define COMMIT_COMMENT_SERVICE @"Data/commitComment"
 #define VIEW_COMMENT_SERVICE @"Data/viewComment"

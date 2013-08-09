@@ -29,6 +29,8 @@
 #import "iRate.h"
 #import "JDOGuideViewController.h"
 #import "BPush.h"
+#import "JDONewsDetailController.h"
+#import "JDONewsModel.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -108,7 +110,7 @@
     });
 }
 
-- (void)showAdvertiseView{
+- (void)showAdvertiseView:(NSDictionary *)launchOptions{
     
     advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
     // 2秒之后仍未加载完成,则显示已缓存的广告图
@@ -133,11 +135,11 @@
     }
     completion:^(BOOL finished){
         [splashView removeFromSuperview];
-        [self performSelector:@selector(navigateToMainView) withObject:nil afterDelay:advertise_stay_time];
+        [self performSelector:@selector(navigateToMainView:) withObject:launchOptions afterDelay:advertise_stay_time];
     }];
 }
 
-- (void)navigateToMainView{
+- (void)navigateToMainView:(NSDictionary *)launchOptions{
     [advView removeFromSuperview];
     self.deckController = [self generateControllerStack];
     
@@ -148,6 +150,11 @@
         self.window.rootViewController = guideController;
     }else{
         [self enterMainView];
+        // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
+        [JDOCommonUtil showHintHUD:[NSString stringWithFormat:@"launchOptions:%@",launchOptions ] inView:self.window withSlidingMode:WBNoticeViewSlidingModeUp];
+        if ([launchOptions objectForKey:@"a"]) {
+            [self openNewsDetail:@""];
+        }
     }
 }
 
@@ -177,9 +184,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     // 创建磁盘缓存目录 /Library/caches/JDOCache
     self.cachePath = [JDOCommonUtil createJDOCacheDirectory];
-    self.newsDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"NewsDetailCache"];
-    self.imageDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"ImageDetailCache"];
-    self.topicDetailCachePath = [JDOCommonUtil createDetailCacheDirectory:@"TopicDetailCache"];
+    self.newsDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"NewsDetailCache"];
+    self.imageDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"ImageDetailCache"];
+    self.topicDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"TopicDetailCache"];
+    self.convenienceCachePath = [self.cachePath stringByAppendingPathComponent:@"ConvenienceCache"];
     // 标记检查更新的标志位(启动时标记为非手动检查)
     manualCheckUpdate = false;
     
@@ -194,6 +202,7 @@
     //监听用户信息变更
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
+#warning 正式发布的时候，需要改友盟统计appkey
     //友盟统计
     [MobClick startWithAppkey:@"51de0ed156240bd3fb01d54c"];
     
@@ -228,7 +237,7 @@
     splashView.image = [UIImage imageNamed:@"Default.png"];
     [self.window addSubview:splashView];
     
-    [self performSelector:@selector(showAdvertiseView) withObject:nil afterDelay:splash_stay_time];
+    [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];
     
     // 注册百度推送
     [BPush setupChannel:launchOptions]; // 必须
@@ -499,30 +508,27 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     manualCheckUpdate = false;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
 }
 
 #pragma mark - WXApiDelegate
@@ -551,36 +557,72 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"Receive Notify: %@", [userInfo JSONString]);
-    NSString *alert = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    // {"aps":{"badge":0,"sound":"","alert":"1111"},"newsid":"222"}
     if (application.applicationState == UIApplicationStateActive) {
-        // Nothing to do if applicationState is Inactive, the iOS already displayed an alert view.
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"接收到推送通知"
-                                                            message:[NSString stringWithFormat:@"%@", alert]
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+       // 运行态忽略通知
+        return;
     }
+    // 清除通知栏本应用的所有通知
+    [application setApplicationIconBadgeNumber:1];
     [application setApplicationIconBadgeNumber:0];
-    [BPush handleNotification:userInfo]; // 可选
+    NSArray* scheduledNotifications = [NSArray arrayWithArray:application.scheduledLocalNotifications];
+    application.scheduledLocalNotifications = scheduledNotifications;
+    [application cancelAllLocalNotifications];
+    
+    [BPush handleNotification:userInfo]; // 可选,百度后台统计用
+
+    [self openNewsDetail:[userInfo objectForKey:@"newsid"]];    // 打开功能对应界面
+}
+
+// 
+- (void) openNewsDetail:(NSString *) newsId{
+    JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+    newsModel.id = newsId;
+    
+    [self.deckController closeLeftViewAnimated:false];
+    [self.deckController closeRightViewAnimated:false];
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[self.deckController centerController];
+    [centerController setRootViewControllerType:MenuItemNews];
+    
+    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel];
+    detailController.isPushNotification = true;
+    [centerController pushViewController:detailController animated:true];
 }
 
 // 必须，如果正确调用了setDelegate，在bindChannel之后，结果在这个回调中返回。
 // 若绑定失败，请进行重新绑定，确保至少绑定成功一次
 - (void) onMethod:(NSString*)method response:(NSDictionary*)data
 {
-    NSLog(@"On method:%@", method);
-    NSLog(@"data:%@", [data description]);
     if ([BPushRequestMethod_Bind isEqualToString:method])
     {
-        NSDictionary* res = [[NSDictionary alloc] initWithDictionary:data];
-        
-        NSString *appid = [res valueForKey:BPushRequestAppIdKey];
-        NSString *userid = [res valueForKey:BPushRequestUserIdKey];
-        NSString *channelid = [res valueForKey:BPushRequestChannelIdKey];
-        int returnCode = [[res valueForKey:BPushRequestErrorCodeKey] intValue];
-        NSString *requestid = [res valueForKey:BPushRequestRequestIdKey];
+        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode != 0) {
+            NSLog(@"推送服务绑定错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            [BPush bindChannel];
+            return;
+        }
+        // 保存userId,用于设置违章推送的目标,违章推送永远处于开启状态
+        NSString *userid = [data valueForKey:BPushRequestUserIdKey]; //851261084727959725
+        [[NSUserDefaults standardUserDefaults] setObject:userid forKey:@"JDO_Push_UserId"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        // 默认启用新闻推送,是否接受推送在服务器端通过Tag来设置 ALL_NEWS_TAG
+        [BPush setTag:@"ALL_NEWS_TAG"];
+    }else if([BPushRequestMethod_SetTag isEqualToString:method]){
+        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode != 0) {
+            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            [BPush setTag:@"ALL_NEWS_TAG"];
+            return;
+        }
+        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"JDO_Push_Enable"];
+    }else if([BPushRequestMethod_DelTag isEqualToString:method]){
+        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode != 0) {
+            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            [BPush delTag:@"ALL_NEWS_TAG"];
+            return;
+        }
+        [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"JDO_Push_Enable"];
     }
 }
 

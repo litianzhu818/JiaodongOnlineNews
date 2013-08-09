@@ -13,12 +13,16 @@
 #import "SDImageCache.h"
 #import "JDOFeedbackViewController.h"
 #import "JDOOffDownloadManager.h"
+#import "ITWLoadingPanel.h"
+#import "BPush.h"
 
 @interface JDOSettingViewController ()
 
 @end
 
 @implementation JDOSettingViewController
+
+BOOL downloadItemClickable = TRUE;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -75,11 +79,11 @@
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     switch (indexPath.row) {
         case JDOSettingItemPushService:{
-            cell.textLabel.text = @"新闻/违章推送";
-            cell.detailTextLabel.text = @"违章信息自动推送需要先在便民查询->违章查询中添加车辆。";
+            cell.textLabel.text = @"接收新闻推送";
+            cell.detailTextLabel.text = @"新闻推送服务，及时获取第一手新闻咨询。";
             TTFadeSwitch *pushSwitch = [self buildCustomSwitch];
             pushSwitch.tag = JDOSettingItemPushService;
-            pushSwitch.on = [(NSNumber *)[userDefault objectForKey:@"JDO_Push_Service"] boolValue];
+            pushSwitch.on = [userDefault boolForKey:@"JDO_Push_Enable"];
             [pushSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = pushSwitch;
             break;
@@ -96,14 +100,9 @@
         }
         case JDOSettingItemClearCache:{
             cell.textLabel.text = @"清除缓存";
-            float diskFileSize = [JDOCommonUtil getDiskCacheFileSize]/1000.0f;
-            NSString *sizeUnit = @"K";
-            if (diskFileSize > 1000.0f) {
-                diskFileSize = diskFileSize/1000.0f;
-                sizeUnit = @"M";
-            }
+            
 //            int diskFileCount = [JDOCommonUtil getDiskCacheFileCount];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"目前缓存文件占用磁盘空间%.2f%@。",diskFileSize,sizeUnit];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"目前缓存文件占用磁盘空间%@。",[self calculateCacheSize]];
 //            UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 //            clearButton.frame = CGRectMake(0, 0, 65, 27);
 //            clearButton.tag = JDOSettingItemClearCache;
@@ -158,20 +157,25 @@
 }
 
 - (void)switchChanged:(UISwitch *)sender {
-    NSString *userDefaultKey ;
     switch (sender.tag) {
-        case JDOSettingItemPushService:
-            userDefaultKey = @"JDO_Push_Service";
+        case JDOSettingItemPushService:{
+            // 通知服务器开启或关闭推送服务
+            if (sender.on) {
+                [BPush setTag:@"ALL_NEWS_TAG"];
+            }else{
+                [BPush delTag:@"ALL_NEWS_TAG"];
+            }
             break;
-        case JDOSettingItem3GSwitch:
-            userDefaultKey = @"JDO_No_Image";
+        }
+        case JDOSettingItem3GSwitch:{
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            [userDefault setObject:[NSNumber numberWithBool:sender.on] forKey:@"JDO_No_Image"];
+            [userDefault synchronize];
             break;
+        }
         default:
             break;
     }
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setObject:[NSNumber numberWithBool:sender.on] forKey:userDefaultKey];
-    [userDefault synchronize];
 }
 
 //- (void)buttonClicked:(UIButton *)sender {
@@ -237,11 +241,26 @@
             HUD.labelText = @"清除缓存完成";
             [HUD hide:true afterDelay:1.0];
             
-            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            [self refreshCacheSize];
             break;
         }
         case JDOSettingItemDownload:
-            [self offDownload];
+            if (downloadItemClickable) {
+                downloadItemClickable = FALSE;
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                JDOOffDownloadManager *downloadOperation = [[JDOOffDownloadManager alloc] initWithTarget:self action:@selector(refreshProgressWithCount:)];
+                NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+                [queue addOperation:downloadOperation];
+                [ITWLoadingPanel showPanelInView:cell title:@"开始下载" cancelTitle:@"" cancel:^{
+                    downloadItemClickable = TRUE;
+                    [downloadOperation cancel];
+                } disappear:^{
+                    downloadItemClickable = TRUE;
+                    [NSTimer scheduledTimerWithTimeInterval:3 target:self
+                                                   selector:@selector(refreshCacheSize)
+                                                   userInfo:nil repeats:NO];
+                }];
+            }
             break;
         case JDOSettingItemCheckVersion:
             [SharedAppDelegate checkForNewVersion];
@@ -256,8 +275,38 @@
     }
 }
 
-- (void) offDownload {
-    [[[JDOOffDownloadManager alloc] init] startOffDownload];
+- (void) refreshCacheSize{
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (NSString *) calculateCacheSize {
+    float diskFileSize = [JDOCommonUtil getDiskCacheFileSize]/1000.0f;
+    NSString *sizeUnit = @"K";
+    if (diskFileSize > 1000.0f) {
+        diskFileSize = diskFileSize/1000.0f;
+        sizeUnit = @"M";
+    }
+    NSString *ret = [NSString stringWithFormat:@"%.2f%@", diskFileSize, sizeUnit];
+    return ret;
+}
+
+- (void) refreshProgressWithCount:(NSDictionary *) result {
+    NSString *title = [result objectForKey:@"title"];
+    if (title) {
+        UILabel *titleLabel = [[ITWLoadingPanel sharedInstance] titleLabel];
+        titleLabel.text = title;
+    }
+    NSNumber *count = [result objectForKey:@"count"];
+    if (count) {
+        UIProgressView *progressView = [[ITWLoadingPanel sharedInstance] progressView];
+        
+        [ITWLoadingPanel setProgress:([count floatValue]) animated:YES];
+        if (1 == progressView.progress) {
+            UILabel *titleLabel = [[ITWLoadingPanel sharedInstance] titleLabel];
+            titleLabel.text = @"下载完成";
+            [ITWLoadingPanel showSuccess];
+        }
+    }    
 }
 
 @end

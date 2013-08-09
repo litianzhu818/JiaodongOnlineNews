@@ -65,6 +65,7 @@
     NSMutableDictionary *variables = [[NSMutableDictionary alloc] init];
     [variables setValue:fontClass forKey:@"font_class"];
     [variables setValue:@"1" forKey:@"hasVote"];
+    [variables setValue:[dictionary valueForKey:@"id"] forKey:@"id"];
     [variables setValue:[SERVER_QUERY_URL stringByAppendingString:VOTE_SERVICE] forKey:@"vote_addr"];
     [variables addEntriesFromDictionary:dictionary];
     

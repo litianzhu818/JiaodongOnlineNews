@@ -75,12 +75,21 @@ NSArray *imageUrls;
     [self.view addSubview:_webView];
     
     _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
     self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
     self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
     
+}
+
+- (BOOL) onSharedClicked {
+    if (self.newsModel == nil) {
+        [JDOCommonUtil showHintHUD:@"新闻尚未加载！" inView:self.view];
+        return FALSE;
+    }
+    return TRUE;
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
@@ -168,8 +177,7 @@ NSArray *imageUrls;
             JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title];
             [array addObject:imageDetail];
         }
-        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:nil];
-        detailController.fromNewsDetail = TRUE;
+        JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[[JDOImageModel alloc] init]];
         detailController.imageIndex = [imageId integerValue];
         detailController.imageDetails = array;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
@@ -193,7 +201,6 @@ NSArray *imageUrls;
         JDOImageModel *imageModel = [[JDOImageModel alloc] init];
         imageModel.id = linkId;
         JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
-        detailController.fromNewsDetail = TRUE;
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         // 通过pushViewController 显示图集视图
         [centerController pushViewController:detailController animated:true];
@@ -212,8 +219,10 @@ NSArray *imageUrls;
 }
 
 - (void) loadWebView{
-    #warning 若有缓存可以从缓存读取
     NSDictionary *detailModel = [self readNewsDetailFromLocalCache];
+    if (self.isPushNotification) {  // 推送消息忽略缓存
+        detailModel = nil;
+    }
     if (detailModel /*有缓存*/) {
         [self setCurrentState:ViewStatusLoading];
         // 设置url短地址
@@ -234,6 +243,13 @@ NSArray *imageUrls;
                 [self saveNewsDetailToLocalCache:responseObject];
                 // 设置url短地址
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
+                
+                // 推送新闻不是从列表导航进入,所以newsModel中只存在id,其他JDOToolbarMoedl需要的信息都要从detail的信息中复制
+                if (self.isPushNotification) {  
+                    self.newsModel.title = [responseObject objectForKey:@"title"];
+                    self.newsModel.summary = [responseObject objectForKey:@"summary"];
+                    self.newsModel.mpic =  [responseObject objectForKey:@"mpic"];
+                }
                 
                 NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];

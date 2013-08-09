@@ -9,6 +9,7 @@
 #import "JDOListViewController.h"
 #import "SVPullToRefresh.h"
 #import "NimbusPagingScrollView.h"
+#import "Reachability.h"
 
 #define Default_Page_Size 20
 
@@ -93,7 +94,7 @@
         [self setCurrentState:ViewStatusNormal];
         // 设置上次刷新时间
         double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Image_Update_Time];
-        if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
+        if([Reachability isEnableNetwork] && [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
             [self loadDataFromNetwork];
         }
         [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
@@ -194,7 +195,7 @@
     if (!self.isCacheToMemory) {
         return FALSE;
     }
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:self.cacheFileName])];
+    self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:self.cacheFileName])] mutableCopy];
     // 任何一个数组为空都任务本地缓存无效
     return TRUE && self.listArray;
 }

@@ -195,8 +195,14 @@
     }else if(page.status != ViewStatusLoading){
         if(![Reachability isEnableNetwork]){
 #warning 显示无网络界面，应监听网络通知，若有网络则自动加载
-            [page setCurrentState:ViewStatusNoNetwork];
-        }else{  // 从网络加载数据，切换到loading状态
+            if ([page readListFromLocalCache]) {
+                [page.tableView reloadData];
+                page.isShowingLocalCache = TRUE;
+                [page setCurrentState:ViewStatusNormal];
+            } else {
+                [page setCurrentState:ViewStatusNoNetwork];
+            }
+        } else{  // 从网络加载数据，切换到loading状态
             [page setCurrentState:ViewStatusLoading];
             [page loadDataFromNetwork];
         }

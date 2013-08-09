@@ -15,6 +15,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.iphone5Style = 0.0;
+        
         timelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         [timelabel setBackgroundColor:[UIColor clearColor]];
         locationlabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
@@ -129,7 +131,12 @@
     [self.contentView addSubview:ispaid];
     
     [self setFrame:CGRectMake(0, 0, 294, 5 + time.height + 4 + location.height + 4 + action.height + 4 + istreated.height + 4 + ispaid.height
-                              + 5)];
+                              + 5 + self.iphone5Style)];
+}
+
+- (void)setIphone5Style
+{
+    
 }
 
 - (void)setSeparator:(UIImage *)separator

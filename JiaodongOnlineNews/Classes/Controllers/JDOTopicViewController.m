@@ -11,6 +11,7 @@
 #import "JDOTopicCell.h"
 #import "JDOTopicModel.h"
 #import "JDOTopicDetailController.h"
+#import "Reachability.h"
 
 #define TopicList_Page_Size 10
 #define ScrollView_Tag 108
@@ -98,7 +99,7 @@
         [self setCurrentState:ViewStatusNormal];
         // 设置上次刷新时间
         double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Image_Update_Time];
-        if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
+        if([Reachability isEnableNetwork] && [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
             [self loadDataFromNetwork];
         }
         [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
@@ -110,12 +111,12 @@
 }
 
 - (void) saveListToLocalCache{
-    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"JDOCache/TopicListCache"];
+    NSString *cacheFilePath = [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"TopicListCache"];
     [NSKeyedArchiver archiveRootObject:self.listArray toFile:cacheFilePath];
 }
 
 - (BOOL) readListFromLocalCache{
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:@"TopicListCache"])];
+    self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache" stringByAppendingPathComponent:@"TopicListCache"])] mutableCopy];
     // 任何一个数组为空都任务本地缓存无效
     return TRUE && self.listArray;
 }

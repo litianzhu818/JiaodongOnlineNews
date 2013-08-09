@@ -11,7 +11,7 @@
 
 @class JDONewsModel;
 
-@interface JDONewsDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate,JDOStatusView,JDOStatusViewDelegate,SDWebImageManagerDelegate,SDWebImageStoreDelegate>
+@interface JDONewsDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate,JDOStatusView,JDOStatusViewDelegate,SDWebImageManagerDelegate,SDWebImageStoreDelegate,JDOShareTargetDelegate>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
@@ -19,6 +19,8 @@
 @property (nonatomic,strong) JDONewsModel *newsModel;
 @property (nonatomic,strong) JDOToolBar *toolbar;
 @property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
+@property (nonatomic,assign) BOOL isPushNotification;
+
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
 - (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect;
 @end

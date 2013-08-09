@@ -375,9 +375,10 @@
 - (void) onShare{
     [self setupSharePanel];
     if(self.shareTarget && [self.shareTarget respondsToSelector:@selector(onSharedClicked)]){
-        [self.shareTarget onSharedClicked];
+        if ([self.shareTarget onSharedClicked]) {
+            [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController  pushViewController:_shareViewController orientation:JDOTransitionFromBottom animated:true];
+        }
     }
-    [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController  pushViewController:_shareViewController orientation:JDOTransitionFromBottom animated:true];
 }
 
 #pragma mark - Font

@@ -245,7 +245,7 @@
 }
 
 - (BOOL) readListFromLocalCache{
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"LifeKnowledgeCache"]];
+    self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"LifeKnowledgeCache"]] mutableCopy];
     return self.listArray != nil;
 }
 

@@ -83,9 +83,26 @@
     [super viewDidUnload];
 }
 
+- (void) saveDetailToLocalCache:(NSDictionary *) params{
+    NSString *cacheFilePath = [[SharedAppDelegate convenienceCachePath] stringByAppendingPathComponent:[@"Convenience_" stringByAppendingString:[params objectForKey:@"id"]]];
+    [NSKeyedArchiver archiveRootObject:params toFile:cacheFilePath];
+}
+
+- (id) readDetailFromLocalCache{
+    NSDictionary *detailModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/ConvenienceCache" stringByAppendingPathComponent:[@"Convenience_" stringByAppendingString:[self.params objectForKey:@"aid"]]])];
+    return detailModel;
+}
+
 - (void) loadWebView{
     if( ![Reachability isEnableNetwork]){
-        [self setCurrentState:ViewStatusNoNetwork];
+        NSDictionary *detailModel = [self readDetailFromLocalCache];
+        if (detailModel) {//网络不连通，但是有缓存
+            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:detailModel];
+            NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+            [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
+        } else {
+            [self setCurrentState:ViewStatusNoNetwork];
+        }
         return;
     }
     [self setCurrentState:ViewStatusLoading];
@@ -99,6 +116,7 @@
                 [response removeObjectForKey:@"source"];
                 [response removeObjectForKey:@"addtime"];
             }
+            [self saveDetailToLocalCache:response];
             //            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
             NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:response];
             NSString *bundlePath = [[NSBundle mainBundle] bundlePath];

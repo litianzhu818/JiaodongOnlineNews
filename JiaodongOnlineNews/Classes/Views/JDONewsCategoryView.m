@@ -15,6 +15,7 @@
 #import "JDOCenterViewController.h"
 #import "NSDate+SSToolkitAdditions.h"
 #import "SDImageCache.h"
+#import "Reachability.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -94,11 +95,15 @@
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
     [self setCurrentPage:ViewStatusLoading];
+    self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
+    self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
     [self loadDataFromNetwork];
 }
 
 - (void) onNoNetworkClicked:(JDOStatusView *) statusView{
     [self setCurrentPage:ViewStatusLoading];
+    self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
+    self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
     [self loadDataFromNetwork];
 }
 
@@ -322,8 +327,9 @@
 }
 
 - (BOOL) readListFromLocalCache{
-    self.headArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]];
-    self.listArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]];
+    // 非常偶发的情况下,反序列化得到的是NSArray而不是NSMutableArray,为防止错误,在此加强制转换
+    self.headArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]] mutableCopy];
+    self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]] mutableCopy];
     [self.readDB isExistById:self.listArray];
     // 任何一个数组为空都任务本地缓存无效
     return self.headArray && self.listArray;

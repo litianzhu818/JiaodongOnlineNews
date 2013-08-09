@@ -12,6 +12,7 @@
 #import "JDOWeatherForcast.h"
 #import "JDOWeather.h"
 #import "JDOConvenienceItemController.h"
+#import "UnderlineUILabel.h"
 
 #define Menu_Cell_Height 55.0f
 #define Menu_Image_Tag 101
@@ -35,7 +36,7 @@
     NSArray *iconSelectedNames;
     NSArray *iconTitles;
     int lastSelectedRow;
-    UILabel *cityLabel;
+    UnderlineUILabel *cityLabel;
     UIImageView *weatherIcon;
     UILabel *temperatureLabel;
     UILabel *weatherLabel;
@@ -81,20 +82,23 @@
     
     // 天气部分
     UITapGestureRecognizer *weatherSingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openWeather)];
+    UITapGestureRecognizer *citySingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openWeather)];;
     
     float topMargin = Separator_Y+Top_Margin;
-    cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 0, 0)];
+    cityLabel = [[UnderlineUILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 0, 0)];
     cityLabel.text = @"烟台";
     cityLabel.font = [UIFont boldSystemFontOfSize:18];
     cityLabel.textColor = [UIColor whiteColor];
     cityLabel.backgroundColor = [UIColor clearColor];
     [cityLabel sizeToFit];
+    cityLabel.userInteractionEnabled = YES;
+    [cityLabel addGestureRecognizer:weatherSingleTap];
     [self.view addSubview:cityLabel];
     
     weatherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+cityLabel.bounds.size.width+Padding, topMargin, Weather_Icon_Width, Weather_Icon_Height)];
     weatherIcon.image = [UIImage imageNamed:@"默认.png"];
     weatherIcon.userInteractionEnabled = YES;
-    [weatherIcon addGestureRecognizer:weatherSingleTap];
+    [weatherIcon addGestureRecognizer:citySingleTap];
     [self.view addSubview:weatherIcon];
     
     temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height, 0, 0)];

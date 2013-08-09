@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSString *newsDetailCachePath;
 @property (strong, nonatomic) NSString *imageDetailCachePath;
 @property (strong, nonatomic) NSString *topicDetailCachePath;
+@property (strong, nonatomic) NSString *convenienceCachePath;
 
 - (IIViewDeckController *)generateControllerStack;
 - (void)enterMainView;
