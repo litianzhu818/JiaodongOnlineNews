@@ -56,7 +56,7 @@
         // 无数据提示
         _noDataView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_no_data"]];
         _noDataView.frame = CGRectMake(0, -44, 320, self.bounds.size.height);
-        [_noDataView setHidden:NO];
+        [_noDataView setHidden:YES];
         [self addSubview:_noDataView];
         self.listArray = [[NSMutableArray alloc] init];
         
