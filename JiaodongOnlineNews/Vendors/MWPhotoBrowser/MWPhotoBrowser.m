@@ -501,7 +501,6 @@
 			[self configurePage:page forIndex:index];
 			[_visiblePages addObject:page];
 			[_pagingScrollView addSubview:page];
-			NSLog(@"Added page at index %i", index);
             
 		}
 	}
