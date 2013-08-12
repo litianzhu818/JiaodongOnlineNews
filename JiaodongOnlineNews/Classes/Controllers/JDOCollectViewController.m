@@ -85,11 +85,18 @@
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
+    [self.navigationView addRightButtonImage:@"vio_edit" highlightImage:@"vio_edit" target:self action:@selector(onRightBtnClick)];
     [self.navigationView setTitle:@"收藏"];
 }
 
 - (void) onBackBtnClick{
     [(JDORightViewController *)self.stackViewController popViewController];
+}
+
+-(void)onRightBtnClick{
+   // [_tableview setEditing:!self.tableview.editing animated:YES];
+    UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
+    [tableview setEditing:!tableview.editing animated:YES];
 }
 
 #pragma mark - PagingScrollView delegate
