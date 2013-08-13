@@ -18,17 +18,10 @@
 
 @implementation JDOViolationViewController
 
-- (id)initwithStatus:(BOOL)isaddcar
-{
-    addCarStatus = isaddcar;
-    return [self initWithNibName:nil bundle:nil];
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        types = [[NSArray alloc] init];
         types = @[@"大型汽车",@"小型汽车",@"使馆汽车",@"领馆汽车",@"境外汽车",@"外籍汽车",@"两、三轮摩托车",@"轻便摩托车",@"使馆摩托车",@"领馆摩托车",@"境外摩托车",@"外籍摩托车",@"农用运输车",@"拖拉机",@"挂车",@"教练汽车",@"教练摩托车",@"实验汽车",@"实验摩托车",@"临时入境汽车",@"临时入境摩托车",@"临时行驶车",@"公安警车",@"公安警车",@"其他"];
     }
     return self;
@@ -37,7 +30,6 @@
 - (void)setCartype:(NSString *)type index:(int)index
 {
     [CarType setTitle:type forState:UIControlStateNormal];
-    [CarType setTitle:type forState:UIControlStateSelected];
     NSMutableString *tmp = [[NSMutableString alloc] initWithString:@"0"];
     if (index < 10) {
         [tmp appendString:[NSString stringWithFormat:@"%d", index]];
@@ -57,7 +49,6 @@
     [cartypelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [chassisnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateNormal];
-    [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateSelected];
     CarType.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 26);
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
@@ -96,35 +87,19 @@
     [resultlabel setBackgroundColor:[UIColor clearColor]];
     [header addSubview:resultlabel];
     [result setTableHeaderView:header];
-    
-    
-    if (addCarStatus) {
-        [checkBox1 setHidden:YES];
-        [checkBox2 setHidden:YES];
-        [searchbutton setTitle:@"添  加" forState:UIControlStateNormal];
-        [searchbutton setTitle:@"添  加" forState:UIControlStateSelected];
-    }
 }
 
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    if (!addCarStatus) {
-        [self.navigationView addRightButtonImage:@"vio_head_btn" highlightImage:@"vio_head_btn" target:self action:@selector(onRightBtnClick)];
-    }
+    [self.navigationView addRightButtonImage:@"vio_head_btn" highlightImage:@"vio_head_btn" target:self action:@selector(onRightBtnClick)];
     [self.navigationView setTitle:@"违章查询"];
 }
 
 - (void) onBackBtnClick
 {
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    if (addCarStatus) {
-        JDOCarManagerViewController *controller = (JDOCarManagerViewController *)[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2];
-        [controller update];
-        [centerViewController popToViewController:controller animated:true];
-    } else {
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];
-    }
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];
 }
 
 - (void) onRightBtnClick
@@ -180,11 +155,11 @@
     [params setValue:CarTypeString forKey:@"cartype"];
     [params setValue:ChassisNumString forKey:@"vin"];
     
-    if (addCarStatus) {
-        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
-        [self onBackBtnClick];
-        return;
-    }
+//    if (addCarStatus) {
+//        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
+//        [self onBackBtnClick];
+//        return;
+//    }
     
     [result setHidden:YES];
     [resultline setHidden:YES];

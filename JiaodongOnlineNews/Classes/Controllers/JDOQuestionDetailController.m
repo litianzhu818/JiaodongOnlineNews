@@ -149,6 +149,7 @@
             [self setCurrentState:ViewStatusNormal];
         }else{
             // 服务器端有错误
+            [self setCurrentState:ViewStatusRetry];
         }
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);

@@ -86,8 +86,6 @@
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Guide"];
     [userDefault synchronize];
-#warning 最后一页滑动也应该可以进入主页,右上角增加skip按钮，进入主页应该增加动画过度
-    [SharedAppDelegate enterMainView];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{

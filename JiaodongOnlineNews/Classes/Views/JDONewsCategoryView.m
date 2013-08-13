@@ -132,8 +132,8 @@
     __block bool newslistFinished = false;
     
     if(self.status != ViewStatusLoading){   // 已经是loading状态就不需要HUD了，在没有缓存数据的时候发生
-        HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
-        [SharedAppDelegate.window addSubview:HUD];
+        HUD = [[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:HUD];
 //        HUD.color = [UIColor colorWithRed:0.23 green:0.50 blue:0.82 alpha:0.90];
 //        HUD.minShowTime = Hint_Min_Show_Time;
 //        HUD.dimBackground = true;

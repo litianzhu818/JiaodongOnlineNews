@@ -39,7 +39,6 @@
     ActionSheetStringPicker *stringpicker;
     NSArray *types;
     
-    BOOL addCarStatus;
 }
 
 - (void)setData:(NSDictionary *)data;
@@ -52,7 +51,5 @@
 - (void)saveCarMessage:(NSDictionary *) carMessage;
 - (BOOL)readCarMessage;
 - (void)cleanData;
-
-- (id)initwithStatus:(BOOL)isaddcar;
 
 @end

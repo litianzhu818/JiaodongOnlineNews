@@ -75,12 +75,6 @@
     
 }
 
-- (void)onAddButtonClick:(id)sender
-{
-    JDOViolationViewController *controller = [[JDOViolationViewController alloc] initwithStatus:YES];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
 
 #pragma mark UITableViewDelegate
 
@@ -165,11 +159,5 @@
     [self.listview reloadData];
 }
 
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

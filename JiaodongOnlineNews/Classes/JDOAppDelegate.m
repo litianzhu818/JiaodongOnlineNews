@@ -32,6 +32,7 @@
 #import "JDONewsDetailController.h"
 #import "JDONewsModel.h"
 #import "UIDevice+Hardware.h"
+#import "JDOMainViewController.h"
 
 #define splash_stay_time 0.5 //1.0
 #define advertise_stay_time 0.5 //2.0
@@ -144,16 +145,22 @@
 }
 
 - (void)navigateToMainView:(NSDictionary *)launchOptions{
-    [advView removeFromSuperview];
     self.deckController = [self generateControllerStack];
-    
-    // 若第一次登陆，则进入新手引导页面
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    if([userDefault objectForKey:@"JDO_Guide"] == nil){
-        JDOGuideViewController *guideController = [[JDOGuideViewController alloc] init];
-        self.window.rootViewController = guideController;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Guide"] == nil){
+        self.deckController.view.frame = CGRectMake(0, 0, 320, App_Height);
     }else{
-        [self enterMainView];
+        self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
+    }
+    [self.window insertSubview:self.deckController.view belowSubview:advView];
+    
+    [UIView animateWithDuration:splash_adv_fadetime animations:^{
+        advView.alpha = 0;
+    }
+    completion:^(BOOL finished){
+        [advView removeFromSuperview];
+        [self.deckController.view removeFromSuperview];
+        self.window.rootViewController = self.deckController;
+        
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
         if (launchOptions != nil){
             NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -162,13 +169,7 @@
                 [self openNewsDetail:newsId];
             }
         }
-    }
-}
-
-- (void)enterMainView{
-    [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationNone];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-    self.window.rootViewController = self.deckController;
+    }];
 }
 
 - (IIViewDeckController *)generateControllerStack {
@@ -178,7 +179,7 @@
     JDOCenterViewController *centerController = [[JDOCenterViewController alloc] init];
     [centerController setRootViewControllerType:MenuItemNews];
 
-    IIViewDeckController *deckController =  [[IIViewDeckController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
+    IIViewDeckController *deckController =  [[JDOMainViewController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
     deckController.leftSize = 320-207;
     deckController.rightSize = 320-207+10;
     deckController.panningGestureDelegate = centerController;
