@@ -9,13 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "NimbusPagingScrollView.h"
 
-@interface JDOLivehoodMyQuestion : NIPageView <JDOStatusView>
+@interface JDOLivehoodMyQuestion : NIPageView <JDOStatusView, UITableViewDelegate, UITableViewDataSource,JDOStatusViewDelegate,UIGestureRecognizerDelegate>
 
-@property (strong,nonatomic) JDOStatusView *statusView;
+@property (nonatomic,strong) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,assign) NSDictionary *info;
+@property (nonatomic,strong) UITableView *tableView;
+@property (strong,nonatomic) UIView *rootView;
+@property (nonatomic,strong) NSMutableArray *listArray;
+@property (nonatomic,strong) NSMutableArray *idsArray;
+@property (strong,nonatomic) UIImageView *noDataView;
 
-- (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info;
+- (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView;
 
 - (void)loadDataFromNetwork;
 

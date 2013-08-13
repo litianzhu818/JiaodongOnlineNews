@@ -43,6 +43,14 @@
     return self;
 }
 
+- (id)initWithQuestionModel:(JDOQuestionModel *)questionModel isMyQuestion:(BOOL)isMine{
+    self = [self initWithQuestionModel:questionModel];
+    if(self){
+        self.isMine = isMine;
+    }
+    return self;
+}
+
 -(id)initWithQuestionModel:(JDOQuestionModel *)questionModel Collect:(BOOL)isCollect{
     self = [self initWithQuestionModel:questionModel];
     if(self){
@@ -141,7 +149,9 @@
     } forAttributeName:@"_data" onDestinationClass:[JDODataModel class]];
     [config addCustomParsersObject:customParser];
     
-    [[JDOJsonClient sharedClient] getJSONByServiceName:QUESTION_DETAIL_SERVICE modelClass:@"JDODataModel" config:config params:@{@"info_id":self.questionModel.id} success:^(JDODataModel *dataModel) {
+    NSDictionary *params = self.isMine? @{@"info_id":self.questionModel.id, @"checked": @"0"}:@{@"info_id":self.questionModel.id};
+    
+    [[JDOJsonClient sharedClient] getJSONByServiceName:QUESTION_DETAIL_SERVICE modelClass:@"JDODataModel" config:config params:params success:^(JDODataModel *dataModel) {
         if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
             JDOQuestionDetailModel *data = (JDOQuestionDetailModel *)dataModel.data;
             self.questionModel.dept_code = data.dept_code ;  // 提交评论时用到dept_code

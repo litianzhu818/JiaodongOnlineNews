@@ -20,7 +20,10 @@
 
 @property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
 @property (nonatomic,strong) JDOQuestionModel *questionModel;
+@property (nonatomic,assign) BOOL isMine;
 
 - (id)initWithQuestionModel:(JDOQuestionModel *)questionModel;
 - (id)initWithQuestionModel:(JDOQuestionModel *)questionModel Collect:(BOOL)isCollect;
+- (id)initWithQuestionModel:(JDOQuestionModel *)questionModel isMyQuestion:(BOOL)isMine;
+
 @end

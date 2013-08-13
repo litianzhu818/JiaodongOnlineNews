@@ -60,7 +60,7 @@ static NSString* TABLENAME = @"reads";
             [sql appendFormat:@" or id='%@' ",[obj id]];
         }
     }
-    NSLog(@"查找sql:%@",sql);
+   // NSLog(@"查找sql:%@",sql);
     sqlite3_stmt *statement;
     //预处理过程
     if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {

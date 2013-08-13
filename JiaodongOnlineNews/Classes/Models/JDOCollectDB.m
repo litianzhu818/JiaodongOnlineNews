@@ -98,10 +98,10 @@
     NSString* sql = [NSString stringWithFormat:@"delete from %@ where id='%@'",self.tableName,idValue];
     char *errorMsg;
     if (sqlite3_exec(db, [sql cStringUsingEncoding:NSUTF8StringEncoding], NULL, NULL, &errorMsg)==SQLITE_OK) {
-        NSLog(@"insert ok.");
+        NSLog(@"delete ok.");
         return true;
     }
-    printf("insert fail reason:%s",errorMsg);
+    printf("delete fail reason:%s",errorMsg);
     return false;
 }
 
