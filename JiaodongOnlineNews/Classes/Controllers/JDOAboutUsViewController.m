@@ -26,6 +26,7 @@
 
 - (void)loadView{
     [super loadView];
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,44,320,App_Height-44)];
     [self.view addSubview:imageView];

@@ -216,8 +216,7 @@
         if(delay < Hint_Min_Show_Time){
             usleep(Hint_Min_Show_Time-delay*1000*1000);
         }
-#warning 替换服务器错误的提示内容和图片
-        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_error"]];
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.labelText = errorStr;
         [HUD hide:true afterDelay:1.0];

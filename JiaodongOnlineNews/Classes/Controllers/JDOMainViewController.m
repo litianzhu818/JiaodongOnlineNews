@@ -22,16 +22,11 @@
     [super viewDidLoad];
     
     // 若第一次登陆，则进入新手引导页面
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Guide"] == nil){
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce){
     
         NSMutableArray *panels = [[NSMutableArray alloc] init];
         for (int i=0; i<4; i++) {
-            MYIntroductionPanel *panel;
-            if([[UIScreen mainScreen] bounds].size.height == 480.0f){
-                panel = [[MYIntroductionPanel alloc] initWithimage:[UIImage imageNamed:[NSString stringWithFormat:@"Guide%d",i]] description:@"" ];
-            }else{
-                panel = [[MYIntroductionPanel alloc] initWithimage:[UIImage imageNamed:[NSString stringWithFormat:@"Guide%d-568h",i]] description:@"" ];
-            }
+            MYIntroductionPanel *panel = [[MYIntroductionPanel alloc] initWithimage:[UIImage imageNamed:[NSString stringWithFormat:@"Guide%d",i]] description:@"" ];
             [panels addObject:panel];
         }
         
@@ -54,22 +49,7 @@
 }
 
 -(void)introductionDidFinishWithType:(MYFinishType)finishType{
-    if (finishType == MYFinishTypeSkipButton) {
-
-    }
-    else if (finishType == MYFinishTypeSwipeOut){
-
-    }
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Guide"];
-    [userDefault synchronize];
-    
-    [_introductionView removeFromSuperview];
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-    
-    self.view.frame = CGRectMake(0, 20, 320, App_Height);
+    [self guideFinished];
 }
 
 
@@ -78,24 +58,48 @@
 }
 
 - (void) onStartClicked:(UIButton *)sender{
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Guide"];
-    [userDefault synchronize];
-    
     [UIView animateWithDuration:0.5 animations:^{
         _introductionView.alpha = 0;
     }
      completion:^(BOOL finished){
-         [_introductionView removeFromSuperview];
-         [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
-         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-         
-         self.view.frame = CGRectMake(0, 20, 320, App_Height);
+         [self guideFinished];
      }];
-    
-    
-    
-    
 }
+
+- (void) guideFinished{
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault setBool:true forKey:@"JDO_Guide"];
+    [userDefault synchronize];
+    
+    [_introductionView removeFromSuperview];
+    [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
+    self.view.frame = CGRectMake(0, 20, 320, App_Height);
+    
+    // 指南页显示完毕后自动打开左菜单并添加指南界面
+    [self openLeftViewAnimated:false];
+    
+    UIImageView *introduceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Introduce_Left"]];
+    introduceView.userInteractionEnabled = true;
+    introduceView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7f];
+    [introduceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(introduceViewClicked:)]];
+    introduceView.alpha = 0;
+    [self.view addSubview:introduceView];
+    [UIView animateWithDuration:0.4 animations:^{
+        introduceView.alpha = 1;
+    }];
+}
+
+- (void) introduceViewClicked:(UITapGestureRecognizer *)gesture{
+    [UIView animateWithDuration:0.4 animations:^{
+        gesture.view.alpha = 0;
+    } completion:^(BOOL finished) {
+        [gesture.view removeFromSuperview];
+        [gesture.view removeGestureRecognizer:gesture];
+    }];
+    [self closeLeftViewAnimated:true];
+}
+
 
 @end

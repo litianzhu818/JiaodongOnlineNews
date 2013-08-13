@@ -171,7 +171,7 @@
 }
 
 -(void)buildUIWithFrame:(CGRect)frame headerViewVisible:(BOOL)headerViewVisible{
-    self.backgroundColor = [UIColor colorWithHex:@"f0f0f0"];
+    self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     [self buildContentScrollViewWithFrame:frame];
     [self buildFooterView];

@@ -251,7 +251,7 @@ BOOL downloadItemClickable = TRUE;
             [JDOCommonUtil deleteJDOCacheDirectory];    // 文件缓存
             [JDOCommonUtil createJDOCacheDirectory];
             [JDOCommonUtil deleteURLCacheDirectory];    // URL在sqlite的缓存(cache.db)
-            HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+            HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_success"]];
             HUD.mode = MBProgressHUDModeCustomView;
             HUD.labelText = @"清除缓存完成";
             [HUD hide:true afterDelay:1.0];

@@ -27,16 +27,16 @@
 #import "iVersion.h"
 #import "SDImageCache.h"
 #import "iRate.h"
-#import "JDOGuideViewController.h"
 #import "BPush.h"
 #import "JDONewsDetailController.h"
 #import "JDONewsModel.h"
 #import "UIDevice+Hardware.h"
 #import "JDOMainViewController.h"
 
-#define splash_stay_time 0.5 //1.0
-#define advertise_stay_time 0.5 //2.0
+#define splash_stay_time 1.0 //1.0
+#define advertise_stay_time 1.0 //2.0
 #define splash_adv_fadetime 0.5
+#define adv_main_fadetime 0.5
 #define max_memory_cache 10
 #define max_disk_cache 50
 #define advertise_file_name @"advertise"
@@ -44,6 +44,11 @@
 #define advertise_img_height App_Height
 
 #define MAX_BIND_ERROR_TIMES 10
+
+#define UMeng_Key @"51de0ed156240bd3fb01d54c"
+#define ShareSDK_Key @"4991b66e0ae"
+
+// 百度的key定义在自己的plist中
 
 @implementation JDOAppDelegate{
     Reachability  *hostReach;
@@ -146,14 +151,14 @@
 
 - (void)navigateToMainView:(NSDictionary *)launchOptions{
     self.deckController = [self generateControllerStack];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Guide"] == nil){
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce){
         self.deckController.view.frame = CGRectMake(0, 0, 320, App_Height);
     }else{
         self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
     }
     [self.window insertSubview:self.deckController.view belowSubview:advView];
     
-    [UIView animateWithDuration:splash_adv_fadetime animations:^{
+    [UIView animateWithDuration:adv_main_fadetime animations:^{
         advView.alpha = 0;
     }
     completion:^(BOOL finished){
@@ -200,7 +205,7 @@
     manualCheckUpdate = false;
     
     // 注册ShareSDK相关服务
-    [ShareSDK registerApp:@"4991b66e0ae"];
+    [ShareSDK registerApp:ShareSDK_Key];
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
     // 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
@@ -212,7 +217,7 @@
     
 #warning 正式发布的时候，需要改友盟统计appkey
     //友盟统计
-    [MobClick startWithAppkey:@"51de0ed156240bd3fb01d54c"];
+    [MobClick startWithAppkey:UMeng_Key];
     
     // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
@@ -242,11 +247,7 @@
     [UIResponder cacheKeyboard:true];
     
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
-    if([[UIScreen mainScreen] bounds].size.height == 480.f){
-        splashView.image = [UIImage imageNamed:@"Default"];
-    }else{
-        splashView.image = [UIImage imageNamed:@"Default-568h"];
-    }
+    splashView.image = [UIImage imageNamed:@"Default"];
     [self.window addSubview:splashView];
     
     [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];
@@ -341,8 +342,7 @@
 }
 
 - (void)iRateCouldNotConnectToAppStore:(NSError *)error{
-#warning error图片
-    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_error"]];
     HUD.mode = MBProgressHUDModeCustomView;
     HUD.labelText = @"无法连接";
     [HUD hide:true afterDelay:1.0];
@@ -350,7 +350,7 @@
 }
 
 - (BOOL)iRateShouldPromptForRating{
-    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_success"]];
     HUD.mode = MBProgressHUDModeCustomView;
     HUD.labelText = @"连接成功";
     [HUD hide:true afterDelay:1.0];
@@ -391,8 +391,7 @@
 
 - (void)iVersionVersionCheckDidFailWithError:(NSError *)error{
     if(manualCheckUpdate){
-#warning error图片
-        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_error"]];
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.labelText = @"检查更新错误";
         [HUD hide:true afterDelay:1.0];
@@ -404,7 +403,7 @@
 
 - (void)iVersionDidNotDetectNewVersion{
     if(manualCheckUpdate){
-        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_success"]];
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.labelText = @"已是最新版本";
         [HUD hide:true afterDelay:1.0];
@@ -434,7 +433,7 @@
 
 // 延时执行防止在Splash和广告页时弹出版本提醒
 - (float) iVersionCheckUpdateDelayWhenLaunch{
-    return splash_stay_time+advertise_stay_time+splash_adv_fadetime;
+    return splash_stay_time+advertise_stay_time+splash_adv_fadetime+adv_main_fadetime;
 }
 
 #pragma mark - 分享相关
