@@ -106,6 +106,7 @@
         [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
             [self setCurrentState:ViewStatusNormal];
             if(dataList == nil || dataList.count == 0){
+                [self.tableView setHidden:YES];
                 [_noDataView setHidden:NO];
             }else{
                 [self.listArray removeAllObjects];
@@ -119,6 +120,7 @@
         }];
     } else {
         [_noDataView setHidden:NO];
+        [self.tableView setHidden:YES];
         [self setCurrentState:ViewStatusNormal];
     }
 }
