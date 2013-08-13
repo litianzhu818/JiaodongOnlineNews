@@ -19,9 +19,12 @@
 #import "DCKeyValueObjectMapping.h"
 #import "JDOQuestionDetailModel.h"
 #import "JDORightViewController.h"
+#import "JDOSecondaryAskViewController.h"
+#import "InsetsTextField.h"
 #define Dept_Label_Tag 101
 #define Title_Label_Tag 102
 #define Subtitle_Label_Tag 103
+#define Secret_Field_Tag 104
 
 #define Content_Font_Size 14.0f
 
@@ -214,7 +217,16 @@
 }
 
 - (void) continueAsk {
-//    self.questionModel.id
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"请输入查询密码" message:@"\n\n" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认",nil];
+    InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(12.0f, 51.0f, 260.0f, 35.0f)];
+    secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+    secretTextField.secureTextEntry = YES;
+    secretTextField.placeholder = @"6位数字";
+    secretTextField.keyboardType = UIKeyboardTypeNumberPad;
+    secretTextField.tag = Secret_Field_Tag;
+    [alertView addSubview:secretTextField];
+    [alertView show];
 }
 
 - (CGFloat) buildContent:(NSArray *)content startY:(CGFloat)startY {
@@ -291,5 +303,44 @@
     
     return CGRectGetMaxY(replyLabel.frame);
 }
+
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == [alertView cancelButtonIndex]){
+        
+    }else{
+        NSString *secret = [(UITextField *)[alertView viewWithTag:Secret_Field_Tag] text];
+        if(JDOIsEmptyString(secret)){
+            return;
+        }
+        if ( [secret isEqualToString:self.questionModel.pwd] ) {   // 密码正确
+            JDOSecondaryAskViewController *controller = [[JDOSecondaryAskViewController alloc] initWithNibName:nil bundle:nil quesid:self.questionModel.id];
+            [self.navigationController pushViewController:controller animated:YES];
+        }else{
+            [JDOCommonUtil showHintHUD:@"密码错误,请重新输入" inView:self.view];
+            [(UITextField *)[alertView viewWithTag:Secret_Field_Tag] setText:nil];
+        }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    [(UITextField *)[alertView viewWithTag:Secret_Field_Tag] setText:nil];
+}
+
+- (void)willPresentAlertView:(UIAlertView *)alertView{
+    [[alertView viewWithTag:Secret_Field_Tag] becomeFirstResponder];
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex{
+    
+}
+
+- (void)alertViewCancel:(UIAlertView *)alertView{
+    
+}
+
+
+
 
 @end
