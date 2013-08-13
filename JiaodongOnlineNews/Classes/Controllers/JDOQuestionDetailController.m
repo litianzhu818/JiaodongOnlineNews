@@ -19,6 +19,7 @@
 #import "DCKeyValueObjectMapping.h"
 #import "JDOQuestionDetailModel.h"
 #import "JDORightViewController.h"
+#import "JDOSecondaryAskViewController.h"
 #import "InsetsTextField.h"
 #define Dept_Label_Tag 101
 #define Title_Label_Tag 102
@@ -313,7 +314,8 @@
             return;
         }
         if ( [secret isEqualToString:self.questionModel.pwd] ) {   // 密码正确
-            
+            JDOSecondaryAskViewController *controller = [[JDOSecondaryAskViewController alloc] initWithNibName:nil bundle:nil quesid:self.questionModel.id];
+            [self.navigationController pushViewController:controller animated:YES];
         }else{
             [JDOCommonUtil showHintHUD:@"密码错误,请重新输入" inView:self.view];
             [(UITextField *)[alertView viewWithTag:Secret_Field_Tag] setText:nil];

@@ -96,6 +96,7 @@
 #define QUESTION_ADD_COMMENT_SERVICE @"Jdms/addComment"
 #define QUESTION_COMMENT_LIST_SERVICE @"Jdms/getComment"
 #define REPORT_QUESTION_SERVICE @"Jdms/doQuestion"
+#define REPORT_QUESTION_SECONDARY_SERVICE @"Jdms/doSecondQuestion"
 #define BRANCHS_LIST_SERVICE @"Jdms/getDepts"
 #define BRANCHS_UPDATE_SERVICE @"Jdms/checkDeptUpdate"
 #define CONVENIENCE_SERVICE @"Data/convenience"
