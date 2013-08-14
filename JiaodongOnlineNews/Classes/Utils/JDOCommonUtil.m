@@ -279,17 +279,28 @@ static NSDateFormatter *dateFormatter;
     NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
     NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
     
-    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:JDOCachePath];
-    for (NSString *fileName in fileEnumerator){
-        NSString *filePath = [JDOCachePath stringByAppendingPathComponent:fileName];
-        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
-        size += [attrs fileSize];
-    }
-    fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
+    size += [self recursiveDirectory:JDOCachePath];
+    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
     for (NSString *fileName in fileEnumerator){
         NSString *filePath = [URLCachePath stringByAppendingPathComponent:fileName];
         NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
         size += [attrs fileSize];
+    }
+    return size;
+}
+
++ (int) recursiveDirectory:(NSString *) path{
+    int size = 0;
+    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:path];
+    for (NSString *fileName in fileEnumerator){
+        NSString *filePath = [path stringByAppendingPathComponent:fileName];
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        if ([[attrs fileType] isEqualToString:NSFileTypeDirectory]) {
+            size += [self recursiveDirectory:filePath];
+        }else{
+            size += [attrs fileSize];
+        }
+        
     }
     return size;
 }

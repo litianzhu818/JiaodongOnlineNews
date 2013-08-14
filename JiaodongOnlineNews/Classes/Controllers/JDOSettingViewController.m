@@ -38,7 +38,7 @@ BOOL downloadItemClickable = TRUE;
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) style:UITableViewStylePlain];
-    self.tableView.rowHeight = (App_Height-44.0f)/JDOSettingItemCount;
+    self.tableView.rowHeight = MIN( (App_Height-44.0f)/JDOSettingItemCount, 72.0f);
     self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
