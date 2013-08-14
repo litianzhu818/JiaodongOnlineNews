@@ -21,6 +21,7 @@
 @property (nonatomic,strong) UILabel *codeLabel;
 @property (nonatomic,strong) UILabel *replyLabel;
 @property (nonatomic,strong) UIImageView *separatorLine;
+@property (nonatomic,strong) UIImageView *lockIcon;
 
 @end
 
@@ -33,13 +34,11 @@
         self.isMine = NO;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.textLabel.font = [UIFont systemFontOfSize:Dept_Font_Size];
-        self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.backgroundColor = [UIColor clearColor];
         
         self.detailTextLabel.font = [UIFont systemFontOfSize:Title_Font_Size];
         self.detailTextLabel.numberOfLines = 0;
         self.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
-        self.detailTextLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         
         self.codeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -59,6 +58,9 @@
         self.separatorLine.image = [UIImage imageNamed:@"full_separator_line"];
         [self.contentView addSubview:self.separatorLine];
         
+        self.lockIcon = [[UIImageView alloc] initWithFrame:CGRectZero];
+        self.lockIcon.image = [UIImage imageNamed:@"livehood_lock"];
+        [self.contentView addSubview:self.lockIcon];
     }
     return self;
 }
@@ -74,6 +76,7 @@
     self.replyLabel.frame = CGRectMake(320-10-Reply_Label_Width, CGRectGetMaxY(self.detailTextLabel.frame)+Cell_Padding, Reply_Label_Width, Code_Label_Height);
     
     self.separatorLine.frame = CGRectMake(10, CGRectGetMaxY(self.codeLabel.frame)+Cell_Padding, 320-20, 1);
+    self.lockIcon.frame = CGRectMake(290, 10, 14, 16.5f);
 }
 
 - (void)setModel:(JDOQuestionModel *)questionModel{
@@ -83,14 +86,21 @@
         self.codeLabel.text = nil;
         self.replyLabel.text = nil;
         self.separatorLine.hidden = true;
+        self.lockIcon.hidden = true;
     }else{
-        self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.text = [NSString stringWithFormat:@"处理部门：%@", questionModel.department];
-        if ((!self.isMine)&&([questionModel.secret intValue] == 1)) {
-#warning 保密的行样式应该调整一下
+
+        if ((!self.isMine)&&([questionModel.secret intValue] == 1)){  // 保密
+            self.textLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
+            self.detailTextLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
             self.detailTextLabel.text = @"请通过密码查看处理情况";
-        } else {
+            self.lockIcon.hidden = false;
+        }else{
+            self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
+            self.detailTextLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
+
             self.detailTextLabel.text = questionModel.title;
+            self.lockIcon.hidden = true;
         }
         self.codeLabel.text = [NSString stringWithFormat:@"编号：[%@]",questionModel.id];
         if([(NSNumber *)questionModel.reply boolValue]){

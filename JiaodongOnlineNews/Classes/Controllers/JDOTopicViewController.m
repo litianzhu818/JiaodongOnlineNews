@@ -89,9 +89,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     _horizontalScrollView = [[[NSBundle mainBundle] loadNibNamed:@"HGPageScrollView" owner:self options:nil] objectAtIndex:0];
+    _horizontalScrollView.frame = CGRectMake(0, 0, 320, App_Height);// 修改frame使xib的视图自动适配iPhone5
     _horizontalScrollView.tag = ScrollView_Tag;
 	[self.view insertSubview:_horizontalScrollView belowSubview:self.navigationView];
     BOOL hasCache = [self readListFromLocalCache];
@@ -202,7 +203,7 @@
     static NSString *pageId = @"pageId";
     JDOTopicCell *topicCell = (JDOTopicCell *)[scrollView dequeueReusablePageWithIdentifier:pageId];
     if(!topicCell) {
-        topicCell = [[JDOTopicCell alloc] initWithFrame:CGRectMake(0, 0, 320, 420)]; // 290*384
+        topicCell = [[JDOTopicCell alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height-44)]; // 290*384
         topicCell.reuseIdentifier = pageId;
     }
     

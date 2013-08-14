@@ -22,7 +22,6 @@
 @property (strong, nonatomic) NSString *convenienceCachePath;
 
 - (IIViewDeckController *)generateControllerStack;
-- (void)enterMainView;
 - (void)checkForNewVersion;
 - (void)promptForRating;
 

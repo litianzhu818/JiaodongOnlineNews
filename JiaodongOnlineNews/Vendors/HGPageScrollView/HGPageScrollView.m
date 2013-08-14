@@ -116,7 +116,7 @@ typedef enum{
 #pragma mark -
 #pragma mark - HGPageScrollView implementation 
 
-#define Scale 0.85f
+#define Scale 0.83f
 
 @implementation HGPageScrollView
 
@@ -166,11 +166,12 @@ typedef enum{
 	_scrollViewTouch.receiver = _scrollView;
 	
 	// setup pageSelector
-    _pageSelector = [[StyledPageControl alloc] initWithFrame:CGRectMake(0, 425, 320, 36)];
+    _pageSelector = [[StyledPageControl alloc] initWithFrame:CGRectMake(0, App_Height-45, 320, 45)];
+//    _pageSelector.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight; 
     [_pageSelector setPageControlStyle:PageControlStyleWithPageNumber];
     _pageSelector.strokeWidth = 0;
     _pageSelector.diameter = 8;
-    _pageSelector.gapWidth = 12;
+    _pageSelector.gapWidth = 15;
     _pageSelector.pageNumberStyleFontSize  = 10;
     _pageSelector.pageNumberStyleRectSize  = CGSizeMake(22, 13);
     _pageSelector.coreSelectedColor = [UIColor colorWithHex:@"3ca0e6"];
@@ -867,7 +868,7 @@ typedef enum{
         // in order to shift pages backwards and trim the content size, the WIDTH of each deleted page needs to be known. 
         // We don't have an instance of the deleted pages and we cannot ask the data source to provide them because they've already been deleted. As a temp solution we take the default page width of 320. 
         // This assumption may be wrong if the data source uses anotehr page width or alternatively varying page widths.   
-        UIView *pseudoPage = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 460)] autorelease];
+        UIView *pseudoPage = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)] autorelease];
         [self setFrameForPage:pseudoPage atIndex:idx];
         [_deletedPages addObject:pseudoPage];
         _visibleIndexes.location--;

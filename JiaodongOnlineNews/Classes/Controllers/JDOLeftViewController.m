@@ -57,8 +57,10 @@
 
 - (void)loadView{
     [super loadView];
+    // 先将height固定设置为iPhone4的高度480，在viewDidLoad时候再重新设置回App_Height，目的是为了通过autoresizingMask自动布局天气中的控件，因为只有bounds变化才能引起autoresize起作用
+    self.view.bounds =CGRectMake(0, 0, 320, 460);
     
-    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:self.view.bounds ];
+    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height) ];
     backgroundView.image = [UIImage imageNamed:@"menu_background.png"];
     [self.view addSubview:backgroundView];
     
@@ -72,6 +74,7 @@
     [self.view addSubview:_tableView];
     
     UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Separator_Y, 320, 1)];
+    separateView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     separateView.image = [UIImage imageNamed:@"menu_separator.png"];
     [self.view addSubview:separateView];
     
@@ -91,20 +94,24 @@
     cityLabel.backgroundColor = [UIColor clearColor];
     [cityLabel sizeToFit];
     cityLabel.userInteractionEnabled = YES;
+    cityLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [cityLabel addGestureRecognizer:weatherSingleTap];
     [self.view addSubview:cityLabel];
     
     UIView *underline = [[UIView alloc]initWithFrame:CGRectMake(Left_Margin,topMargin+20,cityLabel.width,1)];
+    underline.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     underline.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:underline];
     
     weatherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+cityLabel.bounds.size.width+Padding, topMargin, Weather_Icon_Width, Weather_Icon_Height)];
+    weatherIcon.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     weatherIcon.image = [UIImage imageNamed:@"默认.png"];
     weatherIcon.userInteractionEnabled = YES;
     [weatherIcon addGestureRecognizer:citySingleTap];
     [self.view addSubview:weatherIcon];
     
     temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height, 0, 0)];
+    temperatureLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     temperatureLabel.text = @" ";
     temperatureLabel.font = [UIFont boldSystemFontOfSize:14];
     temperatureLabel.textColor = [UIColor whiteColor];
@@ -113,6 +120,7 @@
     [self.view addSubview:temperatureLabel];
     
     weatherLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height+temperatureLabel.height + Padding, 0, 0)];
+    weatherLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     weatherLabel.text = @" ";
     weatherLabel.font = [UIFont systemFontOfSize:12];
     weatherLabel.textColor = [UIColor whiteColor];
@@ -121,6 +129,7 @@
     [self.view addSubview:weatherLabel];
     
     dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin,  topMargin+Weather_Icon_Height+temperatureLabel.height +weatherLabel.height+ 2*Padding, 0, 0)];
+    dateLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     dateLabel.text = @" ";
     dateLabel.font = [UIFont systemFontOfSize:12];
     dateLabel.textColor = [UIColor whiteColor];
@@ -141,6 +150,8 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    self.view.bounds = CGRectMake(0, 0, 320, App_Height);
 #warning 天气增加"更新时间"字段,提供两个按钮分别显示预报和详情,预报可以用Flip+Scrollview
 #warning 若客户端直接访问天气webservice有问题，可以切换成在服务器端实现
     [self updateWeather];

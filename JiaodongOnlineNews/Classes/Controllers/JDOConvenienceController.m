@@ -112,7 +112,7 @@
 //    id<NILauncherViewObject> object = [self.model objectAtIndex:index pageIndex:page];
     
     if (index == 4){
-        JDOViolationViewController *violation = [[JDOViolationViewController alloc] initwithStatus:NO];
+        JDOViolationViewController *violation = [[JDOViolationViewController alloc] init];
         [self.navigationController pushViewController:violation animated:YES];
     } else if (index == 0){
         JDOBusLIstViewController *buslist = [[JDOBusLIstViewController alloc] init];

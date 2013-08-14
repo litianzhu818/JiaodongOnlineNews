@@ -9,7 +9,6 @@
 #import "JDOTopicCell.h"
 #import "JDOTopicModel.h"
 
-#define Image_Height 260.0f
 #define Padding 7.5f
 #define Default_Image @"news_head_placeholder.png"
 
@@ -43,12 +42,18 @@
         self.layer.borderWidth = 1.0f;
         self.backgroundColor = [UIColor whiteColor];
         
+        float imageHeight;
+        if  (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height > 480.0f){
+            imageHeight = 327.0f*305.0f/277.0f;
+        }else{
+            imageHeight = 239.0f*305.0f/277.0f;
+        }
         // 宽度和高度都-1,否则有可能露出来边缘
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+1, Padding, self.bounds.size.width-Padding*2-2, Image_Height-1)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+1, Padding, self.bounds.size.width-Padding*2-2, imageHeight-1)];
 //        _imageView.image = [UIImage imageNamed:Default_Image]; 
         [self addSubview:_imageView];
         
-        _imageMask = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, Padding, self.bounds.size.width-Padding*2, Image_Height)];
+        _imageMask = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, Padding, self.bounds.size.width-Padding*2, imageHeight)];
         _imageMask.image = [UIImage imageNamed:@"topic_image_mask"];
         [self addSubview:_imageMask];
         

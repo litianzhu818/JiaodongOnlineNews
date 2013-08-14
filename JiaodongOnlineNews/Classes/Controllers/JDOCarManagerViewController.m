@@ -62,30 +62,17 @@
 - (void)viewDidLoad
 {
     [self.view setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
-    self.listview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height - 44 - 64)];
-    add = [[UIButton alloc] initWithFrame:CGRectMake(10, self.listview.bottom + 10, 300, 44)];
-    [add setBackgroundImage:[UIImage imageNamed:@"vio_search"] forState:UIControlStateNormal];
-    [add setTitle:@"添  加" forState:UIControlStateNormal];
-    [add setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [[add titleLabel] setFont:[UIFont systemFontOfSize:20.0]];
-    [add addTarget:self action:@selector(onAddButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.listview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height - 44)];
     nodate = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height - 44)];
     nodate.image = [UIImage imageNamed:@"status_no_data"];
     [self.view addSubview:nodate];
     [self.view addSubview:self.listview];
-    [self.view addSubview:add];
     [super viewDidLoad];
     [self.listview setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.listview setDelegate:self];
     [self.listview setDataSource:self];
     [self.listview reloadData];
     
-}
-
-- (void)onAddButtonClick:(id)sender
-{
-    JDOViolationViewController *controller = [[JDOViolationViewController alloc] initwithStatus:YES];
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -172,11 +159,5 @@
     [self.listview reloadData];
 }
 
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end
