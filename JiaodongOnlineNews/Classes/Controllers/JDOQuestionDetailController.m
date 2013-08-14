@@ -42,6 +42,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.questionModel = questionModel;
+        self.isMine = NO;
     }
     return self;
 }

@@ -30,6 +30,7 @@
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.isMine = NO;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.textLabel.font = [UIFont systemFontOfSize:Dept_Font_Size];
         self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
@@ -85,10 +86,10 @@
     }else{
         self.textLabel.textColor = [UIColor colorWithHex:Light_Blue_Color];
         self.textLabel.text = [NSString stringWithFormat:@"处理部门：%@", questionModel.department];
-        if ([questionModel.secret intValue] == 1){  // 保密
+        if ((!self.isMine)&&([questionModel.secret intValue] == 1)) {
 #warning 保密的行样式应该调整一下
             self.detailTextLabel.text = @"请通过密码查看处理情况";
-        }else{
+        } else {
             self.detailTextLabel.text = questionModel.title;
         }
         self.codeLabel.text = [NSString stringWithFormat:@"编号：[%@]",questionModel.id];

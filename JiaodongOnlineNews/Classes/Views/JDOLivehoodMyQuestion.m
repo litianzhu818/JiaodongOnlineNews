@@ -172,6 +172,7 @@
     }else{
         [cell setModel:[self.listArray objectAtIndex:indexPath.row]];
     }
+    cell.isMine = YES;
     return cell;
 }
 
