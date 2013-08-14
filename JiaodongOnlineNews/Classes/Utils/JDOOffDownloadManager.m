@@ -27,6 +27,7 @@ NSArray *channelReuseIdArray;
 id target;
 SEL action;
 int downloadCount;
+SDWebImageManager *manager;
 
 - (NSDictionary *) newsListParamWithChannelIndex:(int)index{
     return @{@"channelid":[channelArray objectAtIndex:index],@"pageSize":@Default_News_Size,@"natype":@"a"};
@@ -56,6 +57,7 @@ int downloadCount;
     if (self = [super init]) {
         target = target1;
         action = action1;
+        manager = [[SDWebImageManager alloc] init];
     }
     return self;
 }
@@ -70,6 +72,11 @@ int downloadCount;
     [self downloadTopicList];
 }
 
+-(void)cancelAll {
+    [self cancel];
+    [manager cancelAll];
+}
+
 -(void) findImageWithHtml:(NSString *) html {
     if (![self isCancelled]) {
         NSArray *imageUrls = [JDORegxpUtil getXmlTagAttrib: html andTag:@"img" andAttr:@"src"];
@@ -77,7 +84,6 @@ int downloadCount;
             NSString *realUrl = [imageUrls objectAtIndex:i];
             UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromKey:realUrl fromDisk:YES];
             if (!cachedImage) {
-                SDWebImageManager *manager = [SDWebImageManager sharedManager];
                 [manager downloadWithURL:[NSURL URLWithString:realUrl] delegate:self];
             }
         }
@@ -88,7 +94,6 @@ int downloadCount;
     if (![self isCancelled]) {
         UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromKey:realUrl fromDisk:YES];
         if (!cachedImage) {
-            SDWebImageManager *manager = [SDWebImageManager sharedManager];
             [manager downloadWithURL:[NSURL URLWithString:realUrl] delegate:self];
         }
     }

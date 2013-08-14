@@ -15,9 +15,7 @@
 #define Right_Margin 7.5f
 #define PageControl_Width 40.0f
 
-@implementation JDONewsHeadCell{
-    int _currentPage;
-}
+@implementation JDONewsHeadCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -64,7 +62,7 @@
         _pageControl.numberOfPages = 0;
         [self.contentView addSubview:_pageControl];
         
-        _currentPage = 0;
+        self._currentPage = 0;
     }
     return self;
 }
@@ -96,7 +94,7 @@
         [_scrollView addSubview:imageView];
         
         JDONewsModel *newsModel = (JDONewsModel *)[models objectAtIndex:i];
-        if( i==_currentPage ){
+        if( i==self._currentPage ){
             _titleLabel.text = newsModel.title;
         }
             
@@ -114,7 +112,7 @@
         }];
     }
     _pageControl.numberOfPages = models.count;
-    _pageControl.currentPage = _currentPage;
+    _pageControl.currentPage = self._currentPage;
 }
 
 - (void)dealloc{
@@ -127,9 +125,9 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // 修改pageControl的位置和titleLabel的内容
     float width = CGRectGetWidth(self.bounds);
-    _currentPage = _scrollView.contentOffset.x / width;
-    _pageControl.currentPage = _currentPage;
-    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:_currentPage];
+    self._currentPage = _scrollView.contentOffset.x / width;
+    _pageControl.currentPage = self._currentPage;
+    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self._currentPage];
     _titleLabel.text = newsModel.title;
 }
 

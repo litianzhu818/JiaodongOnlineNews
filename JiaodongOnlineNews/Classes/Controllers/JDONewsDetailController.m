@@ -264,7 +264,6 @@ NSArray *imageUrls;
     }
 }
 
-# warning 需测试异步加载
 - (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary{
     NSString *html = [dictionary objectForKey:@"content"];
     

@@ -10,4 +10,5 @@
 
 @interface JDOOffDownloadManager : NSOperation <SDWebImageManagerDelegate>
 -(id) initWithTarget:(id)target action:(SEL)action;
+-(void)cancelAll;
 @end

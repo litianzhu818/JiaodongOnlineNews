@@ -253,7 +253,7 @@ BOOL downloadItemClickable = TRUE;
                 [queue addOperation:downloadOperation];
                 [ITWLoadingPanel showPanelInView:cell title:@"开始下载" cancelTitle:@"" cancel:^{
                     downloadItemClickable = TRUE;
-                    [downloadOperation cancel];
+                    [downloadOperation cancelAll];
                 } disappear:^{
                     downloadItemClickable = TRUE;
                     [NSTimer scheduledTimerWithTimeInterval:3 target:self

@@ -441,7 +441,6 @@
     [centerController pushViewController:detailController animated:true];
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0)  return Headline_Height;
     return News_Cell_Height;
