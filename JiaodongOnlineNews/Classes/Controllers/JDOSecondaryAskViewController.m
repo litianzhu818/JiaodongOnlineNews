@@ -32,18 +32,18 @@
         [self.tpView setScrollEnabled:NO];
         [self.tpView setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
         [self.view addSubview:self.tpView];
-        self.content = [[UITextView alloc] initWithFrame:CGRectMake(15, 15, 290, 135)];
+        self.content = [[UITextView alloc] initWithFrame:CGRectMake(10, 15, 300, 135)];
         self.content.backgroundColor = [UIColor clearColor];
         self.content.font = [UIFont systemFontOfSize:16];
         UIImageView *contentInputMask = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3]];
         contentInputMask.frame = self.content.frame;
         [self.tpView addSubview:contentInputMask];
         [self.tpView addSubview:self.content];
-        UIButton *commit = [[UIButton alloc] initWithFrame:CGRectMake(235, self.content.bottom + 20, 70, 35)];
+        UIButton *commit = [[UIButton alloc] initWithFrame:CGRectMake(10, self.content.bottom + 15, 300, 43)];
         [commit setBackgroundImage:[UIImage imageNamed:@"vio_search"] forState:UIControlStateNormal];
-        [commit setTitle:@"提交" forState:UIControlStateNormal];
+        [commit setTitle:@"提 交" forState:UIControlStateNormal];
         [commit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [commit.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
+        [commit.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
         [commit addTarget:self action:@selector(onCommitClick) forControlEvents:UIControlEventTouchUpInside];
         [self.tpView addSubview:commit];
     }

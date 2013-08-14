@@ -11,6 +11,11 @@
 
 @interface JDOFeedbackViewController : JDONavigationController
 {
+    IBOutlet UILabel *namelabel;
+    IBOutlet UILabel *emaillabel;
+    IBOutlet UILabel *tellabel;
+    IBOutlet UILabel *contentlabel;
+    
     IBOutlet UITextField *name;
     IBOutlet UITextField *email;
     IBOutlet UITextField *tel;
