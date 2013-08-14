@@ -176,7 +176,6 @@ static NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat velocit
 @property (nonatomic, assign) CGSize originalShadowOffset;
 @property (nonatomic, retain) UIBezierPath* originalShadowPath;
 @property (nonatomic, retain) UIButton* centerTapper;
-@property (nonatomic, retain) UIView* centerView;
 @property (nonatomic, readonly) UIView* slidingControllerView;
 
 - (void)cleanup;

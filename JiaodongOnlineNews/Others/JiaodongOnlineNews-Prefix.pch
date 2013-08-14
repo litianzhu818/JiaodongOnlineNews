@@ -30,6 +30,7 @@
 #import "NSString+SSToolkitAdditions.h"
 #import "JDONavigationController.h"
 #import "MBProgressHUD.h"
+#import "UIImage+Retina4.h"
 
 #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #define SDWebImageOption SDWebImageRetryFailed|SDWebImageLowPriority|SDWebImageProgressiveDownload//|SDWebImageCacheMemoryOnly
@@ -81,7 +82,10 @@
 #define kDeptChangedNotification @"kDeptChangedNotification"
 #define kCollectNotification @"kCollectNotification"
 
+// 调试开关
+#define Debug_Guide_Introduce false
 
+// 服务器端接口
 #define SERVER_QUERY_URL [NSString stringWithFormat:@"http://p.jiaodong.net/mobileQuery/V%@",[[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""] substringToIndex:2]]
 #define SERVER_RESOURCE_URL @"http://p.jiaodong.net/jdmsys/"
 
@@ -96,6 +100,7 @@
 #define QUESTION_ADD_COMMENT_SERVICE @"Jdms/addComment"
 #define QUESTION_COMMENT_LIST_SERVICE @"Jdms/getComment"
 #define REPORT_QUESTION_SERVICE @"Jdms/doQuestion"
+#define REPORT_QUESTION_SECONDARY_SERVICE @"Jdms/doSecondQuestion"
 #define BRANCHS_LIST_SERVICE @"Jdms/getDepts"
 #define BRANCHS_UPDATE_SERVICE @"Jdms/checkDeptUpdate"
 #define CONVENIENCE_SERVICE @"Data/convenience"

@@ -150,7 +150,7 @@ static id _sharedObject = nil;
         panel.onDisappearBlock = disappear;
         [panel.progressView setProgress:0];
         
-        panel.frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height);
+        panel.frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height-1);
         [view addSubview:panel];
         
         [panel animateAppearing];
@@ -218,9 +218,9 @@ static id _sharedObject = nil;
 	transition.duration = [self animationDuration];
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type = kCATransitionPush;
-	transition.subtype = kCATransitionFromTop;
+	transition.subtype = kCATransitionFromLeft;
 	[self.layer addAnimation:transition forKey:nil];
-    self.frame = CGRectMake(0, -self.frame.size.height, self.frame.size.width, self.frame.size.height); 
+    self.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
     
     if (self.onDisappearBlock) {
         self.onDisappearBlock();
@@ -260,7 +260,7 @@ static id _sharedObject = nil;
 	transition.duration = [self animationDuration];
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type = kCATransitionPush;	
-	transition.subtype = kCATransitionFromBottom;
+	transition.subtype = kCATransitionFromLeft;
 	[self.layer addAnimation:transition forKey:nil];
 }
 

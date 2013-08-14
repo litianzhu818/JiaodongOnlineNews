@@ -19,6 +19,8 @@
 
 @interface JDOQuestionCell : UITableViewCell
 
+@property (nonatomic)BOOL isMine;
+
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 - (void)setModel:(JDOQuestionModel *)questionModel;
 

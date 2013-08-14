@@ -341,6 +341,28 @@ NSArray *imageUrls;
             }
         }
     }
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Introduce_NewsDetail"] || Debug_Guide_Introduce) {
+        UIImageView *introduceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Introduce_NewsDetail"]];
+        introduceView.userInteractionEnabled = true;
+        introduceView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8f];
+        [introduceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(introduceViewClicked:)]];
+        introduceView.alpha = 0;
+        [self.view addSubview:introduceView];
+        [UIView animateWithDuration:0.4 animations:^{
+            introduceView.alpha = 1;
+        }];
+    }
+}
+
+- (void) introduceViewClicked:(UITapGestureRecognizer *)gesture{
+    [UIView animateWithDuration:0.4 animations:^{
+        gesture.view.alpha = 0;
+    } completion:^(BOOL finished) {
+        [gesture.view removeFromSuperview];
+        [gesture.view removeGestureRecognizer:gesture];
+        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"JDO_Introduce_NewsDetail"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{

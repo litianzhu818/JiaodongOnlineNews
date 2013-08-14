@@ -39,7 +39,7 @@
     self = [super initWithFrame: [self initialFrame]];
     if (self) {
         self.target = target;
-        self.backgroundColor = [UIColor colorWithHex:@"f0f0f0"];
+        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
         // HPGrowingTextView根据字体的大小有最小高度限制,15号字最少需要35的高度

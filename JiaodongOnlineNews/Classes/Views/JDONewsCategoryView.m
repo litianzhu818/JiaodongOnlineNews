@@ -132,8 +132,8 @@
     __block bool newslistFinished = false;
     
     if(self.status != ViewStatusLoading){   // 已经是loading状态就不需要HUD了，在没有缓存数据的时候发生
-        HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
-        [SharedAppDelegate.window addSubview:HUD];
+        HUD = [[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:HUD];
 //        HUD.color = [UIColor colorWithRed:0.23 green:0.50 blue:0.82 alpha:0.90];
 //        HUD.minShowTime = Hint_Min_Show_Time;
 //        HUD.dimBackground = true;
@@ -216,8 +216,7 @@
         if(delay < Hint_Min_Show_Time){
             usleep(Hint_Min_Show_Time-delay*1000*1000);
         }
-#warning 替换服务器错误的提示内容和图片
-        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+        HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_error"]];
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.labelText = errorStr;
         [HUD hide:true afterDelay:1.0];

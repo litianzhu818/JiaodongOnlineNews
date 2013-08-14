@@ -18,17 +18,10 @@
 
 @implementation JDOViolationViewController
 
-- (id)initwithStatus:(BOOL)isaddcar
-{
-    addCarStatus = isaddcar;
-    return [self initWithNibName:nil bundle:nil];
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        types = [[NSArray alloc] init];
         types = @[@"大型汽车",@"小型汽车",@"使馆汽车",@"领馆汽车",@"境外汽车",@"外籍汽车",@"两、三轮摩托车",@"轻便摩托车",@"使馆摩托车",@"领馆摩托车",@"境外摩托车",@"外籍摩托车",@"农用运输车",@"拖拉机",@"挂车",@"教练汽车",@"教练摩托车",@"实验汽车",@"实验摩托车",@"临时入境汽车",@"临时入境摩托车",@"临时行驶车",@"公安警车",@"公安警车",@"其他"];
     }
     return self;
@@ -37,7 +30,6 @@
 - (void)setCartype:(NSString *)type index:(int)index
 {
     [CarType setTitle:type forState:UIControlStateNormal];
-    [CarType setTitle:type forState:UIControlStateSelected];
     NSMutableString *tmp = [[NSMutableString alloc] initWithString:@"0"];
     if (index < 10) {
         [tmp appendString:[NSString stringWithFormat:@"%d", index]];
@@ -45,7 +37,7 @@
     } else {
         CarTypeString = [NSString stringWithFormat:@"%d", index];
     }
-        
+    
 }
 
 - (void)viewDidLoad
@@ -57,7 +49,6 @@
     [cartypelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [chassisnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateNormal];
-    [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateSelected];
     CarType.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 26);
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
@@ -96,35 +87,19 @@
     [resultlabel setBackgroundColor:[UIColor clearColor]];
     [header addSubview:resultlabel];
     [result setTableHeaderView:header];
-    
-    
-    if (addCarStatus) {
-        [checkBox1 setHidden:YES];
-        [checkBox2 setHidden:YES];
-        [searchbutton setTitle:@"添  加" forState:UIControlStateNormal];
-        [searchbutton setTitle:@"添  加" forState:UIControlStateSelected];
-    }
 }
 
 - (void)setupNavigationView
 {
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    if (!addCarStatus) {
-        [self.navigationView addRightButtonImage:@"vio_head_btn" highlightImage:@"vio_head_btn" target:self action:@selector(onRightBtnClick)];
-    }
+    [self.navigationView addRightButtonImage:@"vio_head_btn" highlightImage:@"vio_head_btn" target:self action:@selector(onRightBtnClick)];
     [self.navigationView setTitle:@"违章查询"];
 }
 
 - (void) onBackBtnClick
 {
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    if (addCarStatus) {
-        JDOCarManagerViewController *controller = (JDOCarManagerViewController *)[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2];
-        [controller update];
-        [centerViewController popToViewController:controller animated:true];
-    } else {
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];
-    }
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];
 }
 
 - (void) onRightBtnClick
@@ -166,68 +141,94 @@
 {
     CarNumString = [[NSMutableString alloc] initWithString:CarNum.text];
     ChassisNumString = [[NSMutableString alloc] initWithString:ChassisNum.text];
-    save = checkBox1.isChecked;
-    receivepush = checkBox2.isChecked;
     
-    if (!self.checkEmpty) {
-        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-        [params setValue:CarNumString forKey:@"hphm"];
-        [params setValue:CarTypeString forKey:@"cartype"];
-        [params setValue:ChassisNumString forKey:@"vin"];
-        
-        if (addCarStatus) {
-            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
-            [self onBackBtnClick];
-            return;
-        }
-        
-        if( ![Reachability isEnableNetwork]){
-            [JDOCommonUtil showHintHUD:@"网络不可用！" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
-            return;
-        }
-        
-        [result setHidden:YES];
-        [resultline setHidden:YES];
-        [resultline_shadow setHidden:YES];
-        [no_result_image setHidden:YES];
-        
-        [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
-                NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
-                [defaultback setHidden:YES];
-                [resultline_shadow setHidden:NO];
-                [resultline setHidden:NO];
-        
-                if (datas.count > 0) {
-                    [result setHidden:NO];
-                    [resultArray removeAllObjects];
-                    [resultArray addObjectsFromArray:datas];
-                    [result reloadData];
-                    if (App_Height > 480) {
-                        [result setFrame:CGRectMake(13, 224, 294, 270)];
-                    }
-                } else if (datas.count == 0) {
-                    [no_result_image setHidden:NO];
-                    if (App_Height > 480) {
-                        [no_result_image setFrame:CGRectMake(13, 224, 294, 270)];
-                        [no_result_image setImage:[UIImage imageNamed:@"vio_noresult_iphone5"]];
-                    }
-                }
-            } else {
-                NSLog(@"wrongParams%@",params);
-            }
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
-        
-        [CarNum resignFirstResponder];
-        [ChassisNum resignFirstResponder];
-        if (checkBox1.isChecked) {
-            [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
-        }
+    if( ![Reachability isEnableNetwork]){
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+        return;
+    }
+    if ([self checkEmpty]) {
+        return;
     }
     
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:CarNumString forKey:@"hphm"];
+    [params setValue:CarTypeString forKey:@"cartype"];
+    [params setValue:ChassisNumString forKey:@"vin"];
+    
+//    if (addCarStatus) {
+//        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
+//        [self onBackBtnClick];
+//        return;
+//    }
+    
+    [result setHidden:YES];
+    [resultline setHidden:YES];
+    [resultline_shadow setHidden:YES];
+    [no_result_image setHidden:YES];
+    
+    [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
+            NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
+            [defaultback setHidden:YES];
+            [resultline_shadow setHidden:NO];
+            [resultline setHidden:NO];
+            if (datas.count > 0) {
+                [result setHidden:NO];
+                [resultArray removeAllObjects];
+                [resultArray addObjectsFromArray:datas];
+                [result reloadData];
+            } else if (datas.count == 0) {
+                [no_result_image setHidden:NO];
+            }
+        } else {
+            NSLog(@"wrongParams%@",params);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    [CarNum resignFirstResponder];
+    [ChassisNum resignFirstResponder];
+    if (checkBox1.isChecked) {
+        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
+    }
+    
+    // 设置违章推送
+    if (checkBox2.isChecked) {
+        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_UserId"];
+        if (userId == nil) {
+            [self showBindError];
+            [checkBox2 setCheckState:M13CheckboxStateUnchecked];
+        }else{
+            [params setObject:userId forKey:@"userid"];
+            [[JDOJsonClient sharedClient] getPath:BINDVIOLATIONINFO_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                id status = [(NSDictionary *)responseObject objectForKey:@"status"];
+                if ([status isKindOfClass:[NSNumber class]]) {
+                    int _status = [status intValue];
+                    if (_status == 1) { //绑定成功
+                        
+                    }else if(_status == 0){
+                        [self showBindError];
+                    }
+                } else if([status isKindOfClass:[NSString class]]){
+                    if ([status isEqualToString:@"wrongparam"]) {
+                        NSLog(@"参数错误:%@",status);
+                    }else if([status isEqualToString:@"exist"]){
+                        NSLog(@"已经存在绑定信息:%@",status);
+                    }
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self showBindError];
+            }];
+        }
+
+    }
+}
+
+- (void) showBindError{
+    [JDOCommonUtil showHintHUD:@"违章推送绑定失败，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
 }
 
 - (void)saveCarMessage:(NSDictionary *)carMessage
@@ -258,13 +259,11 @@
 - (BOOL)checkEmpty
 {
     if (CarNumString.length < 7) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车牌号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
+        [JDOCommonUtil showHintHUD:@"车牌号输入错误" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
     if (ChassisNumString.length < 4){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"车架号输入错误" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
+        [JDOCommonUtil showHintHUD:@"车架号输入错误" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
     return NO;
@@ -328,22 +327,11 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"COUNT:%d", resultArray.count);
 	return resultArray.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
-}
-
-
-
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
