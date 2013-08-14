@@ -39,11 +39,11 @@
         contentInputMask.frame = self.content.frame;
         [self.tpView addSubview:contentInputMask];
         [self.tpView addSubview:self.content];
-        UIButton *commit = [[UIButton alloc] initWithFrame:CGRectMake(10, self.content.bottom + 15, 300, 42)];
+        UIButton *commit = [[UIButton alloc] initWithFrame:CGRectMake(10, self.content.bottom + 15, 300, 43)];
         [commit setBackgroundImage:[UIImage imageNamed:@"vio_search"] forState:UIControlStateNormal];
         [commit setTitle:@"提 交" forState:UIControlStateNormal];
         [commit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [commit.titleLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+        [commit.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
         [commit addTarget:self action:@selector(onCommitClick) forControlEvents:UIControlEventTouchUpInside];
         [self.tpView addSubview:commit];
     }
