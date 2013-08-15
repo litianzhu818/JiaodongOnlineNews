@@ -43,6 +43,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [searchbutton.titleLabel setShadowColor:[UIColor blackColor]];
+    [searchbutton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    
     [CarNum addTarget:self action:@selector(changeToUpperCase:) forControlEvents:UIControlEventEditingDidEnd];
     
     [ChassisNum setKeyboardType:UIKeyboardTypeNumberPad];

@@ -22,6 +22,8 @@
     IBOutlet UITextField *content;
     IBOutlet TPKeyboardAvoidingScrollView *tpkey;
     
+    IBOutlet UIButton *commit;
+    
     NSString *nameString;
     NSString *emailString;
     NSString *telString;

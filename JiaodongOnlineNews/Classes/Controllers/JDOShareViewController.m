@@ -27,6 +27,7 @@
 @property (strong, nonatomic) IBOutlet UIView *reviewPanel;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *remainWordLabel;
+@property (strong, nonatomic) IBOutlet UIButton *ShareBtn;
 
 @end
 
@@ -48,6 +49,7 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    [self.ShareBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;
     if( [self.model isKindOfClass:NSClassFromString(@"JDOImageModel")] ){

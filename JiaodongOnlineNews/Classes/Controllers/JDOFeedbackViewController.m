@@ -86,6 +86,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [commit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     [namelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [tellabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [emaillabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
