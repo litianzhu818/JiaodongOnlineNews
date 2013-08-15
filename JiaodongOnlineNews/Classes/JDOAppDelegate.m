@@ -585,7 +585,7 @@
 {
     // {"aps":{"badge":1,"sound":"default","alert":"1111"},"newsid":"222"}
     if (application.applicationState == UIApplicationStateActive) {
-       // 运行态忽略通知
+#warning 违章推送在运行态也应该提醒,新闻推送就不必了
         return;
     }
     [self clearNotifications];

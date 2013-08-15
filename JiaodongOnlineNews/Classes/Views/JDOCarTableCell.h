@@ -15,6 +15,7 @@
     __strong NSDictionary *data;
     NSString *carNumString;
 }
+@property (nonatomic,strong) UITableView *parentTableView;
 
 - (void)setData:(NSDictionary *)data;
 - (void)enterEditingMode:(BOOL)iseditting;

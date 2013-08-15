@@ -49,6 +49,7 @@ typedef enum{
 + (int) getDiskCacheFileCount;
 + (int) getDiskCacheFileSize;
 
++ (BOOL) isShowingHint;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode;
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view originY:(CGFloat) originY;
