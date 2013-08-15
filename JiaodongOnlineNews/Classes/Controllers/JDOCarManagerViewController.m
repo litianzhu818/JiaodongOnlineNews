@@ -63,6 +63,8 @@
 {
     [self.view setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
     self.listview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height - 44)];
+    self.listview.rowHeight = 44.0f;
+    self.listview.bounces = false;
     nodate = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height - 44)];
     nodate.image = [UIImage imageNamed:@"status_no_data"];
     [self.view addSubview:nodate];
@@ -78,19 +80,11 @@
 
 #pragma mark UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 0.;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *data = [message objectAtIndex:indexPath.row];
     [self.back cleanData];
     [self.back setData:data];
+    [self.back sendToServer:nil];
     [self onBackBtnClick];
 }
 
@@ -108,7 +102,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSUInteger row = [indexPath row];
         [message removeObjectAtIndex:row];
-        [NSKeyedArchiver archiveRootObject:message toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+        [NSKeyedArchiver archiveRootObject:message toFile:JDOGetDocumentFilePath(@"CarMessage")];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
                          withRowAnimation:UITableViewRowAnimationAutomatic];
         if (message.count == 0) {
@@ -126,10 +120,8 @@
     JDOCarTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[JDOCarTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
-    cell.selectedBackgroundView = backView;
-    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
     NSDictionary *temp = [message objectAtIndex:indexPath.row];
     [cell setData:temp];
     return cell;
@@ -137,7 +129,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    message = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetDocumentFilePath(@"CarMessage")];
     if (message.count == 0) {
         [tableView setHidden:YES];
         [nodate setHidden:NO];
@@ -155,7 +147,7 @@
 
 - (void)update
 {
-    message = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    message = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetDocumentFilePath(@"CarMessage")];
     [self.listview reloadData];
 }
 

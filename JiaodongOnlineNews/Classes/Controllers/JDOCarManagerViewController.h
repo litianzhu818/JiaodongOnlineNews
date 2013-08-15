@@ -22,6 +22,5 @@
 - (void)onBackBtnClick;
 - (void)onRightBtnClick;
 - (void)update;
-- (void)onAddButtonClick:(id)sender;
 
 @end
