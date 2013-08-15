@@ -180,6 +180,8 @@
         
         nextLineY += Line_Height+Line_Padding;
         UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [submitBtn.titleLabel setShadowColor:[UIColor blackColor]];
+        [submitBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
         [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [submitBtn setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
         [submitBtn setTitle:@"提交问题" forState:UIControlStateNormal];

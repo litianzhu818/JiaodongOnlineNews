@@ -12,12 +12,11 @@
 @interface JDOCarTableCell : UITableViewCell{
     UILabel *carNum;
     M13Checkbox *checkBox;
-    
+    __strong NSDictionary *data;
     NSString *carNumString;
 }
 
 - (void)setData:(NSDictionary *)data;
-- (void)setSeparator:(UIImage *)separator;
 - (void)enterEditingMode:(BOOL)iseditting;
 
 @end

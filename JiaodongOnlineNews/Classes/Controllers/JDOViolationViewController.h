@@ -48,7 +48,7 @@
 - (IBAction)sendToServer:(id)sender;
 - (void)onBackBtnClick;
 - (void)onRightBtnClick;
-- (void)saveCarMessage:(NSDictionary *) carMessage;
+- (void)saveCarMessage:(BOOL)isPush;
 - (BOOL)readCarMessage;
 - (void)cleanData;
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TPKeyboardAvoidingScrollView.h"
+#import "UIDevice+Hardware.h"
 
 @interface JDOFeedbackViewController : JDONavigationController
 {
@@ -21,6 +22,8 @@
     IBOutlet UITextField *tel;
     IBOutlet UITextField *content;
     IBOutlet TPKeyboardAvoidingScrollView *tpkey;
+    
+    IBOutlet UIButton *commit;
     
     NSString *nameString;
     NSString *emailString;
