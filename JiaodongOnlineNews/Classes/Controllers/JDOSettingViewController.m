@@ -14,6 +14,7 @@
 #import "JDOFeedbackViewController.h"
 #import "JDOOffDownloadManager.h"
 #import "ITWLoadingPanel.h"
+#import "Reachability.h"
 #import "BPush.h"
 
 @interface JDOSettingViewController ()
@@ -112,36 +113,19 @@ BOOL downloadItemClickable = TRUE;
         }
         case JDOSettingItemClearCache:{
             cell.textLabel.text = @"清除缓存";
-            
-//            int diskFileCount = [JDOCommonUtil getDiskCacheFileCount];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"目前缓存文件占用磁盘空间%@。",[self calculateCacheSize]];
-//            UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//            clearButton.frame = CGRectMake(0, 0, 65, 27);
-//            clearButton.tag = JDOSettingItemClearCache;
-//            [clearButton setTitle:@"清除" forState:UIControlStateNormal];
-//            [clearButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             cell.accessoryView = nil;
             break;
         }
         case JDOSettingItemDownload:{
             cell.textLabel.text = @"离线下载";
             cell.detailTextLabel.text = @"下载新闻、图片、话题等内容，在无网络时可离线阅读已经下载的内容。";
-//            UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//            downloadButton.frame = CGRectMake(0, 0, 65, 27);
-//            downloadButton.tag = JDOSettingItemDownload;
-//            [downloadButton setTitle:@"下载" forState:UIControlStateNormal];
-//            [downloadButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             cell.accessoryView = nil;
             break;
         }
         case JDOSettingItemCheckVersion:{
             cell.textLabel.text = @"检查更新";
             cell.detailTextLabel.text = @"从App Store获取程序的最新版本，获得更好的使用体验。";
-//            UIButton *updateButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//            updateButton.frame = CGRectMake(0, 0, 65, 27);
-//            updateButton.tag = JDOSettingItemCheckVersion;
-//            [updateButton setTitle:@"更新" forState:UIControlStateNormal];
-//            [updateButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             cell.accessoryView = nil;
             break;
         }
@@ -193,50 +177,6 @@ BOOL downloadItemClickable = TRUE;
     }
 }
 
-//- (void)buttonClicked:(UIButton *)sender {
-//    switch (sender.tag) {
-//        case JDOSettingItemClearCache:{
-//            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:SharedAppDelegate.window];
-//            [SharedAppDelegate.window addSubview:HUD];
-//            HUD.labelText = @"正在清除缓存";
-//            HUD.margin = 15.f;
-//            HUD.removeFromSuperViewOnHide = true;
-//            [HUD show:true];
-//            [[SDImageCache sharedImageCache] clearDisk];    // 图片缓存
-//            [JDOCommonUtil deleteJDOCacheDirectory];    // 文件缓存
-//            [JDOCommonUtil createJDOCacheDirectory];
-//            [JDOCommonUtil deleteURLCacheDirectory];    // URL在sqlite的缓存(cache.db)
-//            HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
-//            HUD.mode = MBProgressHUDModeCustomView;
-//            HUD.labelText = @"清除缓存完成";
-//            [HUD hide:true afterDelay:1.0];
-//            
-//            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-//            break;
-//        }
-//        case JDOSettingItemDownload:
-//            [self offDownload];
-//            break;
-//        case JDOSettingItemCheckVersion:
-//            [SharedAppDelegate checkForNewVersion];
-//            break;
-//        default:
-//            break;
-//    }
-//}
-
-//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-//    switch (indexPath.row) {
-//        case 0:
-//            return UITableViewCellAccessoryCheckmark;
-//            break;
-//            
-//        default:
-//            break;
-//    }
-//    return UITableViewCellAccessoryNone;
-//}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     switch (indexPath.row) {
@@ -261,20 +201,16 @@ BOOL downloadItemClickable = TRUE;
         }
         case JDOSettingItemDownload:
             if (downloadItemClickable) {
-                downloadItemClickable = FALSE;
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                JDOOffDownloadManager *downloadOperation = [[JDOOffDownloadManager alloc] initWithTarget:self action:@selector(refreshProgressWithCount:)];
-                NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-                [queue addOperation:downloadOperation];
-                [ITWLoadingPanel showPanelInView:cell title:@"开始下载" cancelTitle:@"" cancel:^{
-                    downloadItemClickable = TRUE;
-                    [downloadOperation cancelAll];
-                } disappear:^{
-                    downloadItemClickable = TRUE;
-                    [NSTimer scheduledTimerWithTimeInterval:3 target:self
-                                                   selector:@selector(refreshCacheSize)
-                                                   userInfo:nil repeats:NO];
-                }];
+                if ([Reachability isEnableNetwork]) {
+                    if ([Reachability isEnableWIFI]) {
+                        [self startDownload];
+                    } else {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"离线下载流量警示" message:@"您当前处于2G/3G网络下，离线下载将消耗较多流量" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续下载", nil];
+                        [alert show]; 
+                    }
+                } else {
+                    [JDOCommonUtil showHintHUD:@"网络未连接！" inView:self.view];
+                }
             }
             break;
         case JDOSettingItemCheckVersion:
@@ -288,6 +224,25 @@ BOOL downloadItemClickable = TRUE;
         default:
             break;
     }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self startDownload];
+    }
+}
+
+-(void) startDownload {
+    downloadItemClickable = FALSE;
+    UITableViewCell *cell = [[self.tableView visibleCells] objectAtIndex:3];
+    JDOOffDownloadManager *downloadManager = [[JDOOffDownloadManager alloc] initWithTarget:self action:@selector(refreshProgressWithCount:)];
+    [ITWLoadingPanel showPanelInView:cell title:@"开始下载" cancelTitle:@"" cancel:^{
+        downloadItemClickable = TRUE;
+        [downloadManager cancelAll];
+    } disappear:^{
+        downloadItemClickable = TRUE;
+        [self refreshCacheSize];
+    }];
 }
 
 - (void) refreshCacheSize{

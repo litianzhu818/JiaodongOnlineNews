@@ -12,6 +12,7 @@
 #import "JDOWebClient.h"
 #import "JDONewsDetailModel.h"
 #import "JDOCenterViewController.h"
+#import "JDOLeftViewController.h"
 #import "UIColor+SSToolkitAdditions.h"
 
 @interface JDOConvenienceItemController ()
@@ -129,8 +130,12 @@
 
 - (void)backToParent
 {
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count -2] animated:true];
+    if ([self.navTitle isEqualToString:@"烟台天气"]) {
+        [(JDOLeftViewController *)self.stackViewController popViewController];
+    } else {
+        JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count -2] animated:true];
+    }
 }
 
 #pragma mark - Webview delegate

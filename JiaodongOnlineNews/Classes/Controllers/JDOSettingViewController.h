@@ -19,7 +19,7 @@ typedef enum {
     JDOSettingItemCount
 } JDOSettingItem;
 
-@interface JDOSettingViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource>
+@interface JDOSettingViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource,UIAlertViewDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) JDORightViewController *rightController;
