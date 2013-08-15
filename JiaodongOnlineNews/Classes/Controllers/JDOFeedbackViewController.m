@@ -86,6 +86,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UILabel *systeminfo = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    UIFont *font = [UIFont systemFontOfSize:13.0f];
+    [systeminfo setNumberOfLines:0];
+    [systeminfo setLineBreakMode:UILineBreakModeWordWrap];
+    [systeminfo setFont:font];
+    systeminfo.backgroundColor = [UIColor clearColor];
+    systeminfo.textColor = [UIColor colorWithHex:@"d73c14"];
+    
+    UIDevice *device = [[UIDevice alloc] init];
+    NSMutableString *info = [[NSMutableString alloc] init];
+    if (![device.platformString isEqualToString:@"Unknown iOS device"]) {
+        [info appendString:@"当前设备："];
+        [info appendString:device.platformString];
+        [info appendString:@",系统版本："];
+    } else {
+        [info appendString:@"系统版本："];
+    }
+    
+    [info appendString:device.systemVersion];
+    
+    CGSize labelsize = [info sizeWithFont:font constrainedToSize:CGSizeMake(294-systeminfo.width, MAXFLOAT) lineBreakMode:UILineBreakModeWordWrap];
+    [systeminfo setFrame:CGRectMake(10, 10, labelsize.width, labelsize.height)];
+    
+    [systeminfo setText:info];
+    [tpkey addSubview:systeminfo];
+    
     [commit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     [namelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [tellabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
