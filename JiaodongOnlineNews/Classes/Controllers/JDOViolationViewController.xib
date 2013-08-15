@@ -185,7 +185,7 @@
 							<object class="IBUIButton" id="471938153">
 								<reference key="NSNextResponder" ref="775917845"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{13, 174}, {294, 43}}</string>
+								<string key="NSFrame">{{13, 171}, {294, 43}}</string>
 								<reference key="NSSuperview" ref="775917845"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="87472881"/>
@@ -242,10 +242,11 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="328166475"/>
-								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+								<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="1045812588">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">inputFieldPopBtnBackground.png</string>
 								</object>
+								<reference key="IBUINormalBackgroundImage" ref="1045812588"/>
 								<reference key="IBUIFontDescription" ref="1042537355"/>
 								<reference key="IBUIFont" ref="842205359"/>
 							</object>
@@ -614,6 +615,7 @@
 				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="42.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="42.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
+				<real value="1" key="42.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

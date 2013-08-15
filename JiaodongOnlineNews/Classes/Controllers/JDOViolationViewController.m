@@ -43,13 +43,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [CarNum addTarget:self action:@selector(changeToUpperCase:) forControlEvents:UIControlEventEditingDidEnd];
     
     [ChassisNum setKeyboardType:UIKeyboardTypeNumberPad];
     [carnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [cartypelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [chassisnumlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
-    [CarType setTitleColor:[UIColor colorWithHex:@"000000"] forState:UIControlStateNormal];
-    CarType.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 26);
+    [CarType setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [CarType setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    CarType.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 30);
     
     CarTypeString = [[NSMutableString alloc] initWithString:@"02"];
     resultArray = [[NSMutableArray alloc] init];
@@ -57,13 +59,13 @@
     checkBox1 = [[M13Checkbox alloc] initWithTitle:@"保存车辆信息" andHeight:18];
     [checkBox1 setTitleColor:Light_Blue_Color];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox1.frame = CGRectMake(15, 145, checkBox1.frame.size.width, checkBox1.frame.size.height);
+    checkBox1.frame = CGRectMake(13, CGRectGetMaxY(ChassisNum.frame)+12, checkBox1.frame.size.width, checkBox1.frame.size.height);
     [tp addSubview:checkBox1];
     
     checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:18];
     [checkBox2 setTitleColor:Light_Blue_Color];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
-    checkBox2.frame = CGRectMake(161, 145, checkBox2.frame.size.width, checkBox2.frame.size.height);
+    checkBox2.frame = CGRectMake(320-13-checkBox2.frame.size.width, CGRectGetMaxY(ChassisNum.frame)+12, checkBox2.frame.size.width, checkBox2.frame.size.height);
     [tp addSubview:checkBox2];
     
     [tp setScrollEnabled:NO];
@@ -87,6 +89,10 @@
     [resultlabel setBackgroundColor:[UIColor clearColor]];
     [header addSubview:resultlabel];
     [result setTableHeaderView:header];
+}
+
+- (void) changeToUpperCase:(UITextField *) textField{
+    textField.text = [textField.text uppercaseString];
 }
 
 - (void)setupNavigationView
@@ -113,7 +119,6 @@
 {
     stringpicker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择号牌种类" rows:types initialSelection:1 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
         [CarType setTitle:[types objectAtIndex:selectedIndex] forState:UIControlStateNormal];
-        [CarType setTitle:[types objectAtIndex:selectedIndex] forState:UIControlStateSelected];
         NSMutableString *tmp = [[NSMutableString alloc] initWithString:@"0"];
         if (selectedIndex < 9) {
             [tmp appendString:[NSString stringWithFormat:@"%d", selectedIndex + 1]];
@@ -155,12 +160,6 @@
     [params setValue:CarTypeString forKey:@"cartype"];
     [params setValue:ChassisNumString forKey:@"vin"];
     
-//    if (addCarStatus) {
-//        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
-//        [self onBackBtnClick];
-//        return;
-//    }
-    
     [result setHidden:YES];
     [resultline setHidden:YES];
     [resultline_shadow setHidden:YES];
@@ -178,6 +177,7 @@
                 [resultArray addObjectsFromArray:datas];
                 [result reloadData];
             } else if (datas.count == 0) {
+#warning no_result_image的图片在iphone5下需要更换
                 [no_result_image setHidden:NO];
             }
         } else {
@@ -190,16 +190,12 @@
     
     [CarNum resignFirstResponder];
     [ChassisNum resignFirstResponder];
-    if (checkBox1.isChecked) {
-        [self saveCarMessage:@{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text}];
-    }
     
     // 设置违章推送
     if (checkBox2.isChecked) {
         NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_UserId"];
         if (userId == nil) {
-            [self showBindError];
-            [checkBox2 setCheckState:M13CheckboxStateUnchecked];
+            [self dealWithBindError];
         }else{
             [params setObject:userId forKey:@"userid"];
             [[JDOJsonClient sharedClient] getPath:BINDVIOLATIONINFO_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -207,33 +203,47 @@
                 if ([status isKindOfClass:[NSNumber class]]) {
                     int _status = [status intValue];
                     if (_status == 1) { //绑定成功
-                        
+                        if (checkBox1.isChecked) {
+                            [self saveCarMessage:true];
+                        }
                     }else if(_status == 0){
-                        [self showBindError];
+                        [self dealWithBindError];
                     }
                 } else if([status isKindOfClass:[NSString class]]){
                     if ([status isEqualToString:@"wrongparam"]) {
-                        NSLog(@"参数错误:%@",status);
+                        NSLog(@"参数错误");
+                        [self dealWithBindError];
                     }else if([status isEqualToString:@"exist"]){
                         NSLog(@"已经存在绑定信息:%@",status);
+                        if (checkBox1.isChecked) {
+                            [self saveCarMessage:true];
+                        }
                     }
                 }
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [self showBindError];
+                [self dealWithBindError];
             }];
         }
-
+    }else{
+        if (checkBox1.isChecked) {
+            [self saveCarMessage:false];
+        }
     }
 }
 
-- (void) showBindError{
-    [JDOCommonUtil showHintHUD:@"违章推送绑定失败，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+- (void) dealWithBindError{
+    [JDOCommonUtil showHintHUD:@"设置违章推送失败，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+    [checkBox2 setCheckState:M13CheckboxStateUnchecked];
+    if (checkBox1.isChecked) {
+        [self saveCarMessage:false];
+    }
 }
 
-- (void)saveCarMessage:(NSDictionary *)carMessage
+- (void)saveCarMessage:(BOOL)isPush
 {
-    if (self.readCarMessage) {
+    NSDictionary *carMessage = @{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text,@"ispush":[NSNumber numberWithBool:isPush]};
+    if ([self readCarMessage]) {
         BOOL isExisted = NO;
         for (int i = 0; i < carMessageArray.count; i++) {
             if ([[carMessageArray objectAtIndex:i] isEqualToDictionary:carMessage]) {
@@ -247,23 +257,23 @@
         carMessageArray = [[NSMutableArray alloc] init];
         [carMessageArray addObject:carMessage];
     }
-    [NSKeyedArchiver archiveRootObject:carMessageArray toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    [NSKeyedArchiver archiveRootObject:carMessageArray toFile:JDOGetDocumentFilePath(@"CarMessage")];
     carMessageArray = nil;
 }
 
 - (BOOL) readCarMessage{
-    carMessageArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"CarMessage"]];
+    carMessageArray = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetDocumentFilePath(@"CarMessage")];
     return (carMessageArray != nil);
 }
 
 - (BOOL)checkEmpty
 {
     if (CarNumString.length < 7) {
-        [JDOCommonUtil showHintHUD:@"车牌号输入错误" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+        [JDOCommonUtil showHintHUD:@"车牌号不足5位" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
     if (ChassisNumString.length < 4){
-        [JDOCommonUtil showHintHUD:@"车架号输入错误" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+        [JDOCommonUtil showHintHUD:@"车架号不足4位" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
     return NO;
@@ -285,14 +295,6 @@
     return cell.height;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 0.;
-}
-
 #pragma mark -
 #pragma mark UITableViewDataSource
 
@@ -303,6 +305,7 @@
         JDOViolationTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil) {
             cell = [[JDOViolationTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         NSDictionary *temp = [resultArray objectAtIndex:indexPath.row];
         if ((App_Height > 480)&&(resultArray.count == 1)) {
@@ -316,13 +319,10 @@
         } else {
             [cell setSeparator:nil];
         }
-        UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
-        cell.selectedBackgroundView = backView;
-        cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
         
         return cell;
     }
-    return [[UITableViewCell alloc] init];
+    return nil;
 }
 
 
