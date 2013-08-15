@@ -27,6 +27,7 @@
 @property (strong) UIView *blackMask;
 @property (strong) JDOWeather *weather;
 @property (strong) JDOWeatherForcast *forcast;
+@property (nonatomic,strong) NSMutableArray *controllerStack;
 
 @end
 
@@ -142,20 +143,40 @@
     JDOConvenienceItemController *controller = nil;
     controller = [[JDOConvenienceItemController alloc] initWithService:CONVENIENCE_SERVICE params:@{@"channelid":@"21"} title:@"烟台天气"];
     controller.deletetitle = NO;
-    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+    [self pushViewController:controller];
+    //JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
 
-    [centerController pushViewController:controller animated:YES];
-    [self.viewDeckController closeLeftViewAnimated:true];
+    //[centerController pushViewController:controller animated:YES];
+    //[self.viewDeckController closeLeftViewAnimated:true];
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
+    IIViewDeckController *deckController = [SharedAppDelegate deckController];
+    _controllerStack = [[NSMutableArray alloc] init];
+    [_controllerStack addObject:deckController];
     self.view.bounds = CGRectMake(0, 0, 320, App_Height);
 #warning 天气增加"更新时间"字段,提供两个按钮分别显示预报和详情,预报可以用Flip+Scrollview
 #warning 若客户端直接访问天气webservice有问题，可以切换成在服务器端实现
     [self updateWeather];
     [self updateCalendar];
+}
+
+- (void) pushViewController:(JDONavigationController *)controller{
+    controller.stackViewController = self;
+    [((UIViewController *)[_controllerStack lastObject]).view pushView:controller.view startFrame:Transition_Window_Right endFrame:Transition_Window_Center complete:^{
+        
+    }];
+    [_controllerStack addObject:controller];
+}
+
+- (void) popViewController{
+    JDONavigationController *_lastController = [_controllerStack lastObject];
+    _lastController.stackViewController = nil;
+    [_controllerStack removeLastObject];
+    [_lastController.view popView:((UIViewController *)[_controllerStack lastObject]).view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:^{
+        
+    }];
 }
 
 - (void) updateWeather {
@@ -304,6 +325,7 @@
     temperatureLabel = nil;
     weatherLabel = nil;
     dateLabel = nil;
+    self.controllerStack = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

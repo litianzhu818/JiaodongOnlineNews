@@ -89,6 +89,8 @@
     [submitBtn setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
     [submitBtn setTitle:@"提交留言" forState:UIControlStateNormal];
     [submitBtn addTarget:self action:@selector(submitReview) forControlEvents:UIControlEventTouchUpInside];
+    [submitBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    [submitBtn.titleLabel setShadowColor:[UIColor blackColor]];
     submitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     submitBtn.frame = CGRectMake(10, CGRectGetMaxY(_contentInput.frame)+10, 300, 43);
     [self.mainView addSubview:submitBtn];

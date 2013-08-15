@@ -45,6 +45,8 @@
         [commit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [commit.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
         [commit addTarget:self action:@selector(onCommitClick) forControlEvents:UIControlEventTouchUpInside];
+        [commit.titleLabel setShadowColor:[UIColor blackColor]];
+        [commit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
         [self.tpView addSubview:commit];
     }
     return self;
