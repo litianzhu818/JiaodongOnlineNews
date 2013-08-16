@@ -189,7 +189,7 @@
                 if([currentTopController isKindOfClass:[JDONewsViewController class]]) {
                     if (scrollView.superview.superview && [scrollView.superview.superview isKindOfClass:[JDONewsHeadCell class]]) {//判断是否是在newsHeadCell上面产生的触摸事件
                         int page = [[(JDONewsViewController *)currentTopController pageControl] currentPage];
-                        int newsHeadPage = [(JDONewsHeadCell *)scrollView.superview.superview _currentPage];
+                        int newsHeadPage = [[(JDONewsHeadCell *)scrollView.superview.superview pageControl] currentPage];
                         if (page == 0 && xVelocity > 0.0f && newsHeadPage == 0) {//第一页向左滑动
                             return true;
                         } else if (page == [[(JDONewsViewController *)currentTopController pageControl] numberOfPages]-1 && xVelocity < 0.0f && newsHeadPage == 2){//最后一页向右滑动
