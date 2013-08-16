@@ -220,6 +220,16 @@
         return;
     }
     
+    // 车牌号存在则不允许保存和绑定
+    if (checkBox1.isChecked && [self readCarMessage]){
+        for (int i = 0; i < carMessageArray.count; i++) {
+            if ([[[carMessageArray objectAtIndex:i] objectForKey:@"hphm"] isEqualToString:CarNumString]) {
+                [JDOCommonUtil showHintHUD:@"相同车牌号已存在，请先从列表中删除。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+                return;
+            }
+        }
+    }
+    
     // 设置违章推送
     if (checkBox2.isChecked) {
         NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_UserId"];
@@ -240,13 +250,28 @@
                     }
                 } else if([status isKindOfClass:[NSString class]]){
                     if ([status isEqualToString:@"wrongparam"]) {
-                        NSLog(@"参数错误");
                         [self dealWithBindError];
                     }else if([status isEqualToString:@"exist"]){
                         NSLog(@"已经存在绑定信息:%@",status);
-                        if (checkBox1.isChecked) {
-                            [self saveCarMessage:true];
-                        }
+                        // 服务器已经存在绑定信息,但有可能ispush的状态与当前客户端checkbox2的状态不同，在这里执行一遍更新
+                        NSDictionary *_param = [NSDictionary dictionaryWithObjectsAndKeys:CarNumString,@"hphm",userId,@"userid",[NSNumber numberWithBool:true],@"ispush", nil];
+                        [[JDOJsonClient sharedClient] getPath:SETVIOPUSHPERMISSION_SERVICE parameters:_param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                            id status = [(NSDictionary *)responseObject objectForKey:@"status"];
+                            if ([status isKindOfClass:[NSNumber class]]) {
+//                                int _status = [status intValue];
+//                                if (_status == 1) { //成功
+                                    if (checkBox1.isChecked) {
+                                        [self saveCarMessage:true];
+                                    }
+//                                }else if(_status == 0){
+//                                    
+//                                }
+                            } else if([status isKindOfClass:[NSString class]]){
+                                // 逻辑上不会返回string类型
+                            }
+                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            [self dealWithBindError];
+                        }];
                     }
                 }
                 
@@ -272,20 +297,10 @@
 - (void)saveCarMessage:(BOOL)isPush
 {
     NSDictionary *carMessage = @{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text,@"ispush":[NSNumber numberWithBool:isPush]};
-    if ([self readCarMessage]) {
-        BOOL isExisted = NO;
-        for (int i = 0; i < carMessageArray.count; i++) {
-            if ([[carMessageArray objectAtIndex:i] isEqualToDictionary:carMessage]) {
-                isExisted = YES;
-            }
-        }
-        if (!isExisted) {
-            [carMessageArray addObject:carMessage];
-        }
-    } else {
+    if (![self readCarMessage]) {
         carMessageArray = [[NSMutableArray alloc] init];
-        [carMessageArray addObject:carMessage];
     }
+    [carMessageArray addObject:carMessage];
     [NSKeyedArchiver archiveRootObject:carMessageArray toFile:JDOGetDocumentFilePath(@"CarMessage")];
     carMessageArray = nil;
 }
@@ -297,12 +312,12 @@
 
 - (BOOL)checkEmpty
 {
-    if (CarNumString.length < 7) {
-        [JDOCommonUtil showHintHUD:@"车牌号不足5位" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+    if (CarNumString.length != 7) {
+        [JDOCommonUtil showHintHUD:@"请输入正确的车牌号" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
-    if (ChassisNumString.length < 4){
-        [JDOCommonUtil showHintHUD:@"车架号不足4位" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+    if (ChassisNumString.length != 4){
+        [JDOCommonUtil showHintHUD:@"请输入车架号后四位" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         return YES;
     }
     return NO;

@@ -83,7 +83,6 @@
                 }
             } else if([status isKindOfClass:[NSString class]]){
                 if ([status isEqualToString:@"wrongparam"]) {
-                    NSLog(@"参数错误");
                     [self dealWithBindError];
                 }else if([status isEqualToString:@"notexist"]){
                     NSLog(@"尚未绑定");
