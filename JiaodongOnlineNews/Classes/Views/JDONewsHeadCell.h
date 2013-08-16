@@ -11,7 +11,7 @@
 
 @interface JDONewsHeadCell : UITableViewCell <UIScrollViewDelegate>
 
-@property (nonatomic,strong) NSArray *models;
+@property (nonatomic,strong) NSMutableArray *models;
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) NSMutableArray *imageViews;
 @property (nonatomic,strong) UILabel *titleLabel;

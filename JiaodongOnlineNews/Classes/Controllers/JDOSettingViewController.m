@@ -205,7 +205,7 @@ BOOL downloadItemClickable = TRUE;
                     if ([Reachability isEnableWIFI]) {
                         [self startDownload];
                     } else {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"离线下载流量警示" message:@"您当前处于2G/3G网络下，离线下载将消耗较多流量" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续下载", nil];
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"离线下载流量消耗提示" message:@"您当前处于2G/3G网络下，离线下载将消耗较多流量" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续下载", nil];
                         [alert show]; 
                     }
                 } else {
