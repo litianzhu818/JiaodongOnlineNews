@@ -19,6 +19,7 @@
 @implementation JDOCommonUtil
 
 static NSDateFormatter *dateFormatter;
+static bool isShowingHint;
 
 + (void) showFrameDetail:(UIView *)view{
     NSLog(@"x:%g,y:%g,w:%g,h:%g",view.frame.origin.x,view.frame.origin.y,
@@ -307,6 +308,10 @@ static NSDateFormatter *dateFormatter;
 
 #pragma mark - 提示窗口
 
++ (BOOL) isShowingHint{
+    return isShowingHint;
+}
+
 + (void) showHintHUD:(NSString *)content inView:(UIView *)view {
     [self showHintHUD:content inView:view withSlidingMode:WBNoticeViewSlidingModeDown];
 }
@@ -334,6 +339,10 @@ static NSDateFormatter *dateFormatter;
     notice.sticky = false;
     notice.alpha = 0.8;
     notice.slidingMode = slidingMode;
+    [notice setDismissalBlock:^(BOOL dismissedInteractively) {
+        isShowingHint = false;
+    }];
+    isShowingHint = true;
     [notice show];
 }
 
@@ -342,14 +351,22 @@ static NSDateFormatter *dateFormatter;
     notice.sticky = false;
     notice.alpha = 0.8;
     notice.originY = originY;
+    [notice setDismissalBlock:^(BOOL dismissedInteractively) {
+        isShowingHint = false;
+    }];
+    isShowingHint = true;
     [notice show];
 }
 
 + (void) showSuccessHUD:(NSString *)content inView:(UIView *)view withSlidingMode:(WBNoticeViewSlidingMode)slidingMode{
     WBSuccessNoticeView *notice = [WBSuccessNoticeView successNoticeInView:view title:content];
     notice.sticky = false;
-    notice.alpha = 0.9;
+    notice.alpha = 0.8;
     notice.slidingMode = slidingMode;
+    [notice setDismissalBlock:^(BOOL dismissedInteractively) {
+        isShowingHint = false;
+    }];
+    isShowingHint = true;
     [notice show];
 }
 
@@ -361,8 +378,12 @@ static NSDateFormatter *dateFormatter;
     // Tweetbot样式notice提示
     WBSuccessNoticeView *notice = [WBSuccessNoticeView successNoticeInView:view title:content];
     notice.sticky = false;
-    notice.alpha = 0.9;
+    notice.alpha = 0.8;
     notice.originY = originY;
+    [notice setDismissalBlock:^(BOOL dismissedInteractively) {
+        isShowingHint = false;
+    }];
+    isShowingHint = true;
     [notice show];
 }
 

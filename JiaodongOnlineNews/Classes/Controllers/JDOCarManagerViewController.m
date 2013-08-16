@@ -61,20 +61,23 @@
 
 - (void)viewDidLoad
 {
+    
+    nodate = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height - 44)];
+    nodate.image = [UIImage imageNamed:@"status_no_data"];
+    
     [self.view setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
     self.listview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height - 44)];
     self.listview.rowHeight = 44.0f;
     self.listview.bounces = false;
-    nodate = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height - 44)];
-    nodate.image = [UIImage imageNamed:@"status_no_data"];
-    [self.view addSubview:nodate];
-    [self.view addSubview:self.listview];
-    [super viewDidLoad];
+    self.listview.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     [self.listview setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.listview setDelegate:self];
     [self.listview setDataSource:self];
     [self.listview reloadData];
     
+    [self.view addSubview:nodate];
+    [self.view addSubview:self.listview];
+    [super viewDidLoad];
 }
 
 
@@ -101,16 +104,44 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSUInteger row = [indexPath row];
-        [message removeObjectAtIndex:row];
-        [NSKeyedArchiver archiveRootObject:message toFile:JDOGetDocumentFilePath(@"CarMessage")];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                         withRowAnimation:UITableViewRowAnimationAutomatic];
-        if (message.count == 0) {
-            [self onRightBtnClick];
+        NSDictionary *data = [message objectAtIndex:row];
+        // 首先从服务器端删除绑定，返回成功状态时才从界面和本地文件中删除对应记录,否则给予删除不成功的提示
+        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_UserId"];
+        if (userId == nil) {
+            [self dealWithBindError];
+        }else{
+            NSDictionary *param = @{@"userid":userId,   @"hphm":[data objectForKey:@"hphm"]};
+            [[JDOJsonClient sharedClient] getPath:DELVIOLATIONINFO_SERVICE parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                id status = [(NSDictionary *)responseObject objectForKey:@"status"];
+                if ([status isKindOfClass:[NSNumber class]]) {
+                    int _status = [status intValue];
+                    if (_status == 1) { //成功
+                        [message removeObjectAtIndex:row];
+                        [NSKeyedArchiver archiveRootObject:message toFile:JDOGetDocumentFilePath(@"CarMessage")];
+                        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                         withRowAnimation:UITableViewRowAnimationAutomatic];
+                        if (message.count == 0) {
+                            [self onRightBtnClick];
+                        }
+                    }else if(_status == 0){
+                        [self dealWithBindError];
+                    }
+                } else if([status isKindOfClass:[NSString class]]){
+                    if ([status isEqualToString:@"wrongparam"]) {
+                        NSLog(@"参数错误");
+                        [self dealWithBindError];
+                    }
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self dealWithBindError];
+            }];
         }
     }
 }
 
+- (void) dealWithBindError{
+    [JDOCommonUtil showHintHUD:@"无法删除绑定信息，请稍后再试。" inView:self.listview withSlidingMode:WBNoticeViewSlidingModeUp];
+}
 
 
 #pragma mark UITableViewDataSource
@@ -121,6 +152,7 @@
     if (cell == nil) {
         cell = [[JDOCarTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.parentTableView = tableView;
     }
     NSDictionary *temp = [message objectAtIndex:indexPath.row];
     [cell setData:temp];
@@ -129,7 +161,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    message = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetDocumentFilePath(@"CarMessage")];
+    message = [[NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetDocumentFilePath(@"CarMessage")] mutableCopy];
     if (message.count == 0) {
         [tableView setHidden:YES];
         [nodate setHidden:NO];
@@ -147,7 +179,7 @@
 
 - (void)update
 {
-    message = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetDocumentFilePath(@"CarMessage")];
+    message = [[NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetDocumentFilePath(@"CarMessage")] mutableCopy];
     [self.listview reloadData];
 }
 

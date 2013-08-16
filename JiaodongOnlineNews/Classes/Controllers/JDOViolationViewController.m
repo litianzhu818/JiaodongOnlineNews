@@ -43,6 +43,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+    tp.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+
     [searchbutton.titleLabel setShadowColor:[UIColor blackColor]];
     [searchbutton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     
@@ -65,11 +69,17 @@
     checkBox1.frame = CGRectMake(13, CGRectGetMaxY(ChassisNum.frame)+12, checkBox1.frame.size.width, checkBox1.frame.size.height);
     [tp addSubview:checkBox1];
     
-    checkBox2 = [[M13Checkbox alloc] initWithTitle:@"接收违章推送" andHeight:18];
+    checkBox2 = [[M13Checkbox alloc] initWithTitle:@"违章自动提醒" andHeight:18];
     [checkBox2 setTitleColor:Light_Blue_Color];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
     checkBox2.frame = CGRectMake(320-13-checkBox2.frame.size.width, CGRectGetMaxY(ChassisNum.frame)+12, checkBox2.frame.size.width, checkBox2.frame.size.height);
     [tp addSubview:checkBox2];
+    
+    // 默认选中两个复选框
+    [checkBox1 setCheckState:M13CheckboxStateChecked];
+    [checkBox2 setCheckState:M13CheckboxStateChecked];
+    [checkBox1 addTarget:self action:@selector(checkBoxChanged:) forControlEvents:UIControlEventValueChanged];
+    [checkBox2 addTarget:self action:@selector(checkBoxChanged:) forControlEvents:UIControlEventValueChanged];
     
     [tp setScrollEnabled:NO];
     
@@ -92,6 +102,18 @@
     [resultlabel setBackgroundColor:[UIColor clearColor]];
     [header addSubview:resultlabel];
     [result setTableHeaderView:header];
+    
+    //xib中设置的图片不能自动适应iphone5,重新设置
+    [no_result_image setImage:[UIImage imageNamed:@"vio_noresult"]];
+}
+
+- (void) checkBoxChanged:(M13Checkbox *) aCheckBox{
+    if (aCheckBox == checkBox2 && aCheckBox.checkState==M13CheckboxStateChecked){
+        [checkBox1 setCheckState:M13CheckboxStateChecked];
+    }
+    if (aCheckBox == checkBox1 && aCheckBox.checkState==M13CheckboxStateUnchecked){
+        [checkBox2 setCheckState:M13CheckboxStateUnchecked];
+    }
 }
 
 - (void) changeToUpperCase:(UITextField *) textField{
@@ -180,19 +202,23 @@
                 [resultArray addObjectsFromArray:datas];
                 [result reloadData];
             } else if (datas.count == 0) {
-#warning no_result_image的图片在iphone5下需要更换
                 [no_result_image setHidden:NO];
             }
         } else {
-            NSLog(@"wrongParams%@",params);
+            [JDOCommonUtil showHintHUD:@"服务器错误，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [JDOCommonUtil showHintHUD:@"服务器错误，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
     }];
     
     [CarNum resignFirstResponder];
     [ChassisNum resignFirstResponder];
+    
+    // 从列表界面转过来的，不需要再进行保存和绑定
+    if( sender == nil ) {
+        return;
+    }
     
     // 设置违章推送
     if (checkBox2.isChecked) {
@@ -236,7 +262,7 @@
 }
 
 - (void) dealWithBindError{
-    [JDOCommonUtil showHintHUD:@"设置违章推送失败，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+    [JDOCommonUtil showHintHUD:@"未能开启违章自动提醒，请稍后再试。" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
     [checkBox2 setCheckState:M13CheckboxStateUnchecked];
     if (checkBox1.isChecked) {
         [self saveCarMessage:false];
