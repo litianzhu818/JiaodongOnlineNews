@@ -186,7 +186,7 @@
                 if( updateTimes && [updateTimes objectForKey:pageInfo.title]){
                     double lastUpdateTime = [(NSNumber *)[updateTimes objectForKey:pageInfo.title] doubleValue];
                     // 上次加载时间离现在超过时间间隔
-                    if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > News_Update_Interval/**/ ){
+                    if( [[NSDate date] timeIntervalSince1970] - lastUpdateTime > News_Update_Interval){
                         [page loadDataFromNetwork];
                     }
                 }
