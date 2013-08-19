@@ -174,7 +174,7 @@ NSArray *imageUrls;
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
-            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title];
+            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title andTitle:self.newsModel.title andTinyUrl:self.newsModel.tinyurl];
             [array addObject:imageDetail];
         }
         JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[[JDOImageModel alloc] init]];

@@ -33,11 +33,13 @@
     }
     return self;
 }
-- (id) initWithUrl:(NSString *) imageUrl andLocalUrl:(NSString *)localUrl andContent:(NSString *)imageContent {
+- (id) initWithUrl:(NSString *) imageUrl andLocalUrl:(NSString *)localUrl andContent:(NSString *)imageContent andTitle:(NSString *) title andTinyUrl:(NSString *)tinyUrl{
     if(self = [super init]){
         self.localUrl = localUrl;
         self.imagecontent = imageContent;
         self.imageurl = imageUrl;
+        self.title = title;
+        self.tinyurl = tinyUrl;
     }
     return self;
 }
