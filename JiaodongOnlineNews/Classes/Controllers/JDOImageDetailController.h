@@ -19,6 +19,7 @@
 @property (strong,nonatomic) JDOToolBar *toolbar;
 @property (nonatomic,strong) NSArray *imageDetails;//构造本地图片集时用到，存放图片实体类
 @property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
+@property (nonatomic,assign) BOOL hideCollectToolBar;//是否显示收藏按钮
 @property int imageIndex;
 
 - (void) setupNavigationView;

@@ -481,8 +481,7 @@
 			[_recycledPages addObject:page];
             [page prepareForReuse];
 			[page removeFromSuperview];
-			NSLog(@"Removed page at index %i", PAGE_INDEX(page));
-		}
+        }
 	}
 	[_visiblePages minusSet:_recycledPages];
     while (_recycledPages.count > 2) // Only keep 2 recycled pages
