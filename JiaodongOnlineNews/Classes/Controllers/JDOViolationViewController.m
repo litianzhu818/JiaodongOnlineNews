@@ -27,6 +27,12 @@
     return self;
 }
 
+- (id)initWithInfo:(NSDictionary *)info
+{
+    self.info = info;
+    return [self initWithNibName:nil bundle:nil];
+}
+
 - (void)setCartype:(NSString *)type index:(int)index
 {
     [CarType setTitle:type forState:UIControlStateNormal];
@@ -105,6 +111,15 @@
     
     //xib中设置的图片不能自动适应iphone5,重新设置
     [no_result_image setImage:[UIImage imageNamed:@"vio_noresult"]];
+    
+    // 若从推送进入,则直接进行查询
+    if ( self.info != nil) {
+        CarTypeString = [self.info objectForKey:@"cartype"];
+        [CarType setTitle:[types objectAtIndex:[CarTypeString intValue]-1] forState:UIControlStateNormal];
+        CarNum.text = [self.info objectForKey:@"hphm"];
+        ChassisNum.text = [self.info objectForKey:@"vin"];
+        [self sendToServer:nil];
+    }
 }
 
 - (void) checkBoxChanged:(M13Checkbox *) aCheckBox{

@@ -35,7 +35,7 @@
     NSArray *iconNames;
     NSArray *iconSelectedNames;
     NSArray *iconTitles;
-    int lastSelectedRow;
+    
     UILabel *cityLabel;
     UIImageView *weatherIcon;
     UILabel *temperatureLabel;
@@ -47,7 +47,7 @@
 - (id)init{
     self = [super init];
     if (self) {
-        lastSelectedRow = 0;
+        _lastSelectedRow = 0;
         iconNames = @[@"menu_news",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood"];
         iconSelectedNames = @[@"menu_news_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected"];
         iconTitles = @[@"胶东在线",@"精选图片",@"每日一题",@"便民查询",@"网上民声"];
@@ -361,7 +361,7 @@
     }
     
     imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
-    if(indexPath.row == lastSelectedRow){
+    if(indexPath.row == _lastSelectedRow){
         imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
         //        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
@@ -383,7 +383,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if( indexPath.row == lastSelectedRow){
+    if( indexPath.row == _lastSelectedRow){
         [self.viewDeckController closeLeftViewAnimated:true];
         return ;
     }
@@ -395,7 +395,7 @@
 //        lastSelectedCell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:lastSelectedRow]];
 //        lastSelectedCell.backgroundView = nil;
 //    }
-    lastSelectedRow = indexPath.row;
+    _lastSelectedRow = indexPath.row;
     [tableView reloadData];
     
     // 使用slide动画关闭左菜单
