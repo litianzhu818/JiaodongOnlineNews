@@ -141,6 +141,9 @@
 #pragma mark - Webview delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        return false;
+    }
     return true;
 }
 

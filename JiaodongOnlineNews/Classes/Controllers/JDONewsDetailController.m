@@ -302,10 +302,9 @@ NSArray *imageUrls;
 #pragma mark - Webview delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-//    NSString *scheme = request.URL.scheme;
-//    NSString *host = request.URL.host;
-//    NSString *query = request.URL.query;
-//    NSNumber *port = request.URL.port;
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        return false;
+    }    
     return true;
 }
 

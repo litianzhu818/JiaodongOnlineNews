@@ -99,10 +99,10 @@
     [cityLabel addGestureRecognizer:weatherSingleTap];
     [self.view addSubview:cityLabel];
     
-    UIView *underline = [[UIView alloc]initWithFrame:CGRectMake(Left_Margin,topMargin+20,cityLabel.width,1)];
-    underline.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    underline.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:underline];
+//    UIView *underline = [[UIView alloc]initWithFrame:CGRectMake(Left_Margin,topMargin+20,cityLabel.width,1)];
+//    underline.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+//    underline.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:underline];
     
     weatherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+cityLabel.bounds.size.width+Padding, topMargin, Weather_Icon_Width, Weather_Icon_Height)];
     weatherIcon.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
