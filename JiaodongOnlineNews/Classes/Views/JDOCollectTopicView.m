@@ -56,5 +56,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 
 }
-
+//设置rowHeight
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 200;
+}
 @end
