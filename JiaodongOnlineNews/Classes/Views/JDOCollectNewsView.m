@@ -41,8 +41,7 @@
 //UITableViewDelegate协议的方法,选择表格中的项目
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.datas objectAtIndex:indexPath.row] Collect:TRUE];
-    JDORightViewController *rightController = (JDORightViewController*)[[SharedAppDelegate deckController] rightController];
-    [rightController pushViewController:detailController];
+    [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:detailController orientation:JDOTransitionFromRight animated:true];
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 @end

@@ -143,13 +143,8 @@ NSArray *imageUrls;
 }
 
 - (void) backToViewList{
-    if(self.isCollect){
-        [(JDORightViewController *)self.stackViewController popViewController];
-    }else{
-        JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
-    }
-    
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];
 }
 
 - (void) showReviewList{

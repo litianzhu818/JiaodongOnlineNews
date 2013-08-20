@@ -98,10 +98,6 @@
 }
 
 - (void) backToViewList{
-    if(self.isCollect){
-        [(JDORightViewController *)self.stackViewController popViewController];
-        return;
-    }
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];    
 }

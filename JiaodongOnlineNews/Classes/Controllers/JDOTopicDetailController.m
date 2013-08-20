@@ -112,15 +112,10 @@ NSArray *imageUrls;
 }
 
 - (void) backToListView{
-    if(_pController){
-        JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] orientation:JDOTransitionToRight animated:true complete:^{
-            [_pController returnFromDetail];
-        }];
-    }else{//如果为空，说明是从右菜单收藏列表进入
-        [(JDORightViewController *)self.stackViewController popViewController];
-    }
-    
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count -2] orientation:JDOTransitionToRight animated:true complete:^{
+        [_pController returnFromDetail];
+    }];
 }
 
 - (BOOL) onSharedClicked {
