@@ -20,7 +20,8 @@
     IBOutlet UITextField *name;
     IBOutlet UITextField *email;
     IBOutlet UITextField *tel;
-    IBOutlet UITextField *content;
+    IBOutlet UITextView *content;
+    IBOutlet UIImageView *contentback;
     IBOutlet TPKeyboardAvoidingScrollView *tpkey;
     
     IBOutlet UIButton *commit;

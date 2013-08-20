@@ -469,7 +469,8 @@
                                         kerningTable:kerningTable
                                         allowOrphans:allowOrphans];
         CGSize total = CGSizeZero;
-        total.height = ceilf(MIN(size.height, [lines count] * font.lineHeight + ([lines count] - 1) * roundf(font.pointSize *lineSpacing)));
+        float height_temp = [lines count] * font.lineHeight + ([lines count] - 1) * ceilf(font.pointSize *lineSpacing);
+        total.height = ceilf(MIN(size.height, height_temp));
         for (NSString *line in lines)
         {
             total.width = ceilf(MAX(total.width, [line sizeWithFont:font
@@ -512,7 +513,7 @@
                                         kerningTable:kerningTable
                                         allowOrphans:allowOrphans];
         CGSize total = CGSizeZero;
-        total.height = [lines count] * font.lineHeight + ([lines count] - 1) * roundf(font.pointSize * lineSpacing);
+        total.height = [lines count] * font.lineHeight + ([lines count] - 1) * ceilf(font.pointSize * lineSpacing);
         CGPoint offset = rect.origin;
         for (NSString *line in lines)
         {

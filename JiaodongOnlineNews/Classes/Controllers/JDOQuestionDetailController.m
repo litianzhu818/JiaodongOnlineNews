@@ -26,7 +26,8 @@
 #define Subtitle_Label_Tag 103
 #define Secret_Field_Tag 104
 
-#define Content_Font_Size 14.0f
+#define Content_Font_Size 16.0f
+#define Subtitle_Font_Size 14.0f
 
 
 @interface JDOQuestionDetailController ()
@@ -256,8 +257,8 @@
         titleLabel.frame = CGRectMake(10, CGRectGetMaxY(deptLabel.frame), 320-20, 0);
     }
     
-    UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLabel.frame)+10, 320-20, [UIFont systemFontOfSize:Content_Font_Size].lineHeight)];
-    subtitleLabel.font = [UIFont systemFontOfSize:Content_Font_Size];
+    UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLabel.frame)+10, 320-20, [UIFont systemFontOfSize:Subtitle_Font_Size].lineHeight)];
+    subtitleLabel.font = [UIFont systemFontOfSize:Subtitle_Font_Size];
     subtitleLabel.textAlignment = NSTextAlignmentCenter;
     subtitleLabel.text = [content objectAtIndex:2];
     subtitleLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
