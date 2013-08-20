@@ -234,7 +234,7 @@
         JDOImageDetailModel *detailModel;
         MWPhoto *photo;
         for(int i=0; i<imageDataList.count; i++){
-            detailModel = [imageDataList objectAtIndex:i];
+            detailModel = (JDOImageDetailModel *)[imageDataList objectAtIndex:i];
             [_models addObject:detailModel];
             NSString *realUrl = [SERVER_RESOURCE_URL stringByAppendingString:detailModel.imageurl];
             NSString *cacheUrl = [[SDImageCache sharedImageCache] cachePathForKey:realUrl];
@@ -262,7 +262,7 @@
     [NSKeyedArchiver archiveRootObject:imageDetail toFile:cacheFilePath];
 }
 
-- (id) readImageDetailFromLocalCache{
+- (NSArray *) readImageDetailFromLocalCache{
     NSArray *imageModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/ImageDetailCache" stringByAppendingPathComponent:[@"ImageDetail_" stringByAppendingString:self.imageModel.id]])];
     return imageModel;
 }
