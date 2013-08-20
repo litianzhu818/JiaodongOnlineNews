@@ -13,6 +13,8 @@
 #import "JDOTopicModel.h"
 #import "JDORegxpUtil.h"
 #import "SDImageCache.h"
+#import "DCKeyValueObjectMapping.h"
+#import "DCParserConfiguration.h"
 
 #define Default_Head_Size 3
 #define Default_News_Size 40
@@ -155,11 +157,14 @@ NSMutableArray *operations;
                 NSString *realUrl1 = [SERVER_RESOURCE_URL stringByAppendingString: imageModel.imageurl];
                 [self downloadImageWithUrl:realUrl1];
                 AFHTTPRequestOperation *operation = [httpClient createHTTPRequestOperationWithPath:IMAGE_DETAIL_SERVICE parameters:@{@"aid":imageModel.id}   success:^(AFHTTPRequestOperation *operation, id responseObject){
-                    for (NSDictionary *imageDetail in (NSArray *)responseObject) {
-                        NSString *realUrl = [SERVER_RESOURCE_URL stringByAppendingString: [imageDetail objectForKey:@"imageurl"]];
+                    Class _modelClass = NSClassFromString(@"JDOImageDetailModel");
+                    DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: _modelClass andConfiguration:[DCParserConfiguration configuration]];
+                    NSArray *array = [mapper parseArray:responseObject];
+                    for (JDOImageDetailModel *imageDetail in array) {
+                        NSString *realUrl = [SERVER_RESOURCE_URL stringByAppendingString:imageDetail.imageurl];
                         [self downloadImageWithUrl:realUrl];
                     }
-                    [self saveImageDetailToLocalCache:dataList withId:imageModel.id];
+                    [self saveImageDetailToLocalCache:array withId:imageModel.id];
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error){
                 }];
                 [operations addObject:operation];
@@ -193,7 +198,6 @@ NSMutableArray *operations;
                         [self findImageWithHtml:[dict objectForKey:@"content"]];
                         [self saveTopicDetailToLocalCache:dict];
                     }
-                    [self saveImageDetailToLocalCache:dataList withId:topicModel.id];
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error){
                 }];
                 [operations addObject:operation];
@@ -223,11 +227,6 @@ NSMutableArray *operations;
     NSNumber *count = [NSNumber numberWithFloat:[[NSNumber numberWithInt:downloadCount] floatValue]/[[NSNumber numberWithInt:Total_Size] floatValue]];
     NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:count, @"count", nil];
     [target performSelectorOnMainThread:action withObject:result waitUntilDone:YES];
-}
-
-// 保存列表内容至本地缓存文件
-- (void) saveListToLocalCacheWithArray:(NSArray *)dataList andCacheFileName:(NSString *) cacheFileName{
-    [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:cacheFileName]];
 }
 
 - (void) saveNewsDetailToLocalCache:(NSDictionary *) newsDetail{

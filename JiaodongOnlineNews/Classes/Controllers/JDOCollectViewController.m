@@ -90,7 +90,8 @@
 }
 
 - (void) onBackBtnClick{
-    [(JDORightViewController *)self.stackViewController popViewController];
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)SharedAppDelegate.deckController.centerController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
 }
 
 -(void)onRightBtnClick{

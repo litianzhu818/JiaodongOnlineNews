@@ -98,10 +98,6 @@
 }
 
 - (void) backToViewList{
-    if(self.isCollect){
-        [(JDORightViewController *)self.stackViewController popViewController];
-        return;
-    }
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];    
 }
@@ -234,7 +230,7 @@
         JDOImageDetailModel *detailModel;
         MWPhoto *photo;
         for(int i=0; i<imageDataList.count; i++){
-            detailModel = [imageDataList objectAtIndex:i];
+            detailModel = (JDOImageDetailModel *)[imageDataList objectAtIndex:i];
             [_models addObject:detailModel];
             NSString *realUrl = [SERVER_RESOURCE_URL stringByAppendingString:detailModel.imageurl];
             NSString *cacheUrl = [[SDImageCache sharedImageCache] cachePathForKey:realUrl];
@@ -262,7 +258,7 @@
     [NSKeyedArchiver archiveRootObject:imageDetail toFile:cacheFilePath];
 }
 
-- (id) readImageDetailFromLocalCache{
+- (NSArray *) readImageDetailFromLocalCache{
     NSArray *imageModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/ImageDetailCache" stringByAppendingPathComponent:[@"ImageDetail_" stringByAppendingString:self.imageModel.id]])];
     return imageModel;
 }

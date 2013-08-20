@@ -311,7 +311,7 @@
 
 - (void)saveCarMessage:(BOOL)isPush
 {
-    NSDictionary *carMessage = @{@"hphm":CarNumString, @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text,@"ispush":[NSNumber numberWithBool:isPush]};
+    NSDictionary *carMessage = @{@"hphm":[CarNumString uppercaseString], @"cartype":CarTypeString, @"vin":ChassisNumString, @"cartypename":CarType.titleLabel.text,@"ispush":[NSNumber numberWithBool:isPush]};
     if (![self readCarMessage]) {
         carMessageArray = [[NSMutableArray alloc] init];
     }

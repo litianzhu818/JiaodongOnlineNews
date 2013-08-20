@@ -211,13 +211,15 @@ typedef enum {
             // 重载缓存部分的数据
             [_settingContrller.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
-        case RightMenuItemCollection:
+        case RightMenuItemCollection:{
             if( _collectController == nil){
                 _collectController = [[JDOCollectViewController alloc] init];
             }
-            [self pushViewController:_collectController];
-            break;
-            break;
+            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
+                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_collectController orientation:JDOTransitionFromBottom animated:false];
+            } completion:^(IIViewDeckController *controller, BOOL success) {
+            }];
+            break;}
 //        case RightMenuItemfeedback:
 //            if( _feedbackController == nil){
 //                _feedbackController = [[JDOFeedbackViewController alloc] init];

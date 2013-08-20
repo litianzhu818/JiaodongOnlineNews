@@ -127,16 +127,24 @@
         //执行
         while (sqlite3_step(statement) == SQLITE_ROW) {
             id obj = [[NSClassFromString(modelClassString)  alloc] init];
+            BOOL isNull = FALSE;
             for (int i=0; i<[self.columns count]; ++i) {
                 NSString* columnName = [self.columns objectAtIndex:i];
                 char *field1 = (char *) sqlite3_column_text(statement, i);
                 NSString *field1Str = [[NSString alloc] initWithUTF8String: field1];
+                if([columnName isEqualToString:@"id"] && [field1Str isEqualToString:@"(null)"]){//插入时可能因为不成功而插入null
+                    isNull = TRUE;
+                    break;
+                }
                 SEL selector = NSSelectorFromString(columnName);
                 if ([obj respondsToSelector:selector]) {
                     [obj setValue:field1Str forKeyPath:columnName ];
                 }
             }
-            [resluts addObject:obj];
+            if(!isNull){
+                [resluts addObject:obj];
+            }
+            
         }
     }
     

@@ -182,8 +182,8 @@
 }
 
 - (void) backToParent{
-    JDOCenterViewController *centerController = (JDOCenterViewController *)self.navigationController;
-    [centerController popToViewController:[centerController.viewControllers objectAtIndex:centerController.viewControllers.count-2] orientation:JDOTransitionToBottom animated:true];
+        JDOCenterViewController *centerController = (JDOCenterViewController *)self.navigationController;
+        [centerController popToViewController:[centerController.viewControllers objectAtIndex:centerController.viewControllers.count-2] orientation:JDOTransitionToBottom animated:true];
 }
 
 - (void)viewDidUnload {
@@ -279,8 +279,7 @@
                               }
                           }];
     // 返回上级页面
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] orientation:JDOTransitionToBottom animated:true];
+    [self backToParent];
 }
 
 - (void)onBtnClicked:(UIButton *)sender {
