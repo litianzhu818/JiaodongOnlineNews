@@ -99,9 +99,9 @@
     if (![device.platformString isEqualToString:@"Unknown iOS device"]) {
         [info appendString:@"当前设备："];
         [info appendString:device.platformString];
-        [info appendString:@",系统版本："];
+        [info appendString:@"，系统版本：iOS "];
     } else {
-        [info appendString:@"系统版本："];
+        [info appendString:@"系统版本：iOS "];
     }
     
     [info appendString:device.systemVersion];

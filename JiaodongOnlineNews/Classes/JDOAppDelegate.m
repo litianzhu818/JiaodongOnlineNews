@@ -173,7 +173,12 @@
             NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
             if (dictionary != nil){
                 NSString *newsId = [dictionary objectForKey:@"newsid"];
-                [self openNewsDetail:newsId];
+                NSString *hphm = [dictionary objectForKey:@"hphm"];
+                if ( newsId != nil ) {
+                    [self openNewsDetail:newsId];    // 打开新闻详情对应界面
+                }else if ( hphm != nil ) {
+                    [self openViolation:dictionary];    // 打开违章查询对应界面
+                }
             }
         }
     }];
