@@ -140,6 +140,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.titleLabel.text = [self getShareTitleAndContent];
+    int remaind = 130 - [_titleLabel.text length];
+    self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
     NSURL *url;
     if ([[self.model imageurl] hasPrefix:SERVER_RESOURCE_URL]) {
         url = [NSURL URLWithString:[self.model imageurl]];
@@ -307,8 +309,12 @@
 - (void)textViewDidChange:(UITextView *)textView{
     if(textView == self.textView2){
         int textCount = [textView.text  length];
-        int remaind = 135 - textCount;
-        self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
+        int remaind = 130 - textCount - [_titleLabel.text length];
+        if (remaind >= 0) {
+            self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
+        } else {
+            _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, 130 -1- [_titleLabel.text length])];
+        }
     }
 }
 
