@@ -13,6 +13,7 @@
 #import "JDOAboutUsViewController.h"
 #import "JDOShareAuthController.h"
 #import "JDOCollectViewController.h"
+//#import <Crashlytics/Crashlytics.h>
 //#import "JDORightMenuCell.h"
 
 #define Menu_Cell_Height 55.0f
@@ -227,6 +228,8 @@ typedef enum {
 //            [self pushViewController:_feedbackController];
 //            break;
         case RightMenuItemAbout:
+            // 测试自动收集崩溃日志是否起作用
+//            [[Crashlytics sharedInstance] crash];
             if( _aboutUsController == nil){
                 _aboutUsController = [[JDOAboutUsViewController alloc] init];
             }

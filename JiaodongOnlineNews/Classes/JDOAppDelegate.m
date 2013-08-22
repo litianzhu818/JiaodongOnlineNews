@@ -33,6 +33,7 @@
 #import "UIDevice+Hardware.h"
 #import "JDOMainViewController.h"
 #import "JDOViolationViewController.h"
+#import <Crashlytics/Crashlytics.h>
 
 #define splash_stay_time 1.0 //1.0
 #define advertise_stay_time 1.0 //2.0
@@ -46,10 +47,13 @@
 
 #define MAX_BIND_ERROR_TIMES 10
 
-#define UMeng_Key @"51de0ed156240bd3fb01d54c"
+// 友盟统计 http://www.umeng.com tec@jiaodong.net / jdjishubu
+#define UMeng_Key @"5208514056240b8d8a09024a"
+// 社会化组件 http://sharesdk.cn intotherainzy@gmail.com / 111111
 #define ShareSDK_Key @"4991b66e0ae"
-
-// 百度的key定义在自己的plist中
+// 错误日志统计 https://www.crashlytics.com intotherainzy@gmail.com / 111111
+#define Crashlytics_Key @"be9e1854d4bcebe8b7060b554b9667e020c7a790"
+// 百度云推送 百度的key定义在自己的BPushConfig.plist中 http://developer.baidu.com/push/list 5723777@qq.com / Wang79z09q20
 
 @implementation JDOAppDelegate{
     Reachability  *hostReach;
@@ -222,9 +226,10 @@
     //监听用户信息变更
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
-#warning 正式发布的时候，需要改友盟统计appkey
     //友盟统计
-    [MobClick startWithAppkey:UMeng_Key];
+    [MobClick startWithAppkey:UMeng_Key reportPolicy:BATCH channelId:nil];
+    [MobClick setCrashReportEnabled:true];
+    [MobClick setLogEnabled:false];
     
     // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
@@ -272,6 +277,8 @@
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert| UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
     
     [self clearNotifications];
+    
+    [Crashlytics startWithAPIKey:Crashlytics_Key];
     
     return YES;
 }
@@ -558,6 +565,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [self clearNotifications];
+#warning 若页面停留在新闻图片等可刷新模块，应根据超时参考值判断是否自动刷新
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -590,7 +598,6 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"didReceiveRemoteNotification!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     // {"aps":{"badge":1,"sound":"default","alert":"content"},"newsid":"4645"}
     if (application.applicationState == UIApplicationStateActive) {
         // 违章推送在运行态也应该提醒,新闻推送就不必了
@@ -614,7 +621,6 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSLog(@"cancel index :%d  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",buttonIndex);
     if ( buttonIndex != alertView.cancelButtonIndex) {   // 查看违章
         [self openViolation:violationInfo]; 
     }
