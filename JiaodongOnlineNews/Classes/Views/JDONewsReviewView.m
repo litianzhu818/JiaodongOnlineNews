@@ -232,13 +232,16 @@
 
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
 #warning 复制粘贴的情况可能超过规定的字数
-    if (range.location>=Review_Content_MaxLength)  return  NO;
+    //if (range.location>=Review_Content_MaxLength)  return  NO;
     return YES;
 }
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView{
     // 计算剩余可输入字数
     int remain = Review_Content_MaxLength-_textView.text.length;
     [_remainWordNum setText:[NSString stringWithFormat:@"还有%d字可以输入",remain<0 ? 0:remain]];
+    if (remain<0) {
+        _textView.text = [_textView.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength-1)];
+    }
 }
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height{
