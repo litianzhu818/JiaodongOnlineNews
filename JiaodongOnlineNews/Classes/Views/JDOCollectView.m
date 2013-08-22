@@ -48,14 +48,6 @@
 }
 //继承该方法时,左右滑动会出现删除按钮(自定义按钮),点击按钮时的操作
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-}
-- (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-}
-#pragma mark - UITableViewDelegate
-
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
     id<JDOToolbarModel> model = [self.datas objectAtIndex:indexPath.row];
     [self.collectDB deleteById:[model id]];
     [self.datas removeObjectAtIndex:indexPath.row];
@@ -65,6 +57,17 @@
         [self.noResultView setHidden:FALSE];
     }
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    return @"删除";
 }
+- (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+}
+#pragma mark - UITableViewDelegate
+//单元格返回的编辑风格，包括删除 添加 和 默认  和不可编辑三种风格
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+
+
 @end

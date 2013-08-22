@@ -44,4 +44,12 @@
     [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:detailController orientation:JDOTransitionFromRight animated:true];
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    JDONewsTableCell *cell = (JDONewsTableCell*)[tableView cellForRowAtIndexPath:indexPath];
+    [cell.textLabel setFrame:CGRectMake(cell.textLabel.bounds.origin.x, cell.textLabel.bounds.origin.y, cell.textLabel.bounds.size.width-100, cell.textLabel.bounds.size.height)];
+    
+    
+    return @"删除";
+}
 @end
