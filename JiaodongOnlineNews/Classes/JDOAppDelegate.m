@@ -32,6 +32,8 @@
 #import "JDONewsModel.h"
 #import "UIDevice+Hardware.h"
 #import "JDOMainViewController.h"
+#import "JDOViolationViewController.h"
+#import <Crashlytics/Crashlytics.h>
 
 #define splash_stay_time 1.0 //1.0
 #define advertise_stay_time 1.0 //2.0
@@ -45,10 +47,13 @@
 
 #define MAX_BIND_ERROR_TIMES 10
 
-#define UMeng_Key @"51de0ed156240bd3fb01d54c"
+// 友盟统计 http://www.umeng.com tec@jiaodong.net / jdjishubu
+#define UMeng_Key @"5208514056240b8d8a09024a"
+// 社会化组件 http://sharesdk.cn intotherainzy@gmail.com / 111111
 #define ShareSDK_Key @"4991b66e0ae"
-
-// 百度的key定义在自己的plist中
+// 错误日志统计 https://www.crashlytics.com intotherainzy@gmail.com / 111111
+#define Crashlytics_Key @"be9e1854d4bcebe8b7060b554b9667e020c7a790"
+// 百度云推送 百度的key定义在自己的BPushConfig.plist中 http://developer.baidu.com/push/list 5723777@qq.com / Wang79z09q20
 
 @implementation JDOAppDelegate{
     Reachability  *hostReach;
@@ -58,6 +63,7 @@
     BOOL manualCheckUpdate;
     MBProgressHUD *HUD;
     int bindErrorCount;
+    __strong NSDictionary *violationInfo;
 }
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
@@ -171,7 +177,12 @@
             NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
             if (dictionary != nil){
                 NSString *newsId = [dictionary objectForKey:@"newsid"];
-                [self openNewsDetail:newsId];
+                NSString *hphm = [dictionary objectForKey:@"hphm"];
+                if ( newsId != nil ) {
+                    [self openNewsDetail:newsId];    // 打开新闻详情对应界面
+                }else if ( hphm != nil ) {
+                    [self openViolation:dictionary];    // 打开违章查询对应界面
+                }
             }
         }
     }];
@@ -215,9 +226,10 @@
     //监听用户信息变更
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
-#warning 正式发布的时候，需要改友盟统计appkey
     //友盟统计
-    [MobClick startWithAppkey:UMeng_Key];
+    [MobClick startWithAppkey:UMeng_Key reportPolicy:BATCH channelId:nil];
+    [MobClick setCrashReportEnabled:true];
+    [MobClick setLogEnabled:false];
     
     // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
@@ -265,6 +277,8 @@
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert| UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
     
     [self clearNotifications];
+    
+    [Crashlytics startWithAPIKey:Crashlytics_Key];
     
     return YES;
 }
@@ -551,6 +565,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [self clearNotifications];
+#warning 若页面停留在新闻图片等可刷新模块，应根据超时参考值判断是否自动刷新
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -583,34 +598,69 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    // {"aps":{"badge":1,"sound":"default","alert":"1111"},"newsid":"222"}
+    // {"aps":{"badge":1,"sound":"default","alert":"content"},"newsid":"4645"}
     if (application.applicationState == UIApplicationStateActive) {
-       // 运行态忽略通知
-        return;
+        // 违章推送在运行态也应该提醒,新闻推送就不必了
+        NSString *hphm = [userInfo objectForKey:@"hphm"];
+        if ( hphm != nil) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"违章提醒" message:[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]  delegate:self cancelButtonTitle:@"关闭" otherButtonTitles:@"查看", nil];
+            violationInfo = userInfo;
+            [alertView show];
+        }
+    }else{
+        NSString *newsId = [userInfo objectForKey:@"newsid"];
+        NSString *hphm = [userInfo objectForKey:@"hphm"];
+        if ( newsId != nil ) {
+            [self openNewsDetail:newsId];    // 打开新闻详情对应界面
+        }else if ( hphm != nil ) {
+            [self openViolation:userInfo];    // 打开违章查询对应界面
+        }
     }
     [self clearNotifications];
-    
     [BPush handleNotification:userInfo]; // 可选,百度后台统计用
+}
 
-    [self openNewsDetail:[userInfo objectForKey:@"newsid"]];    // 打开功能对应界面
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if ( buttonIndex != alertView.cancelButtonIndex) {   // 查看违章
+        [self openViolation:violationInfo]; 
+    }
+}
+
+//- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex; 
+
+- (void) openViolation:(NSDictionary *)info {
+    [self.deckController closeLeftViewAnimated:false];
+    [self.deckController closeRightViewAnimated:false];
+
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[self.deckController centerController];
+    [centerController setRootViewControllerType:MenuItemConvenience];
+    
+    JDOViolationViewController *violation = [[JDOViolationViewController alloc] initWithInfo:info];
+    [centerController pushViewController:violation animated:YES];
+    
+    JDOLeftViewController *leftController = (JDOLeftViewController *)[self.deckController leftController];
+    leftController.lastSelectedRow = (int)MenuItemConvenience;
+    [leftController.tableView reloadData];
 }
 
 // 
 - (void) openNewsDetail:(NSString *) newsId{
-    if (newsId == nil) {    // 未传递newsId则不进行跳转
-        return;
-    }
     JDONewsModel *newsModel = [[JDONewsModel alloc] init];
     newsModel.id = newsId;
     
     [self.deckController closeLeftViewAnimated:false];
     [self.deckController closeRightViewAnimated:false];
+#warning 未考虑关闭左右菜单上有可能存在的覆盖视图，如天气详情、关于我们等
     JDOCenterViewController *centerController = (JDOCenterViewController *)[self.deckController centerController];
     [centerController setRootViewControllerType:MenuItemNews];
     
     JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel];
     detailController.isPushNotification = true;
     [centerController pushViewController:detailController animated:true];
+    
+    JDOLeftViewController *leftController = (JDOLeftViewController *)[self.deckController leftController];
+    leftController.lastSelectedRow = (int)MenuItemNews;
+    [leftController.tableView reloadData];
 }
 
 // 必须，如果正确调用了setDelegate，在bindChannel之后，结果在这个回调中返回。

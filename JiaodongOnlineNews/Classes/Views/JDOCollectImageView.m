@@ -11,7 +11,6 @@
 #import "JDOImageCell.h"
 #import "JDOImageModel.h"
 #import "JDOImageDetailController.h"
-#import "JDORightViewController.h"
 @implementation JDOCollectImageView
 
 -(id)initWithFrame:(CGRect)frame collectDB:(JDOCollectDB *)collectDB{
@@ -51,9 +50,12 @@
 //UITableViewDelegate协议的方法,选择表格中的项目
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[self.datas objectAtIndex:indexPath.row] Collect:true];
-    JDORightViewController *rightController = (JDORightViewController*)[[SharedAppDelegate deckController] rightController];
-    [rightController pushViewController:detailController];
+    [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:detailController orientation:JDOTransitionFromRight animated:true];
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
-
+//设置rowHeight
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 200;
+}
 @end

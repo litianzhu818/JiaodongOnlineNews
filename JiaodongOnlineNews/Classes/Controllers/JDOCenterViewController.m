@@ -16,6 +16,9 @@
 #import "JDOImageDetailController.h"
 #import "JDOTopicViewController.h"
 #import "JDOLivehoodViewController.h"
+#import "JDONewsHeadCell.h"
+#import "JDONewsCategoryView.h"
+#import "JDOPageControl.h"
 
 @interface JDOCenterViewController ()
 
@@ -170,7 +173,6 @@
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-#warning 目前只在新闻中心判断了左右滑出菜单的手势冲突,其他栏目尚未设置
     NIPagingScrollView *targetView;
     UIViewController *currentTopController = [self.viewControllers objectAtIndex:0];
     if ([currentTopController isKindOfClass:[JDONewsViewController class]]) {
@@ -179,12 +181,45 @@
         targetView = [(JDOLivehoodViewController *)currentTopController scrollView];
     }
     if (targetView) {
+        float xVelocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].x;
         if(otherGestureRecognizer.view != targetView.pagingScrollView){
-#warning 在头条上滑动不起作用，未考虑在头条的最左边一条再向左滑动时应该出左菜单的情况。也未考虑在话题中最左边向左滑动的情况，因为话题向右滑动加载新内容，不处理也可以
+#warning 在头条上滑动带动五个内容页滑动未完成。未考虑在话题中最左边向左滑动的情况，因为话题向右滑动加载新内容，不处理也可以
             if([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]]){
+                UIScrollView *scrollView = (UIScrollView *)otherGestureRecognizer.view;
+                if([currentTopController isKindOfClass:[JDONewsViewController class]]) {
+                    if (scrollView.superview.superview && [scrollView.superview.superview isKindOfClass:[JDONewsHeadCell class]]) {//判断是否是在newsHeadCell上面产生的触摸事件
+                        int page = [[(JDONewsViewController *)currentTopController pageControl] currentPage];
+                        int newsHeadPage = [[(JDONewsHeadCell *)scrollView.superview.superview pageControl] currentPage];
+                        if (page == 0 && xVelocity > 0.0f && newsHeadPage == 0) {//第一页向左滑动
+                            return true;
+                        } else if (page == [[(JDONewsViewController *)currentTopController pageControl] numberOfPages]-1 && xVelocity < 0.0f && newsHeadPage == 2){//最后一页向右滑动
+                            return true;
+                        } 
+                    }
+                }
                 return false;
-            }
+            } 
             return true;
+        } else {
+//            if([currentTopController isKindOfClass:[JDONewsViewController class]]) {
+//                JDONewsViewController *newsViewController = (JDONewsViewController *)currentTopController;
+//                int page = [[newsViewController pageControl] currentPage];
+//                NSLog(@"page  %d", page);
+//                JDONewsCategoryView *newsCategoryView = targetView.pagingScrollView.subviews[page];
+//                JDONewsHeadCell *newsHeadCell = (JDONewsHeadCell *)[newsCategoryView.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//                if (newsHeadCell) {
+//                    int newsHeadPage = [newsHeadCell _currentPage];
+//                    if (xVelocity > 0.0f && newsHeadPage == 0) {//第一页向左滑动
+//                        NSLog(@"false");
+//                        return false;
+//                    } else if (xVelocity < 0.0f && newsHeadPage == 2){//最后一页向右滑动
+//                        return true;
+//                    }
+//                } else {
+//                    NSLog(@"else");
+//                }
+//            }
+            
         }
         
         // possible状态下xVelocity==0，只有继续识别才有可能进入began状态，进入began状态后，也必须继续返回true才能执行gesture的回调
@@ -192,9 +227,6 @@
             return true;
         }
         // otherGestureRecognizer的可能类型是UIScrollViewPanGestureRecognizer或者UIScrollViewPagingSwipeGestureRecognizer
-        
-        float xVelocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].x;
-        //    NSLog(@"ViewDeckPanGesture velocity:%g offset:%g.",xVelocity,scrollView.contentOffset.x);
         
         // 快速连续滑动时，比如在从page2滑动到page1的动画还没有执行完成时再一次滑动，此时velocity.x>0 && 320>contentOffset.x>0，
         // 动画执行完成时，velocity.x>0 && contentOffset.x=0
@@ -208,7 +240,6 @@
     return false;
     
 }
-
 
 - (void)viewDidLoad{
     [super viewDidLoad];

@@ -27,6 +27,7 @@
 @property (strong) UIView *blackMask;
 @property (strong) JDOWeather *weather;
 @property (strong) JDOWeatherForcast *forcast;
+@property (nonatomic,strong) NSMutableArray *controllerStack;
 
 @end
 
@@ -34,7 +35,7 @@
     NSArray *iconNames;
     NSArray *iconSelectedNames;
     NSArray *iconTitles;
-    int lastSelectedRow;
+    
     UILabel *cityLabel;
     UIImageView *weatherIcon;
     UILabel *temperatureLabel;
@@ -46,7 +47,7 @@
 - (id)init{
     self = [super init];
     if (self) {
-        lastSelectedRow = 0;
+        _lastSelectedRow = 0;
         iconNames = @[@"menu_news",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood"];
         iconSelectedNames = @[@"menu_news_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected"];
         iconTitles = @[@"胶东在线",@"精选图片",@"每日一题",@"便民查询",@"网上民声"];
@@ -98,10 +99,10 @@
     [cityLabel addGestureRecognizer:weatherSingleTap];
     [self.view addSubview:cityLabel];
     
-    UIView *underline = [[UIView alloc]initWithFrame:CGRectMake(Left_Margin,topMargin+20,cityLabel.width,1)];
-    underline.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    underline.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:underline];
+//    UIView *underline = [[UIView alloc]initWithFrame:CGRectMake(Left_Margin,topMargin+20,cityLabel.width,1)];
+//    underline.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+//    underline.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:underline];
     
     weatherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+cityLabel.bounds.size.width+Padding, topMargin, Weather_Icon_Width, Weather_Icon_Height)];
     weatherIcon.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
@@ -142,20 +143,40 @@
     JDOConvenienceItemController *controller = nil;
     controller = [[JDOConvenienceItemController alloc] initWithService:CONVENIENCE_SERVICE params:@{@"channelid":@"21"} title:@"烟台天气"];
     controller.deletetitle = NO;
-    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+    [self pushViewController:controller];
+    //JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
 
-    [centerController pushViewController:controller animated:YES];
-    [self.viewDeckController closeLeftViewAnimated:true];
+    //[centerController pushViewController:controller animated:YES];
+    //[self.viewDeckController closeLeftViewAnimated:true];
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
+    IIViewDeckController *deckController = [SharedAppDelegate deckController];
+    _controllerStack = [[NSMutableArray alloc] init];
+    [_controllerStack addObject:deckController];
     self.view.bounds = CGRectMake(0, 0, 320, App_Height);
 #warning 天气增加"更新时间"字段,提供两个按钮分别显示预报和详情,预报可以用Flip+Scrollview
 #warning 若客户端直接访问天气webservice有问题，可以切换成在服务器端实现
     [self updateWeather];
     [self updateCalendar];
+}
+
+- (void) pushViewController:(JDONavigationController *)controller{
+    controller.stackViewController = self;
+    [((UIViewController *)[_controllerStack lastObject]).view pushView:controller.view startFrame:Transition_Window_Right endFrame:Transition_Window_Center complete:^{
+        
+    }];
+    [_controllerStack addObject:controller];
+}
+
+- (void) popViewController{
+    JDONavigationController *_lastController = [_controllerStack lastObject];
+    _lastController.stackViewController = nil;
+    [_controllerStack removeLastObject];
+    [_lastController.view popView:((UIViewController *)[_controllerStack lastObject]).view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:^{
+        
+    }];
 }
 
 - (void) updateWeather {
@@ -304,6 +325,7 @@
     temperatureLabel = nil;
     weatherLabel = nil;
     dateLabel = nil;
+    self.controllerStack = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
@@ -339,7 +361,7 @@
     }
     
     imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
-    if(indexPath.row == lastSelectedRow){
+    if(indexPath.row == _lastSelectedRow){
         imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
         //        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
@@ -361,7 +383,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if( indexPath.row == lastSelectedRow){
+    if( indexPath.row == _lastSelectedRow){
         [self.viewDeckController closeLeftViewAnimated:true];
         return ;
     }
@@ -373,7 +395,7 @@
 //        lastSelectedCell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:lastSelectedRow]];
 //        lastSelectedCell.backgroundView = nil;
 //    }
-    lastSelectedRow = indexPath.row;
+    _lastSelectedRow = indexPath.row;
     [tableView reloadData];
     
     // 使用slide动画关闭左菜单

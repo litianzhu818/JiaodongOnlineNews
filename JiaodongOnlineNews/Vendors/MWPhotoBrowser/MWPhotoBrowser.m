@@ -466,7 +466,6 @@
 	// Ignore padding as paging bounces encroach on that
 	// and lead to false page loads
 	CGRect visibleBounds = _pagingScrollView.bounds;
-#warning 当图集在最后一张图片时，这两个int值计算不正确，暂未修改
 	int iFirstIndex = (int)floorf((CGRectGetMinX(visibleBounds)+PADDING*2) / CGRectGetWidth(visibleBounds));
 	int iLastIndex  = (int)floorf((CGRectGetMaxX(visibleBounds)-PADDING*2-1) / CGRectGetWidth(visibleBounds));
     if (iFirstIndex < 0) iFirstIndex = 0;
@@ -482,8 +481,7 @@
 			[_recycledPages addObject:page];
             [page prepareForReuse];
 			[page removeFromSuperview];
-			NSLog(@"Removed page at index %i", PAGE_INDEX(page));
-		}
+        }
 	}
 	[_visiblePages minusSet:_recycledPages];
     while (_recycledPages.count > 2) // Only keep 2 recycled pages

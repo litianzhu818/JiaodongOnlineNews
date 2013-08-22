@@ -96,11 +96,19 @@
         double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Image_Update_Time];
         if([Reachability isEnableNetwork] && [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
             [self loadDataFromNetwork];
+            [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
         }
-        [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
     } else {
         self.listArray = [[NSMutableArray alloc] initWithCapacity:Default_Page_Size];
         [self loadDataFromNetwork];
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Image_Update_Time];
+    if ([Reachability isEnableNetwork] && [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval) {
+        [self loadDataFromNetwork];
+        [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
     }
 }
 

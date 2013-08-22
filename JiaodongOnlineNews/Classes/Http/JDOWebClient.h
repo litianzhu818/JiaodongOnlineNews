@@ -11,6 +11,8 @@ typedef void(^LoadDataFailureBlock)(NSString *errorStr);
 
 @interface JDOWebClient : AFHTTPClient
 
+-(AFHTTPRequestOperation *)createHTTPRequestOperationWithPath:(NSString *)path parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                                                       failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 @end
 
 

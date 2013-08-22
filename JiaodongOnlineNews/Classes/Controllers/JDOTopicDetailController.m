@@ -112,15 +112,10 @@ NSArray *imageUrls;
 }
 
 - (void) backToListView{
-    if(_pController){
-        JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] orientation:JDOTransitionToRight animated:true complete:^{
-            [_pController returnFromDetail];
-        }];
-    }else{//如果为空，说明是从右菜单收藏列表进入
-        [(JDORightViewController *)self.stackViewController popViewController];
-    }
-    
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count -2] orientation:JDOTransitionToRight animated:true complete:^{
+        [_pController returnFromDetail];
+    }];
 }
 
 - (BOOL) onSharedClicked {
@@ -161,7 +156,7 @@ NSArray *imageUrls;
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
-            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.topicModel.title];
+            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.topicModel.title andTitle:self.topicModel.title andTinyUrl:self.topicModel.tinyurl];
             [array addObject:imageDetail];
         }
         JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[[JDOImageModel alloc] init]];
@@ -285,6 +280,9 @@ NSArray *imageUrls;
 #pragma mark - Webview delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        return false;
+    }
     return true;
 }
 

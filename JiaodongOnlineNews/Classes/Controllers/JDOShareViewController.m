@@ -76,6 +76,7 @@
     self.textView2.layer.borderWidth = 1.0;
     [self.textView2 setPlaceholder:@"说点什么吧"];
     self.textView2.backgroundColor = [UIColor colorWithHex:@"E6E6E6"];
+    self.textView2.delegate = self;
     // 图集中切换图片内容会跟着变,放到viewWillAppear中
 //    self.titleLabel.text = [self getShareTitleAndContent];
     self.titleLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
@@ -139,6 +140,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.titleLabel.text = [self getShareTitleAndContent];
+    int remaind = 130 - [_titleLabel.text length];
+    self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
     NSURL *url;
     if ([[self.model imageurl] hasPrefix:SERVER_RESOURCE_URL]) {
         url = [NSURL URLWithString:[self.model imageurl]];
@@ -181,8 +184,8 @@
 }
 
 - (void) backToParent{
-    JDOCenterViewController *centerController = (JDOCenterViewController *)self.navigationController;
-    [centerController popToViewController:[centerController.viewControllers objectAtIndex:centerController.viewControllers.count-2] orientation:JDOTransitionToBottom animated:true];
+        JDOCenterViewController *centerController = (JDOCenterViewController *)self.navigationController;
+        [centerController popToViewController:[centerController.viewControllers objectAtIndex:centerController.viewControllers.count-2] orientation:JDOTransitionToBottom animated:true];
 }
 
 - (void)viewDidUnload {
@@ -278,8 +281,7 @@
                               }
                           }];
     // 返回上级页面
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] orientation:JDOTransitionToBottom animated:true];
+    [self backToParent];
 }
 
 - (void)onBtnClicked:(UIButton *)sender {
@@ -302,5 +304,27 @@
         [self getAuth:shareImage];
     }
     
+}
+#pragma mark TextView
+- (void)textViewDidChange:(UITextView *)textView{
+    if(textView == self.textView2){
+        int textCount = [textView.text  length];
+        int remaind = 130 - textCount - [_titleLabel.text length];
+        if (remaind >= 0) {
+            self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
+        } else {
+            _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, 130 -1- [_titleLabel.text length])];
+        }
+    }
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if([text length] == 0){
+        return YES;
+    }
+    if([textView.text length] + range.length >= 135){
+        return NO;
+    }
+    return YES;
 }
 @end

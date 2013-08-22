@@ -143,13 +143,8 @@ NSArray *imageUrls;
 }
 
 - (void) backToViewList{
-    if(self.isCollect){
-        [(JDORightViewController *)self.stackViewController popViewController];
-    }else{
-        JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-        [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
-    }
-    
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];
 }
 
 - (void) showReviewList{
@@ -174,7 +169,7 @@ NSArray *imageUrls;
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         for (int i=0; i<[imageUrls count]; i++) {
             NSString *localUrl = [imageCache cachePathForKey:[imageUrls objectAtIndex:i]];
-            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title];
+            JDOImageDetailModel *imageDetail = [[JDOImageDetailModel alloc] initWithUrl:[imageUrls objectAtIndex:i] andLocalUrl:localUrl andContent:self.newsModel.title andTitle:self.newsModel.title andTinyUrl:self.newsModel.tinyurl];
             [array addObject:imageDetail];
         }
         JDOImageDetailController *detailController = [[JDOImageDetailController alloc] initWithImageModel:[[JDOImageModel alloc] init]];
@@ -264,7 +259,6 @@ NSArray *imageUrls;
     }
 }
 
-# warning 需测试异步加载
 - (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary{
     NSString *html = [dictionary objectForKey:@"content"];
     
@@ -303,10 +297,9 @@ NSArray *imageUrls;
 #pragma mark - Webview delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-//    NSString *scheme = request.URL.scheme;
-//    NSString *host = request.URL.host;
-//    NSString *query = request.URL.query;
-//    NSNumber *port = request.URL.port;
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        return false;
+    }    
     return true;
 }
 

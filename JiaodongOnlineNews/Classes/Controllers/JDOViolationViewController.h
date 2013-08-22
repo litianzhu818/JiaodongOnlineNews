@@ -52,4 +52,7 @@
 - (BOOL)readCarMessage;
 - (void)cleanData;
 
+@property (nonatomic,strong) NSDictionary *info;
+- (id)initWithInfo:(NSDictionary *)info;
+
 @end

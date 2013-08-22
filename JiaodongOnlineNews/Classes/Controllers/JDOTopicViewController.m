@@ -95,19 +95,28 @@
     _horizontalScrollView.frame = CGRectMake(0, 0, 320, App_Height);// 修改frame使xib的视图自动适配iPhone5
     _horizontalScrollView.tag = ScrollView_Tag;
 	[self.view insertSubview:_horizontalScrollView belowSubview:self.navigationView];
+    
     BOOL hasCache = [self readListFromLocalCache];
     if(hasCache) {
         [self setCurrentState:ViewStatusNormal];
         // 设置上次刷新时间
-        double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Image_Update_Time];
-        if([Reachability isEnableNetwork] && [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Image_Update_Interval ){
+        double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Topic_Update_Time];
+        if([Reachability isEnableNetwork] && [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Topic_Update_Interval ){
             [self loadDataFromNetwork];
+            [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
         }
-        [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
         [self.horizontalScrollView reloadData];
     } else {
         self.listArray = [[NSMutableArray alloc] initWithCapacity:TopicList_Page_Size];
         [self loadDataFromNetwork];
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    double lastUpdateTime = [[NSUserDefaults standardUserDefaults] doubleForKey:Topic_Update_Time];
+    if([Reachability isEnableNetwork] && [[NSDate date] timeIntervalSince1970] - lastUpdateTime > Topic_Update_Interval ){
+        [self loadDataFromNetwork];
+        [self updateLastRefreshTimeWithDate:[NSDate dateWithTimeIntervalSince1970:lastUpdateTime]];
     }
 }
 
@@ -125,7 +134,7 @@
 - (void) updateLastRefreshTimeWithDate:(NSDate *)lastUpdateTime{
     self.lastUpdateTime = lastUpdateTime;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setDouble:[self.lastUpdateTime timeIntervalSince1970] forKey:Image_Update_Time];
+    [userDefaults setDouble:[self.lastUpdateTime timeIntervalSince1970] forKey:Topic_Update_Time];
     [userDefaults synchronize];
 }
 

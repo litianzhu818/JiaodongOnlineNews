@@ -13,11 +13,11 @@
 
 #import "M13Checkbox.h"
 
-#define kBoxSize .95
-#define kCheckHorizontalExtention .05
-#define kCheckVerticalExtension .05
+#define kBoxSize 0.9
+#define kCheckHorizontalExtention 0.1
+#define kCheckVerticalExtension 0.1
 #define kCheckBoxSpacing 0.4
-#define kM13CheckboxMaxFontSize 100.0
+#define kM13CheckboxMaxFontSize 30.0
 
 
 //自定义的方框
@@ -157,15 +157,10 @@
     CGFloat tempHeight = MAXFLOAT;
     
     do {
-        //Update font
         fontSize -= 1;
-        UIFont *font = [UIFont fontWithName:_titleLabel.font.fontName size:fontSize];
-        //Get size
-        CGSize labelSize = [@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" sizeWithFont:font];
-        tempHeight = labelSize.height;
+        tempHeight = [UIFont systemFontOfSize:fontSize].lineHeight;
     } while (tempHeight >= height);
-    NSLog(@"%f", fontSize);
-    _titleLabel.font = [UIFont fontWithName:_titleLabel.font.fontName size:fontSize + 2];
+    _titleLabel.font = [UIFont systemFontOfSize:fontSize+2];
 }
 
 - (void)autoFitWidthToText

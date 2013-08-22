@@ -84,19 +84,35 @@
 }
 
 - (void) setupNavigationView{
+    
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [self.navigationView addRightButtonImage:@"vio_edit" highlightImage:@"vio_edit" target:self action:@selector(onRightBtnClick)];
     [self.navigationView setTitle:@"收藏"];
 }
 
 - (void) onBackBtnClick{
-    [(JDORightViewController *)self.stackViewController popViewController];
+    UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
+    [tableview setEditing:NO animated:YES];
+    [self setRightBtnEditing:tableview.editing];
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)SharedAppDelegate.deckController.centerController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
 }
 
 -(void)onRightBtnClick{
    // [_tableview setEditing:!self.tableview.editing animated:YES];
     UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
     [tableview setEditing:!tableview.editing animated:YES];
+    [self setRightBtnEditing:tableview.editing];
+}
+
+-(void)setRightBtnEditing:(BOOL)isEdit{
+    if (!isEdit) {
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_edit"] forState:UIControlStateNormal];
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_edit"] forState:UIControlStateHighlighted];
+    } else {
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_done"] forState:UIControlStateNormal];
+        [self.navigationView.rightBtn setImage:[UIImage imageNamed:@"vio_done"] forState:UIControlStateHighlighted];
+    }
 }
 
 #pragma mark - PagingScrollView delegate
@@ -142,9 +158,14 @@
 }
 
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{
+    UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
+    [self setRightBtnEditing:tableview.editing];
     _pageControl.lastPageIndex = pagingScrollView.centerPageIndex;
 }
-
+- (void)pagingScrollViewWillChangePages:(NIPagingScrollView *)pagingScrollView{
+    UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
+    [tableview setEditing:NO animated:YES];
+}
 #pragma mark - ScrollView delegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{

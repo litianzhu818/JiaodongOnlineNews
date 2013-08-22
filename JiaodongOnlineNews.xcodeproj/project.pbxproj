@@ -232,6 +232,9 @@
 		2DA3C4C5178E9B2F009817A6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */; };
 		2DA3C4C8178EA56D009817A6 /* JDOQuestionDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */; };
 		2DA3C4D0178EC0A6009817A6 /* InsetsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */; };
+		2DA4494C17C5A42700927906 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DA4494B17C5A42700927906 /* Crashlytics.framework */; };
+		2DA4494E17C5A88100927906 /* train@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA4494D17C5A88100927906 /* train@2x.png */; };
+		2DA4495017C5A8A800927906 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA4494F17C5A8A800927906 /* icon@2x.png */; };
 		2DA566B717AB393B00987EDC /* ShareSDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2DA566B617AB393B00987EDC /* ShareSDKLocalizable.strings */; };
 		2DA566B817AB39C800987EDC /* JDOCollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62284C17A8AEF60040F05F /* JDOCollectViewController.m */; };
 		2DA566B917AB39E000987EDC /* JDOCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285A17A9887F0040F05F /* JDOCollectView.m */; };
@@ -247,7 +250,6 @@
 		2DAADB4A17AA5281001EBD43 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB4917AA5281001EBD43 /* Default@2x.png */; };
 		2DAADB5017AA7759001EBD43 /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DAADB4F17AA7759001EBD43 /* libBPush.a */; };
 		2DAADB5217AA7793001EBD43 /* BPushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB5117AA7793001EBD43 /* BPushConfig.plist */; };
-		2DAE40051798DB9E00AE4C34 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE40041798DB9E00AE4C34 /* icon@2x.png */; };
 		2DAE40071798E7BE00AE4C34 /* icon02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE40061798E7BE00AE4C34 /* icon02@2x.png */; };
 		2DAE4009179935FE00AE4C34 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE4008179935FE00AE4C34 /* icon.png */; };
 		2DB36917179F9522000D231E /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DB36915179F9521000D231E /* Checkmark.png */; };
@@ -261,7 +263,6 @@
 		2DC49BD8179F9AC9008374F2 /* telnumber.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49BC6179F9AC9008374F2 /* telnumber.png */; };
 		2DC49BD9179F9AC9008374F2 /* telnumber@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49BC7179F9AC9008374F2 /* telnumber@2x.png */; };
 		2DC49BDA179F9AC9008374F2 /* train.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49BC8179F9AC9008374F2 /* train.png */; };
-		2DC49BDB179F9AC9008374F2 /* train@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49BC9179F9AC9008374F2 /* train@2x.png */; };
 		2DC49BDC179F9AC9008374F2 /* transport.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49BCA179F9AC9008374F2 /* transport.png */; };
 		2DC49BDD179F9AC9008374F2 /* transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49BCB179F9AC9008374F2 /* transport@2x.png */; };
 		2DC49BDE179F9AC9008374F2 /* ytweather.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49BCC179F9AC9008374F2 /* ytweather.png */; };
@@ -604,7 +605,7 @@
 		D8EC8A0D17A73FC90007C887 /* vio_head_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */; };
 		D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F10186177BB9890024A93A /* SBTableAlert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */; };
-		D8F8A91C17B37246002383D9 /* vio_noresult_iphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8A91B17B37246002383D9 /* vio_noresult_iphone5.png */; };
+		D8F8A91C17B37246002383D9 /* vio_noresult-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8A91B17B37246002383D9 /* vio_noresult-568h@2x.png */; };
 		D8F8A91F17B3A106002383D9 /* tobecontinued.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8A91D17B3A106002383D9 /* tobecontinued.png */; };
 		D8F8A92017B3A106002383D9 /* tobecontinued@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8A91E17B3A106002383D9 /* tobecontinued@2x.png */; };
 		D8FABEAF179E26E000BFB67A /* JDOCarTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FABEAE179E26E000BFB67A /* JDOCarTableCell.m */; };
@@ -1055,6 +1056,9 @@
 		2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOQuestionDetailModel.m; sourceTree = "<group>"; };
 		2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
 		2DA3C4CF178EC0A6009817A6 /* InsetsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetsTextField.m; sourceTree = "<group>"; };
+		2DA4494B17C5A42700927906 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		2DA4494D17C5A88100927906 /* train@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "train@2x.png"; sourceTree = "<group>"; };
+		2DA4494F17C5A8A800927906 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		2DA566B617AB393B00987EDC /* ShareSDKLocalizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = ShareSDKLocalizable.strings; sourceTree = "<group>"; };
 		2DA6364717AB7C2F009D03AC /* libBPush-simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libBPush-simulator.a"; sourceTree = "<group>"; };
 		2DA7CD4117B9CC9700D3E701 /* Guide_Start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide_Start.png; sourceTree = "<group>"; };
@@ -1068,7 +1072,6 @@
 		2DAADB4E17AA7759001EBD43 /* BPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPush.h; sourceTree = "<group>"; };
 		2DAADB4F17AA7759001EBD43 /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBPush.a; sourceTree = "<group>"; };
 		2DAADB5117AA7793001EBD43 /* BPushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BPushConfig.plist; sourceTree = "<group>"; };
-		2DAE40041798DB9E00AE4C34 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		2DAE40061798E7BE00AE4C34 /* icon02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon02@2x.png"; sourceTree = "<group>"; };
 		2DAE4008179935FE00AE4C34 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		2DB36915179F9521000D231E /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checkmark.png; sourceTree = "<group>"; };
@@ -1084,7 +1087,6 @@
 		2DC49BC6179F9AC9008374F2 /* telnumber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = telnumber.png; sourceTree = "<group>"; };
 		2DC49BC7179F9AC9008374F2 /* telnumber@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "telnumber@2x.png"; sourceTree = "<group>"; };
 		2DC49BC8179F9AC9008374F2 /* train.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = train.png; sourceTree = "<group>"; };
-		2DC49BC9179F9AC9008374F2 /* train@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "train@2x.png"; sourceTree = "<group>"; };
 		2DC49BCA179F9AC9008374F2 /* transport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transport.png; sourceTree = "<group>"; };
 		2DC49BCB179F9AC9008374F2 /* transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transport@2x.png"; sourceTree = "<group>"; };
 		2DC49BCC179F9AC9008374F2 /* ytweather.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ytweather.png; sourceTree = "<group>"; };
@@ -1461,7 +1463,7 @@
 		D8F10186177BB9890024A93A /* SBTableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTableAlert.m; sourceTree = "<group>"; };
 		D8F1A71D17851CE000E95FFB /* JDOLifeKnowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOLifeKnowledgeViewController.h; sourceTree = "<group>"; };
 		D8F1A71E17851CE000E95FFB /* JDOLifeKnowledgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOLifeKnowledgeViewController.m; sourceTree = "<group>"; };
-		D8F8A91B17B37246002383D9 /* vio_noresult_iphone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_noresult_iphone5.png; sourceTree = "<group>"; };
+		D8F8A91B17B37246002383D9 /* vio_noresult-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vio_noresult-568h@2x.png"; sourceTree = "<group>"; };
 		D8F8A91D17B3A106002383D9 /* tobecontinued.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tobecontinued.png; sourceTree = "<group>"; };
 		D8F8A91E17B3A106002383D9 /* tobecontinued@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tobecontinued@2x.png"; sourceTree = "<group>"; };
 		D8FABEAD179E26E000BFB67A /* JDOCarTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOCarTableCell.h; sourceTree = "<group>"; };
@@ -1538,6 +1540,7 @@
 				2D9BCED7176D820C0040DDA0 /* ShareSDK.framework in Frameworks */,
 				2DAADB5017AA7759001EBD43 /* libBPush.a in Frameworks */,
 				2DA6364817AB7C2F009D03AC /* libBPush-simulator.a in Frameworks */,
+				2DA4494C17C5A42700927906 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1599,6 +1602,7 @@
 		2D080CD4173CE4D9005653A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2DA4494B17C5A42700927906 /* Crashlytics.framework */,
 				2D9D08E817A0AD8400AC1924 /* StoreKit.framework */,
 				2D0D6161178FAA5A00934CCD /* CoreText.framework */,
 				2D958591176E082E009F5AE4 /* CoreTelephony.framework */,
@@ -2192,7 +2196,7 @@
 				2DC49E1F179FA007008374F2 /* leftside_shadow_bg.png */,
 				2DC49E20179FA007008374F2 /* leftside_shadow_bg@2x.png */,
 				2DAE4008179935FE00AE4C34 /* icon.png */,
-				2DAE40041798DB9E00AE4C34 /* icon@2x.png */,
+				2DA4494F17C5A8A800927906 /* icon@2x.png */,
 				2DC49E2D179FA02C008374F2 /* icon02.png */,
 				2DAE40061798E7BE00AE4C34 /* icon02@2x.png */,
 			);
@@ -2815,7 +2819,7 @@
 				2DC49BC6179F9AC9008374F2 /* telnumber.png */,
 				2DC49BC7179F9AC9008374F2 /* telnumber@2x.png */,
 				2DC49BC8179F9AC9008374F2 /* train.png */,
-				2DC49BC9179F9AC9008374F2 /* train@2x.png */,
+				2DA4494D17C5A88100927906 /* train@2x.png */,
 				2DC49BCA179F9AC9008374F2 /* transport.png */,
 				2DC49BCB179F9AC9008374F2 /* transport@2x.png */,
 				2DC49BCC179F9AC9008374F2 /* ytweather.png */,
@@ -2880,7 +2884,7 @@
 		D8E44FA8179641D800132A8A /* Violation */ = {
 			isa = PBXGroup;
 			children = (
-				D8F8A91B17B37246002383D9 /* vio_noresult_iphone5.png */,
+				D8F8A91B17B37246002383D9 /* vio_noresult-568h@2x.png */,
 				D81516C717B0761E008F32BA /* vio_done.png */,
 				D81516C817B0761E008F32BA /* vio_edit.png */,
 				D8EC8A0C17A73FC80007C887 /* vio_head_btn.png */,
@@ -2947,6 +2951,7 @@
 				2D080CD0173CE4D9005653A7 /* Resources */,
 				51C5D08D57094706BA65EDE3 /* Copy Pods Resources */,
 				2D931233176054A000C73802 /* CopyFiles */,
+				2DA4494A17C5A34700927906 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3041,7 +3046,6 @@
 				2D97A94D17853D4C00CEEE82 /* point_per.png in Resources */,
 				2D97A94E17853D4C00CEEE82 /* toupiao.png in Resources */,
 				2D97A9501785547800CEEE82 /* vote.css in Resources */,
-				2DAE40051798DB9E00AE4C34 /* icon@2x.png in Resources */,
 				2DAE40071798E7BE00AE4C34 /* icon02@2x.png in Resources */,
 				2DAE4009179935FE00AE4C34 /* icon.png in Resources */,
 				2DB36917179F9522000D231E /* Checkmark.png in Resources */,
@@ -3053,7 +3057,6 @@
 				2DC49BD8179F9AC9008374F2 /* telnumber.png in Resources */,
 				2DC49BD9179F9AC9008374F2 /* telnumber@2x.png in Resources */,
 				2DC49BDA179F9AC9008374F2 /* train.png in Resources */,
-				2DC49BDB179F9AC9008374F2 /* train@2x.png in Resources */,
 				2DC49BDC179F9AC9008374F2 /* transport.png in Resources */,
 				2DC49BDD179F9AC9008374F2 /* transport@2x.png in Resources */,
 				2DC49BDE179F9AC9008374F2 /* ytweather.png in Resources */,
@@ -3319,7 +3322,7 @@
 				D81516CC17B0D6C4008F32BA /* background_black.png in Resources */,
 				A733FE2517B234E30085DEDA /* cancelDownload.png in Resources */,
 				A733FE2617B234E30085DEDA /* downloadComplete.png in Resources */,
-				D8F8A91C17B37246002383D9 /* vio_noresult_iphone5.png in Resources */,
+				D8F8A91C17B37246002383D9 /* vio_noresult-568h@2x.png in Resources */,
 				D8F8A91F17B3A106002383D9 /* tobecontinued.png in Resources */,
 				D8F8A92017B3A106002383D9 /* tobecontinued@2x.png in Resources */,
 				2DF9AB8A17B48AC300C1C7E6 /* airplane@2x.png in Resources */,
@@ -3356,12 +3359,27 @@
 				2DE46BD917BA26130094F27B /* topic_image_mask-568h@2x.png in Resources */,
 				2DE46BDC17BA26550094F27B /* news_head_title_background.png in Resources */,
 				2DE46BDD17BA26550094F27B /* news_head_title_background@2x.png in Resources */,
+				2DA4494E17C5A88100927906 /* train@2x.png in Resources */,
+				2DA4495017C5A8A800927906 /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2DA4494A17C5A34700927906 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run be9e1854d4bcebe8b7060b554b9667e020c7a790";
+		};
 		51C5D08D57094706BA65EDE3 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3648,8 +3666,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3666,8 +3684,8 @@
 				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -3684,8 +3702,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -3695,8 +3713,8 @@
 				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3706,6 +3724,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5F222CF8F96D417D992D04DB /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection\"",
@@ -3713,6 +3733,7 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Prefix.pch";
@@ -3727,6 +3748,8 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3735,6 +3758,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5F222CF8F96D417D992D04DB /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection\"",
@@ -3742,6 +3767,7 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Prefix.pch";
@@ -3756,6 +3782,8 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

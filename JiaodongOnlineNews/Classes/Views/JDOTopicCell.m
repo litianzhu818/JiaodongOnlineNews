@@ -8,6 +8,7 @@
 
 #import "JDOTopicCell.h"
 #import "JDOTopicModel.h"
+#import "JDOImageUtil.h"
 
 #define Padding 7.5f
 #define Default_Image @"news_head_placeholder.png"
@@ -50,7 +51,10 @@
         }
         // 宽度和高度都-1,否则有可能露出来边缘
         _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+1, Padding, self.bounds.size.width-Padding*2-2, imageHeight-1)];
-//        _imageView.image = [UIImage imageNamed:Default_Image]; 
+        // 按iphone5比例传图片，在iphone4图片的下面一部分挡住不显示
+        _imageView.contentMode = UIViewContentModeScaleAspectFill;
+        _imageView.layer.masksToBounds = true;
+//        _imageView.image = [UIImage imageNamed:Default_Image];
         [self addSubview:_imageView];
         
         _imageMask = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, Padding, self.bounds.size.width-Padding*2, imageHeight)];
@@ -108,6 +112,8 @@
 
     __block UIImageView *blockImageView = self.imageView;
     [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:topicModel.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+        // 缓存的之前就得修改尺寸，这里重新裁图已经晚了，更简单的办法是设置imageview的contentMode和maskToBounds
+//        blockImageView.image = [JDOImageUtil adjustImage:image toSize:CGSizeMake(blockImageView.width, blockImageView.height) type:ImageAdjustTypeStretch];
         if(!cached){    // 非缓存加载时使用渐变动画
             CATransition *transition = [CATransition animation];
             transition.duration = 0.3;

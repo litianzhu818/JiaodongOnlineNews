@@ -98,10 +98,6 @@
 }
 
 - (void) backToViewList{
-    if(self.isCollect){
-        [(JDORightViewController *)self.stackViewController popViewController];
-        return;
-    }
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count - 2] animated:true];    
 }
@@ -183,8 +179,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    // 设置工具栏
-    [self setupToolbar];
     if (self.imageDetails) {//本地图片
         imageDataList = self.imageDetails;
         if(imageDataList.count > 0) {//本地图片集存在
@@ -202,11 +196,12 @@
                     photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
                     photo.isImageHolder = TRUE;
                 }
-                photo.title = detailModel.imagecontent;
+                photo.title = detailModel.title;
                 photo.caption = detailModel.imagecontent;
                 photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
                 [_photos addObject:photo];
             }
+            self.hideCollectToolBar = true;
             [_browser setCurrentPageIndex:self.imageIndex];
             [_browser reloadData];
         }
@@ -224,6 +219,8 @@
             }];
         }
     }
+    // 设置工具栏
+    [self setupToolbar];
 }
 
 - (void)dealImageDataList {
@@ -233,7 +230,7 @@
         JDOImageDetailModel *detailModel;
         MWPhoto *photo;
         for(int i=0; i<imageDataList.count; i++){
-            detailModel = [imageDataList objectAtIndex:i];
+            detailModel = (JDOImageDetailModel *)[imageDataList objectAtIndex:i];
             [_models addObject:detailModel];
             NSString *realUrl = [SERVER_RESOURCE_URL stringByAppendingString:detailModel.imageurl];
             NSString *cacheUrl = [[SDImageCache sharedImageCache] cachePathForKey:realUrl];
@@ -261,7 +258,7 @@
     [NSKeyedArchiver archiveRootObject:imageDetail toFile:cacheFilePath];
 }
 
-- (id) readImageDetailFromLocalCache{
+- (NSArray *) readImageDetailFromLocalCache{
     NSArray *imageModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/ImageDetailCache" stringByAppendingPathComponent:[@"ImageDetail_" stringByAppendingString:self.imageModel.id]])];
     return imageModel;
 }
@@ -273,12 +270,19 @@
 }
 
 - (void) setupToolbar{
-    NSArray *toolbarBtnConfig = @[
-//        [NSNumber numberWithInt:ToolBarButtonReview],
-        [NSNumber numberWithInt:ToolBarButtonShare],
-        [NSNumber numberWithInt:ToolBarButtonDownload],
-        [NSNumber numberWithInt:ToolBarButtonCollect]
-    ];
+    NSArray *toolbarBtnConfig;
+    if (self.hideCollectToolBar) {
+        toolbarBtnConfig = @[
+                             //        [NSNumber numberWithInt:ToolBarButtonReview],
+                             [NSNumber numberWithInt:ToolBarButtonShare],
+                             [NSNumber numberWithInt:ToolBarButtonDownload]];
+    } else {
+        toolbarBtnConfig = @[//        [NSNumber numberWithInt:ToolBarButtonReview],
+                             [NSNumber numberWithInt:ToolBarButtonShare],
+                             [NSNumber numberWithInt:ToolBarButtonDownload],
+                             [NSNumber numberWithInt:ToolBarButtonCollect]
+                             ];
+    }
     _toolbar = [[JDOToolBar alloc] initWithModel:self.imageModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-44.0, 320, 44.0) theme:ToolBarThemeBlack];
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
     _toolbar.shareTarget = self;
@@ -312,7 +316,7 @@
     }
     JDOImageDetailModel *model = (JDOImageDetailModel *)[_models objectAtIndex:i];
     _toolbar.model.imageurl = model.imageurl;
-    _toolbar.model.summary = [[_photos objectAtIndex:i] caption];
+    _toolbar.model.summary = @"";//[[_photos objectAtIndex:i] caption];
     _toolbar.model.title = [[_photos objectAtIndex:i] title];
     _toolbar.model.tinyurl = model.tinyurl?model.tinyurl:@"";
     return TRUE;
