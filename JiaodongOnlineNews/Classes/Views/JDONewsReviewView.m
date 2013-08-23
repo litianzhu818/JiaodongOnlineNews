@@ -19,7 +19,7 @@
 #define Review_Left_Margin 10
 #define Review_Right_Margin 10
 #define SubmitBtn_Width 55
-#define Review_Content_MaxLength 100
+#define Review_Content_MaxLength 140
 #define Review_SubmitBtn_Tag 200
 
 @interface JDONewsReviewView ()
@@ -231,8 +231,6 @@
 //- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView;
 
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-#warning 复制粘贴的情况可能超过规定的字数
-    //if (range.location>=Review_Content_MaxLength)  return  NO;
     return YES;
 }
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView{
@@ -240,7 +238,7 @@
     int remain = Review_Content_MaxLength-_textView.text.length;
     [_remainWordNum setText:[NSString stringWithFormat:@"还有%d字可以输入",remain<0 ? 0:remain]];
     if (remain<0) {
-        _textView.text = [_textView.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength-1)];
+        _textView.text = [_textView.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength)];
     }
 }
 

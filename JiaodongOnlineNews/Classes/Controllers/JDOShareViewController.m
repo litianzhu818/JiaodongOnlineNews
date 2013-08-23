@@ -17,6 +17,8 @@
 #define Btn_Base_Tag 200
 #define Label_Base_Tag 300
 
+#define Review_Content_MaxLength 140
+
 @interface JDOShareViewController ()
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
@@ -117,15 +119,7 @@
         
         UIButton *shareBtn = (UIButton *)[self.mainView viewWithTag:Btn_Base_Tag+i];
         [shareBtn addTarget:self action:@selector(onBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        /*
-        if (i%2 == 0) {
-            [shareImage setFrame:CGRectMake(10 + 160*i, self.textView2.bottom + 10, shareImage.frame.size.width, shareImage.frame.size.height)];
-            [shareLabel setFrame:CGRectMake(shareImage.right + 12, shareImage.top + 7, shareLabel.frame.size.width, shareLabel.frame.size.height)];
-            [shareBtn setFrame:CGRectMake(shareLabel.right + 10, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)]
-        } else {
-            
-        }
-        */
+
         NSDictionary *item = [_shareTypeArray objectAtIndex:i];
         if([ShareSDK hasAuthorizedWithType:[[item objectForKey:@"type"] intValue] ] ){
             [shareImage setEnabled:false];  // 有授权时不能再次点击取消授权
@@ -140,7 +134,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.titleLabel.text = [self getShareTitleAndContent];
-    int remaind = 130 - [_titleLabel.text length];
+    int remaind = Review_Content_MaxLength - [_titleLabel.text length] - [_textView2.text length];
     self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
     NSURL *url;
     if ([[self.model imageurl] hasPrefix:SERVER_RESOURCE_URL]) {
@@ -309,22 +303,23 @@
 - (void)textViewDidChange:(UITextView *)textView{
     if(textView == self.textView2){
         int textCount = [textView.text  length];
-        int remaind = 130 - textCount - [_titleLabel.text length];
+        int remaind = Review_Content_MaxLength - textCount - [_titleLabel.text length];
         if (remaind >= 0) {
             self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
         } else {
-            _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, 130 -1- [_titleLabel.text length])];
+            self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",0];
+            _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength - [_titleLabel.text length])];
         }
     }
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    if([text length] == 0){
-        return YES;
-    }
-    if([textView.text length] + range.length >= 135){
-        return NO;
-    }
+//    if([text length] == 0){
+//        return YES;
+//    }
+//    if([textView.text length] + range.length >= 135){
+//        return NO;
+//    }
     return YES;
 }
 @end
