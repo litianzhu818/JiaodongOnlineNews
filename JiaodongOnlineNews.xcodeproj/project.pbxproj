@@ -2299,6 +2299,7 @@
 		2D97A93F17850A2900CEEE82 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+            2DA784BB17C6EF9D00171CAA /* image_delete@2x.png */,
 				A74EAF7D17C74D94000E249D /* base_imageholder.png */,
 				2DC49BE0179F9B0C008374F2 /* image_background.png */,
 				2D97A94017850A4600CEEE82 /* image_background@2x.png */,
@@ -3365,6 +3366,7 @@
 				2DE46BDD17BA26550094F27B /* news_head_title_background@2x.png in Resources */,
 				2DA4494E17C5A88100927906 /* train@2x.png in Resources */,
 				2DA4495017C5A8A800927906 /* icon@2x.png in Resources */,
+                2DA784BC17C6EF9D00171CAA /* image_delete@2x.png in Resources */,
 				A74EAF7E17C74D94000E249D /* base_imageholder.png in Resources */,
 				A74EAF8017C75574000E249D /* loading.png in Resources */,
 			);
