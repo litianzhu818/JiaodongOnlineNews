@@ -86,6 +86,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [contentback setImage:[[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3]];
+    [contentback setFrame:content.frame];
+    [content setBackgroundColor:[UIColor clearColor]];
+    
     UILabel *systeminfo = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     UIFont *font = [UIFont systemFontOfSize:13.0f];
     [systeminfo setNumberOfLines:0];
