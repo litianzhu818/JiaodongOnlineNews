@@ -69,10 +69,11 @@
 - (void)asyncLoadAdvertise{   // 异步加载广告页
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *advUrl = [SERVER_QUERY_URL stringByAppendingString:ADV_SERVICE];
+        int width = [[NSNumber numberWithFloat:320*[UIScreen mainScreen].scale] intValue];
+        int height = [[NSNumber numberWithFloat:App_Height*[UIScreen mainScreen].scale] intValue];
+        NSString *advUrl = [SERVER_QUERY_URL stringByAppendingString:[NSString stringWithFormat:@"/%@?width=%d&height=%d",ADV_SERVICE,width,height] ];
         NSError *error ;
         
-        #warning 需要确认dataWithContentsOfURL不使用缓存
         NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advUrl] options:NSDataReadingUncached error:&error];
         if(error != nil){
             NSLog(@"获取广告页json出错:%@",error);
@@ -80,14 +81,13 @@
         }
         NSDictionary *jsonObject = [jsonData objectFromJSONData];
         
-        NSString *advServerVersion = [jsonObject valueForKey:@"hash"];
+        // 每次广告图更新后的URL会变动，则URL缓存就能够区分出是从本地获取还是从网络获取，没有必要使用版本号机制
+        NSString *advServerURL = [jsonObject valueForKey:@"path"];
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        NSString *advLocalVersion = [userDefault objectForKey:@"adv_version"];
+        NSString *advLocalURL = [userDefault objectForKey:@"adv_url"];
         
-        // 第一次加载或者NSUserDefault被清空，以及服务器版本号与本地不一致时，从网络加载图片。
-        // PS:如果每次广告图更新后的URL会变动，则URL缓存就能够区分出是从本地获取还是从网络获取，没有必要使用版本号机制。
-        
-        if(advLocalVersion ==nil || ![advLocalVersion isEqualToString:advServerVersion]){
+        // 第一次加载或者NSUserDefault被清空，以及服务器地址与本地不一致时，从网络加载图片。
+        if(advLocalURL ==nil || ![advLocalURL isEqualToString:advServerURL]){
             NSString *advImgUrl = [SERVER_RESOURCE_URL stringByAppendingString:[jsonObject valueForKey:@"path"]];
             // 同步方法不使用URLCache，若使用AFNetworking则无法禁用缓存
             NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advImgUrl] options:NSDataReadingUncached error:&error];
@@ -101,7 +101,7 @@
             advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320, App_Height)];
             
             // 图片加载成功后才保存服务器版本号
-            [userDefault setObject:advServerVersion forKey:@"adv_version"];
+            [userDefault setObject:advServerURL forKey:@"adv_url"];
             [userDefault synchronize];
             // 图片缓存到磁盘
             [imgData writeToFile:NIPathForDocumentsResource(advertise_file_name) options:NSDataWritingAtomic error:&error];
@@ -119,7 +119,7 @@
                 advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320, App_Height)];
             }else{
                 // 从本地路径加载缓存广告图失败,使用默认广告图
-                advImage = [UIImage imageNamed:@"default_adv.png"];
+                advImage = [UIImage imageNamed:@"default_adv"];
             }
         }
         
@@ -137,7 +137,7 @@
             advImage = [UIImage imageWithData:imgData];
         }else{
             // 本地缓存尚不存在,加载默认广告图
-            advImage = [UIImage imageNamed:@"default_adv.png"];
+            advImage = [UIImage imageNamed:@"default_adv"];
         }
     }
     advView.image = advImage;
@@ -245,11 +245,11 @@
     
     
 #warning 测试广告位图片效果,暂时关闭异步网络加载，Defalut图片去掉上面的状态栏(图片问题)
-//    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
-        advImage = [UIImage imageNamed:@"default_adv.png"];
-//    }else{  // 网络可用
-//        [self asyncLoadAdvertise];
-//    }
+    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
+        advImage = [UIImage imageNamed:@"default_adv"];
+    }else{  // 网络可用
+        [self asyncLoadAdvertise];
+    }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];

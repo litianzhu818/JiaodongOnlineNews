@@ -17,7 +17,7 @@
 #define Btn_Base_Tag 200
 #define Label_Base_Tag 300
 
-#define Review_Content_MaxLength 140
+#define Review_Content_MaxLength 130
 
 @interface JDOShareViewController ()
 

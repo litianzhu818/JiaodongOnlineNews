@@ -19,7 +19,7 @@
 #define Review_Left_Margin 10
 #define Review_Right_Margin 10
 #define SubmitBtn_Width 55
-#define Review_Content_MaxLength 140
+#define Review_Content_MaxLength 130
 #define Review_SubmitBtn_Tag 200
 
 @interface JDONewsReviewView ()
