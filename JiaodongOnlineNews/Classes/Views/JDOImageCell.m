@@ -25,7 +25,10 @@
 
 @end
 
-@implementation JDOImageCell
+@implementation JDOImageCell{
+    UITableViewCellStateMask _currentState;
+    __strong UIButton *delIcon;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -53,21 +56,29 @@
         
         self.imageMask = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"image_mask"]];
         [self.contentView addSubview:self.imageMask];
+        
+        // 修改图片的内容模式,主要是因为收藏中的话题也使用了该cell，而话题的图片尺寸比例与图集相差很大
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.imageView.layer.masksToBounds = true;
+        
+        delIcon = [UIButton buttonWithType:UIButtonTypeCustom];
+        [delIcon setBackgroundImage:[UIImage imageNamed:@"image_delete"] forState:UIControlStateNormal];
+        delIcon.frame = CGRectMake(271, -13, 36, 36);
+        delIcon.hidden = true;
+        [delIcon addTarget:self action:@selector(onDelete) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:delIcon];
     }
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    
+- (void) onDelete { 
+    [self.collectView deleteDataById:self.imageModel.id];
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     
     self.contentView.frame = UIEdgeInsetsInsetRect(self.contentView.frame,UIEdgeInsetsMake(Content_Inset/2.0, Content_Inset, Content_Inset/2.0, Content_Inset));
-    self.background.frame = self.contentView.bounds;
     // 用图片背景替换contentView的描边
 //    self.contentView.backgroundColor = [UIColor whiteColor];
 //    self.contentView.layer.borderColor = [UIColor grayColor].CGColor;
@@ -79,20 +90,39 @@
 //    self.contentView.layer.shadowOpacity = 0.8;
 //    self.contentView.layer.shadowRadius = 3;
     
+    self.background.frame = self.contentView.bounds;
+    float totalWidth = self.frame.size.width;
+    // 图片使用UITableView默认的删除样式不好看,替换成右上角显示X的删除样式
+//    if (_currentState & UITableViewCellStateShowingEditControlMask) {
+//        totalWidth -= 32;   // (-)的实际宽度是32
+//    }
+//    if( _currentState & UITableViewCellStateShowingDeleteConfirmationMask){
+//        totalWidth -= 45;   // 删除按钮的实际宽度是60
+//        self.background.frame = UIEdgeInsetsInsetRect(self.contentView.bounds,UIEdgeInsetsMake(0,0,0,45-60)) ;
+//    }
+    
     float titleLineHeight = self.textLabel.font.lineHeight;
-    self.textLabel.frame = CGRectMake(Padding,Padding,Title_Width,titleLineHeight);
+    float titleLineWidth = Title_Width;
+    if (titleLineWidth > self.contentView.bounds.size.width) {
+        titleLineWidth = self.contentView.bounds.size.width;
+    }
+    self.textLabel.frame = CGRectMake(Padding,Padding,titleLineWidth,titleLineHeight);
     float timeLineHeight = self.detailTextLabel.font.lineHeight;
-    float contentWidth = 320-2*Content_Inset;
-    float timeWidth = contentWidth-3*Padding-Title_Width;
+    float contentWidth = totalWidth-2*Content_Inset;
+    float timeWidth = contentWidth-3*Padding-titleLineWidth;
+    // detailLabel用来显示时间
+    self.detailTextLabel.hidden = timeWidth < 0; // 时间显示不开则隐藏
     self.detailTextLabel.frame = CGRectMake(contentWidth-Padding-timeWidth,Padding+titleLineHeight-timeLineHeight,timeWidth,timeLineHeight);
     self.separatorLine.frame = CGRectMake(Padding, 2*Padding+titleLineHeight, contentWidth-2*Padding, 1);
     self.imageView.frame = CGRectMake(Padding,self.separatorLine.top+Padding,contentWidth-2*Padding,self.contentView.height-self.separatorLine.top-2*Padding-2/*背景图的下边缘*/);
-    self.imageMask.frame = self.imageView.frame;
+    
+    // imageMask图本身有边框,若与imageView完全大小，会挡住imageView的边缘
+    self.imageMask.frame = CGRectInset(self.imageView.frame, -4, -3);
     [self.contentView bringSubviewToFront:self.imageMask];
-
 }
 
 - (void)setModel:(JDOImageModel *)imageModel{
+    self.imageModel = imageModel;
     __block UIImageView *blockImageView = self.imageView;
     [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:imageModel.imageurl]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         if(!cached){    // 非缓存加载时使用渐变动画
@@ -109,8 +139,18 @@
     self.detailTextLabel.text = [imageModel.pubtime substringWithRange:NSMakeRange(5, 5)];
 }
 
-- (void)drawRect:(CGRect)rect{
-    
+- (void)willTransitionToState:(UITableViewCellStateMask)state{
+//    _currentState = state;
+    [super willTransitionToState:state];
+    if (state & UITableViewCellStateShowingEditControlMask) {
+        delIcon.hidden = false;
+    }else if (state == UITableViewCellStateDefaultMask){
+        delIcon.hidden = true;
+    }
 }
+
+//- (void)didTransitionToState:(UITableViewCellStateMask)state{
+//    
+//}
 
 @end

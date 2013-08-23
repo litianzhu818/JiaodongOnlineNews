@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JDOCollectView.h"
 
 @class JDOImageModel;
 
 @interface JDOImageCell : UITableViewCell
+
+@property (nonatomic,assign) JDOCollectView *collectView;
+@property (nonatomic,strong) JDOImageModel *imageModel;
 
 - (void)setModel:(JDOImageModel *)imageModel;
 

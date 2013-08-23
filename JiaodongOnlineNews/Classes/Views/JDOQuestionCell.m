@@ -25,7 +25,9 @@
 
 @end
 
-@implementation JDOQuestionCell
+@implementation JDOQuestionCell{
+    UITableViewCellStateMask _currentState;
+}
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -68,15 +70,25 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
+    float totalWidth = self.frame.size.width;
+    float separatorLineX = 10;
+    if (_currentState & UITableViewCellStateShowingEditControlMask) {
+        totalWidth -= 32;   // (-)的实际宽度是32
+        separatorLineX = 10-32;
+    }
+    if( _currentState & UITableViewCellStateShowingDeleteConfirmationMask){
+        totalWidth -= 45;   // 删除按钮的实际宽度是60
+    }
+    
     self.textLabel.frame = CGRectMake(10, 10, Dept_Label_Width, Dept_Label_Height);
     float titieHeight = NISizeOfStringWithLabelProperties(self.detailTextLabel.text, CGSizeMake(300, MAXFLOAT), [UIFont systemFontOfSize:Title_Font_Size], UILineBreakModeWordWrap, 0).height;
-    self.detailTextLabel.frame = CGRectMake(10, 10+Dept_Label_Height+Cell_Padding, 300, titieHeight);
+    self.detailTextLabel.frame = CGRectMake(10, 10+Dept_Label_Height+Cell_Padding, totalWidth-20, titieHeight);
     
     self.codeLabel.frame = CGRectMake(10, CGRectGetMaxY(self.detailTextLabel.frame)+Cell_Padding, Code_Label_Width, Code_Label_Height);
-    self.replyLabel.frame = CGRectMake(320-10-Reply_Label_Width, CGRectGetMaxY(self.detailTextLabel.frame)+Cell_Padding, Reply_Label_Width, Code_Label_Height);
+    self.replyLabel.frame = CGRectMake(totalWidth-10-Reply_Label_Width, CGRectGetMaxY(self.detailTextLabel.frame)+Cell_Padding, Reply_Label_Width, Code_Label_Height);
     
-    self.separatorLine.frame = CGRectMake(10, CGRectGetMaxY(self.codeLabel.frame)+Cell_Padding, 320-20, 1);
-    self.lockIcon.frame = CGRectMake(290, 10, 14, 16.5f);
+    self.separatorLine.frame = CGRectMake(separatorLineX, CGRectGetMaxY(self.codeLabel.frame)+Cell_Padding, self.frame.size.width-20, 1);
+    self.lockIcon.frame = CGRectMake(totalWidth-30, 10, 14, 16.5f);
 }
 
 - (void)setModel:(JDOQuestionModel *)questionModel{
@@ -112,6 +124,12 @@
         }
         self.separatorLine.hidden = false;
     }
+}
+
+- (void)willTransitionToState:(UITableViewCellStateMask)state{
+    // 在这里设置对应的状态,之后会自动调用layoutSubViews,具体label宽度的调整在那里实现
+    _currentState = state;
+    [super willTransitionToState:state];
 }
 
 @end

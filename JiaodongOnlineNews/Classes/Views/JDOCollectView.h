@@ -15,4 +15,6 @@
 @property (nonatomic,strong) NSMutableArray *datas;
 - (id)initWithFrame:(CGRect)frame collectDB:(JDOCollectDB *)collectDB;
 -(void)loadData;
+
+- (void) deleteDataById:(NSString *)_id;
 @end

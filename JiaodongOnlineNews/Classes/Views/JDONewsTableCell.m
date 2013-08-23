@@ -25,7 +25,9 @@
 
 @end
 
-@implementation JDONewsTableCell
+@implementation JDONewsTableCell{
+    UITableViewCellStateMask _currentState;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -78,9 +80,16 @@
 //    self.shadowView.layer.shadowOpacity = 0.8;
 //    self.shadowView.layer.shadowRadius = 1.8;
     
-    float cellWidth = self.frame.size.width;
+    float totalWidth = self.frame.size.width;
+    if (_currentState & UITableViewCellStateShowingEditControlMask) {
+        totalWidth -= 32;
+    }
+    if( _currentState & UITableViewCellStateShowingDeleteConfirmationMask){
+        totalWidth -= 45;
+    }
+    
     float titleLeft = Left_Margin+Image_Width+Padding;
-    float labelWdith = cellWidth - titleLeft - Right_Margin;
+    float labelWdith = totalWidth - titleLeft - Right_Margin;
     CGRect frame = self.textLabel.frame;
     self.textLabel.frame = CGRectMake(titleLeft,Top_Margin-1/*对齐*/,labelWdith,CGRectGetHeight(frame));
     frame = self.detailTextLabel.frame;
@@ -111,6 +120,13 @@
         self.textLabel.textColor = [UIColor colorWithHex:Black_Color_Type1];
         self.textLabel.highlightedTextColor = [UIColor colorWithHex:Black_Color_Type1];
     }
+}
+
+// 在收藏界面编辑和删除该行的时候
+- (void)willTransitionToState:(UITableViewCellStateMask)state{
+    // 在这里设置对应的状态,之后会自动调用layoutSubViews,具体label宽度的调整在那里实现
+    _currentState = state;
+    [super willTransitionToState:state];
 }
 
 @end

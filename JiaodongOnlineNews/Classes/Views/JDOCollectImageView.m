@@ -39,6 +39,7 @@
     JDOImageCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
     if (cell == nil){
         cell =[[JDOImageCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:listIdentifier];
+        cell.collectView = self;
     }
     if(self.datas.count > 0){
         JDOImageModel *newsModel = [self.datas objectAtIndex:indexPath.row];
@@ -57,5 +58,22 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 200;
+}
+// 加了空section，为了补齐上边距
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 9;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 9)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
+// 重新定义图集和话题的删除样式
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleNone;
+}
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath{
+    return false;
 }
 @end
