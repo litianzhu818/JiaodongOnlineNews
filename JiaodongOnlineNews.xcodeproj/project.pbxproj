@@ -580,10 +580,11 @@
 		A733FE2617B234E30085DEDA /* downloadComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = A733FE2417B234E30085DEDA /* downloadComplete.png */; };
 		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
 		A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */; };
+		A74EAF7E17C74D94000E249D /* base_imageholder.png in Resources */ = {isa = PBXBuildFile; fileRef = A74EAF7D17C74D94000E249D /* base_imageholder.png */; };
+		A74EAF8017C75574000E249D /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A74EAF7F17C75574000E249D /* loading.png */; };
 		A75A4F0817B09DAF0084ADD5 /* ITWLoadingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = A75A4F0617B09DAF0084ADD5 /* ITWLoadingPanel.m */; };
 		A75A4F0917B09DAF0084ADD5 /* ITWLoadingPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75A4F0717B09DAF0084ADD5 /* ITWLoadingPanel.xib */; };
 		A76EC73D17A0C79E0063763C /* base_empty_view.png in Resources */ = {isa = PBXBuildFile; fileRef = A76EC73C17A0C79E0063763C /* base_empty_view.png */; };
-		A76EC73F17A0C9600063763C /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = A76EC73E17A0C9600063763C /* loading.gif */; };
 		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D81516C917B0761E008F32BA /* vio_done.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516C717B0761E008F32BA /* vio_done.png */; };
@@ -1427,11 +1428,12 @@
 		A7341C7F178EB7EC00ADD976 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A74328BF17AA4B89002B6CEA /* JDOOffDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOOffDownloadManager.h; sourceTree = "<group>"; };
 		A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOOffDownloadManager.m; sourceTree = "<group>"; };
+		A74EAF7D17C74D94000E249D /* base_imageholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base_imageholder.png; sourceTree = "<group>"; };
+		A74EAF7F17C75574000E249D /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		A75A4F0517B09DAF0084ADD5 /* ITWLoadingPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITWLoadingPanel.h; sourceTree = "<group>"; };
 		A75A4F0617B09DAF0084ADD5 /* ITWLoadingPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITWLoadingPanel.m; sourceTree = "<group>"; };
 		A75A4F0717B09DAF0084ADD5 /* ITWLoadingPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ITWLoadingPanel.xib; sourceTree = "<group>"; };
 		A76EC73C17A0C79E0063763C /* base_empty_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base_empty_view.png; sourceTree = "<group>"; };
-		A76EC73E17A0C9600063763C /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		A774BF21178D726100A3B866 /* JDOWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeather.h; sourceTree = "<group>"; };
 		A774BF22178D726100A3B866 /* JDOWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeather.m; sourceTree = "<group>"; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2270,7 +2272,7 @@
 		2D972D3C177D1B3F0062DD33 /* News */ = {
 			isa = PBXGroup;
 			children = (
-				A76EC73E17A0C9600063763C /* loading.gif */,
+				A74EAF7F17C75574000E249D /* loading.png */,
 				A76EC73C17A0C79E0063763C /* base_empty_view.png */,
 				2DC49CE8179F9C83008374F2 /* news_content_background_selected.png */,
 				2DC49CE9179F9C83008374F2 /* news_content_background_selected@2x.png */,
@@ -2295,6 +2297,7 @@
 		2D97A93F17850A2900CEEE82 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				A74EAF7D17C74D94000E249D /* base_imageholder.png */,
 				2DC49BE0179F9B0C008374F2 /* image_background.png */,
 				2D97A94017850A4600CEEE82 /* image_background@2x.png */,
 				2DC49BE1179F9B0C008374F2 /* image_mask.png */,
@@ -3295,7 +3298,6 @@
 				2DC49E30179FA04F008374F2 /* img_set_flag.png in Resources */,
 				A7173D83179FA8DD00AB2D43 /* NoticeView.bundle in Resources */,
 				A76EC73D17A0C79E0063763C /* base_empty_view.png in Resources */,
-				A76EC73F17A0C9600063763C /* loading.gif in Resources */,
 				D8A9BE5217A6087800F47D34 /* vio_lineshadow.png in Resources */,
 				D8A9BE5617A60FA700F47D34 /* vio_noresult.png in Resources */,
 				D86423DA17A650620075B221 /* vio_result_label.png in Resources */,
@@ -3361,6 +3363,8 @@
 				2DE46BDD17BA26550094F27B /* news_head_title_background@2x.png in Resources */,
 				2DA4494E17C5A88100927906 /* train@2x.png in Resources */,
 				2DA4495017C5A8A800927906 /* icon@2x.png in Resources */,
+				A74EAF7E17C74D94000E249D /* base_imageholder.png in Resources */,
+				A74EAF8017C75574000E249D /* loading.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -36,6 +36,6 @@ function refreshImg(realURL, localURL) {
 		$obj.attr("src", localURL);
 		$obj.each(adjustImgSize);
 	} else {
-		alert(111);
+		//alert(111);
 	}	
 }

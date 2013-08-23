@@ -193,7 +193,7 @@
                     photo = [MWPhoto photoWithFilePath:detailModel.localUrl];
                 } else {
                     //这个图片本地不存在
-                    photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
+                    photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_imageholder" ofType:@"png"]];
                     photo.isImageHolder = TRUE;
                 }
                 photo.title = detailModel.title;
@@ -238,7 +238,7 @@
                 photo = [MWPhoto photoWithFilePath:cacheUrl];
             } else {//不存在缓存，则判断3g网络下是否下载图片
                 if ([JDOCommonUtil ifNoImage]) {
-                    photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_empty_view" ofType:@"png"]];
+                    photo = [MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"base_imageholder" ofType:@"png"]];
                     photo.isImageHolder = TRUE;
                 } else {
                     photo = [MWPhoto photoWithURL:[NSURL URLWithString:realUrl]];
