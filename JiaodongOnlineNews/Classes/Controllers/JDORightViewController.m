@@ -56,7 +56,6 @@ typedef enum {
     if (self) {
         iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about"];
         iconSelectedNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about"];
-#warning 评价一下,检查更新,分享绑定
 //        iconTitles = @[@"设  置",@"我的收藏",@"分享绑定",@"评价一下",@"意见反馈",@"关于我们",@"检查更新"];
     }
     return self;

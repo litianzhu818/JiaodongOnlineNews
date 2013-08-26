@@ -172,8 +172,7 @@
         accessoryView.tag = BASE_TAG + indexPath.row;
         
         if (accessoryView.on){
-#warning 是显示用户名还是"已授权"?若显示用户名，则需要在所有授权返回的位置都向authListCache.plist文件保存用户名信息
-#warning 需要保证3处授权的地方都保存authListCache.plist，调整cell的内容，新浪微博:已授权(intotherainzy)
+// 需要保证3处授权的地方都保存authListCache.plist，调整cell的内容，格式是 新浪微博:已授权(用户名)
             cell.textLabel.text = [item objectForKey:@"title"];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"已授权 [%@]",[item objectForKey:@"username"]];
         }else{

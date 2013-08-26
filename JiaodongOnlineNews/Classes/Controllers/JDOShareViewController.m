@@ -110,8 +110,6 @@
     disableImageNames = @[@"sina.png",@"tencent.png",@"qzone.png",@"renren.png"];   // 亮色图标
     enableImageNames = @[@"sina01.png",@"tencent01.png",@"qzone01.png",@"renren01.png"];    //灰色图标
     for(int i=0; i<4 ;i++){
-        UILabel *shareLabel = (UILabel *)[self.mainView viewWithTag:Label_Base_Tag+i];
-        
         UIButton *shareImage = (UIButton *)[self.mainView viewWithTag:Image_Base_Tag+i];
         [shareImage setBackgroundImage:[UIImage imageNamed:[enableImageNames objectAtIndex:i]] forState:UIControlStateNormal];
         [shareImage setBackgroundImage:[UIImage imageNamed:[disableImageNames objectAtIndex:i]] forState:UIControlStateDisabled];

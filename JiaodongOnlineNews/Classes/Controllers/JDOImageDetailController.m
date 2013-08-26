@@ -30,7 +30,6 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.imageModel = imageModel;
-#warning 查询是否被收藏
         self.collected = false;
         self.photos = [[NSMutableArray alloc] init];
         self.models = [[NSMutableArray alloc] init];

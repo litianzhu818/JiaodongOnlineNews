@@ -114,8 +114,8 @@
 
 - (void)viewDidUnload{
     [super viewDidUnload];
-    self.statusView = nil;
-    self.tableView = nil;
+//    self.statusView = nil;
+//    self.tableView = nil;
 //    self.noDataView = nil;
 }
 

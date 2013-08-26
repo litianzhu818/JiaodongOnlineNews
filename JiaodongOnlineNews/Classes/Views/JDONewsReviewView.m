@@ -54,7 +54,6 @@
         _textView.backgroundColor = [UIColor whiteColor];
         
 
-#warning 未测试非retina屏幕是否必须不带2x的图片
         // 必须有2x的图片!!!!!否则retina下不起作用,即使图片大小满足2x的尺寸也不行
         UIImage *inputMaskImg = [[UIImage imageNamed:@"inputField"] stretchableImageWithLeftCapWidth:0 topCapHeight:10];
 //        UIImage *inputBorderImg = [[UIImage imageNamed:@"inputField"] resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
@@ -211,7 +210,7 @@
         UIImage *icon = [ShareSDK getClientIconWithType:[[item objectForKey:@"type"] integerValue]];
         itemView.iconImageView.image = icon;
         
-#warning 可以根据未授权,已授权未选中,已选中区分为三种状态表示
+// 可以根据未授权,已授权未选中,已选中区分为三种状态表示
         if ([[item objectForKey:@"selected"] boolValue]){
             itemView.iconImageView.alpha = 1;
         }else{

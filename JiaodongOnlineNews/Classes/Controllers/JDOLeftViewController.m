@@ -230,7 +230,7 @@
         [self refreshWeather];
         return true;
     }else{
-#warning 无法获取时应该可以点击重试
+// 无法获取时,每次打开左菜单或者网络连接成功后都会刷新
         temperatureLabel.text = @"无法获取天气信息";
         [temperatureLabel sizeToFit];
         return false;
@@ -239,7 +239,7 @@
 
 - (void) refreshWeather{
     @try {  // 防止webservice接口变动造成异常
-#warning 天气预报的第一天并不一定是当天，是否要加判断？
+// 天气预报的第一天并不一定是当天，可能有一定的更新延时，日期字段不以预报的第一条为标准，而是以手机的本地时间为标准
         _forcast = [_weather.forecast objectAtIndex:0];
         cityLabel.text = _weather.city;
         [cityLabel sizeToFit];
@@ -316,7 +316,6 @@
 
 - (void)viewDidUnload{
     [super viewDidUnload];
-    self.tableView = nil;
     self.blackMask = nil;
     self.weather = nil;
     self.forcast = nil;
@@ -326,6 +325,7 @@
     weatherLabel = nil;
     dateLabel = nil;
     self.controllerStack = nil;
+    self.tableView = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

@@ -183,7 +183,7 @@
     if (targetView) {
         float xVelocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].x;
         if(otherGestureRecognizer.view != targetView.pagingScrollView){
-#warning 在头条上滑动带动五个内容页滑动未完成。未考虑在话题中最左边向左滑动的情况，因为话题向右滑动加载新内容，不处理也可以
+// 在头条上滑动带动五个内容页滑动未完成。未考虑在话题中最左边向左滑动的情况，因为话题向右滑动加载新内容，不处理也可以
             if([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]]){
                 UIScrollView *scrollView = (UIScrollView *)otherGestureRecognizer.view;
                 if([currentTopController isKindOfClass:[JDONewsViewController class]]) {

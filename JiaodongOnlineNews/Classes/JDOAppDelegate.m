@@ -120,6 +120,10 @@
             }else{
                 // 从本地路径加载缓存广告图失败,使用默认广告图
                 advImage = [UIImage imageNamed:@"default_adv"];
+                // 本地广告图不存在,则UserDefault中缓存的adv_url也应该失效
+                NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+                [userDefault removeObjectForKey:@"adv_url"];
+                [userDefault synchronize];
             }
         }
         
@@ -243,8 +247,7 @@
     // 全局内存警告监听，清空图片内存缓存
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearImageCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     
-    
-#warning 测试广告位图片效果,暂时关闭异步网络加载，Defalut图片去掉上面的状态栏(图片问题)
+    // 异步加载广告图
     if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
         advImage = [UIImage imageNamed:@"default_adv"];
     }else{  // 网络可用
@@ -314,10 +317,10 @@
 }
 
 + (void)initialize{
-#warning 发布时替换bundleId,注释掉就可以
-    NSString *bundleID = @"com.glavesoft.app.17lu";
-    [iVersion sharedInstance].applicationBundleID = bundleID;
-    [iRate sharedInstance].applicationBundleID = bundleID;
+    //发布时替换bundleId,注释掉就可以
+//    NSString *bundleID = @"com.glavesoft.app.17lu";
+//    [iVersion sharedInstance].applicationBundleID = bundleID;
+//    [iRate sharedInstance].applicationBundleID = bundleID;
     
 //    [iVersion sharedInstance].applicationVersion = @"1.2.0.0"; // 覆盖bundle中的版本信息,测试用
     [iVersion sharedInstance].verboseLogging = false;   // 调试信息

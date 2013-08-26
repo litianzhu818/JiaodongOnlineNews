@@ -86,6 +86,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
+    tpkey.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     [contentback setImage:[[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3]];
     [contentback setFrame:content.frame];

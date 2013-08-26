@@ -70,7 +70,6 @@
     NSDate *HUDShowTime;
 }
 
-#warning checkbox的背景色和边框需要修改
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView{
     if ((self = [super init])) {
         typeStrings = @[@"投诉",@"咨询",@"建议",@"反馈"];

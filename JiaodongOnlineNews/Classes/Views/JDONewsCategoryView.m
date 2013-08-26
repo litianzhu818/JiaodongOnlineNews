@@ -404,7 +404,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *headlineIdentifier = @"headlineIdentifier";
     static NSString *listIdentifier = @"listIdentifier";
-    #warning 测试时暂时不开启磁盘缓存 SDWebImageCacheMemoryOnly
     
     if(indexPath.section == 0){
         JDONewsHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:headlineIdentifier];
@@ -452,7 +451,7 @@
         JDONewsModel* model = [self.listArray objectAtIndex:indexPath.row];
         JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:model];
         [model setRead:TRUE];
-        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:nil];
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.readDB save:[model id]];
         JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
         [centerController pushViewController:detailController animated:true];

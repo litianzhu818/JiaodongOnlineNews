@@ -27,7 +27,6 @@
 
 @end
 
-#warning 新闻的评论列表应该可以直接添加评论,在下方增加输入框
 @implementation JDOReviewListController
 
 -(id)initWithType:(JDOReviewType)type params:(NSDictionary *)params{
@@ -83,7 +82,6 @@
 - (void)viewDidUnload{
     [super viewDidUnload];
     [self setToolbar:nil];
-    [self setStatusView:nil];
     
     [_blackMask removeGestureRecognizer:self.closeReviewGesture];
 }

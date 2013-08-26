@@ -68,7 +68,7 @@
     }
 }
 
-#warning 检查所有有导航栏的界面navigationView添加的位置
+// 所有有导航栏的界面navigationView都应该在视图层级的最后添加或者bringToFront
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
     [self.navigationView setTitle:self.navTitle];

@@ -58,7 +58,6 @@
         self.widthConfig = widthConfig;
         self.theme = theme;
         self.frameHeight = frame.size.height;
-#warning 查询该新闻是否被收藏
         
         _isKeyboardShowing = false;
         _reviewType = JDOReviewTypeNews;
