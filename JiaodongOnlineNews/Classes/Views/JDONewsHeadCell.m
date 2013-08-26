@@ -131,8 +131,12 @@
         CGPoint p = CGPointZero;
         p.x = pageWidth;
         [_scrollView setContentOffset:p animated:NO];
+    } else {//在第一页，就把指针移到第一项
+        self._currentPage = 0;
+        JDONewsModel *newsModel = (JDONewsModel *)[_models objectAtIndex:0];
+        _titleLabel.text = newsModel.title;
+        [_scrollView setContentOffset:CGPointZero animated:NO];
     }
-    
 }
 
 - (void)dealloc{
