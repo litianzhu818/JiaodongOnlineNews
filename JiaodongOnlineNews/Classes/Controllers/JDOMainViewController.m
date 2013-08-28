@@ -45,6 +45,8 @@
     }else{
         [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+        // 本应用安装到iPad时,状态栏方向有可能与应用朝向不一直(横向iPad时启动应用,则状态栏一直保留在横向)，故在此强制设置
+        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:false];
     }
 }
 
@@ -74,6 +76,7 @@
     [_introductionView removeFromSuperview];
     [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:false];
     
     self.view.frame = CGRectMake(0, 20, 320, App_Height);
     

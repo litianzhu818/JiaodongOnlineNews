@@ -98,7 +98,9 @@
             UIImage *downloadImage = [UIImage imageWithData:imgData];
             // 同比缩放
 //            advImage=[JDOImageUtil adjustImage:downloadImage toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
-            advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320, App_Height)];
+            // 调整为后台上传多套广告图来适配不同屏幕尺寸，不需要再在客户端进行图片调整也可以。
+            advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320*[UIScreen mainScreen].scale, App_Height*[UIScreen mainScreen].scale)];
+//            advImage = downloadImage;
             
             // 图片加载成功后才保存服务器版本号
             [userDefault setObject:advServerURL forKey:@"adv_url"];
@@ -116,7 +118,8 @@
             if(imgData){
                 // 同比缩放
 //                advImage = [JDOImageUtil adjustImage:[UIImage imageWithData:imgData] toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
-                advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320, App_Height)];
+                advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320*[UIScreen mainScreen].scale, App_Height*[UIScreen mainScreen].scale)];
+//                advImage = [UIImage imageWithData:imgData];
             }else{
                 // 从本地路径加载缓存广告图失败,使用默认广告图
                 advImage = [UIImage imageNamed:@"default_adv"];
