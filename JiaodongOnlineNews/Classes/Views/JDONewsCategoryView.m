@@ -35,6 +35,7 @@
 @implementation JDONewsCategoryView{
     MBProgressHUD *HUD;
     NSDate *HUDShowTime;
+    BOOL needReloadHeaderSection;
 }
 
 - (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info readDB:(JDOReadDB*)readDB{
@@ -296,6 +297,7 @@
     self.isShowingLocalCache = false;
     [self.tableView.pullToRefreshView stopAnimating];
     [self updateLastRefreshTime];
+    needReloadHeaderSection = true;
 //    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,2)] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadData];
 }
@@ -330,6 +332,7 @@
     self.headArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:self.info.reuseId]]] mutableCopy];
     self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]] mutableCopy];
     [self.readDB isExistById:self.listArray];
+    needReloadHeaderSection = true;
     // 任何一个数组为空都任务本地缓存无效
     return self.headArray && self.listArray;
 }
@@ -410,11 +413,12 @@
         if(cell == nil){
             cell = [[JDONewsHeadCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headlineIdentifier];
         }
-        if(self.headArray.count > 0){
+        if(self.headArray.count > 0 && needReloadHeaderSection){
             [cell setModels:self.headArray];
             for(int i=0; i<cell.imageViews.count; i++){
                 [[cell.imageViews objectAtIndex:i] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(galleryImageClicked:)]];
             }
+            needReloadHeaderSection = false;
         }
         return cell;
     }else{

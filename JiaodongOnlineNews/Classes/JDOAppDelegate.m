@@ -251,8 +251,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearImageCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     
     // 异步加载广告图
-    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
-        advImage = [UIImage imageNamed:@"default_adv"];
+    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用已缓存广告图或者默认广告图
+        NSFileManager * fm = [NSFileManager defaultManager];
+        NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
+        advImage = imgData ? [UIImage imageWithData:imgData] : [UIImage imageNamed:@"default_adv"];
     }else{  // 网络可用
         [self asyncLoadAdvertise];
     }
@@ -262,7 +264,7 @@
     
     // 键盘第一次出现时会有显著的延迟(1-2秒),使用此workround在不可见的位置强制触发一次键盘时间来提前加载。
     // 据说此问题只出现在debug模式(和优化级别有关)，所以这不是一个真正的问题。
-    [UIResponder cacheKeyboard:true];
+//    [UIResponder cacheKeyboard:true];
     
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
     splashView.image = [UIImage imageNamed:@"Default"];
@@ -516,7 +518,7 @@
      连接QQ应用以使用相关功能，此应用需要引用QQConnection.framework和QQApi.framework库
     // http://mobile.qq.com/api/上注册应用，并将相关信息填写到以下字段
      **/
-    // 应用管理账户383926109
+    // 应用管理账户383926109，AppId是由QQ互联的appKey(QQ空间)转换成16进制得到的
     [ShareSDK connectQQWithAppId:@"QQ05FD7789" qqApiCls:[QQApi class]];
     
     /**

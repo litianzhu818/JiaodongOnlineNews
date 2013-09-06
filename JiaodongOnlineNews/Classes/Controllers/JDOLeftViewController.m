@@ -142,7 +142,7 @@
 - (void)openWeather {
     JDOConvenienceItemController *controller = nil;
     controller = [[JDOConvenienceItemController alloc] initWithService:CONVENIENCE_SERVICE params:@{@"channelid":@"21"} title:@"烟台天气"];
-    controller.deletetitle = NO;
+    controller.deletetitle = true;
     [self pushViewController:controller];
     //JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
 
