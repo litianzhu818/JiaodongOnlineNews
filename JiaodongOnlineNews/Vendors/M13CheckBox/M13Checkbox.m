@@ -36,7 +36,7 @@
     if (self) {
         UIImage *selectimage = [UIImage imageNamed:@"vio_checkbox_selected"];
         UIImage *unselectimage = [UIImage imageNamed:@"vio_checkbox"];
-        UIImage *fillimage = [[UIImage alloc] init];
+        UIImage *fillimage ;
         if (checkbox.checkState == M13CheckboxStateUnchecked) {
             fillimage = unselectimage;
         } else {
@@ -52,7 +52,7 @@
 {
     UIImage *selectimage = [UIImage imageNamed:@"vio_checkbox_selected"];
     UIImage *unselectimage = [UIImage imageNamed:@"vio_checkbox"];
-    UIImage *fillimage = [[UIImage alloc] init];
+    UIImage *fillimage ;
     if (checkbox.checkState == M13CheckboxStateUnchecked) {
         fillimage = unselectimage;
     } else {

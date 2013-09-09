@@ -206,35 +206,31 @@
 }
 
 -(void)setPageFrame {
-    ((UIImageView *)[self.imageViews objectAtIndex:0]).frame = CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
-    ((UIImageView *)[self.imageViews objectAtIndex:1]).frame = CGRectMake(_scrollView.frame.size.width, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
-    ((UIImageView *)[self.imageViews objectAtIndex:2]).frame = CGRectMake(_scrollView.frame.size.width * 2, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
+    for(int i=0 ;i<self.imageViews.count; i++){
+        ((UIImageView *)[self.imageViews objectAtIndex:i]).frame = CGRectMake(_scrollView.frame.size.width * i, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
+    }
 }
 
 - (void)pageMoveToRight {
-    UIView *tmp = (UIImageView *)[self.imageViews objectAtIndex:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:0]) atIndexedSubscript:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:2]) atIndexedSubscript:0];
-    [self.imageViews setObject:tmp atIndexedSubscript:2];
+    UIView *lastView = (UIImageView *)[self.imageViews objectAtIndex:self.imageViews.count -1];
+    [self.imageViews removeObject:lastView];
+    [self.imageViews insertObject:lastView atIndex:0];
 
-    NSObject *temp = [self.models objectAtIndex:1];
-    [self.models setObject:[self.models objectAtIndex:0] atIndexedSubscript:1];
-    [self.models setObject:[self.models objectAtIndex:2] atIndexedSubscript:0];
-    [self.models setObject:temp atIndexedSubscript:2];
+    NSObject *lastModel = [self.models objectAtIndex:self.models.count -1];
+    [self.models removeObject:lastModel];
+    [self.models insertObject:lastModel atIndex:0];
     
     [self setPageFrame];
 }
 
 - (void)pageMoveToLeft {
-    UIView *tmp = (UIImageView *)[self.imageViews objectAtIndex:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:2]) atIndexedSubscript:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:0]) atIndexedSubscript:2];
-    [self.imageViews setObject:tmp atIndexedSubscript:0];
+    UIView *firstView = (UIImageView *)[self.imageViews objectAtIndex:0];
+    [self.imageViews removeObject:firstView];
+    [self.imageViews addObject:firstView];
     
-    NSObject *temp = [self.models objectAtIndex:1];
-    [self.models setObject:[self.models objectAtIndex:2] atIndexedSubscript:1];
-    [self.models setObject:[self.models objectAtIndex:0] atIndexedSubscript:2];
-    [self.models setObject:temp atIndexedSubscript:0];
+    NSObject *firstModel = [self.models objectAtIndex:0];
+    [self.models removeObject:firstModel];
+    [self.models addObject:firstModel];
     
     [self setPageFrame];
 }

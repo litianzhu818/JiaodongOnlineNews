@@ -122,39 +122,32 @@
         [self.navigationController pushViewController:lifeknowledge animated:YES];
     } else {
         NSString *title ,*channelId;
-        BOOL deletetitle;
+        BOOL deletetitle = true;
         
         switch (index) {
             case 1:
                 title = @"客运时刻";
                 channelId = @"22";
-                deletetitle = YES;
                 break;
             case 2:
                 title = @"火车时刻";
                 channelId = @"23";
-                deletetitle = YES;
                 break;
             case 3:
                 title = @"船运时刻";
                 channelId = @"24";
-                deletetitle = YES;
                 break;
             case 5:
                 title = @"航空时刻";
                 channelId = @"25";
-                deletetitle = YES;
                 break;
             case 6:
                 title = @"常用电话";
                 channelId = @"26";
-                deletetitle = NO;
+                deletetitle = false;
                 break;
-                
             case 8:
                 return;
-                break;
-                 
         }
         JDOConvenienceItemController *controller = [[JDOConvenienceItemController alloc] initWithService:CONVENIENCE_SERVICE params:@{@"channelid":channelId} title:title];
         controller.deletetitle = deletetitle;
