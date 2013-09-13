@@ -25,7 +25,7 @@
 		238B5248EF1B46D1A622AADF /* WebViewJavascriptBridgeAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C87171A88D84AEF9ED56B5D /* WebViewJavascriptBridgeAbstract.h */; };
 		26FE9E800AB946B38CF8BD09 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A515E9BCC50D47ECBC1E03EC /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		29C1DED0F77C4C90A3CC7285 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D39C485D149DE86AECB74 /* DDAbstractDatabaseLogger.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-checker"; }; };
-		2DD8ED4F17E2BCED00A1038A /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = EBC2F2E64F0B428C9827CB56 /* JSONKit.m */; };
+		2DD8ED4F17E2BCED00A1038A /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = EBC2F2E64F0B428C9827CB56 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		341785EF925142D4803267AA /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAA3E4F15240C3A4F2FBD1 /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		343A2CD3F1E94A65BA12A13D /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EEACB305A0143E9938764FC /* AFHTTPClient.h */; };
 		37CB3F8461064F02B51C7C15 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D80440A88E24B6A8EC38A67 /* SDWebImageManager.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };

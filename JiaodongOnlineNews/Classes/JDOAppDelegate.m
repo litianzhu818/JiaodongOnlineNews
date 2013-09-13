@@ -699,52 +699,57 @@
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_News"] == nil) {
             // 尚未成功设置新闻tag，只要有一次设置tag成功，则JDO_Push_News!=nil，就不需要在bindChannel时再次设置tag
             // 目前尚不清楚bindChannel后userid改变的情况会造成怎样的影响
-            [BPush setTag:@"ALL_NEWS_TAG"];
-#warning 百度的api是错误的,调用delTag时回调的method参数依然是set_tag,目前唯一的解决办法只能忽略服务器返回状态，在调用setTag/delTag的时候就设置UserDefault
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
+            self.currentPushTag = @"ALL_NEWS_TAG";
+            [BPush setTag:self.currentPushTag];
+/* 
+ *  百度的api是错误的,调用delTag时回调的method参数依然是set_tag,目前唯一的解决办法只能忽略服务器返回状态，
+ *  在调用setTag/delTag的时候就设置UserDefault
+ *  状态：已修复
+ *  百度API修复版本：V1.1.0
+ *  客户端修复版本：V3.0.1
+ */
+//            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
         }
     }else if([BPushRequestMethod_SetTag isEqualToString:method]){
-//        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-//        NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
-//        if (tag == nil) {   // 防止百度修改json的返回结构导致无法获得tag
-//            tag = @"ALL_NEWS_TAG";
-//        }
-//        
-//        if (returnCode != BPushErrorCode_Success) {
-//            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-//            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
-//                NSLog(@"设置Tag失败次数超过最大值");
-//                return;
-//            }
-//            bindErrorCount ++;
-//            [BPush setTag:tag];
-//        }else{
-//            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {    
-//                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
-//            }
-//        }
+        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode != BPushErrorCode_Success) {
+            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
+                NSLog(@"设置Tag失败次数超过最大值");
+                return;
+            }
+            bindErrorCount ++;
+            // returnCode返回错误类型时,不会带details的json结构，故无法从返回结果中获取tag参数，暂时使用currentPushTag来保存，但可能在并发时会造成混乱，按道理说百度应该在回调失败返回的json结构中携带tag信息
+            [BPush setTag:self.currentPushTag];
+        }else{
+            NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
+            if (tag == nil) {   // details的结构未在文档中明确定义，防止其变动导致错误
+                tag = @"ALL_NEWS_TAG";
+            }
+            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {    
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
+            }
+        }
     }else if([BPushRequestMethod_DelTag isEqualToString:method]){
-//        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-//        NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
-//        if (tag == nil) {   // 防止百度修改json的返回结构导致无法获得tag
-//            tag = @"ALL_NEWS_TAG";
-//        }
-//        
-//        if (returnCode != BPushErrorCode_Success) {
-//            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-//            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
-//                NSLog(@"删除Tag失败次数超过最大值");
-//                return;
-//            }
-//            bindErrorCount ++;
-//            [BPush delTag:tag];
-//        }else{
-//            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {
-//                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];
-//            }
-//        }
+        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode != BPushErrorCode_Success) {
+            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
+                NSLog(@"删除Tag失败次数超过最大值");
+                return;
+            }
+            bindErrorCount ++;
+            [BPush delTag:self.currentPushTag];
+        }else{
+            NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
+            if (tag == nil) {   // details的结构未在文档中明确定义，防止其变动导致错误
+                tag = @"ALL_NEWS_TAG";
+            }
+            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];
+            }
+        }
     }
 }
-
 
 @end

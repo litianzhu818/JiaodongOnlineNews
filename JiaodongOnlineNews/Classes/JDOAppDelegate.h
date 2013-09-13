@@ -21,6 +21,8 @@
 @property (strong, nonatomic) NSString *topicDetailCachePath;
 @property (strong, nonatomic) NSString *convenienceCachePath;
 
+@property (assign, nonatomic) NSString * currentPushTag;
+
 - (IIViewDeckController *)generateControllerStack;
 - (void)checkForNewVersion;
 - (void)promptForRating;

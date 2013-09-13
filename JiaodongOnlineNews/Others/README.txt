@@ -8,3 +8,16 @@ iOS-Hierarchy-Viewer 用来查看视图层级
 5.find or get from logs device/simulator ip address and go to ‘http://[ip_address]:9449′ address (Chrome/Firefox only)
 
 使用完毕后反向操作，以减小发布包的大小。
+
+##########################################################################################
+
+百度云推送测试
+
+步骤：
+1.build setting中修改签名为开发者签名
+2.BPushConfig.plist中 设置product_mode = no
+3.推送后台web界面上选择"开发版"
+
+发布时需调整为生产版本，以上操作反向。
+
+##########################################################################################
