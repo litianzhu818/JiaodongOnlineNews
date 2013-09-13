@@ -34,6 +34,7 @@
 #import "JDOMainViewController.h"
 #import "JDOViolationViewController.h"
 #import <Crashlytics/Crashlytics.h>
+//#import "iOSHierarchyViewer.h"
 
 #define splash_stay_time 1.0 //1.0
 #define advertise_stay_time 1.0 //2.0
@@ -272,6 +273,7 @@
     
     [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];
     
+    bindErrorCount = 0;
     // 注册百度推送
     [BPush setupChannel:launchOptions]; // 必须
     [BPush setDelegate:self]; // 必须。参数对象必须实现onMethod: response:方法
@@ -281,7 +283,6 @@
     /* 第一次注册推送时弹出的Alert窗口，选择"不允许"则会将提醒样式设置为无、关闭声音和标记，选择"好"则设置为横幅、打开声音和标记，
      "是否在通知中心显示"，"是否在锁屏界面显示"不由程序决定，http://stackoverflow.com/questions/18120527/what-determined-ios-app-is-in-notification-center-or-not-in-notification-center，无论是否允许都不影响设备从APN获取token并执行回调。推送的开启是应用单方面决定的，只要didRegisterForRemoteNotificationsWithDeviceToken返回该设备token并且应用服务器持续向该token发送消息，就一直能到达。
      */
-    bindErrorCount = 0;
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert| UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
     
     [self clearNotifications];
@@ -574,6 +575,8 @@
 {
     [self clearNotifications];
 #warning 若页面停留在新闻图片等可刷新模块，应根据超时参考值判断是否自动刷新
+    // 测试页面层级
+//    [iOSHierarchyViewer start];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -678,14 +681,14 @@
     if ([BPushRequestMethod_Bind isEqualToString:method])
     {
         int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-        if (returnCode != 0) {
+        if (returnCode != BPushErrorCode_Success) {
             NSLog(@"推送服务绑定错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
+            if( returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
                 NSLog(@"推送服务绑定失败次数超过最大值");
                 return;
             }
-            [BPush bindChannel];
-            bindErrorCount ++;
+            bindErrorCount ++; //[BPush bindChannel]和onMethod回调都在主线程中执行，若在bindChannel后再计数，会造成bindErrorCount始终为0并无限循环，直至绑定成功，界面会一直卡在主线程。
+            [BPush bindChannel]; 
             return;
         }
         // 保存userId,用于设置违章推送的目标,违章推送永远处于开启状态
@@ -707,14 +710,14 @@
 //            tag = @"ALL_NEWS_TAG";
 //        }
 //        
-//        if (returnCode != 0) {
+//        if (returnCode != BPushErrorCode_Success) {
 //            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-//            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
+//            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
 //                NSLog(@"设置Tag失败次数超过最大值");
 //                return;
 //            }
-//            [BPush setTag:tag];
 //            bindErrorCount ++;
+//            [BPush setTag:tag];
 //        }else{
 //            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {    
 //                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
@@ -727,14 +730,14 @@
 //            tag = @"ALL_NEWS_TAG";
 //        }
 //        
-//        if (returnCode != 0) {
+//        if (returnCode != BPushErrorCode_Success) {
 //            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-//            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
+//            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
 //                NSLog(@"删除Tag失败次数超过最大值");
 //                return;
 //            }
-//            [BPush delTag:tag];
 //            bindErrorCount ++;
+//            [BPush delTag:tag];
 //        }else{
 //            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {
 //                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];

@@ -501,6 +501,7 @@
 		2DC49E2C179FA007008374F2 /* leftside_shadow_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E20179FA007008374F2 /* leftside_shadow_bg@2x.png */; };
 		2DC49E2E179FA02D008374F2 /* icon02.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E2D179FA02C008374F2 /* icon02.png */; };
 		2DC49E30179FA04F008374F2 /* img_set_flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E2F179FA04F008374F2 /* img_set_flag.png */; };
+		2DD8ED4E17E2BC5B00A1038A /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8ED4D17E2BC5B00A1038A /* README.txt */; };
 		2DDC4D3E177927A0007CF9E0 /* JDOImageDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDC4D3D177927A0007CF9E0 /* JDOImageDetailController.m */; };
 		2DDC4D4717792F7C007CF9E0 /* JDOImageDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDC4D4617792F7C007CF9E0 /* JDOImageDetailModel.m */; };
 		2DDFCCE2174D167D007E89F9 /* JDOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFCCE0174D167D007E89F9 /* JDOSettingViewController.m */; };
@@ -1058,6 +1059,8 @@
 		2DA29D2E17B8741700CE2F7B /* MYIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYIntroductionView.m; sourceTree = "<group>"; };
 		2DA29D3117B8743300CE2F7B /* JDOMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOMainViewController.h; sourceTree = "<group>"; };
 		2DA29D3217B8743300CE2F7B /* JDOMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOMainViewController.m; sourceTree = "<group>"; };
+		2DA30FD717E29A2200930EA2 /* iOSHierarchyViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOSHierarchyViewer.h; sourceTree = "<group>"; };
+		2DA30FD817E29A2200930EA2 /* libiOSHierarchyViewer_fat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiOSHierarchyViewer_fat.a; sourceTree = "<group>"; };
 		2DA3C4C6178EA56D009817A6 /* JDOQuestionDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOQuestionDetailModel.h; sourceTree = "<group>"; };
 		2DA3C4C7178EA56D009817A6 /* JDOQuestionDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOQuestionDetailModel.m; sourceTree = "<group>"; };
 		2DA3C4CE178EC0A6009817A6 /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
@@ -1328,6 +1331,7 @@
 		2DC49E20179FA007008374F2 /* leftside_shadow_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftside_shadow_bg@2x.png"; sourceTree = "<group>"; };
 		2DC49E2D179FA02C008374F2 /* icon02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon02.png; sourceTree = "<group>"; };
 		2DC49E2F179FA04F008374F2 /* img_set_flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_set_flag.png; sourceTree = "<group>"; };
+		2DD8ED4D17E2BC5B00A1038A /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		2DDC4D3C177927A0007CF9E0 /* JDOImageDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageDetailController.h; sourceTree = "<group>"; };
 		2DDC4D3D177927A0007CF9E0 /* JDOImageDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageDetailController.m; sourceTree = "<group>"; };
 		2DDC4D4517792F7C007CF9E0 /* JDOImageDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageDetailModel.h; sourceTree = "<group>"; };
@@ -1877,6 +1881,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2DA30FD317E2925700930EA2 /* Hierarchy Viewer */,
 				2DA29D2A17B873D900CE2F7B /* iPhone-IntroductionTutorial */,
 				A75A4F0417B09DAF0084ADD5 /* ITWLoadingPanel */,
 				2DAADB4D17AA7713001EBD43 /* BPush */,
@@ -2227,6 +2232,7 @@
 				2D97A94F1785547800CEEE82 /* vote.css */,
 				2DE932081772E99D00A87ACC /* weather.xml */,
 				2DAADB5117AA7793001EBD43 /* BPushConfig.plist */,
+				2DD8ED4D17E2BC5B00A1038A /* README.txt */,
 			);
 			name = Others;
 			path = JiaodongOnlineNews/Others;
@@ -2658,6 +2664,15 @@
 				2DA29D2E17B8741700CE2F7B /* MYIntroductionView.m */,
 			);
 			path = "iPhone-IntroductionTutorial";
+			sourceTree = "<group>";
+		};
+		2DA30FD317E2925700930EA2 /* Hierarchy Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				2DA30FD717E29A2200930EA2 /* iOSHierarchyViewer.h */,
+				2DA30FD817E29A2200930EA2 /* libiOSHierarchyViewer_fat.a */,
+			);
+			path = "Hierarchy Viewer";
 			sourceTree = "<group>";
 		};
 		2DAADB3317AA4C6C001EBD43 /* Guide */ = {
@@ -3373,6 +3388,7 @@
 				2D4FCD5B17CB4950003515BF /* default_adv@2x.png in Resources */,
 				2D4FCD5C17CB4950003515BF /* default_adv-568h@2x.png in Resources */,
 				2D4FCD5E17CB49A8003515BF /* default_adv.png in Resources */,
+				2DD8ED4E17E2BC5B00A1038A /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3758,6 +3774,22 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy Viewer\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					Foundation,
+					"-framework",
+					ImageIO,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					SystemConfiguration,
+					"-framework",
+					UIKit,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
@@ -3792,6 +3824,22 @@
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
 					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
+					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy Viewer\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					Foundation,
+					"-framework",
+					ImageIO,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					SystemConfiguration,
+					"-framework",
+					UIKit,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";

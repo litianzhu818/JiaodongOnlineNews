@@ -10,11 +10,14 @@
 #import "NimbusPagingScrollView.h"
 //#import "PopoverView.h"
 
+@class TPKeyboardAvoidingScrollView;
+
 @interface JDOLivehoodAskQuestion : NIPageView 
 
 @property (nonatomic,strong) NSDictionary *info;
 @property (strong,nonatomic) UIView *rootView;
 @property (strong,nonatomic) NSMutableArray *Quesids;
+@property (strong,nonatomic) TPKeyboardAvoidingScrollView *mainView;
 
 - (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info rootView:(UIView *)rootView;
 - (void)saveQuesMessage:(NSString *)Message;
