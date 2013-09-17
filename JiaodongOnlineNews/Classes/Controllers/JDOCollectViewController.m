@@ -129,24 +129,28 @@
             page = (JDOCollectView *)[pagingScrollView dequeueReusablePageWithIdentifier:@"news"];
             if (nil == page) {
                 page = [[JDOCollectNewsView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+                page.tableView.scrollsToTop = true;
             }
             break;
         case 1:
             page = (JDOCollectView *)[pagingScrollView dequeueReusablePageWithIdentifier:@"images"];
             if (nil == page) {
                 page = [[JDOCollectImageView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+                page.tableView.scrollsToTop = false;
             }
             break;
         case 2:
             page = (JDOCollectView *)[pagingScrollView dequeueReusablePageWithIdentifier:@"topic"];
             if (nil == page) {
                 page = [[JDOCollectTopicView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+                page.tableView.scrollsToTop = false;
             }
             break;
         case 3:
             page = (JDOCollectView *)[pagingScrollView dequeueReusablePageWithIdentifier:@"question"];
             if (nil == page) {
                 page = [[JDOCollectQuestionView alloc] initWithFrame:_scrollView.bounds collectDB:self.db];
+                page.tableView.scrollsToTop = false;
             }
             break;
             
@@ -161,10 +165,14 @@
     UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
     [self setRightBtnEditing:tableview.editing];
     _pageControl.lastPageIndex = pagingScrollView.centerPageIndex;
+    
+    tableview.scrollsToTop = true;
 }
 - (void)pagingScrollViewWillChangePages:(NIPagingScrollView *)pagingScrollView{
     UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
     [tableview setEditing:NO animated:YES];
+    
+    tableview.scrollsToTop = false;
 }
 #pragma mark - ScrollView delegate
 

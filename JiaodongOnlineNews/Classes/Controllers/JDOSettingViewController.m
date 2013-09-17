@@ -155,14 +155,12 @@ BOOL downloadItemClickable = TRUE;
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
         case JDOSettingItemPushService:{
-            // 通知服务器开启或关闭推送服务
+            // 通知百度服务器开启或关闭新闻推送服务，实际上是通过设置和删除tag来实现的
+            [SharedAppDelegate setCurrentPushTag:@"ALL_NEWS_TAG"];
             if (sender.on) {
                 [BPush setTag:@"ALL_NEWS_TAG"];
-#warning 百度推送接口回调函数的Tag参数修正后，下面一行应去掉，在回调中根据成功状态设置UserDefault
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
             }else{
                 [BPush delTag:@"ALL_NEWS_TAG"];
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];
             }
             break;
         }

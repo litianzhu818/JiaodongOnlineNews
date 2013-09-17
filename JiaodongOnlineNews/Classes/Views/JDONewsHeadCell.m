@@ -37,6 +37,7 @@
         _scrollView.bounces = false;
         _scrollView.pagingEnabled = true;
         _scrollView.delegate = self;
+        _scrollView.scrollsToTop = false;
         
         self.imageViews = [NSMutableArray arrayWithCapacity:1];
         
@@ -66,31 +67,32 @@
         _pageControl.numberOfPages = 0;
         [self.contentView addSubview:_pageControl];
         
-        self._currentPage = 0;
+        self.currentPage = 0;
     }
     return self;
 }
 
-- (void)setModels:(NSArray *)models{
+- (void)setModels:(NSMutableArray *)models{
     _models = models;
     originModels = [models copy];
     // _titleBackground在有数据的时候才添加到contentView,是为了在显示占位图的时候不显示
+    // 因为setModels每次cellForRowAtIndexPath时都会被调用,只在第一次addSubview
     if( _titleBackground.superview == nil){
         [self.contentView insertSubview:_titleBackground belowSubview:_titleLabel];
     }
     
+    // 移除之前的图像,包括最初的占位图
     for(UIImageView *imageView in self.imageViews){
         [imageView removeGestureRecognizer:[imageView.gestureRecognizers lastObject] ];
     }
-    self.imageViews = [NSMutableArray arrayWithCapacity:models.count];
-    // 移除之前的图像,包括最初的占位图
     [[_scrollView subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [obj removeFromSuperview];
     }];
+    
     float width = CGRectGetWidth(self.bounds);
     float height = CGRectGetHeight(self.bounds);
-    
     _scrollView.contentSize = CGSizeMake(models.count *width, height);
+    self.imageViews = [NSMutableArray arrayWithCapacity:models.count];
     for (int i=0; i<models.count; i++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i*width, 0, width, height)];
         imageView.userInteractionEnabled = true;    // UIImageView默认不开启userInteraction
@@ -98,7 +100,7 @@
         [_scrollView addSubview:imageView];
         
         JDONewsModel *newsModel = (JDONewsModel *)[models objectAtIndex:i];
-        if( i==self._currentPage ){
+        if( i==self.currentPage ){
             _titleLabel.text = newsModel.title;
         }
             
@@ -123,7 +125,7 @@
     int page = [[[JDOCenterViewController sharedNewsViewController] pageControl] currentPage];
     if (page != 0) {
         CGFloat pageWidth = _scrollView.frame.size.width;
-        self._currentPage = floor((_scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+        self.currentPage = floor((_scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
         JDONewsModel *newsModel = (JDONewsModel *)[_models objectAtIndex:0];
         _titleLabel.text = newsModel.title;
         [self pageMoveToRight];
@@ -131,8 +133,8 @@
         CGPoint p = CGPointZero;
         p.x = pageWidth;
         [_scrollView setContentOffset:p animated:NO];
-    } else {//在第一页，就把指针移到第一项
-        self._currentPage = 0;
+    } else {    //在第一页，就把指针移到第一项
+        self.currentPage = 0;
         JDONewsModel *newsModel = (JDONewsModel *)[_models objectAtIndex:0];
         _titleLabel.text = newsModel.title;
         [_scrollView setContentOffset:CGPointZero animated:NO];
@@ -148,25 +150,23 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // 修改pageControl的位置和titleLabel的内容
-    CGFloat pageWidth = scrollView.frame.size.width;
-    self._currentPage = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    //float pageWidth = CGRectGetWidth(self.bounds);
-    //self._currentPage = _scrollView.contentOffset.x / pageWidth;
-    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self._currentPage];
+//    CGFloat pageWidth = scrollView.frame.size.width;
+//    self.currentPage = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    float pageWidth = CGRectGetWidth(self.bounds);
+    self.currentPage = _scrollView.contentOffset.x / pageWidth;
+    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self.currentPage];
     _pageControl.currentPage = [originModels indexOfObject:newsModel];
     _titleLabel.text = newsModel.title;
     
-    //NSLog(@"self._currentPage   %d", self._currentPage);
-    //NSLog(@"_pageControl.currentPage   %d", _pageControl.currentPage);
     int page = [[[JDOCenterViewController sharedNewsViewController] pageControl] currentPage];
-    if(self._currentPage == 1) {
+    if(self.currentPage == 1) {
         return;
-    } else if (self._currentPage == 0) {
+    } else if (self.currentPage == 0) {
         if (page == 0 && _pageControl.currentPage==0) {
             return;
         } else {
             //在最后一页第一个头条向右滑动的时候，将整个序列恢复成原始序列
-            if (page == [JDOCenterViewController sharedNewsViewController].pageControl.numberOfPages-1 && _pageControl.currentPage==2 && self._currentPage == 0) {
+            if (page == [JDOCenterViewController sharedNewsViewController].pageControl.numberOfPages-1 && _pageControl.currentPage==2 && self.currentPage == 0) {
                 [self.imageViews removeAllObjects];
                 [self.models removeAllObjects];
                 [self.imageViews addObjectsFromArray:originImages];
@@ -187,7 +187,7 @@
             return;
         } else {
             //在第一页第三个头条向左滑动的时候，将整个序列恢复成原始序列
-            if (page == 0 && _pageControl.currentPage==0 && self._currentPage == 2) {
+            if (page == 0 && _pageControl.currentPage==0 && self.currentPage == 2) {
                 [self.imageViews removeAllObjects];
                 [self.models removeAllObjects];
                 [self.imageViews addObjectsFromArray:originImages];
@@ -207,35 +207,31 @@
 }
 
 -(void)setPageFrame {
-    ((UIImageView *)[self.imageViews objectAtIndex:0]).frame = CGRectMake(_scrollView.frame.origin.x, _scrollView.frame.origin.y, _scrollView.frame.size.width, _scrollView.frame.size.height);
-    ((UIImageView *)[self.imageViews objectAtIndex:1]).frame = CGRectMake(_scrollView.frame.origin.x + _scrollView.frame.size.width, _scrollView.frame.origin.y, _scrollView.frame.size.width, _scrollView.frame.size.height);
-    ((UIImageView *)[self.imageViews objectAtIndex:2]).frame = CGRectMake(_scrollView.frame.origin.x + _scrollView.frame.size.width * 2, _scrollView.frame.origin.y, _scrollView.frame.size.width, _scrollView.frame.size.height);
+    for(int i=0 ;i<self.imageViews.count; i++){
+        ((UIImageView *)[self.imageViews objectAtIndex:i]).frame = CGRectMake(_scrollView.frame.size.width * i, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
+    }
 }
 
 - (void)pageMoveToRight {
-    UIView *tmp = (UIImageView *)[self.imageViews objectAtIndex:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:0]) atIndexedSubscript:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:2]) atIndexedSubscript:0];
-    [self.imageViews setObject:tmp atIndexedSubscript:2];
+    UIView *lastView = (UIImageView *)[self.imageViews objectAtIndex:self.imageViews.count -1];
+    [self.imageViews removeObject:lastView];
+    [self.imageViews insertObject:lastView atIndex:0];
 
-    NSObject *temp = [self.models objectAtIndex:1];
-    [self.models setObject:[self.models objectAtIndex:0] atIndexedSubscript:1];
-    [self.models setObject:[self.models objectAtIndex:2] atIndexedSubscript:0];
-    [self.models setObject:temp atIndexedSubscript:2];
+    NSObject *lastModel = [self.models objectAtIndex:self.models.count -1];
+    [self.models removeObject:lastModel];
+    [self.models insertObject:lastModel atIndex:0];
     
     [self setPageFrame];
 }
 
 - (void)pageMoveToLeft {
-    UIView *tmp = (UIImageView *)[self.imageViews objectAtIndex:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:2]) atIndexedSubscript:1];
-    [self.imageViews setObject:((UIImageView *)[self.imageViews objectAtIndex:0]) atIndexedSubscript:2];
-    [self.imageViews setObject:tmp atIndexedSubscript:0];
+    UIView *firstView = (UIImageView *)[self.imageViews objectAtIndex:0];
+    [self.imageViews removeObject:firstView];
+    [self.imageViews addObject:firstView];
     
-    NSObject *temp = [self.models objectAtIndex:1];
-    [self.models setObject:[self.models objectAtIndex:2] atIndexedSubscript:1];
-    [self.models setObject:[self.models objectAtIndex:0] atIndexedSubscript:2];
-    [self.models setObject:temp atIndexedSubscript:0];
+    NSObject *firstModel = [self.models objectAtIndex:0];
+    [self.models removeObject:firstModel];
+    [self.models addObject:firstModel];
     
     [self setPageFrame];
 }

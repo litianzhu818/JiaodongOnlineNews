@@ -374,7 +374,8 @@
         }
         photo.pages = [NSString stringWithFormat:@"%d/%d",i+1,imageDataList.count];
         photo.caption = detailModel.imagecontent;
-        [_photos setObject:photo atIndexedSubscript:i];
+//        [_photos setObject:photo atIndexedSubscript:i]; // iOS5.0以上可用
+        [_photos replaceObjectAtIndex:i withObject:photo];
         [_browser reloadData];
         return TRUE;
     } else {

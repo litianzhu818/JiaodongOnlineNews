@@ -316,7 +316,7 @@
             JDOSecondaryAskViewController *controller = [[JDOSecondaryAskViewController alloc] initWithNibName:nil bundle:nil quesid:self.questionModel.id];
             [self.navigationController pushViewController:controller animated:YES];
         }else{
-            [JDOCommonUtil showHintHUD:@"密码错误,请重新输入" inView:self.view];
+            [JDOCommonUtil showHintHUD:@"密码错误,请重新输入" inView:self.mainView];
             [(UITextField *)[alertView viewWithTag:Secret_Field_Tag] setText:nil];
         }
     }

@@ -34,6 +34,7 @@
 #import "JDOMainViewController.h"
 #import "JDOViolationViewController.h"
 #import <Crashlytics/Crashlytics.h>
+//#import "iOSHierarchyViewer.h"
 
 #define splash_stay_time 1.0 //1.0
 #define advertise_stay_time 1.0 //2.0
@@ -252,8 +253,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearImageCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     
     // 异步加载广告图
-    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用默认广告图
-        advImage = [UIImage imageNamed:@"default_adv"];
+    if( ![Reachability isEnableNetwork]){ // 网络不可用则直接使用已缓存广告图或者默认广告图
+        NSFileManager * fm = [NSFileManager defaultManager];
+        NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
+        advImage = imgData ? [UIImage imageWithData:imgData] : [UIImage imageNamed:@"default_adv"];
     }else{  // 网络可用
         [self asyncLoadAdvertise];
     }
@@ -263,7 +266,7 @@
     
     // 键盘第一次出现时会有显著的延迟(1-2秒),使用此workround在不可见的位置强制触发一次键盘时间来提前加载。
     // 据说此问题只出现在debug模式(和优化级别有关)，所以这不是一个真正的问题。
-    [UIResponder cacheKeyboard:true];
+//    [UIResponder cacheKeyboard:true];
     
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
     splashView.image = [UIImage imageNamed:@"Default"];
@@ -271,6 +274,7 @@
     
     [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];
     
+    bindErrorCount = 0;
     // 注册百度推送
     [BPush setupChannel:launchOptions]; // 必须
     [BPush setDelegate:self]; // 必须。参数对象必须实现onMethod: response:方法
@@ -280,7 +284,6 @@
     /* 第一次注册推送时弹出的Alert窗口，选择"不允许"则会将提醒样式设置为无、关闭声音和标记，选择"好"则设置为横幅、打开声音和标记，
      "是否在通知中心显示"，"是否在锁屏界面显示"不由程序决定，http://stackoverflow.com/questions/18120527/what-determined-ios-app-is-in-notification-center-or-not-in-notification-center，无论是否允许都不影响设备从APN获取token并执行回调。推送的开启是应用单方面决定的，只要didRegisterForRemoteNotificationsWithDeviceToken返回该设备token并且应用服务器持续向该token发送消息，就一直能到达。
      */
-    bindErrorCount = 0;
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert| UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
     
     [self clearNotifications];
@@ -517,7 +520,7 @@
      连接QQ应用以使用相关功能，此应用需要引用QQConnection.framework和QQApi.framework库
     // http://mobile.qq.com/api/上注册应用，并将相关信息填写到以下字段
      **/
-    // 应用管理账户383926109
+    // 应用管理账户383926109，AppId是由QQ互联的appKey(QQ空间)转换成16进制得到的
     [ShareSDK connectQQWithAppId:@"QQ05FD7789" qqApiCls:[QQApi class]];
     
     /**
@@ -573,6 +576,8 @@
 {
     [self clearNotifications];
 #warning 若页面停留在新闻图片等可刷新模块，应根据超时参考值判断是否自动刷新
+    // 测试页面层级
+//    [iOSHierarchyViewer start];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -677,14 +682,14 @@
     if ([BPushRequestMethod_Bind isEqualToString:method])
     {
         int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-        if (returnCode != 0) {
+        if (returnCode != BPushErrorCode_Success) {
             NSLog(@"推送服务绑定错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
+            if( returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
                 NSLog(@"推送服务绑定失败次数超过最大值");
                 return;
             }
-            [BPush bindChannel];
-            bindErrorCount ++;
+            bindErrorCount ++; //[BPush bindChannel]和onMethod回调都在主线程中执行，若在bindChannel后再计数，会造成bindErrorCount始终为0并无限循环，直至绑定成功，界面会一直卡在主线程。
+            [BPush bindChannel]; 
             return;
         }
         // 保存userId,用于设置违章推送的目标,违章推送永远处于开启状态
@@ -695,52 +700,57 @@
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"JDO_Push_News"] == nil) {
             // 尚未成功设置新闻tag，只要有一次设置tag成功，则JDO_Push_News!=nil，就不需要在bindChannel时再次设置tag
             // 目前尚不清楚bindChannel后userid改变的情况会造成怎样的影响
-            [BPush setTag:@"ALL_NEWS_TAG"];
-#warning 百度的api是错误的,调用delTag时回调的method参数依然是set_tag,目前唯一的解决办法只能忽略服务器返回状态，在调用setTag/delTag的时候就设置UserDefault
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
+            self.currentPushTag = @"ALL_NEWS_TAG";
+            [BPush setTag:self.currentPushTag];
+/* 
+ *  百度的api是错误的,调用delTag时回调的method参数依然是set_tag,目前唯一的解决办法只能忽略服务器返回状态，
+ *  在调用setTag/delTag的时候就设置UserDefault
+ *  状态：已修复
+ *  百度API修复版本：V1.1.0
+ *  客户端修复版本：V3.0.1
+ */
+//            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
         }
     }else if([BPushRequestMethod_SetTag isEqualToString:method]){
-//        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-//        NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
-//        if (tag == nil) {   // 防止百度修改json的返回结构导致无法获得tag
-//            tag = @"ALL_NEWS_TAG";
-//        }
-//        
-//        if (returnCode != 0) {
-//            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-//            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
-//                NSLog(@"设置Tag失败次数超过最大值");
-//                return;
-//            }
-//            [BPush setTag:tag];
-//            bindErrorCount ++;
-//        }else{
-//            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {    
-//                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
-//            }
-//        }
+        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode != BPushErrorCode_Success) {
+            NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
+                NSLog(@"设置Tag失败次数超过最大值");
+                return;
+            }
+            bindErrorCount ++;
+            // returnCode返回错误类型时,不会带details的json结构，故无法从返回结果中获取tag参数，暂时使用currentPushTag来保存，但可能在并发时会造成混乱，按道理说百度应该在回调失败返回的json结构中携带tag信息
+            [BPush setTag:self.currentPushTag];
+        }else{
+            NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
+            if (tag == nil) {   // details的结构未在文档中明确定义，防止其变动导致错误
+                tag = @"ALL_NEWS_TAG";
+            }
+            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {    
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
+            }
+        }
     }else if([BPushRequestMethod_DelTag isEqualToString:method]){
-//        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
-//        NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
-//        if (tag == nil) {   // 防止百度修改json的返回结构导致无法获得tag
-//            tag = @"ALL_NEWS_TAG";
-//        }
-//        
-//        if (returnCode != 0) {
-//            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
-//            if (bindErrorCount > MAX_BIND_ERROR_TIMES) {
-//                NSLog(@"删除Tag失败次数超过最大值");
-//                return;
-//            }
-//            [BPush delTag:tag];
-//            bindErrorCount ++;
-//        }else{
-//            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {
-//                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];
-//            }
-//        }
+        int returnCode = [[data valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode != BPushErrorCode_Success) {
+            NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
+            if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
+                NSLog(@"删除Tag失败次数超过最大值");
+                return;
+            }
+            bindErrorCount ++;
+            [BPush delTag:self.currentPushTag];
+        }else{
+            NSString *tag = [[[[data valueForKey:BPushRequestResponseParamsKey] valueForKey:@"details"] lastObject] objectForKey:@"tag"];
+            if (tag == nil) {   // details的结构未在文档中明确定义，防止其变动导致错误
+                tag = @"ALL_NEWS_TAG";
+            }
+            if ([tag isEqualToString:@"ALL_NEWS_TAG"]) {
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"JDO_Push_News"];
+            }
+        }
     }
 }
-
 
 @end

@@ -25,7 +25,6 @@
 
 @interface JDOLivehoodAskQuestion () <ActionSheetCustomPickerDelegate,UITextFieldDelegate,UITextViewDelegate>
 
-@property (strong,nonatomic) TPKeyboardAvoidingScrollView *mainView;
 @property (nonatomic,strong) SSTextView *titleInput;
 @property (nonatomic,strong) SSTextView *contentInput;
 @property (nonatomic,strong) UIButton *qTypeButton;
@@ -94,6 +93,7 @@
         self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
         _mainView = [[TPKeyboardAvoidingScrollView alloc] initWithFrame:self.bounds];
         _mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        _mainView.scrollsToTop = false;
         [self addSubview:_mainView];
         
         // 提示行
@@ -396,6 +396,7 @@
 
 - (SSTextView *) addTextViewOriginY:(CGFloat) originY height:(CGFloat) height {
     SSTextView *aTextView = [[SSTextView alloc] initWithFrame:CGRectMake(Label_Width+20, originY, Input_Width, height)];
+    aTextView.scrollsToTop = false;
     aTextView.backgroundColor = [UIColor clearColor];
     aTextView.font = [UIFont systemFontOfSize:Content_Font_Size];
     aTextView.contentInset = UIEdgeInsetsMake(-4, -2, 0, -2);

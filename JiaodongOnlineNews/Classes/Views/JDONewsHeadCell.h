@@ -17,6 +17,6 @@
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) StyledPageControl *pageControl;
 @property (nonatomic,strong) UIImageView *titleBackground;
-@property (nonatomic) int _currentPage;
+@property (nonatomic,assign) int currentPage;
 
 @end
