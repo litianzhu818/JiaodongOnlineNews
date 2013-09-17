@@ -49,7 +49,7 @@
 								<string key="NSFrame">{{10, 173}, {90, 35}}</string>
 								<reference key="NSSuperview" ref="490238489"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="964767530"/>
+								<reference key="NSNextKeyView" ref="618594278"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -162,6 +162,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
+									<int key="IBUIKeyboardType">7</int>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
 								<object class="NSCustomResource" key="IBUIBackground" id="276859168">
@@ -193,6 +194,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
+									<int key="IBUIKeyboardType">5</int>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
 								<reference key="IBUIBackground" ref="276859168"/>
@@ -272,7 +274,7 @@
 								<string key="NSFrame">{{146, 171}, {164, 90}}</string>
 								<reference key="NSSuperview" ref="490238489"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="618594278"/>
+								<reference key="NSNextKeyView" ref="41758086"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -283,7 +285,7 @@
 								<string key="NSFrame">{{108, 171}, {202, 90}}</string>
 								<reference key="NSSuperview" ref="490238489"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="41758086"/>
+								<reference key="NSNextKeyView" ref="964767530"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="107897727"/>
 								<bool key="IBUIClipsSubviews">YES</bool>

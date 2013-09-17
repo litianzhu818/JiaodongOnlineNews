@@ -23,4 +23,6 @@
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
 - (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect;
+- (void) buildWebViewJavascriptBridge;
+- (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary;
 @end

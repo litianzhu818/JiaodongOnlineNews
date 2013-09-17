@@ -122,6 +122,7 @@ static bool isShowingHint;
         case DateFormatMD:     formatString = @"MM/dd";  break;
         case DateFormatYMDHM:  formatString = @"yyyy/MM/dd HH:mm";  break;
         case DateFormatMDHM:   formatString = @"MM/dd HH:mm";  break;
+        case DateFormatYMDHMS:  formatString = @"yyyy-MM-dd HH:mm:ss"; break;
         default:    break;
     }
     [dateFormatter setDateFormat:formatString];
@@ -229,6 +230,7 @@ static bool isShowingHint;
         [JDOCommonUtil createDetailCacheDirectory:@"ImageDetailCache"];
         [JDOCommonUtil createDetailCacheDirectory:@"TopicDetailCache"];
         [JDOCommonUtil createDetailCacheDirectory:@"ConvenienceCache"];
+        [JDOCommonUtil createDetailCacheDirectory:@"PartyDetailCache"];
         return JDOCacheDirectory;
     }else{
         return diskCachePath;

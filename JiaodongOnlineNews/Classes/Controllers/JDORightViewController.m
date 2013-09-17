@@ -9,6 +9,7 @@
 #import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOSettingViewController.h"
+#import "JDOPartyViewController.h"
 #import "JDOFeedbackViewController.h"
 #import "JDOAboutUsViewController.h"
 #import "JDOShareAuthController.h"
@@ -29,7 +30,9 @@ typedef enum {
     RightMenuItemRate,
 //    RightMenuItemfeedback,
     RightMenuItemAbout,
+    RightMenuItemParty,
     RightMenuItemCount
+    
 } RightMenuItem;
 
 @interface JDORightViewController ()
@@ -39,6 +42,7 @@ typedef enum {
 @property (nonatomic,strong) JDOAboutUsViewController *aboutUsController;
 @property (nonatomic,strong) JDOShareAuthController *shareAuthController;
 @property (nonatomic,strong) JDOCollectViewController *collectController;
+@property (nonatomic,strong) JDOPartyViewController *partyController;
 
 @property (nonatomic,strong) UIView *blackMask;
 @property (nonatomic,strong) NSMutableArray *controllerStack;
@@ -54,8 +58,8 @@ typedef enum {
 - (id)init{
     self = [super init];
     if (self) {
-        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about"];
-        iconSelectedNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about"];
+        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about",@"menu_convenience"];
+        iconSelectedNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about",@"menu_convenience"];
 //        iconTitles = @[@"设  置",@"我的收藏",@"分享绑定",@"评价一下",@"意见反馈",@"关于我们",@"检查更新"];
     }
     return self;
@@ -178,6 +182,9 @@ typedef enum {
         case RightMenuItemRate:
             imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-3, 0, Menu_Item_Width, Menu_Cell_Height);
             break;
+        case RightMenuItemParty:
+            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-3, 0, Menu_Item_Width, Menu_Cell_Height);
+            break;
         default:
             break;
     }
@@ -244,6 +251,15 @@ typedef enum {
         case RightMenuItemRate:
             [SharedAppDelegate promptForRating];
             break;
+        case RightMenuItemParty:{
+            if( _partyController == nil){
+                _partyController = [[JDOPartyViewController alloc] init];
+            }
+            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
+                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_partyController orientation:JDOTransitionFromBottom animated:false];
+            } completion:^(IIViewDeckController *controller, BOOL success) {
+            }];
+            break;}
         default:
             break;
     }

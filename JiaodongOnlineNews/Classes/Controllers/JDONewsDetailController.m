@@ -56,17 +56,22 @@ NSArray *imageUrls;
 }
 #pragma mark - View Life Cycle
 
+- (NSArray *)setupToolBarBtnConfig {
+    NSArray *toolbarBtnConfig = @[
+                                  [NSNumber numberWithInt:ToolBarButtonReview],
+                                  [NSNumber numberWithInt:ToolBarButtonShare],
+                                  [NSNumber numberWithInt:ToolBarButtonFont],
+                                  [NSNumber numberWithInt:ToolBarButtonCollect]
+                                  ];
+    return toolbarBtnConfig;
+}
+
 - (void)loadView{
     [super loadView];
     // 内容
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
     // 工具栏
-    NSArray *toolbarBtnConfig = @[
-        [NSNumber numberWithInt:ToolBarButtonReview],
-        [NSNumber numberWithInt:ToolBarButtonShare],
-        [NSNumber numberWithInt:ToolBarButtonFont],
-        [NSNumber numberWithInt:ToolBarButtonCollect]
-    ];
+    NSArray *toolbarBtnConfig = [self setupToolBarBtnConfig];
     
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-44/*_toolbar.height*/)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
@@ -118,7 +123,7 @@ NSArray *imageUrls;
     [self loadWebView];
     [self buildWebViewJavascriptBridge];
     
-    _toolbar.bridge = self.bridge;
+    _toolbar.bridge = _bridge;
     
     self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
     _blackMask = self.view.blackMask;
@@ -204,12 +209,12 @@ NSArray *imageUrls;
 }
 
 - (void) saveNewsDetailToLocalCache:(NSDictionary *) newsDetail{
-    NSString *cacheFilePath = [[SharedAppDelegate newsDetailCachePath] stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:[newsDetail objectForKey:@"id"]]];
+    NSString *cacheFilePath = [[SharedAppDelegate newsDetailCachePath] stringByAppendingPathComponent:[@"NewsDetail_" stringByAppendingString:[newsDetail objectForKey:@"id"]]];
     [NSKeyedArchiver archiveRootObject:newsDetail toFile:cacheFilePath];
 }
 
 - (id) readNewsDetailFromLocalCache{
-    NSDictionary *detailModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/NewsDetailCache" stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:self.newsModel.id]])];
+    NSDictionary *detailModel = [NSKeyedUnarchiver unarchiveObjectWithFile: JDOGetCacheFilePath([@"JDOCache/NewsDetailCache" stringByAppendingPathComponent:[@"NewsDetail_" stringByAppendingString:self.newsModel.id]])];
     return detailModel;
 }
 

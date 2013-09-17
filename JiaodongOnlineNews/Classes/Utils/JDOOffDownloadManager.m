@@ -230,7 +230,7 @@ NSMutableArray *operations;
 }
 
 - (void) saveNewsDetailToLocalCache:(NSDictionary *) newsDetail{
-    NSString *cacheFilePath = [[SharedAppDelegate newsDetailCachePath] stringByAppendingPathComponent:[@"NewDetail_" stringByAppendingString:[newsDetail objectForKey:@"id"]]];
+    NSString *cacheFilePath = [[SharedAppDelegate newsDetailCachePath] stringByAppendingPathComponent:[@"NewsDetail_" stringByAppendingString:[newsDetail objectForKey:@"id"]]];
     [NSKeyedArchiver archiveRootObject:newsDetail toFile:cacheFilePath];
 }
 - (void) saveImageDetailToLocalCache:(NSArray *) imageDetail withId:(NSString *)id{

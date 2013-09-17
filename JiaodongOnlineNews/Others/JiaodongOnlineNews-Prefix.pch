@@ -91,9 +91,13 @@
 
 #define ADV_SERVICE @"Data/getAdv"
 #define IMAGE_SERVICE @"Data/getImages"
+#define PARTY_SERVICE @"Data/getActives"
+#define PARTY_DETAIL_SERVICE @"Data/getActiveDetail"
+#define PARTY_JOIN_SERVICE @"Data/getActiveConfig"
 #define NEWS_SERVICE @"Data/getArticles"
 #define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"
+#define ACTIVEREG_SERVICE @"Data/doActiveReg"
 #define RELATE_SERVICE @"Data/getRelateByAid"
 #define QUESTION_LIST_SERVICE @"Jdms/getQuestionList"
 #define QUESTION_DETAIL_SERVICE @"Jdms/questionDetail"

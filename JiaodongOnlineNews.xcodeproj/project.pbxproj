@@ -578,6 +578,11 @@
 		A7173D8B179FA8DD00AB2D43 /* WBRedGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D7E179FA8DD00AB2D43 /* WBRedGradientView.m */; };
 		A7173D8C179FA8DD00AB2D43 /* WBStickyNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D80179FA8DD00AB2D43 /* WBStickyNoticeView.m */; };
 		A7173D8D179FA8DD00AB2D43 /* WBSuccessNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7173D82179FA8DD00AB2D43 /* WBSuccessNoticeView.m */; };
+		A72FC40A17DF0070006782C9 /* commit_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A72FC40917DF0070006782C9 /* commit_btn.png */; };
+		A7309DF517D817D700BBA81A /* JDOPartyDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7309DF417D817D700BBA81A /* JDOPartyDetailController.m */; };
+		A7335F0A17D71C5600ABFFFC /* addr_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A7335F0717D71C5600ABFFFC /* addr_icon.png */; };
+		A7335F0B17D71C5600ABFFFC /* party_bound.png in Resources */ = {isa = PBXBuildFile; fileRef = A7335F0817D71C5600ABFFFC /* party_bound.png */; };
+		A7335F0C17D71C5600ABFFFC /* time_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A7335F0917D71C5600ABFFFC /* time_icon.png */; };
 		A733FE2517B234E30085DEDA /* cancelDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = A733FE2317B234E30085DEDA /* cancelDownload.png */; };
 		A733FE2617B234E30085DEDA /* downloadComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = A733FE2417B234E30085DEDA /* downloadComplete.png */; };
 		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
@@ -586,8 +591,13 @@
 		A74EAF8017C75574000E249D /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A74EAF7F17C75574000E249D /* loading.png */; };
 		A75A4F0817B09DAF0084ADD5 /* ITWLoadingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = A75A4F0617B09DAF0084ADD5 /* ITWLoadingPanel.m */; };
 		A75A4F0917B09DAF0084ADD5 /* ITWLoadingPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75A4F0717B09DAF0084ADD5 /* ITWLoadingPanel.xib */; };
+		A7668BEA17E00E8800D3D3C7 /* JDOPartyJoinController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7668BE917E00E8800D3D3C7 /* JDOPartyJoinController.m */; };
 		A76EC73D17A0C79E0063763C /* base_empty_view.png in Resources */ = {isa = PBXBuildFile; fileRef = A76EC73C17A0C79E0063763C /* base_empty_view.png */; };
 		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
+		A781102017D5BE7000C0359F /* JDOPartyDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A781101D17D5BE7000C0359F /* JDOPartyDetailModel.m */; };
+		A781102117D5BE7000C0359F /* JDOPartyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A781101F17D5BE7000C0359F /* JDOPartyModel.m */; };
+		A781102417D5C4FE00C0359F /* JDOPartyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A781102317D5C4FE00C0359F /* JDOPartyCell.m */; };
+		A782FDD017D58F370015965D /* JDOPartyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A782FDCF17D58F370015965D /* JDOPartyViewController.m */; };
 		C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C246968741DD4E76840F4CBA /* libPods.a */; };
 		D81516C917B0761E008F32BA /* vio_done.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516C717B0761E008F32BA /* vio_done.png */; };
 		D81516CA17B0761E008F32BA /* vio_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516C817B0761E008F32BA /* vio_edit.png */; };
@@ -1425,6 +1435,12 @@
 		A7173D80179FA8DD00AB2D43 /* WBStickyNoticeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBStickyNoticeView.m; sourceTree = "<group>"; };
 		A7173D81179FA8DD00AB2D43 /* WBSuccessNoticeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBSuccessNoticeView.h; sourceTree = "<group>"; };
 		A7173D82179FA8DD00AB2D43 /* WBSuccessNoticeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBSuccessNoticeView.m; sourceTree = "<group>"; };
+		A72FC40917DF0070006782C9 /* commit_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = commit_btn.png; path = Party/commit_btn.png; sourceTree = "<group>"; };
+		A7309DF317D817D700BBA81A /* JDOPartyDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyDetailController.h; sourceTree = "<group>"; };
+		A7309DF417D817D700BBA81A /* JDOPartyDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyDetailController.m; sourceTree = "<group>"; };
+		A7335F0717D71C5600ABFFFC /* addr_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addr_icon.png; path = Party/addr_icon.png; sourceTree = "<group>"; };
+		A7335F0817D71C5600ABFFFC /* party_bound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = party_bound.png; path = Party/party_bound.png; sourceTree = "<group>"; };
+		A7335F0917D71C5600ABFFFC /* time_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = time_icon.png; path = Party/time_icon.png; sourceTree = "<group>"; };
 		A733FE2317B234E30085DEDA /* cancelDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancelDownload.png; sourceTree = "<group>"; };
 		A733FE2417B234E30085DEDA /* downloadComplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloadComplete.png; sourceTree = "<group>"; };
 		A7341C7B178EB77C00ADD976 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -1437,9 +1453,19 @@
 		A75A4F0517B09DAF0084ADD5 /* ITWLoadingPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITWLoadingPanel.h; sourceTree = "<group>"; };
 		A75A4F0617B09DAF0084ADD5 /* ITWLoadingPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITWLoadingPanel.m; sourceTree = "<group>"; };
 		A75A4F0717B09DAF0084ADD5 /* ITWLoadingPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ITWLoadingPanel.xib; sourceTree = "<group>"; };
+		A7668BE817E00E8800D3D3C7 /* JDOPartyJoinController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyJoinController.h; sourceTree = "<group>"; };
+		A7668BE917E00E8800D3D3C7 /* JDOPartyJoinController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyJoinController.m; sourceTree = "<group>"; };
 		A76EC73C17A0C79E0063763C /* base_empty_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base_empty_view.png; sourceTree = "<group>"; };
 		A774BF21178D726100A3B866 /* JDOWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeather.h; sourceTree = "<group>"; };
 		A774BF22178D726100A3B866 /* JDOWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOWeather.m; sourceTree = "<group>"; };
+		A781101C17D5BE7000C0359F /* JDOPartyDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyDetailModel.h; sourceTree = "<group>"; };
+		A781101D17D5BE7000C0359F /* JDOPartyDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyDetailModel.m; sourceTree = "<group>"; };
+		A781101E17D5BE7000C0359F /* JDOPartyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyModel.h; sourceTree = "<group>"; };
+		A781101F17D5BE7000C0359F /* JDOPartyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyModel.m; sourceTree = "<group>"; };
+		A781102217D5C4FE00C0359F /* JDOPartyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyCell.h; sourceTree = "<group>"; };
+		A781102317D5C4FE00C0359F /* JDOPartyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyCell.m; sourceTree = "<group>"; };
+		A782FDCE17D58F370015965D /* JDOPartyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyViewController.h; sourceTree = "<group>"; };
+		A782FDCF17D58F370015965D /* JDOPartyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyViewController.m; sourceTree = "<group>"; };
 		C246968741DD4E76840F4CBA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D81516C717B0761E008F32BA /* vio_done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_done.png; sourceTree = "<group>"; };
 		D81516C817B0761E008F32BA /* vio_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_edit.png; sourceTree = "<group>"; };
@@ -1779,6 +1805,10 @@
 		2D86D59317584E030000AA6A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A781101C17D5BE7000C0359F /* JDOPartyDetailModel.h */,
+				A781101D17D5BE7000C0359F /* JDOPartyDetailModel.m */,
+				A781101E17D5BE7000C0359F /* JDOPartyModel.h */,
+				A781101F17D5BE7000C0359F /* JDOPartyModel.m */,
 				FF62176517A0943A0020A8A4 /* JDOCollectDB.h */,
 				FF62176617A0943A0020A8A4 /* JDOCollectDB.m */,
 				FF1372DA17AF9C0F00645405 /* JDOReadDB.h */,
@@ -2011,6 +2041,8 @@
 		2D8D44F9174DF21800786545 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A781102217D5C4FE00C0359F /* JDOPartyCell.h */,
+				A781102317D5C4FE00C0359F /* JDOPartyCell.m */,
 				FF62285917A988760040F05F /* JDOCollectView.h */,
 				FF62285A17A9887F0040F05F /* JDOCollectView.m */,
 				2D5409DD175DEE2100718FFB /* UIWebView+RemoveShadow.h */,
@@ -2170,6 +2202,7 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A7335F0617D71C0B00ABFFFC /* Party */,
 				2DE46BA217B9DAEF0094F27B /* Introduce */,
 				2DAADB3317AA4C6C001EBD43 /* Guide */,
 				2DC49E08179F9DF2008374F2 /* Switch */,
@@ -2564,6 +2597,12 @@
 				2D8AC1531763854C006B4A22 /* JDOReviewListController.m */,
 				FF1234C117631E5D00832AD2 /* JDOListViewController.h */,
 				FF1234C217631E5D00832AD2 /* JDOListViewController.m */,
+				A782FDCE17D58F370015965D /* JDOPartyViewController.h */,
+				A782FDCF17D58F370015965D /* JDOPartyViewController.m */,
+				A7309DF317D817D700BBA81A /* JDOPartyDetailController.h */,
+				A7309DF417D817D700BBA81A /* JDOPartyDetailController.m */,
+				A7668BE817E00E8800D3D3C7 /* JDOPartyJoinController.h */,
+				A7668BE917E00E8800D3D3C7 /* JDOPartyJoinController.m */,
 				2D996A92175ED55700C57673 /* JDOImageViewController.h */,
 				2D996A93175ED55700C57673 /* JDOImageViewController.m */,
 				2DDC4D3C177927A0007CF9E0 /* JDOImageDetailController.h */,
@@ -2869,6 +2908,17 @@
 				A7173D82179FA8DD00AB2D43 /* WBSuccessNoticeView.m */,
 			);
 			path = WBNoticeView;
+			sourceTree = "<group>";
+		};
+		A7335F0617D71C0B00ABFFFC /* Party */ = {
+			isa = PBXGroup;
+			children = (
+				A72FC40917DF0070006782C9 /* commit_btn.png */,
+				A7335F0717D71C5600ABFFFC /* addr_icon.png */,
+				A7335F0817D71C5600ABFFFC /* party_bound.png */,
+				A7335F0917D71C5600ABFFFC /* time_icon.png */,
+			);
+			name = Party;
 			sourceTree = "<group>";
 		};
 		A7341C7E178EB78100ADD976 /* UMeng */ = {
@@ -3373,6 +3423,10 @@
 				2D4FCD5B17CB4950003515BF /* default_adv@2x.png in Resources */,
 				2D4FCD5C17CB4950003515BF /* default_adv-568h@2x.png in Resources */,
 				2D4FCD5E17CB49A8003515BF /* default_adv.png in Resources */,
+				A7335F0A17D71C5600ABFFFC /* addr_icon.png in Resources */,
+				A7335F0B17D71C5600ABFFFC /* party_bound.png in Resources */,
+				A7335F0C17D71C5600ABFFFC /* time_icon.png in Resources */,
+				A72FC40A17DF0070006782C9 /* commit_btn.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3641,6 +3695,12 @@
 				2DA29D3317B8743300CE2F7B /* JDOMainViewController.m in Sources */,
 				2DE46BB117B9ECCA0094F27B /* UIImage+Retina4.m in Sources */,
 				D8AF844917BA21B7005CB425 /* JDOSecondaryAskViewController.m in Sources */,
+				A782FDD017D58F370015965D /* JDOPartyViewController.m in Sources */,
+				A781102017D5BE7000C0359F /* JDOPartyDetailModel.m in Sources */,
+				A781102117D5BE7000C0359F /* JDOPartyModel.m in Sources */,
+				A781102417D5C4FE00C0359F /* JDOPartyCell.m in Sources */,
+				A7309DF517D817D700BBA81A /* JDOPartyDetailController.m in Sources */,
+				A7668BEA17E00E8800D3D3C7 /* JDOPartyJoinController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

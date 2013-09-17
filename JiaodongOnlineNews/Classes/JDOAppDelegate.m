@@ -218,6 +218,7 @@
     self.newsDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"NewsDetailCache"];
     self.imageDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"ImageDetailCache"];
     self.topicDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"TopicDetailCache"];
+    self.partyDetailCachePath = [self.cachePath stringByAppendingPathComponent:@"PartyDetailCache"];
     self.convenienceCachePath = [self.cachePath stringByAppendingPathComponent:@"ConvenienceCache"];
     // 标记检查更新的标志位(启动时标记为非手动检查)
     manualCheckUpdate = false;
