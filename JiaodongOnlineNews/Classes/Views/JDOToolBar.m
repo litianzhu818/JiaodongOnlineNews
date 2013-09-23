@@ -197,6 +197,7 @@
         
         [self.parentController.view pushView:_reviewPanel process:^(CGRect *_startFrame, CGRect *_endFrame, NSTimeInterval *_timeInterval) {
             [_reviewPanel.textView becomeFirstResponder];
+            // po [[[[UIApplication sharedApplication] windows] lastObject] subviews] 可以用来查看键盘所在的view
             _isKeyboardShowing = true;
             *_startFrame = _reviewPanel.frame;
             *_endFrame = endFrame;
@@ -341,7 +342,7 @@
     keyboardRect = [self.parentController.view.superview convertRect:keyboardRect fromView:nil];
     
     CGRect reviewPanelFrame = _reviewPanel.frame;
-    reviewPanelFrame.origin.y = self.parentController.view.bounds.size.height - (keyboardRect.size.height + reviewPanelFrame.size.height);
+    reviewPanelFrame.origin.y = App_Height - (keyboardRect.size.height + reviewPanelFrame.size.height);
     CGRect _endFrame = reviewPanelFrame;
     
     if( _isKeyboardShowing == false){
