@@ -19,6 +19,10 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
+				<string>icon-setting80</string>
+				<string>icon-setting</string>
+				<string>icon120</string>
+				<string>ios7-120</string>
 				<string>icon.png</string>
 				<string>icon@2x.png</string>
 			</array>
@@ -75,6 +79,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
 </dict>

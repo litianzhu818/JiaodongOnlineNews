@@ -165,7 +165,8 @@
 
 - (void)navigateToMainView:(NSDictionary *)launchOptions{
     self.deckController = [self generateControllerStack];
-    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce){
+    bool showGuide = ![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce;
+    if( showGuide ){
         self.deckController.view.frame = CGRectMake(0, 0, 320, App_Height);
     }else{
         self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
@@ -179,6 +180,10 @@
         [advView removeFromSuperview];
         [self.deckController.view removeFromSuperview];
         self.window.rootViewController = self.deckController;
+        // iOS7下调整deckController.view的大小以适合状态栏
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7 && !showGuide ) {
+            self.deckController.view.frame = CGRectOffset(self.deckController.view.frame, 0, 20);
+        }
         
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
         if (launchOptions != nil){
@@ -236,9 +241,10 @@
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
     //友盟统计
-    [MobClick startWithAppkey:UMeng_Key reportPolicy:BATCH channelId:nil];
-    [MobClick setCrashReportEnabled:true];
-    [MobClick setLogEnabled:false];
+#warning 开发阶段关闭友盟统计
+//    [MobClick startWithAppkey:UMeng_Key reportPolicy:BATCH channelId:nil];
+//    [MobClick setCrashReportEnabled:true];
+//    [MobClick setLogEnabled:false];
     
     // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
@@ -268,7 +274,7 @@
     // 据说此问题只出现在debug模式(和优化级别有关)，所以这不是一个真正的问题。
 //    [UIResponder cacheKeyboard:true];
     
-    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
+    splashView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     splashView.image = [UIImage imageNamed:@"Default"];
     [self.window addSubview:splashView];
     
@@ -576,7 +582,7 @@
 {
     [self clearNotifications];
 #warning 若页面停留在新闻图片等可刷新模块，应根据超时参考值判断是否自动刷新
-    // 测试页面层级
+    // 测试页面层级，iOS7下不可用
 //    [iOSHierarchyViewer start];
 }
 

@@ -25,7 +25,7 @@
 		238B5248EF1B46D1A622AADF /* WebViewJavascriptBridgeAbstract.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C87171A88D84AEF9ED56B5D /* WebViewJavascriptBridgeAbstract.h */; };
 		26FE9E800AB946B38CF8BD09 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A515E9BCC50D47ECBC1E03EC /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		29C1DED0F77C4C90A3CC7285 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D39C485D149DE86AECB74 /* DDAbstractDatabaseLogger.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-checker"; }; };
-		2DD8ED4F17E2BCED00A1038A /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = EBC2F2E64F0B428C9827CB56 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
+		2D9F172417EFE9FC001132AD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = EBC2F2E64F0B428C9827CB56 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		341785EF925142D4803267AA /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAA3E4F15240C3A4F2FBD1 /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		343A2CD3F1E94A65BA12A13D /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EEACB305A0143E9938764FC /* AFHTTPClient.h */; };
 		37CB3F8461064F02B51C7C15 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D80440A88E24B6A8EC38A67 /* SDWebImageManager.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
@@ -541,6 +541,7 @@
 				0D1854082DEB4D88BE571ED4 /* DCFrameView.m in Sources */,
 				81B42D1F765548118F628ED5 /* DCIntrospect.m in Sources */,
 				57B629EC31424841AB1A1744 /* DCStatusBarOverlay.m in Sources */,
+				2D9F172417EFE9FC001132AD /* JSONKit.m in Sources */,
 				AD7D8F5A67DF4B9DBFA3BC62 /* MBProgressHUD.m in Sources */,
 				13DDCB2792FB4052AFEBAE1B /* SDURLCache.m in Sources */,
 				1669ECD9B27D4028BAA36260 /* SDImageCache.m in Sources */,
@@ -556,7 +557,6 @@
 				92BF3A6919524566AAB49B04 /* WebViewJavascriptBridge_iOS.m in Sources */,
 				CFE9EC9DA63A47A6B78E2799 /* WebViewJavascriptBridgeAbstract.m in Sources */,
 				001DD75A344549A187D72402 /* Pods-dummy.m in Sources */,
-				2DD8ED4F17E2BCED00A1038A /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,6 +17,7 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    self.view.frame = CGRectMake(0, 0, 320, App_Height);
     // 自定义导航栏
     self.navigationView = [[JDONavigationView alloc] init];
     [self setupNavigationView];

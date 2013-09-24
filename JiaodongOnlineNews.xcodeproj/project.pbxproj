@@ -223,6 +223,10 @@
 		2D9D08EA17A0B09600AC1924 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D9D08EC17A0B09600AC1924 /* Localizable.strings */; };
 		2D9D08EF17A0B53400AC1924 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D08EE17A0B53400AC1924 /* iVersion.m */; };
 		2D9D81DA179047AF00E69B0E /* MBSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D81D9179047AF00E69B0E /* MBSwitch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2D9F172917F0323A001132AD /* icon-setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9F172517F0323A001132AD /* icon-setting.png */; };
+		2D9F172A17F0323A001132AD /* icon-setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9F172617F0323A001132AD /* icon-setting@2x.png */; };
+		2D9F172B17F0323A001132AD /* icon-setting80@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9F172717F0323A001132AD /* icon-setting80@2x.png */; };
+		2D9F172C17F0323A001132AD /* icon120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9F172817F0323A001132AD /* icon120@2x.png */; };
 		2D9F37C8179CD37800A9D6E0 /* TTSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9F37C4179CD37800A9D6E0 /* TTSwitch.m */; };
 		2D9F37C9179CD37800A9D6E0 /* TTFadeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9F37C6179CD37800A9D6E0 /* TTFadeSwitch.m */; };
 		2D9F37CC179D2ED100A9D6E0 /* UIResponder+KeyboardCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9F37CB179D2ED100A9D6E0 /* UIResponder+KeyboardCache.m */; };
@@ -252,7 +256,6 @@
 		2DAADB4617AA4EE8001EBD43 /* Guide3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB4217AA4EE8001EBD43 /* Guide3@2x.png */; };
 		2DAADB4A17AA5281001EBD43 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB4917AA5281001EBD43 /* Default@2x.png */; };
 		2DAADB5217AA7793001EBD43 /* BPushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2DAADB5117AA7793001EBD43 /* BPushConfig.plist */; };
-		2DAE40071798E7BE00AE4C34 /* icon02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE40061798E7BE00AE4C34 /* icon02@2x.png */; };
 		2DAE4009179935FE00AE4C34 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DAE4008179935FE00AE4C34 /* icon.png */; };
 		2DB36917179F9522000D231E /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DB36915179F9521000D231E /* Checkmark.png */; };
 		2DB36918179F9522000D231E /* Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DB36916179F9521000D231E /* Checkmark@2x.png */; };
@@ -497,7 +500,6 @@
 		2DC49E2A179FA007008374F2 /* full_separator_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E1E179FA006008374F2 /* full_separator_line@2x.png */; };
 		2DC49E2B179FA007008374F2 /* leftside_shadow_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E1F179FA007008374F2 /* leftside_shadow_bg.png */; };
 		2DC49E2C179FA007008374F2 /* leftside_shadow_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E20179FA007008374F2 /* leftside_shadow_bg@2x.png */; };
-		2DC49E2E179FA02D008374F2 /* icon02.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E2D179FA02C008374F2 /* icon02.png */; };
 		2DC49E30179FA04F008374F2 /* img_set_flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC49E2F179FA04F008374F2 /* img_set_flag.png */; };
 		2DD8ED4E17E2BC5B00A1038A /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8ED4D17E2BC5B00A1038A /* README.txt */; };
 		2DD8ED5917E2EBCA00A1038A /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8ED5117E2EBCA00A1038A /* Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1053,6 +1055,10 @@
 		2D9D08EE17A0B53400AC1924 /* iVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iVersion.m; sourceTree = "<group>"; };
 		2D9D81D8179047AF00E69B0E /* MBSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBSwitch.h; sourceTree = "<group>"; };
 		2D9D81D9179047AF00E69B0E /* MBSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBSwitch.m; sourceTree = "<group>"; };
+		2D9F172517F0323A001132AD /* icon-setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-setting.png"; sourceTree = "<group>"; };
+		2D9F172617F0323A001132AD /* icon-setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-setting@2x.png"; sourceTree = "<group>"; };
+		2D9F172717F0323A001132AD /* icon-setting80@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-setting80@2x.png"; sourceTree = "<group>"; };
+		2D9F172817F0323A001132AD /* icon120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon120@2x.png"; sourceTree = "<group>"; };
 		2D9F37C3179CD37800A9D6E0 /* TTSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSwitch.h; sourceTree = "<group>"; };
 		2D9F37C4179CD37800A9D6E0 /* TTSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSwitch.m; sourceTree = "<group>"; };
 		2D9F37C5179CD37800A9D6E0 /* TTFadeSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFadeSwitch.h; sourceTree = "<group>"; };
@@ -1091,7 +1097,6 @@
 		2DAADB4217AA4EE8001EBD43 /* Guide3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Guide3@2x.png"; sourceTree = "<group>"; };
 		2DAADB4917AA5281001EBD43 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		2DAADB5117AA7793001EBD43 /* BPushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BPushConfig.plist; sourceTree = "<group>"; };
-		2DAE40061798E7BE00AE4C34 /* icon02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon02@2x.png"; sourceTree = "<group>"; };
 		2DAE4008179935FE00AE4C34 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		2DB36915179F9521000D231E /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checkmark.png; sourceTree = "<group>"; };
 		2DB36916179F9521000D231E /* Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checkmark@2x.png"; sourceTree = "<group>"; };
@@ -1338,7 +1343,6 @@
 		2DC49E1E179FA006008374F2 /* full_separator_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_separator_line@2x.png"; sourceTree = "<group>"; };
 		2DC49E1F179FA007008374F2 /* leftside_shadow_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftside_shadow_bg.png; sourceTree = "<group>"; };
 		2DC49E20179FA007008374F2 /* leftside_shadow_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftside_shadow_bg@2x.png"; sourceTree = "<group>"; };
-		2DC49E2D179FA02C008374F2 /* icon02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon02.png; sourceTree = "<group>"; };
 		2DC49E2F179FA04F008374F2 /* img_set_flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_set_flag.png; sourceTree = "<group>"; };
 		2DD8ED4D17E2BC5B00A1038A /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		2DD8ED5017E2EBCA00A1038A /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
@@ -2249,8 +2253,10 @@
 				2DC49E20179FA007008374F2 /* leftside_shadow_bg@2x.png */,
 				2DAE4008179935FE00AE4C34 /* icon.png */,
 				2DA4494F17C5A8A800927906 /* icon@2x.png */,
-				2DC49E2D179FA02C008374F2 /* icon02.png */,
-				2DAE40061798E7BE00AE4C34 /* icon02@2x.png */,
+				2D9F172517F0323A001132AD /* icon-setting.png */,
+				2D9F172617F0323A001132AD /* icon-setting@2x.png */,
+				2D9F172717F0323A001132AD /* icon-setting80@2x.png */,
+				2D9F172817F0323A001132AD /* icon120@2x.png */,
 			);
 			name = Resources;
 			path = JiaodongOnlineNews/Resources;
@@ -3115,6 +3121,7 @@
 				2DE931FE1772E3E500A87ACC /* 小雨 转晴@2x.png in Resources */,
 				2DE931FF1772E3E500A87ACC /* 小雨@2x.png in Resources */,
 				2DE932001772E3E500A87ACC /* 扬沙@2x.png in Resources */,
+				2D9F172C17F0323A001132AD /* icon120@2x.png in Resources */,
 				2DE932011772E3E500A87ACC /* 阴@2x.png in Resources */,
 				2DE932021772E3E500A87ACC /* 阴转晴@2x.png in Resources */,
 				2DE932031772E3E500A87ACC /* 雨夹雪@2x.png in Resources */,
@@ -3133,7 +3140,6 @@
 				2D97A94D17853D4C00CEEE82 /* point_per.png in Resources */,
 				2D97A94E17853D4C00CEEE82 /* toupiao.png in Resources */,
 				2D97A9501785547800CEEE82 /* vote.css in Resources */,
-				2DAE40071798E7BE00AE4C34 /* icon02@2x.png in Resources */,
 				2DAE4009179935FE00AE4C34 /* icon.png in Resources */,
 				2DB36917179F9522000D231E /* Checkmark.png in Resources */,
 				2DB36918179F9522000D231E /* Checkmark@2x.png in Resources */,
@@ -3243,6 +3249,7 @@
 				2DC49D04179F9C83008374F2 /* news_navbar_selected.png in Resources */,
 				2DC49D05179F9C83008374F2 /* news_navbar_selected@2x.png in Resources */,
 				2DC49D06179F9C83008374F2 /* 分页01@2x.png in Resources */,
+				2D9F172A17F0323A001132AD /* icon-setting@2x.png in Resources */,
 				2DC49D07179F9C83008374F2 /* 分页02@2x.png in Resources */,
 				2DC49D2C179F9CBE008374F2 /* checkbox_selected.png in Resources */,
 				2DC49D2D179F9CBE008374F2 /* checkbox_selected@2x.png in Resources */,
@@ -3261,6 +3268,7 @@
 				2DC49D3A179F9CBE008374F2 /* qzone.png in Resources */,
 				2DC49D3B179F9CBE008374F2 /* qzone@2x.png in Resources */,
 				2DC49D3C179F9CBE008374F2 /* qzone01.png in Resources */,
+				2D9F172B17F0323A001132AD /* icon-setting80@2x.png in Resources */,
 				2DC49D3D179F9CBE008374F2 /* qzone01@2x.png in Resources */,
 				2DC49D3E179F9CBE008374F2 /* renren.png in Resources */,
 				2DC49D3F179F9CBE008374F2 /* renren@2x.png in Resources */,
@@ -3373,10 +3381,10 @@
 				2DC49E21179FA007008374F2 /* status_icon_success.png in Resources */,
 				2DC49E22179FA007008374F2 /* status_icon_success@2x.png in Resources */,
 				2DC49E29179FA007008374F2 /* full_separator_line.png in Resources */,
+				2D9F172917F0323A001132AD /* icon-setting.png in Resources */,
 				2DC49E2A179FA007008374F2 /* full_separator_line@2x.png in Resources */,
 				2DC49E2B179FA007008374F2 /* leftside_shadow_bg.png in Resources */,
 				2DC49E2C179FA007008374F2 /* leftside_shadow_bg@2x.png in Resources */,
-				2DC49E2E179FA02D008374F2 /* icon02.png in Resources */,
 				2DC49E30179FA04F008374F2 /* img_set_flag.png in Resources */,
 				A7173D83179FA8DD00AB2D43 /* NoticeView.bundle in Resources */,
 				A76EC73D17A0C79E0063763C /* base_empty_view.png in Resources */,
@@ -3451,7 +3459,7 @@
 				2D4FCD5B17CB4950003515BF /* default_adv@2x.png in Resources */,
 				2D4FCD5C17CB4950003515BF /* default_adv-568h@2x.png in Resources */,
 				2D4FCD5E17CB49A8003515BF /* default_adv.png in Resources */,
-                2DD8ED4E17E2BC5B00A1038A /* README.txt in Resources */,
+				2DD8ED4E17E2BC5B00A1038A /* README.txt in Resources */,
 				A7335F0A17D71C5600ABFFFC /* addr_icon.png in Resources */,
 				A7335F0B17D71C5600ABFFFC /* party_bound.png in Resources */,
 				A7335F0C17D71C5600ABFFFC /* time_icon.png in Resources */,
@@ -3724,7 +3732,7 @@
 				2DA29D3317B8743300CE2F7B /* JDOMainViewController.m in Sources */,
 				2DE46BB117B9ECCA0094F27B /* UIImage+Retina4.m in Sources */,
 				D8AF844917BA21B7005CB425 /* JDOSecondaryAskViewController.m in Sources */,
-                2DD8ED5917E2EBCA00A1038A /* Base64.m in Sources */,
+				2DD8ED5917E2EBCA00A1038A /* Base64.m in Sources */,
 				2DD8ED5A17E2EBCA00A1038A /* GzipCompressor.m in Sources */,
 				2DD8ED5C17E2EBCA00A1038A /* OpenUDID.m in Sources */,
 				A782FDD017D58F370015965D /* JDOPartyViewController.m in Sources */,
@@ -3832,12 +3840,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yi zhang (XT5Z965G79)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Core\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Core",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI",
+					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Prefix.pch";
@@ -3845,12 +3853,13 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy Viewer\"",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy\\\\\\ Viewer",
+					"/Users/zhangyi/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/Hierarchy\\ Viewer",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3869,7 +3878,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A5D3E965-C8F5-429A-BAE7-C771F1A874E3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF1D0FCE-0666-4D9F-98F5-795B7E73DBEA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3882,12 +3891,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Core\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Core",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI",
+					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/JiaodongOnlineNews/Others/JiaodongOnlineNews-Prefix.pch";
@@ -3895,12 +3904,13 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush\"",
-					"\"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy Viewer\"",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy\\\\\\ Viewer",
+					"/Users/zhangyi/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/Hierarchy\\ Viewer",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

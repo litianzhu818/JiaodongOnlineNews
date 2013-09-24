@@ -28,7 +28,6 @@
 
 @interface JDONewsDetailController ()
 
-@property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
 @property (strong, nonatomic) UIView *blackMask;
 
@@ -66,28 +65,6 @@ NSArray *imageUrls;
     return toolbarBtnConfig;
 }
 
-- (void)loadView{
-    [super loadView];
-    // 内容
-    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
-    // 工具栏
-    NSArray *toolbarBtnConfig = [self setupToolBarBtnConfig];
-    
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-44/*_toolbar.height*/)]; // 去掉导航栏和工具栏
-    [self.webView makeTransparentAndRemoveShadow];
-    self.webView.delegate = self;
-    self.webView.scalesPageToFit = true;
-    [self.view addSubview:_webView];
-    
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
-    _toolbar.shareTarget = self;
-    [self.view addSubview:_toolbar];
-    
-    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
-    self.statusView.delegate = self;
-    [self.view addSubview:self.statusView];
-    
-}
 
 - (BOOL) onSharedClicked {
     if (self.newsModel == nil) {
@@ -118,6 +95,25 @@ NSArray *imageUrls;
 
 
 - (void)viewDidLoad{
+    // 内容
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
+    // 工具栏
+    NSArray *toolbarBtnConfig = [self setupToolBarBtnConfig];
+    
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-44/*_toolbar.height*/)]; // 去掉导航栏和工具栏
+    [self.webView makeTransparentAndRemoveShadow];
+    self.webView.delegate = self;
+    self.webView.scalesPageToFit = true;
+    [self.view addSubview:_webView];
+    
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.newsModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    _toolbar.shareTarget = self;
+    [self.view addSubview:_toolbar];
+    
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView.delegate = self;
+    [self.view addSubview:self.statusView];
+    
     [super viewDidLoad];
     
     [self loadWebView];
