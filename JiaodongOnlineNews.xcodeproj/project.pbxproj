@@ -3883,11 +3883,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 斌 刘 (DJS5ARSBRT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Core",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Connection",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Core",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/UI",
 					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3896,13 +3897,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/SDKExport",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/TencentWeiboSSO",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy\\\\\\ Viewer",
-					"/Users/zhangyi/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/Hierarchy\\ Viewer",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/libWeiboSDK",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3934,11 +3936,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Connection",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Core",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/UI",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Connection",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Core",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/UI",
 					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3947,13 +3950,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/SDKExport",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.2.2/Extend/TencentWeiboSSO",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/SDKExport",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/TencentWeiboSSO",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy\\\\\\ Viewer",
-					"/Users/zhangyi/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/Hierarchy\\ Viewer",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/libWeiboSDK",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
