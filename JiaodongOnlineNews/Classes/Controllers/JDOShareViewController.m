@@ -306,7 +306,12 @@
             self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
         } else {
             self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",0];
-            _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength - [_titleLabel.text length])];
+            if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+                // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
+            }else{
+                _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength - [_titleLabel.text length])];
+            }
+            
         }
     }
 }
