@@ -51,10 +51,11 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>rm237155com.jiaodong.JiaodongOnlineNews</string>
 				<string>sinaweibosso.2859139139</string>
 				<string>wx1b4314c4cfb4239b</string>
 				<string>QQ05FD7789</string>
-				<string>tencent100467475</string>
+				<string>tencent100497289</string>
 				<string>wb801373665</string>
 			</array>
 		</dict>

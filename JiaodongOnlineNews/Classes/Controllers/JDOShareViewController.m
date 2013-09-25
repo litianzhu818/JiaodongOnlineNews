@@ -8,6 +8,7 @@
 
 #import "JDOShareViewController.h"
 #import <ShareSDK/ShareSDK.h>
+#import <ShareSDK/ISSContent.h>
 #import "JDOShareViewDelegate.h"
 #import <TencentOpenAPI/QQApi.h>
 #import "WXApi.h"
@@ -214,13 +215,54 @@
 }
 
 - (void) sendShareMessage:(ShareType) shareType{
-    id<ISSContent> content = [ShareSDK content:[self.model summary]
-                                defaultContent:nil
-                                         image:[ShareSDK jpegImageWithImage:_imageView.image quality:1]
-                                         title:[self.model title]
-                                           url:[self.model tinyurl]
-                                   description:nil
-                                     mediaType:SSPublishContentMediaTypeNews];
+    id<ISSContent> content=nil;
+    switch (shareType) {
+        case ShareTypeWeixiSession:
+        case ShareTypeWeixiTimeline:
+        case ShareTypeQQ:{
+            content = [ShareSDK content:[self.model summary]
+                                        defaultContent:nil
+                                                 image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                                 title:[self.model title]
+                                                   url:[self.model tinyurl]
+                                           description:nil
+                                             mediaType:SSPublishContentMediaTypeNews];
+            break;}
+        case ShareTypeQQSpace:{
+            content = [ShareSDK content:_textView2.text
+                         defaultContent:nil
+                                  image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                  title:[self.model title]
+                                    url:[self.model tinyurl]
+                            description:[self.model summary]
+                              mediaType:SSPublishContentMediaTypeNews];
+            break;}
+        case ShareTypeRenren:{
+            NSString *comment = [[NSString alloc] init];
+            if (_textView2.text && ![_textView2.text isEqualToString:@""]) {
+                comment =_textView2.text;
+            } else {
+                comment = @"分享";
+            }
+            content = [ShareSDK content:comment
+                                               defaultContent:nil
+                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                                        title:[self.model title]
+                                                          url:[self.model tinyurl]
+                                                  description:[self.model summary]
+                                                    mediaType:SSPublishContentMediaTypeNews];
+            break;}
+        default:{
+            content = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingFormat:@" %@",[self.model tinyurl]]
+                                               defaultContent:nil
+                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                                        title:[self.model title]
+                                                          url:[self.model tinyurl]
+                                                  description:[self.model summary]
+                                                    mediaType:SSPublishContentMediaTypeNews];
+            break;}
+    }
+    
     
     [ShareSDK shareContent:content
                       type:shareType
@@ -251,27 +293,31 @@
         return;
     }
     
-    id<ISSContent> publishContent = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingFormat:@" %@",[self.model tinyurl]]
-                                       defaultContent:nil
-                                                image:[ShareSDK jpegImageWithImage:_imageView.image quality:1]
-                                                title:[self.model title]
-                                                  url:[self.model tinyurl]
-                                          description:[self.model summary]
-                                            mediaType:SSPublishContentMediaTypeNews];
+    for (int i=0; i<[selectedClients count]; i++) {
+        [self sendShareMessage:[(NSNumber *)[selectedClients objectAtIndex:i] intValue]];
+    }
     
-    [ShareSDK oneKeyShareContent:publishContent
-                       shareList:selectedClients
-                     authOptions:JDOGetOauthOptions(nil)
-                   statusBarTips:YES
-                          result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-#warning 根据状态alert提示分享成功,模态窗口,完成后自动返回上级页面
-                              if(type == ShareTypeQQSpace){
-#warning 未通过审核的应用没有发布图片的权限
-                              }
-                              if(error){
-                                  NSLog(@"分享错误代码:%d",error.errorCode);
-                              }
-                          }];
+//    id<ISSContent> publishContent = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingFormat:@" %@",[self.model tinyurl]]
+//                                       defaultContent:nil
+//                                                image:[ShareSDK jpegImageWithImage:_imageView.image quality:1]
+//                                                title:[self.model title]
+//                                                  url:[self.model tinyurl]
+//                                          description:[self.model summary]
+//                                            mediaType:SSPublishContentMediaTypeNews];
+//    
+//    [ShareSDK oneKeyShareContent:publishContent
+//                       shareList:selectedClients
+//                     authOptions:JDOGetOauthOptions(nil)
+//                   statusBarTips:YES
+//                          result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+//#warning 根据状态alert提示分享成功,模态窗口,完成后自动返回上级页面
+//                              if(type == ShareTypeQQSpace){
+//#warning 未通过审核的应用没有发布图片的权限
+//                              }
+//                              if(error){
+//                                  NSLog(@"分享错误代码:%d",error.errorCode);
+//                              }
+//                          }];
     // 返回上级页面
     [self backToParent];
 }

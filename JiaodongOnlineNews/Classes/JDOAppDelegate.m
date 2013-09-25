@@ -19,6 +19,7 @@
 #import "JDOCenterViewController.h"
 #import <ShareSDK/ShareSDK.h>
 #import "WBApi.h"
+#import <RennSDK/RennSDK.h>
 #import <TencentOpenAPI/QQApi.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
@@ -234,7 +235,7 @@
     [ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
     // 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
-    [ShareSDK ssoEnabled:false];    // 禁用SSO
+    //[ShareSDK ssoEnabled:true];    // 禁用SSO
     [ShareSDK setInterfaceOrientationMask:SSInterfaceOrientationMaskPortrait];
     [self initializePlatform];
     //监听用户信息变更
@@ -513,8 +514,10 @@
     
     // http://dev.renren.com上注册人人网开放平台应用，并将相关信息填写到以下字段
     // 应用管理账户383926109@qq.com
-    [ShareSDK connectRenRenWithAppKey:@"09e10e9f7d9e4ec39eff747ca04add2c"
-                            appSecret:@"3cafeac0896b4e8d908f885fbffc23a9"];
+    [ShareSDK connectRenRenWithAppId:@"237155"
+                              appKey:@"09e10e9f7d9e4ec39eff747ca04add2c"
+                           appSecret:@"3cafeac0896b4e8d908f885fbffc23a9"
+                   renrenClientClass:[RennClient class]];
     
     // http://open.kaixin001.com上注册开心网开放平台应用，并将相关信息填写到以下字段
     // 应用管理账户intotherainzy@gmail.com
