@@ -16,7 +16,6 @@
 
 @interface JDOPartyDetailController ()
 
-@property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
 @property (strong, nonatomic) UIView *blackMask;
 
@@ -59,7 +58,7 @@ NSArray *imageUrls;
 
 - (void) buildWebViewJavascriptBridge{
     [super buildWebViewJavascriptBridge];
-    [_bridge registerHandler:@"joinInParty" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [super.bridge registerHandler:@"joinInParty" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *joinBtnStr = [(NSDictionary *)data valueForKey:@"joinBtnStr"];
         if ([joinBtnStr isEqualToString:@"我要报名"]) {
             [[JDOJsonClient sharedClient] getPath:PARTY_JOIN_SERVICE parameters:@{@"aid":self.partyModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
