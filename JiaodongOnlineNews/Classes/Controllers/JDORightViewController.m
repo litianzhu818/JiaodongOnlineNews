@@ -58,8 +58,8 @@ typedef enum {
 - (id)init{
     self = [super init];
     if (self) {
-        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about",@"menu_convenience"];
-        iconSelectedNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about",@"menu_convenience"];
+        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about",@"menu_party"];
+        iconSelectedNames = @[@"menu_setting_selected",@"menu_collect_selected",@"menu_bind_selected",@"menu_rate_selected",@"menu_about_selected",@"menu_party_selected"];
 //        iconTitles = @[@"设  置",@"我的收藏",@"分享绑定",@"评价一下",@"意见反馈",@"关于我们",@"检查更新"];
     }
     return self;
