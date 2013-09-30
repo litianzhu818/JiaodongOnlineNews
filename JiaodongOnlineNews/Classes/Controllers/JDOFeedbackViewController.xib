@@ -110,5 +110,7 @@
     <resources>
         <image name="livehood_continue_button.png" width="297" height="42"/>
         <image name="vio_textfield_back.png" width="300" height="70"/>
+        <image name="vio_textfield_back.png" width="300" height="70"/>
+        <image name="vio_textfield_back.png" width="300" height="70"/>
     </resources>
 </document>

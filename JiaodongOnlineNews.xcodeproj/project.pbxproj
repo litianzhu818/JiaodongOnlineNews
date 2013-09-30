@@ -1582,6 +1582,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B2E60617F2C4AB00929F37 /* RennSDK.framework in Frameworks */,
+				A7B2E5FC17F2C4AA00929F37 /* T163WeiboConnection.framework in Frameworks */,
 				D8EFCF2417E2B47C00BCD8A4 /* libxml2.2.dylib in Frameworks */,
 				2D43F8E617A273EC0048815C /* StoreKit.framework in Frameworks */,
 				2D0D6162178FAA5A00934CCD /* CoreText.framework in Frameworks */,
@@ -1952,6 +1954,8 @@
 			isa = PBXGroup;
 			children = (
 				D8EFCF1917E2B43800BCD8A4 /* Hpple */,
+				A7B2E5CE17F2C4AA00929F37 /* ShareSDK_v2.5.0 */,
+				2DA30FD317E2925700930EA2 /* Hierarchy Viewer */,
 				2DA29D2A17B873D900CE2F7B /* iPhone-IntroductionTutorial */,
 				A75A4F0417B09DAF0084ADD5 /* ITWLoadingPanel */,
 				2DAADB4D17AA7713001EBD43 /* BPush */,
@@ -3800,6 +3804,15 @@
 				2DA29D3317B8743300CE2F7B /* JDOMainViewController.m in Sources */,
 				2DE46BB117B9ECCA0094F27B /* UIImage+Retina4.m in Sources */,
 				D8AF844917BA21B7005CB425 /* JDOSecondaryAskViewController.m in Sources */,
+				2DD8ED5917E2EBCA00A1038A /* Base64.m in Sources */,
+				2DD8ED5A17E2EBCA00A1038A /* GzipCompressor.m in Sources */,
+				2DD8ED5C17E2EBCA00A1038A /* OpenUDID.m in Sources */,
+				A782FDD017D58F370015965D /* JDOPartyViewController.m in Sources */,
+				A781102017D5BE7000C0359F /* JDOPartyDetailModel.m in Sources */,
+				A781102117D5BE7000C0359F /* JDOPartyModel.m in Sources */,
+				A781102417D5C4FE00C0359F /* JDOPartyCell.m in Sources */,
+				A7309DF517D817D700BBA81A /* JDOPartyDetailController.m in Sources */,
+				A7668BEA17E00E8800D3D3C7 /* JDOPartyJoinController.m in Sources */,
 				D8EFCF1817E2B3E400BCD8A4 /* JDOShipViewController.m in Sources */,
 				D8EFCF2017E2B44A00BCD8A4 /* TFHpple.m in Sources */,
 				D8EFCF2117E2B44A00BCD8A4 /* TFHppleElement.m in Sources */,

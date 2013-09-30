@@ -120,16 +120,11 @@
     </objects>
     <resources>
         <image name="inputFieldPopBtnBackground.png" width="192" height="35"/>
-        <image name="inputFieldPopBtnBackground.png" width="192" height="35"/>
         <image name="vio_line.png" width="300" height="6"/>
         <image name="vio_lineshadow.png" width="600" height="12"/>
         <image name="vio_logo.png" width="111" height="60"/>
-        <image name="vio_logo.png" width="111" height="60"/>
         <image name="vio_noresult.png" width="600" height="380"/>
         <image name="vio_search.png" width="297" height="42"/>
-        <image name="vio_textfield_back.png" width="300" height="70"/>
-        <image name="vio_textfield_back.png" width="300" height="70"/>
-        <image name="vio_textfield_back.png" width="300" height="70"/>
         <image name="vio_textfield_back.png" width="300" height="70"/>
     </resources>
 </document>
