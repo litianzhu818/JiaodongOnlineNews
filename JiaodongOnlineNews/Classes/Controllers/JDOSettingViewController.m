@@ -83,7 +83,7 @@ BOOL downloadItemClickable = TRUE;
             cell.textLabel.text = @"接收新闻推送";
             cell.detailTextLabel.text = @"新闻推送服务，及时获取第一手新闻咨询。";
 #warning 非正常状态可以将accessoryView替换为一个提醒图标,点击后通过弹出菜单提示信息
-            if ([userDefault objectForKey:@"JDO_Push_News"] == nil) {  // 可能是获取token失败或者bindChannel失败或者setTag失败,总之是当前推送不可到达。
+            if ([userDefault objectForKey:@"JDO_Push_UserId"] == nil) {  // 可能是获取token失败或者bindChannel失败,总之是当前推送不可到达。
                 cell.detailTextLabel.text = @"新闻推送服务尚未成功注册";
                 cell.accessoryView = nil;
             }else{

@@ -266,15 +266,13 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 // 是否wifi
 + (BOOL) isEnableWIFI {
-    
     return ([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] == ReachableViaWiFi);
 }
 
 // 是否3G
 + (BOOL) isEnable3G {
-    NetworkStatus status = [[Reachability reachabilityWithHostName:@"m.jiaodong.net"] currentReachabilityStatus];
+    NetworkStatus status = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus];
     return status == ReachableViaWWAN;
-    //return ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == ReachableViaWWAN);
 }
 
 + (BOOL) isEnableNetwork{

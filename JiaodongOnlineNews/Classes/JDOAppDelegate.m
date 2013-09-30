@@ -243,9 +243,9 @@
     
     //友盟统计
 #warning 开发阶段关闭友盟统计
-//    [MobClick startWithAppkey:UMeng_Key reportPolicy:BATCH channelId:nil];
-//    [MobClick setCrashReportEnabled:true];
-//    [MobClick setLogEnabled:false];
+    [MobClick startWithAppkey:UMeng_Key reportPolicy:BATCH channelId:nil];
+    [MobClick setCrashReportEnabled:true];
+    [MobClick setLogEnabled:false];
     
     // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
@@ -608,6 +608,9 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"%@",error);
+    // 无法获取token时则移除本地的JDO_Push_UserId
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"JDO_Push_UserId"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -695,6 +698,8 @@
             NSLog(@"推送服务绑定错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
             if( returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
                 NSLog(@"推送服务绑定失败次数超过最大值");
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"JDO_Push_UserId"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 return;
             }
             bindErrorCount ++; //[BPush bindChannel]和onMethod回调都在主线程中执行，若在bindChannel后再计数，会造成bindErrorCount始终为0并无限循环，直至绑定成功，界面会一直卡在主线程。
@@ -716,7 +721,7 @@
  *  在调用setTag/delTag的时候就设置UserDefault
  *  状态：已修复
  *  百度API修复版本：V1.1.0
- *  客户端修复版本：V3.0.1
+ *  客户端修复版本：V3.1.0
  */
 //            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"JDO_Push_News"];
         }

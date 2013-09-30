@@ -42,8 +42,12 @@ CGFloat buttonSpacerHeight = 0;
 // Create the dialog view, and animate opening the dialog
 - (void)show
 {
+    self.userInteractionEnabled = true;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(close)];
+    [self addGestureRecognizer:tap];
+    
     dialogView = [self createContainerView];
-
+    
     if (useMotionEffects) {
         [self applyMotionEffects];
     }
@@ -62,7 +66,14 @@ CGFloat buttonSpacerHeight = 0;
                          dialogView.layer.opacity = 1.0f;
                          dialogView.layer.transform = CATransform3DMakeScale(1, 1, 1);
 					 }
-					 completion:NULL
+					 completion:^(BOOL finished) {
+                         // 文本框自动获取焦点显示键盘
+                         for(UIView *v in self.containerView.subviews){
+                             if ([v isKindOfClass:[UITextField class]]) {
+                                 [v becomeFirstResponder];
+                             }
+                         }
+                     }
      ];
 }
 
@@ -82,6 +93,7 @@ CGFloat buttonSpacerHeight = 0;
 // Dialog close animation then cleaning and removing the view from the parent
 - (void)close
 {
+    [self removeGestureRecognizer:self.gestureRecognizers[0]];
     dialogView.layer.transform = CATransform3DMakeScale(1, 1, 1);
     dialogView.layer.opacity = 1.0f;
 
@@ -126,19 +138,24 @@ CGFloat buttonSpacerHeight = 0;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
 
-    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
-    if (UIDeviceOrientationIsLandscape(deviceOrientation)) {
-        CGFloat tmp = screenWidth;
-        screenWidth = screenHeight;
-        screenHeight = tmp;
-    }
+//    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+//    if (UIDeviceOrientationIsLandscape(deviceOrientation)) {
+//        CGFloat tmp = screenWidth;
+//        screenWidth = screenHeight;
+//        screenHeight = tmp;
+//    }
 
     // For the black background
     [self setFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
 
     // This is the dialog's container; we attach the custom content and the buttons to this one
-    UIView *dialogContainer = [[UIView alloc] initWithFrame:CGRectMake((screenWidth - dialogWidth) / 2, (screenHeight - dialogHeight) / 2, dialogWidth, dialogHeight)];
-
+    CGRect frame;
+    if(screenHeight <= 480){    // 3.5屏幕下居中显示的话，按钮会被键盘挡住
+        frame = CGRectMake((screenWidth - dialogWidth) / 2, 120, dialogWidth,dialogHeight);
+    }else{
+        frame = CGRectMake((screenWidth - dialogWidth) / 2, (screenHeight - dialogHeight) / 2, dialogWidth,dialogHeight);
+    }
+    UIView *dialogContainer = [[UIView alloc] initWithFrame:frame];
 
     // First, we style the dialog to match the iOS7 UIAlertView >>>
     CAGradientLayer *gradient = [CAGradientLayer layer];
