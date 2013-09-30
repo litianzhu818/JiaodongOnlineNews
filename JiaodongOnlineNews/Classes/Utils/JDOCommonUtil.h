@@ -13,7 +13,7 @@
 #define PROTOCOL	@"PROTOCOL"
 #define HOST		@"HOST"
 #define PARAMS		@"PARAMS"
-#define URI			@"URI"
+#define URI1		@"URI"
 
 typedef enum{
     DateFormatYMD,
