@@ -38,7 +38,7 @@
     contentString = content.text;
     
     if (contentString.length == 0) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"意见内容为空，不能提交" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"意见内容为空，不能提交" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
         [av show];
     } else {
         [self sendToServer];

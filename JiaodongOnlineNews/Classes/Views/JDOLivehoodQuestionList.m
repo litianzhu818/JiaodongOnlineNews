@@ -14,6 +14,7 @@
 #import "JDOCenterViewController.h"
 #import "FXLabel.h"
 #import "InsetsTextField.h"
+#import "CustomIOS7AlertView.h"
 //#import "XYInputView.h"
 
 #define QuestionList_Page_Size 20
@@ -37,6 +38,7 @@
 
 @property (strong,nonatomic) UIImageView *noDataView;
 @property (strong,nonatomic) UIAlertView *alertView;
+@property (strong,nonatomic) CustomIOS7AlertView *iOS7AlertView;
 
 @end
 
@@ -492,18 +494,42 @@
     BOOL enable = false;
     if ([questionModel.secret intValue] == 1) { // 保密
         secretQuestionModel = questionModel;
-        if (_alertView == nil) {
-            _alertView = [[UIAlertView alloc] initWithTitle:@"请输入查询密码" message:@"\n\n" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认",nil];
-            InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(12.0f, 51.0f, 260.0f, 35.0f)];
-            secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-            secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
-            secretTextField.secureTextEntry = YES;
-            secretTextField.placeholder = @"6位数字";
-            secretTextField.keyboardType = UIKeyboardTypeNumberPad;
-            secretTextField.tag = Secret_Field_Tag;
-            [_alertView addSubview:secretTextField];
+        if([UIDevice currentDevice].systemVersion.floatValue >= 7.0){
+            if(_iOS7AlertView == nil){
+                _iOS7AlertView = [[CustomIOS7AlertView alloc] initWithParentView:SharedAppDelegate.window];
+                _iOS7AlertView.delegate = self;
+                UIView *containView = [[UIView alloc] initWithFrame:CGRectMake(0,0, 280, 100)];
+                UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 240, 20)];
+                title.text = @"请输入查询密码";
+                title.backgroundColor = [UIColor clearColor];
+                [containView addSubview:title];
+                InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(20,45, 240, 35)];
+                secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+                secretTextField.secureTextEntry = YES;
+                secretTextField.placeholder = @"6位数字";
+                secretTextField.keyboardType = UIKeyboardTypeNumberPad;
+                secretTextField.tag = Secret_Field_Tag;
+                [containView addSubview:secretTextField];
+                _iOS7AlertView.containerView = containView;
+                _iOS7AlertView.buttonTitles = @[@"取消",@"确认"];
+            }
+            [_iOS7AlertView show];
+        }else{
+            if (_alertView == nil) {
+                _alertView = [[UIAlertView alloc] initWithTitle:@"请输入查询密码" message:@"\n\n" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认",nil];
+                InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(12.0f, 51.0f, 260.0f, 35.0f)];
+                secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+                secretTextField.secureTextEntry = YES;
+                secretTextField.placeholder = @"6位数字";
+                secretTextField.keyboardType = UIKeyboardTypeNumberPad;
+                secretTextField.tag = Secret_Field_Tag;
+                [_alertView addSubview:secretTextField];
+            }
+            [_alertView show];
         }
-        [_alertView show];
+        
     }else{
         enable = true;
     }
@@ -516,12 +542,35 @@
     [tableView deselectRowAtIndexPath:indexPath animated:false];
 }
 
+- (void)customIOS7dialogButtonTouchUpInside: (CustomIOS7AlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0){
+        [(UITextField *)[alertView.containerView viewWithTag:Secret_Field_Tag] setText:nil];
+        [alertView close];
+    }else{
+        NSString *secret = [(UITextField *)[alertView.containerView viewWithTag:Secret_Field_Tag] text];
+        if(JDOIsEmptyString(secret)){
+            return;
+        }
+        [(UITextField *)[alertView.containerView viewWithTag:Secret_Field_Tag] setText:nil];
+        [alertView close];
+        if ( [secret isEqualToString:secretQuestionModel.pwd] ) {   // 密码正确
+            JDOQuestionDetailController *detailController = [[JDOQuestionDetailController alloc] initWithQuestionModel:secretQuestionModel];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:detailController animated:true];
+        }else{
+            [JDOCommonUtil showHintHUD:@"密码错误,请重新输入" inView:self];
+            [(UITextField *)[alertView.containerView viewWithTag:Secret_Field_Tag] setText:nil];
+        }
+    }
+}
+
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == [alertView cancelButtonIndex]){
         
     }else{
-        NSString *secret = [(UITextField *)[_alertView viewWithTag:Secret_Field_Tag] text];
+        NSString *secret = [(UITextField *)[alertView viewWithTag:Secret_Field_Tag] text];
         if(JDOIsEmptyString(secret)){
             return;
         }

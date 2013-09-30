@@ -18,6 +18,12 @@
     [super viewDidLoad];
     
     self.view.frame = CGRectMake(0, 0, 320, App_Height);
+    // 带自动滚动输入框的视图可能有mainView (TPKeyboardAvoidingScrollView)
+    if ([self respondsToSelector:@selector(mainView)]) {
+        UIView *mainView = (UIView *)[self performSelector:@selector(mainView)];
+        [mainView setFrame:self.view.bounds];
+    }
+    
     // 自定义导航栏
     self.navigationView = [[JDONavigationView alloc] init];
     [self setupNavigationView];

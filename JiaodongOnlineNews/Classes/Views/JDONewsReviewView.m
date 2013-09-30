@@ -237,11 +237,11 @@
     int remain = Review_Content_MaxLength-_textView.text.length;
     [_remainWordNum setText:[NSString stringWithFormat:@"还有%d字可以输入",remain<0 ? 0:remain]];
     if (remain<0) {
-        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-            // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
-        }else{
+//        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+//            // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
+//        }else{
             _textView.text = [_textView.text substringWithRange:[_textView.text rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, Review_Content_MaxLength)] ];
-        }
+//        }
     }
 }
 

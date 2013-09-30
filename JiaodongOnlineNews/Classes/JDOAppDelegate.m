@@ -182,9 +182,9 @@
         [self.deckController.view removeFromSuperview];
         self.window.rootViewController = self.deckController;
         // iOS7下调整deckController.view的大小以适合状态栏
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7 && !showGuide ) {
-            self.deckController.view.frame = CGRectOffset(self.deckController.view.frame, 0, 20);
-        }
+//        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 && !showGuide ) {
+//            self.deckController.view.frame = CGRectOffset(self.deckController.view.frame, 0, 20);
+//        }
         
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
         if (launchOptions != nil){
@@ -336,7 +336,7 @@
 //    [iVersion sharedInstance].applicationBundleID = bundleID;
 //    [iRate sharedInstance].applicationBundleID = bundleID;
     
-//    [iVersion sharedInstance].applicationVersion = @"1.2.0.0"; // 覆盖bundle中的版本信息,测试用
+//    [iVersion sharedInstance].applicationVersion = @"1.0.0.0"; // 覆盖bundle中的版本信息,测试用
     [iVersion sharedInstance].verboseLogging = false;   // 调试信息
     [iVersion sharedInstance].appStoreCountry = @"CN";
     [iVersion sharedInstance].showOnFirstLaunch = false; // 不显示当前版本特性
@@ -726,6 +726,12 @@
             NSLog(@"设置Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
             if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
                 NSLog(@"设置Tag失败次数超过最大值");
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"开启新闻推送失败,请检查网络并稍后再试。"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+                [alert show];
                 return;
             }
             bindErrorCount ++;
@@ -746,6 +752,12 @@
             NSLog(@"删除Tag错误:%@",[data valueForKey:BPushRequestErrorMsgKey]);
             if (returnCode == BPushErrorCode_MethodTooOften || bindErrorCount > MAX_BIND_ERROR_TIMES) {
                 NSLog(@"删除Tag失败次数超过最大值");
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"关闭新闻推送失败,请检查网络并稍后再试。"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+                [alert show];
                 return;
             }
             bindErrorCount ++;

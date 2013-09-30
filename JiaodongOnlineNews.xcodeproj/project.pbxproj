@@ -68,6 +68,7 @@
 		2D5409DC175DEA5800718FFB /* JDONewsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409DB175DEA5800718FFB /* JDONewsDetailController.m */; };
 		2D5409DF175DEE2100718FFB /* UIWebView+RemoveShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5409DE175DEE2100718FFB /* UIWebView+RemoveShadow.m */; };
 		2D58AE18176EBA52003B843F /* JDOShareViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D58AE17176EBA51003B843F /* JDOShareViewDelegate.m */; };
+		2D5CB30217F91E880053F556 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D5CB30117F91E880053F556 /* CustomIOS7AlertView.m */; };
 		2D6316161782B4B400248FD6 /* JDOTopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316151782B4B400248FD6 /* JDOTopicCell.m */; };
 		2D6316261782D6D300248FD6 /* HGPageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316201782D6D300248FD6 /* HGPageScrollView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D6316271782D6D300248FD6 /* HGPageScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D6316211782D6D300248FD6 /* HGPageScrollView.xib */; };
@@ -765,6 +766,8 @@
 		2D5409DE175DEE2100718FFB /* UIWebView+RemoveShadow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+RemoveShadow.m"; sourceTree = "<group>"; };
 		2D58AE16176EBA51003B843F /* JDOShareViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOShareViewDelegate.h; sourceTree = "<group>"; };
 		2D58AE17176EBA51003B843F /* JDOShareViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOShareViewDelegate.m; sourceTree = "<group>"; };
+		2D5CB30017F91E880053F556 /* CustomIOS7AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOS7AlertView.h; sourceTree = "<group>"; };
+		2D5CB30117F91E880053F556 /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
 		2D6316141782B4B400248FD6 /* JDOTopicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOTopicCell.h; sourceTree = "<group>"; };
 		2D6316151782B4B400248FD6 /* JDOTopicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOTopicCell.m; sourceTree = "<group>"; };
 		2D63161F1782D6D300248FD6 /* HGPageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGPageScrollView.h; sourceTree = "<group>"; };
@@ -1609,6 +1612,8 @@
 		2D01E67A1748D78300B81568 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2D5CB30017F91E880053F556 /* CustomIOS7AlertView.h */,
+				2D5CB30117F91E880053F556 /* CustomIOS7AlertView.m */,
 				2D01E67B1748D82E00B81568 /* Reachability.h */,
 				2D01E67C1748D82E00B81568 /* Reachability.m */,
 				2D9678B9174AF78A008AC097 /* JDOImageUtil.h */,
@@ -3648,6 +3653,7 @@
 				2D8E00F617645F0E002F0590 /* NSData+SSToolkitAdditions.m in Sources */,
 				2D8E00F917646147002F0590 /* UIColor+SSToolkitAdditions.m in Sources */,
 				2D8E00FC176462C5002F0590 /* UIControl+SSToolkitAdditions.m in Sources */,
+				2D5CB30217F91E880053F556 /* CustomIOS7AlertView.m in Sources */,
 				2D8D85DF17676E0C00D7D34F /* CMPopTipView.m in Sources */,
 				2D944A8317698B7500CEC12F /* JDOShareViewController.m in Sources */,
 				2D944AB61769B9D300CEC12F /* HPGrowingTextView.m in Sources */,
@@ -3841,7 +3847,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos6.1;
 			};
 			name = Debug;
 		};
@@ -3870,7 +3876,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos6.1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -3880,7 +3886,7 @@
 			baseConfigurationReference = 5F222CF8F96D417D992D04DB /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 斌 刘 (DJS5ARSBRT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yi zhang (XT5Z965G79)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Connection",
@@ -3922,7 +3928,7 @@
 					UIKit,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
+				PROVISIONING_PROFILE = "CF1D0FCE-0666-4D9F-98F5-795B7E73DBEA";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF1D0FCE-0666-4D9F-98F5-795B7E73DBEA";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3975,8 +3981,8 @@
 					UIKit,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "117DAA66-1AD7-4A36-9DA0-C03504AAD7FF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "117DAA66-1AD7-4A36-9DA0-C03504AAD7FF";
+				PROVISIONING_PROFILE = "CF1D0FCE-0666-4D9F-98F5-795B7E73DBEA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF1D0FCE-0666-4D9F-98F5-795B7E73DBEA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

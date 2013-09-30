@@ -1114,10 +1114,14 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
 {
     [self resizeAlertView:alertView];
     // 让AlertView中的文字内容左对齐
-    UIView * view = [alertView.subviews objectAtIndex:2];
-    if([view isKindOfClass:[UILabel class]]){
-        [(UILabel *)view setTextAlignment:UITextAlignmentLeft];
+    UILabel *label ;
+    if([UIDevice currentDevice].systemVersion.floatValue >= 7.0f){
+        label = (UILabel *)[alertView.subviews objectAtIndex:0];
+    }else{
+        label = (UILabel *)[alertView.subviews objectAtIndex:2];
     }
+    // 设置左对齐在iOS7下无效，尽量在文字长度上保持一致
+    [label setTextAlignment:NSTextAlignmentLeft];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex

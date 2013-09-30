@@ -501,7 +501,7 @@ id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){
                                                authManagerViewDelegate:_delegate];
     //在授权页面中添加关注官方微博
     [authOptions setFollowAccounts:@{
-        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jiaodongweibo"],
-    /*SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"intotherainzy"]*/}];
+        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jdnewsapp"],
+        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jdnewsapp"]}];
     return authOptions;
 }
