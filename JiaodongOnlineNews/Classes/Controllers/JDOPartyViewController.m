@@ -40,7 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.rowHeight = 340.0f;
+	self.tableView.rowHeight = 400.0f;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -214,5 +214,19 @@
     }];
     
 }
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    if(self.listArray.count == 0){
+//        return 0;
+//    }else{
+//        JDOPartyModel *questionModel = [self.listArray objectAtIndex:indexPath.row];
+//        return [self cellHeight:questionModel];
+//    }
+//}
+//
+//- (CGFloat) cellHeight:(NSDictionary *) model {
+//    float titieHeight = NISizeOfStringWithLabelProperties([model objectForKey:@"title"], CGSizeMake(300, MAXFLOAT), [UIFont systemFontOfSize:18], UILineBreakModeWordWrap, 0).height;
+//    return 360+titieHeight;
+//}
 
 @end
