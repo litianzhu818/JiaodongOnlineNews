@@ -12,6 +12,8 @@
 #import "JDOBusLIstViewController.h"
 #import "JDOLifeKnowledgeViewController.h"
 
+#import "JDOShipViewController.h"
+
 @interface JDOConvenienceController () <NILauncherViewModelDelegate>
 @property (nonatomic, readwrite, retain) NILauncherViewModel* model;
 @end
@@ -120,6 +122,9 @@
     } else if (index == 7){
         JDOLifeKnowledgeViewController *lifeknowledge = [[JDOLifeKnowledgeViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:lifeknowledge animated:YES];
+    } else if (index == 3) {
+        JDOShipViewController *ship = [[JDOShipViewController alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:ship animated:YES];
     } else {
         NSString *title ,*channelId;
         BOOL deletetitle = true;
