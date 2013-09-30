@@ -45,9 +45,9 @@
         // HPGrowingTextView根据字体的大小有最小高度限制,15号字最少需要35的高度
         _textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(Review_Left_Margin, (Review_Text_Init_Height-Review_Input_Height)/2.0, 240+5, Review_Input_Height)];
         _textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+        _textView.font = [UIFont systemFontOfSize:15];  // 先设置font，在minNumberOfLines中需要用到
         _textView.minNumberOfLines = 1;
         _textView.maxNumberOfLines = 4;
-        _textView.font = [UIFont systemFontOfSize:15];
         _textView.delegate = self;
         _textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
 //        _textView.animateHeightChange = NO; //turns off animation
@@ -231,13 +231,17 @@
 
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     return YES;
-}
+} 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView{
     // 计算剩余可输入字数
     int remain = Review_Content_MaxLength-_textView.text.length;
     [_remainWordNum setText:[NSString stringWithFormat:@"还有%d字可以输入",remain<0 ? 0:remain]];
     if (remain<0) {
-        _textView.text = [_textView.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength)];
+        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+            // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
+        }else{
+            _textView.text = [_textView.text substringWithRange:[_textView.text rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, Review_Content_MaxLength)] ];
+        }
     }
 }
 
@@ -249,7 +253,7 @@
     r.origin.y += diff;
 	self.frame = r;
     
-    if(r.size.height > 140){
+    if(r.size.height > Review_Input_Height*4-5){
         [_remainWordNum setHidden:false];
     }else{
         [_remainWordNum setHidden:true];

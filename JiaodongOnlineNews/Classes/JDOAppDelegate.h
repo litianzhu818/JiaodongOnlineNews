@@ -19,7 +19,10 @@
 @property (strong, nonatomic) NSString *newsDetailCachePath;
 @property (strong, nonatomic) NSString *imageDetailCachePath;
 @property (strong, nonatomic) NSString *topicDetailCachePath;
+@property (strong, nonatomic) NSString *partyDetailCachePath;
 @property (strong, nonatomic) NSString *convenienceCachePath;
+
+@property (assign, nonatomic) NSString * currentPushTag;
 
 - (IIViewDeckController *)generateControllerStack;
 - (void)checkForNewVersion;

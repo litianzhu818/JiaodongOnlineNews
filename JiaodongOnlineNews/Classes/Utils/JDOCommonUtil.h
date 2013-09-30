@@ -19,6 +19,7 @@ typedef enum{
     DateFormatYMD,
     DateFormatMD,
     DateFormatYMDHM,
+    DateFormatYMDHMS,
     DateFormatMDHM
 }DateFormatType;
 

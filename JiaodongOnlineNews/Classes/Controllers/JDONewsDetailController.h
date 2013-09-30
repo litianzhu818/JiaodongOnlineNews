@@ -20,7 +20,10 @@
 @property (nonatomic,strong) JDOToolBar *toolbar;
 @property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
 @property (nonatomic,assign) BOOL isPushNotification;
+@property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
 - (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect;
+- (void) buildWebViewJavascriptBridge;
+- (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary;
 @end

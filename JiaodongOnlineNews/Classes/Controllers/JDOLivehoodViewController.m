@@ -15,6 +15,7 @@
 #import "JDOLivehoodQuestionList.h"
 #import "JDOLivehoodAskQuestion.h"
 #import "JDOLivehoodMyQuestion.h"
+#import "TPKeyboardAvoidingScrollView.h"
 
 #define News_Navbar_Height 35.0f
 
@@ -60,6 +61,7 @@
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
     _scrollView.pagingScrollView.bounces = false;
     _scrollView.pageMargin = 0;
+    _scrollView.pagingScrollView.scrollsToTop = false;
     [self.view addSubview:_scrollView];
 }
 
@@ -135,10 +137,12 @@
         case 0:{
             JDOLivehoodDeptList *aPage = [[JDOLivehoodDeptList alloc] initWithFrame:_scrollView.bounds info:itemInfo];
             [aPage setLivehoodController:self];
+            aPage.tableView.scrollsToTop = true;
             return aPage;
         }
         case 1:{
             JDOLivehoodQuestionList *aPage = [[JDOLivehoodQuestionList alloc] initWithFrame:_scrollView.bounds info:itemInfo rootView:self.view];
+            aPage.tableView.scrollsToTop = false;
             [aPage loadDataFromNetwork];
             return aPage;
         }
@@ -148,6 +152,7 @@
         }
         case 3:{
             JDOLivehoodMyQuestion *aPage = [[JDOLivehoodMyQuestion alloc] initWithFrame:_scrollView.bounds info:itemInfo rootView:self.view];
+            aPage.tableView.scrollsToTop = false;
             return aPage;
         }
         default:
@@ -155,9 +160,20 @@
     }
 }
 
+
+- (void)pagingScrollViewWillChangePages:(NIPagingScrollView *)pagingScrollView{
+    if ([pagingScrollView.centerPageView respondsToSelector:@selector(tableView)]) {
+        [[(id)pagingScrollView.centerPageView tableView] setScrollsToTop:false];
+    }
+}
+
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{
     _pageControl.lastPageIndex = pagingScrollView.centerPageIndex;
+    if ([pagingScrollView.centerPageView respondsToSelector:@selector(tableView)]) {
+        [[(id)pagingScrollView.centerPageView tableView] setScrollsToTop:true];
+    }
 }
+
 
 #pragma mark - ScrollView delegate
 
@@ -240,7 +256,16 @@
         [(JDOLivehoodMyQuestion *)page loadDataFromNetwork];
     }
     
-    
+//    [self searchScrollView:self.view];
+}
+
+- (void) searchScrollView:(UIView *)p{
+    for(UIView *v in [p subviews]){
+        if([v isKindOfClass:[UIScrollView class]] && [(UIScrollView *)v scrollsToTop]){
+            NSLog(@"class:%@",[v.superview class]);
+        }
+        [self searchScrollView:v];
+    }
 }
 
 @end

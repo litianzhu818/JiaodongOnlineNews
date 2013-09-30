@@ -18,6 +18,10 @@
 
 @implementation JDOMainViewController
 
+//- (BOOL)prefersStatusBarHidden{
+//    return false;
+//}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
     

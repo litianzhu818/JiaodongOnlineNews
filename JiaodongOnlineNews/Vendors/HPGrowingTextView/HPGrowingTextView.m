@@ -73,7 +73,7 @@
     internalTextView = [[HPTextViewInternal alloc] initWithFrame:r];
     internalTextView.delegate = self;
     internalTextView.scrollEnabled = NO;
-    internalTextView.font = [UIFont fontWithName:@"Helvetica" size:13]; 
+    internalTextView.font = [UIFont systemFontOfSize:15.0f];
     internalTextView.contentInset = UIEdgeInsetsZero;		
     internalTextView.showsHorizontalScrollIndicator = NO;
     internalTextView.text = @"-";
@@ -143,7 +143,22 @@
     
     internalTextView.text = newText;
     
-    maxHeight = internalTextView.contentSize.height;
+    NSInteger newSizeH = 0;
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        CGSize size = CGSizeMake(internalTextView.textContainer.size.width, 0);
+        CGRect rect = [internalTextView.text boundingRectWithSize:size
+                                                          options:NSStringDrawingUsesLineFragmentOrigin
+                                                       attributes:@{NSFontAttributeName:internalTextView.font}
+                                                          context:nil];
+        UIEdgeInsets inset = internalTextView.textContainerInset;
+        newSizeH = ceil(rect.size.height) + inset.top  + inset.bottom;
+    }else{
+        //size of content, so we can set the frame of self
+        newSizeH = internalTextView.contentSize.height;
+    }
+    
+    maxHeight = MAX(newSizeH, internalTextView.frame.size.height);
+//    maxHeight = newSizeH;
     
     internalTextView.text = saveText;
     internalTextView.hidden = NO;
@@ -172,7 +187,8 @@
     
     internalTextView.text = newText;
     
-    minHeight = internalTextView.contentSize.height;
+    minHeight = MAX(internalTextView.contentSize.height, internalTextView.frame.size.height);
+//    minHeight = internalTextView.contentSize.height;
     
     internalTextView.text = saveText;
     internalTextView.hidden = NO;
@@ -195,10 +211,25 @@
 
 - (void)refreshHeight
 {
-	//size of content, so we can set the frame of self
-	NSInteger newSizeH = internalTextView.contentSize.height;
-	if(newSizeH < minHeight || !internalTextView.hasText) newSizeH = minHeight; //not smalles than minHeight
-  if (internalTextView.frame.size.height > maxHeight) newSizeH = maxHeight; // not taller than maxHeight
+    NSInteger newSizeH = 0;
+    // iOS7下contentSize失效
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        CGSize size = CGSizeMake(internalTextView.textContainer.size.width, 0);
+        CGRect rect = [internalTextView.text boundingRectWithSize:size
+                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                      attributes:@{NSFontAttributeName:internalTextView.font}
+                                         context:nil];
+        UIEdgeInsets inset = internalTextView.textContainerInset;
+        newSizeH = ceil(rect.size.height) + inset.top  + inset.bottom;
+    }else{
+        //size of content, so we can set the frame of self
+        newSizeH = internalTextView.contentSize.height;
+    }
+    
+	if(newSizeH < minHeight || !internalTextView.hasText)
+        newSizeH = minHeight; //not smalles than minHeight
+    if (internalTextView.frame.size.height > maxHeight)
+        newSizeH = maxHeight; // not taller than maxHeight
 
 	if (internalTextView.frame.size.height != newSizeH)
 	{
@@ -334,6 +365,7 @@
     // fix from Ankit Thakur
     [self performSelector:@selector(textViewDidChange:) withObject:internalTextView];
 }
+
 
 -(NSString*) text
 {

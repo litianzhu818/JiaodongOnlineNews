@@ -51,7 +51,13 @@ static const char* blackMaskKey = "blackMaskKey";
     process(&startFrame,&endFrame,&timeInterval);
     
     moveInView.frame = startFrame;
-    [UIView animateWithDuration:timeInterval animations:^{
+    
+    // iOS7 改变了键盘显隐时的动画，为图方便，所有使用push和pop视图的地方都使用相同的动画
+    NSUInteger curveType = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 7<<16 : 0;
+    [UIView animateWithDuration:timeInterval
+                          delay:0
+                        options:curveType
+                     animations:^{
         moveInView.frame = endFrame;
         self.transform = CGAffineTransformMakeScale(Min_Scale, Min_Scale);
         self.blackMask.alpha = Max_Alpah;
@@ -59,6 +65,7 @@ static const char* blackMaskKey = "blackMaskKey";
         [self.shadowView removeFromSuperview];
         if(complete)    complete();
     }];
+    
     
 }
 
@@ -97,7 +104,12 @@ static const char* blackMaskKey = "blackMaskKey";
     process(&startFrame,&endFrame,&timeInterval);
     
     self.frame = startFrame;
-    [UIView animateWithDuration:timeInterval animations:^{
+    
+    NSUInteger curveType = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 7<<16 : 0;
+    [UIView animateWithDuration:timeInterval
+                          delay:0
+                        options:curveType
+                     animations:^{
         self.frame = endFrame;
         presentView.transform = CGAffineTransformIdentity;
         self.blackMask.alpha = 0;

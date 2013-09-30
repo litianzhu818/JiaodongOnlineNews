@@ -37,6 +37,7 @@
         _scrollView.bounces = false;
         _scrollView.pagingEnabled = true;
         _scrollView.delegate = self;
+        _scrollView.scrollsToTop = false;
         
         self.imageViews = [NSMutableArray arrayWithCapacity:1];
         

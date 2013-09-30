@@ -56,6 +56,7 @@
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
     _scrollView.pagingScrollView.bounces = false;
     _scrollView.pageMargin = 0;
+    _scrollView.pagingScrollView.scrollsToTop = false;
     [self.view addSubview:_scrollView];
 }
 
@@ -105,13 +106,21 @@
     if (nil == page) {
         page = [[JDONewsCategoryView alloc] initWithFrame:_scrollView.bounds info:newsCategoryInfo readDB:self.readDB];
         //[page setReadDB:self.readDB];
+        if( pageIndex != 0 ){
+            page.tableView.scrollsToTop = false;
+        }
     }
     
     return page;
 }
 
+- (void)pagingScrollViewWillChangePages:(NIPagingScrollView *)pagingScrollView{
+    ((JDONewsCategoryView *)pagingScrollView.centerPageView).tableView.scrollsToTop = false;
+}
+
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{
     _pageControl.lastPageIndex = pagingScrollView.centerPageIndex;
+    ((JDONewsCategoryView *)pagingScrollView.centerPageView).tableView.scrollsToTop = true;
 }
 
 #pragma mark - ScrollView delegate 
@@ -173,6 +182,7 @@
     lastCenterPageIndex = _scrollView.centerPageIndex;
     JDONewsCategoryView *page = (JDONewsCategoryView *)_scrollView.centerPageView;
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
+    
     JDONewsCategoryInfo *pageInfo = (JDONewsCategoryInfo *)[_pageInfos objectAtIndex:_scrollView.centerPageIndex];
     
     // 页面初始化完成时只可能有两个状态 ViewStatusLogo(无缓存)/ViewStatusNormal(显示缓存),其他状态只可能在重新导航会该页面时产生

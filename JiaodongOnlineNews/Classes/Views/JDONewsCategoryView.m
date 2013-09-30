@@ -127,6 +127,12 @@
     return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    if ([keyPath isEqualToString:@"frame"] && object == HUD) {
+        NSLog(@"kind:%@,old:%@,new:%@",change[NSKeyValueChangeKindKey],change[NSKeyValueChangeOldKey],change[NSKeyValueChangeNewKey]);
+    }
+}
+
 
 - (void)loadDataFromNetwork{
     __block bool headlineFinished = false;
@@ -143,6 +149,7 @@
         HUD.removeFromSuperViewOnHide = true;
         [HUD show:true];
         HUDShowTime = [NSDate date];
+//        [HUD addObserver:self forKeyPath:@"frame" options:15 context:nil];
     }
     
     // 加载头条
