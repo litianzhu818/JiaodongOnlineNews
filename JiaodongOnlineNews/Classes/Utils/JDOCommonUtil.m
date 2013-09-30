@@ -92,7 +92,7 @@ static bool isShowingHint;
 			pairs, PARAMS,
 			protocolString, PROTOCOL,
 			hostString, HOST,
-			uriString, URI, nil];
+			uriString, URI1, nil];
 }
 
 #pragma mark - 日期相关
