@@ -54,11 +54,7 @@ static const char* blackMaskKey = "blackMaskKey";
     
     // iOS7 改变了键盘显隐时的动画，为图方便，所有使用push和pop视图的地方都使用相同的动画
 //    NSUInteger curveType = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 7<<16 : 0;
-    NSUInteger curveType = 0;
-    [UIView animateWithDuration:timeInterval
-                          delay:0
-                        options:curveType
-                     animations:^{
+    [UIView animateWithDuration:timeInterval animations:^{
         moveInView.frame = endFrame;
         self.transform = CGAffineTransformMakeScale(Min_Scale, Min_Scale);
         self.blackMask.alpha = Max_Alpah;
@@ -107,11 +103,7 @@ static const char* blackMaskKey = "blackMaskKey";
     self.frame = startFrame;
     
 //    NSUInteger curveType = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 7<<16 : 0;
-    NSUInteger curveType = 0;
-    [UIView animateWithDuration:timeInterval
-                          delay:0
-                        options:curveType
-                     animations:^{
+    [UIView animateWithDuration:timeInterval animations:^{
         self.frame = endFrame;
         presentView.transform = CGAffineTransformIdentity;
         self.blackMask.alpha = 0;

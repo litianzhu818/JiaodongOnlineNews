@@ -1980,7 +1980,7 @@
 			children = (
 				D8EFCF1917E2B43800BCD8A4 /* Hpple */,
 				A7B2E5CE17F2C4AA00929F37 /* ShareSDK_v2.5.0 */,
-				2DA30FD317E2925700930EA2 /* Hierarchy Viewer */,
+				2DA30FD317E2925700930EA2 /* HierarchyViewer */,
 				2DA29D2A17B873D900CE2F7B /* iPhone-IntroductionTutorial */,
 				A75A4F0417B09DAF0084ADD5 /* ITWLoadingPanel */,
 				2DAADB4D17AA7713001EBD43 /* BPush */,
@@ -2700,13 +2700,13 @@
 			path = "iPhone-IntroductionTutorial";
 			sourceTree = "<group>";
 		};
-		2DA30FD317E2925700930EA2 /* Hierarchy Viewer */ = {
+		2DA30FD317E2925700930EA2 /* HierarchyViewer */ = {
 			isa = PBXGroup;
 			children = (
 				2DA30FD717E29A2200930EA2 /* iOSHierarchyViewer.h */,
 				2DA30FD817E29A2200930EA2 /* libiOSHierarchyViewer_fat.a */,
 			);
-			path = "Hierarchy Viewer";
+			path = HierarchyViewer;
 			sourceTree = "<group>";
 		};
 		2DAADB3317AA4C6C001EBD43 /* Guide */ = {
@@ -2967,7 +2967,6 @@
 				A7B2E5DA17F2C4AA00929F37 /* Core */,
 				A7B2E5E117F2C4AA00929F37 /* Extend */,
 				A7B2E5F317F2C4AA00929F37 /* ShareSDK.framework */,
-				A7B2E5F417F2C4AA00929F37 /* UI */,
 			);
 			path = ShareSDK_v2.5.0;
 			sourceTree = "<group>";
@@ -3050,13 +3049,6 @@
 				A7B2E5F217F2C4AA00929F37 /* WBApiObject.h */,
 			);
 			path = TencentWeiboSSO;
-			sourceTree = "<group>";
-		};
-		A7B2E5F417F2C4AA00929F37 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UI;
 			sourceTree = "<group>";
 		};
 		D8E44FA8179641D800132A8A /* Violation */ = {
@@ -3968,7 +3960,6 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/UI",
 					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3986,7 +3977,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy\\\\\\ Viewer",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/HierarchyViewer",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/libWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
 				);
@@ -4025,7 +4016,6 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/UI",
 					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4043,7 +4033,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/UMeng",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/BPush",
-					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Hierarchy\\\\\\ Viewer",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/HierarchyViewer",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/libWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.5.0/Extend/RenRenSDK",
 				);

@@ -97,6 +97,9 @@
     return UITableViewCellEditingStyleDelete;
 }
 
-
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"应该在子类中覆盖");
+    return nil;
+}
 
 @end

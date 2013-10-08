@@ -19,7 +19,7 @@
 
 @interface UIView (debug)
 
-- (NSString *)recursiveDescription;
+//- (NSString *)recursiveDescription;
 
 @end
 

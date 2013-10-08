@@ -845,7 +845,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
 {
 #ifdef DEBUG
 	// [UIView recursiveDescription] is a private method.  This should probably be re-written to avoid any potential problems.
-	NSLog(@"DCIntrospect: %@", [view recursiveDescription]);
+//	NSLog(@"DCIntrospect: %@", [view recursiveDescription]);
 #endif
 }
 

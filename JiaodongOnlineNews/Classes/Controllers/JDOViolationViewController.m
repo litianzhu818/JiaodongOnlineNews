@@ -41,7 +41,7 @@
         [tmp appendString:[NSString stringWithFormat:@"%d", index]];
         CarTypeString = tmp;
     } else {
-        CarTypeString = [NSString stringWithFormat:@"%d", index];
+        CarTypeString = [[NSString stringWithFormat:@"%d", index] mutableCopy];
     }
     
 }

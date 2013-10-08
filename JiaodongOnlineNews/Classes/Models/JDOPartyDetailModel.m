@@ -42,7 +42,7 @@
         [userDefault setObject:fontClass forKey:@"font_class"];
         [userDefault synchronize];
     }
-#warning 未处理重复投票
+
     NSMutableDictionary *variables = [[NSMutableDictionary alloc] init];
     [variables setValue:fontClass forKey:@"font_class"];
     [variables setValue:[dictionary objectForKey:@"active_allowreg"] forKey:@"hasJoin"];
