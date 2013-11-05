@@ -28,3 +28,16 @@ iOS-Hierarchy-Viewer 用来查看视图层级
 1.JDOAppDelegate 中注释掉对应的三行
 
 ##########################################################################################
+
+Xcode5.0下编译iOS6兼容版二进制包
+
+1.选择base sdk为iOS6.1
+2.在archive之前，从/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer目录移除iPhoneOS7.0.sdk
+
+##########################################################################################
+
+Ad-Hoc本地测试发布地址
+
+http://p.jiaodong.net/jdmsys/Client/JiaodongOnlineNews0820.ipa
+
+##########################################################################################
