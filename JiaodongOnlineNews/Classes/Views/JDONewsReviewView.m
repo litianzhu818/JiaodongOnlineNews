@@ -187,7 +187,7 @@
                     [self.target hideReviewView];   // 进入绑定界面,绑定完成后重新显示键盘
                     id<ISSAuthOptions> authOptions = JDOGetOauthOptions(shareViewDelegate);
                   
-                    [ShareSDK getUserInfoWithType:shareType authOptions:authOptions result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
+                    [ShareSDK getUserInfoWithType:shareType authOptions:authOptions result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
                         if (result){
                             [item setObject:[userInfo nickname] forKey:@"username"];
                             [item setObject:[NSNumber numberWithBool:YES] forKey:@"selected"];
