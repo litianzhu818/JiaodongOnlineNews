@@ -207,6 +207,11 @@ NSArray *imageUrls;
         [self setCurrentState:ViewStatusLoading];
         self.topicModel.tinyurl = [topicModel objectForKey:@"tinyurl"];
         [self.navigationView setRightBtnCount:[topicModel objectForKey:@"commentCount"]];
+        if (self.topicModel.showMore) {
+            [topicModel setObject:@"1" forKey:@"showMore"];
+        } else {
+            [topicModel setObject:@"0" forKey:@"showMore"];
+        }
         NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:topicModel]];
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
         [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
@@ -225,6 +230,11 @@ NSArray *imageUrls;
                 [self saveTopicDetailToLocalCache:dict];
                 self.topicModel.tinyurl = [dict objectForKey:@"tinyurl"];
                 [self.navigationView setRightBtnCount:[dict objectForKey:@"commentCount"]];
+                if (self.topicModel.showMore) {
+                    [topicModel setObject:@"1" forKey:@"showMore"];
+                } else {
+                    [topicModel setObject:@"0" forKey:@"showMore"];
+                }
                 NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:dict]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
