@@ -206,6 +206,7 @@ NSArray *imageUrls;
     if (topicModel && ![Reachability isEnableNetwork]/*无网络但是有缓存*/) {
         [self setCurrentState:ViewStatusLoading];
         self.topicModel.tinyurl = [topicModel objectForKey:@"tinyurl"];
+        [self.navigationView setRightBtnCount:[topicModel objectForKey:@"commentCount"]];
         NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:topicModel]];
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
         [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
@@ -220,9 +221,10 @@ NSArray *imageUrls;
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
                 NSMutableDictionary *dict = [responseObject mutableCopy];
                 [dict setObject:self.topicModel.id forKey:@"id"];
+                [dict setObject:self.topicModel.follownums forKey:@"commentCount"];
                 [self saveTopicDetailToLocalCache:dict];
                 self.topicModel.tinyurl = [dict objectForKey:@"tinyurl"];
-                
+                [self.navigationView setRightBtnCount:[dict objectForKey:@"commentCount"]];
                 NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:dict]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];

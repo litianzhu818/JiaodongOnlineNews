@@ -325,8 +325,8 @@
 //                                              cancelButtonTitle:@"确定" otherButtonTitles:nil];
 //        [alert show];
     } else {//有网络
-        JDOLeftViewController *leftController = (JDOLeftViewController *)[[SharedAppDelegate deckController] leftController];
-        [leftController updateWeather];
+        JDORightViewController *rightController = (JDORightViewController *)[[SharedAppDelegate deckController] rightController];
+        [rightController updateWeather];
     }
 }
 
