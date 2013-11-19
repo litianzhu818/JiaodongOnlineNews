@@ -27,6 +27,20 @@
     return self;
 }
 
+- (id)initWithNewsModel:(JDONewsModel *)model
+{
+    if (self = [super init]) {
+        self.id = model.id;
+        self.title = model.title;
+        self.pubtime = model.pubtime;
+        //self.follownums = model.follownums;
+        self.tinyurl = model.tinyurl;
+        self.imageurl = model.imageurl;
+        self.summary = model.summary;
+    }
+    return self;
+}
+
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.id forKey:@"id"];
     [aCoder encodeObject:self.pubtime forKey:@"pubtime"];

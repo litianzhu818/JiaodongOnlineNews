@@ -29,7 +29,7 @@
     [aCoder encodeObject:self.active_regendtime forKey:@"active_regendtime"];
 }
 
-+ (NSString *) mergeToHTMLTemplateFromDictionary:(NSDictionary *)dictionary{
++ (NSString *) mergeToHTMLTemplateFromDictionary:(NSMutableDictionary *)dictionary{
     MGTemplateEngine *engine = [[self class] sharedTemplateEngine];
     [engine setMatcher:[ICUTemplateMatcher matcherWithTemplateEngine:engine]];
     NSString *templatePath = [[NSBundle mainBundle] pathForResource:@"content_template" ofType:@"html"];
@@ -63,6 +63,9 @@
     }
     [variables setValue:[dictionary objectForKey:@"active_starttime"] forKey:@"active_starttime"];
     [variables setValue:joinBtnStr forKey:@"joinBtnStr"];
+    if ([[dictionary objectForKey:@"showMore"] isEqualToString:@"1"]) {
+        [variables setValue:@"1" forKey:@"showMoreParty"];
+    }
     [variables addEntriesFromDictionary:dictionary];
     
     return [engine processTemplateInFileAtPath:templatePath withVariables:variables];

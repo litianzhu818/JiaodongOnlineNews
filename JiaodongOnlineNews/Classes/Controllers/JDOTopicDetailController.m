@@ -202,7 +202,7 @@ NSArray *imageUrls;
 
 - (void) loadWebView{
 #warning 若有缓存可以从缓存读取,话题涉及到动态的投票数量,是否缓存有待考虑
-    NSDictionary *topicModel = [self readTopicDetailFromLocalCache];
+    NSMutableDictionary *topicModel = [self readTopicDetailFromLocalCache];
     if (topicModel && ![Reachability isEnableNetwork]/*无网络但是有缓存*/) {
         [self setCurrentState:ViewStatusLoading];
         self.topicModel.tinyurl = [topicModel objectForKey:@"tinyurl"];

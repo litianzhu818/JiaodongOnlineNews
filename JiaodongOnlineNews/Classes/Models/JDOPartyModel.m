@@ -14,7 +14,7 @@
     if (self = [super init]) {
         self.id = [aDecoder decodeObjectForKey:@"id"];
         self.pubtime = [aDecoder decodeObjectForKey:@"pubtime"];
-        self.clicknum = [aDecoder decodeIntForKey:@"clicknum"];
+        self.clicknum = [aDecoder decodeObjectForKey:@"clicknum"];
         self.summary = [aDecoder decodeObjectForKey:@"summary"];
         self.title = [aDecoder decodeObjectForKey:@"title"];
         self.mpic = [aDecoder decodeObjectForKey:@"mpic"];
@@ -26,11 +26,31 @@
     return self;
 }
 
+- (id)initWithNewsModel:(JDONewsModel *)model
+{
+    if (self = [super init]) {
+        self.id = model.id;
+        self.title = model.title;
+        self.pubtime = model.pubtime;
+        self.tinyurl = model.tinyurl;
+        self.imageurl = model.imageurl;
+        self.summary = model.summary;
+        self.clicknum = model.clicknum;
+        self.modifytime = model.modifytime;
+        self.mpic = model.mpic;
+        //self.active_address = model.active_address;
+        //self.active_endtime = model.active_endtime;
+        //self.active_starttime = model.active_starttime;
+        self.showMore = @"show";
+    }
+    return self;
+}
+
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.id forKey:@"id"];
     [aCoder encodeObject:self.pubtime forKey:@"pubtime"];
     [aCoder encodeObject:self.summary forKey:@"summary"];
-    [aCoder encodeInt:self.clicknum forKey:@"clicknum"];
+    [aCoder encodeObject:self.clicknum forKey:@"clicknum"];
     [aCoder encodeObject:self.title forKey:@"title"];
     [aCoder encodeObject:self.mpic forKey:@"mpic"];
     [aCoder encodeObject:self.modifytime forKey:@"modifytime"];

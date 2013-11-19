@@ -34,8 +34,8 @@
            [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
            [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
            [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"],
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment&Sport" title:@"文体" channel:@"20"],
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Information" title:@"资讯" channel:@"2"],
            ];
         self.readDB = [[JDOReadDB alloc] init];
     }
