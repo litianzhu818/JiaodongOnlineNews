@@ -98,18 +98,27 @@
 
 - (void)setModel:(JDONewsModel *)newsModel{
     __block UIImageView *blockImageView = self.imageView;
-    
-    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-        if(!cached){    // 非缓存加载时使用渐变动画
-            CATransition *transition = [CATransition animation];
-            transition.duration = 0.3;
-            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            transition.type = kCATransitionFade;
-            [blockImageView.layer addAnimation:transition forKey:nil];
-        }
-    } failure:^(NSError *error) {
+    /*
+    if ([newsModel.contentType isEqualToString:@"picture"]) {
+        [self.imageView setImage:[UIImage imageNamed:@"picture"]];
+    } else if ([newsModel.contentType isEqualToString:@"topic"]) {
+        [self.imageView setImage:[UIImage imageNamed:@"topic"]];
+    } else if ([newsModel.contentType isEqualToString:@"party"]) {
+        [self.imageView setImage:[UIImage imageNamed:@"party"]];
+    } else {
+     */
+        [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+            if(!cached){    // 非缓存加载时使用渐变动画
+                CATransition *transition = [CATransition animation];
+                transition.duration = 0.3;
+                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                transition.type = kCATransitionFade;
+                [blockImageView.layer addAnimation:transition forKey:nil];
+            }
+        } failure:^(NSError *error) {
         
-    }];
+        }];
+    //}
     self.textLabel.text = newsModel.title;
     self.detailTextLabel.text = newsModel.summary;
    // NSLog(@"JDONewsTableCell read: %@  id:%@",newsModel.read?@"YES":@"NO", newsModel.id);

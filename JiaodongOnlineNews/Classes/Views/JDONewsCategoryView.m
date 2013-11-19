@@ -441,6 +441,9 @@
         }
         if(self.listArray.count > 0){
             JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
+            if ([newsModel.contentType isEqualToString:@"<#string#>"]) {
+                <#statements#>
+            }
             [cell setModel:newsModel];
         }
         return cell;
@@ -492,7 +495,7 @@
             JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
             [centerController pushViewController:topicController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
-        } else if ([model.contentType isEqualToString:@"Action"]) {
+        } else if ([model.contentType isEqualToString:@"party"]) {
             JDOPartyModel *partyModel = [[JDOPartyModel alloc] initWithNewsModel:model];
             [model setRead:TRUE];
             JDOPartyDetailController *partyController = [[JDOPartyDetailController alloc] initWithPartyModel:partyModel];
