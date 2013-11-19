@@ -95,7 +95,7 @@ NSArray *imageUrls;
 }
 
 - (void) loadWebView{
-    NSDictionary *detailModel = [self readNewsDetailFromLocalCache];
+    NSMutableDictionary *detailModel = [self readNewsDetailFromLocalCache];
     if (self.isPushNotification) {  // 推送消息忽略缓存
         detailModel = nil;
     }
@@ -103,7 +103,11 @@ NSArray *imageUrls;
         [self setCurrentState:ViewStatusLoading];
         // 设置url短地址
         self.newsModel.tinyurl = [detailModel objectForKey:@"tinyurl"];
-        
+        if (self.partyModel.showMore) {
+            [detailModel setObject:@"1" forKey:@"showMore"];
+        } else {
+            [detailModel setObject:@"0" forKey:@"showMore"];
+        }
         NSString *mergedHTML = [JDOPartyDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:detailModel]];
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
         [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
@@ -127,7 +131,11 @@ NSArray *imageUrls;
                     self.newsModel.summary = [dic objectForKey:@"summary"];
                     self.newsModel.mpic =  [dic objectForKey:@"mpic"];
                 }
-                
+                if (self.partyModel.showMore) {
+                    [detailModel setObject:@"1" forKey:@"showMore"];
+                } else {
+                    [detailModel setObject:@"0" forKey:@"showMore"];
+                }
                 NSString *mergedHTML = [JDOPartyDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:dic]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];

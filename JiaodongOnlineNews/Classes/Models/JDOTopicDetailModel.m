@@ -48,7 +48,7 @@
     return _sharedEngine;
 }
 
-+ (NSString *) mergeToHTMLTemplateFromDictionary:(NSDictionary *)dictionary{
++ (NSString *) mergeToHTMLTemplateFromDictionary:(NSMutableDictionary *)dictionary{
     MGTemplateEngine *engine = [[self class] sharedTemplateEngine];
     [engine setMatcher:[ICUTemplateMatcher matcherWithTemplateEngine:engine]];
     NSString *templatePath = [[NSBundle mainBundle] pathForResource:@"content_template" ofType:@"html"];
@@ -67,6 +67,9 @@
     [variables setValue:@"1" forKey:@"hasVote"];
     [variables setValue:[dictionary valueForKey:@"id"] forKey:@"id"];
     [variables setValue:[SERVER_QUERY_URL stringByAppendingString:VOTE_SERVICE] forKey:@"vote_addr"];
+    if ([[dictionary objectForKey:@"showMore"] isEqualToString:@"1"]) {
+        [variables setValue:@"1" forKey:@"showMoreTopic"];
+    }
     [variables addEntriesFromDictionary:dictionary];
     
     return [engine processTemplateInFileAtPath:templatePath withVariables:variables];

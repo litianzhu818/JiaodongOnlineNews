@@ -11,6 +11,7 @@
 
 @interface JDOPartyDetailModel : JDONewsDetailModel
 
+@property (nonatomic)BOOL showMore;
 @property (nonatomic,copy) NSString *active_starttime;
 @property (nonatomic,copy) NSString *active_endtime;
 @property (nonatomic,copy) NSString *active_allowreg;

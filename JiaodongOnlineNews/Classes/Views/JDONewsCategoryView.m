@@ -16,6 +16,12 @@
 #import "NSDate+SSToolkitAdditions.h"
 #import "SDImageCache.h"
 #import "Reachability.h"
+#import "JDOImageDetailController.h"
+#import "JDOTopicDetailController.h"
+#import "JDOPartyDetailController.h"
+#import "JDOImageModel.h"
+#import "JDOTopicModel.h"
+#import "JDOPartyModel.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -460,13 +466,43 @@
         // section0 由于存在scrollView与didSelectRowAtIndexPath冲突，不会进入该函数，通过给UIImageView设置gesture的方式解决
     }else{
         JDONewsModel* model = [self.listArray objectAtIndex:indexPath.row];
-        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:model];
-        [model setRead:TRUE];
-        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.readDB save:[model id]];
-        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-        [centerController pushViewController:detailController animated:true];
-        [tableView deselectRowAtIndexPath:indexPath animated:true];
+        //if ([model.contentType isEqualToString:@"news"]) {
+            JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:model];
+            [model setRead:TRUE];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.readDB save:[model id]];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:detailController animated:true];
+            [tableView deselectRowAtIndexPath:indexPath animated:true];
+        /*} else if ([model.contentType isEqualToString:@"picture"]){
+            JDOImageModel *imageModel = [[JDOImageModel alloc] initWithNewsModel:model];
+            [model setRead:TRUE];
+            JDOImageDetailController *imageController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.readDB save:[model id]];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:imageController animated:true];
+            [tableView deselectRowAtIndexPath:indexPath animated:true];
+        } else if ([model.contentType isEqualToString:@"topic"]) {
+            JDOTopicModel *topicModel = [[JDOTopicModel alloc] initWithNewsModel:model];
+            [model setRead:TRUE];
+            JDOTopicDetailController *topicController = [[JDOTopicDetailController alloc] initWithTopicModel:topicModel pController:nil];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.readDB save:[model id]];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:topicController animated:true];
+            [tableView deselectRowAtIndexPath:indexPath animated:true];
+        } else if ([model.contentType isEqualToString:@"Action"]) {
+            JDOPartyModel *partyModel = [[JDOPartyModel alloc] initWithNewsModel:model];
+            [model setRead:TRUE];
+            JDOPartyDetailController *partyController = [[JDOPartyDetailController alloc] initWithPartyModel:partyModel];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.readDB save:[model id]];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:partyController animated:true];
+            [tableView deselectRowAtIndexPath:indexPath animated:true];
+        }
+         */
     }
 }
 
