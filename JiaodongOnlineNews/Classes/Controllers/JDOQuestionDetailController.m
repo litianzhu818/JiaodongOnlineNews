@@ -170,7 +170,7 @@
 }
 
 - (void) dataLoadFinished:(JDOQuestionDetailModel *)detailModel{
-    
+    [self.navigationView setRightBtnCount:[NSString stringWithFormat:@"%d",[detailModel.commentCount intValue]]];
     NSMutableArray *content = [NSMutableArray array];
     [content addObject:[NSString stringWithFormat:@"部门：%@",detailModel.department]];
     [content addObject:detailModel.title];

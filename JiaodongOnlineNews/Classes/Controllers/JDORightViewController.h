@@ -12,4 +12,6 @@
 - (void) pushViewController:(JDONavigationController *)controller;
 - (void) popViewController;
 
+- (void) updateWeather;
+- (void) updateCalendar;
 @end

@@ -223,7 +223,8 @@ NSArray *imageUrls;
         [self setCurrentState:ViewStatusLoading];
         // 设置url短地址
         self.newsModel.tinyurl = [detailModel objectForKey:@"tinyurl"];
-        
+        //[self.navigationView setRightBtnCount:@"555"];
+        [self.navigationView setRightBtnCount:[detailModel objectForKey:@"commentCount"]];
         NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:detailModel]];
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
         [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
@@ -246,7 +247,7 @@ NSArray *imageUrls;
                     self.newsModel.summary = [responseObject objectForKey:@"summary"];
                     self.newsModel.mpic =  [responseObject objectForKey:@"mpic"];
                 }
-                
+                [self.navigationView setRightBtnCount:[responseObject objectForKey:@"commentCount"]];
                 NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
