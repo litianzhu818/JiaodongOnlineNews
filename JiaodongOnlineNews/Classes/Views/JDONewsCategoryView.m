@@ -441,9 +441,6 @@
         }
         if(self.listArray.count > 0){
             JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
-            if ([newsModel.contentType isEqualToString:@"<#string#>"]) {
-                <#statements#>
-            }
             [cell setModel:newsModel];
         }
         return cell;
