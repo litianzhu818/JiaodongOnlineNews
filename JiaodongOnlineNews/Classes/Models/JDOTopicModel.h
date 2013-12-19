@@ -7,6 +7,7 @@
 //
 
 #import "JDOToolbarModel.h"
+#import "JDONewsModel.h"
 
 @interface JDOTopicModel : NSObject <NSCoding, JDOToolbarModel>
 @property (nonatomic,strong) NSString *id;
@@ -19,6 +20,11 @@
 @property (nonatomic,strong) NSString *modifytime;
 @property (nonatomic,strong) NSString *tinyurl;
 
+@property (nonatomic,strong) NSString *showMore;
+
 // protocol
 @property (nonatomic,strong) NSString *reviewService;
+
+- (id)initWithNewsModel:(JDONewsModel *)model;
+
 @end

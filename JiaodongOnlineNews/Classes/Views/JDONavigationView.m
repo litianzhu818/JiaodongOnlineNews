@@ -7,6 +7,7 @@
 //
 
 #import "JDONavigationView.h"
+#import "NimbusBadge.h"
 
 @implementation JDONavigationView
 
@@ -62,6 +63,14 @@
 - (void) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector{
     [self addRightButtonImage:image highlightImage:highlightImage];
     [self.rightBtn addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void) setRightBtnCount:(NSString *)count{
+    NIBadgeView *badgeView = [[NIBadgeView alloc] initWithFrame:CGRectMake(19, 0, 30, 30)];
+    badgeView.text = (NSString *)count;
+    badgeView.backgroundColor = [UIColor clearColor];
+    //badgeView.textColor = [UIColor redColor];
+    [self.rightBtn addSubview:badgeView];
 }
 
 - (void) setTitle:(NSString *)title{

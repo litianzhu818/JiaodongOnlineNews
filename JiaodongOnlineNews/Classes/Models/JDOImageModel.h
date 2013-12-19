@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "JDOToolbarModel.h"
+#import "JDONewsModel.h"
 
 @interface JDOImageModel : NSObject <NSCoding,JDOToolbarModel>
 @property (nonatomic,strong) NSString *id;
@@ -20,4 +21,7 @@
 // protocol
 @property (nonatomic,strong) NSString *summary;
 @property (nonatomic,strong) NSString *reviewService;
+
+- (id)initWithNewsModel:(JDONewsModel *)model;
+
 @end

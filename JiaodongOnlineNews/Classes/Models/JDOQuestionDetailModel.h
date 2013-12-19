@@ -20,7 +20,7 @@
 @property (nonatomic,strong) NSString *username;
 @property (nonatomic,strong) NSString *petname;
 @property (nonatomic,strong) NSString *entry_date;
-@property (nonatomic,strong) NSString *commentCount;
+@property (nonatomic,strong) NSNumber *commentCount;
 @property (nonatomic,strong) NSString *reply_date;
 @property (nonatomic,strong) JDOQuestionDetailModel *secondInfo;
 

@@ -168,13 +168,25 @@
     <div style="text-align: center;margin-bottom: 20px">
         <input type="button"  onclick="javascript:joinin()" value="{{joinBtnStr}}" style="background:url(commit_btn.png);background-repeat:x-repeat;width:220px; height:50px;font-size: 20px;color: white">
     </div>
+    
     {% /if %}
+    
+    
+    {% if showMoreTopic %}
+    <div id="moreTopic" style="text-align: center;margin-bottom: 20px">更多精彩话题，请浏览每日一题专栏</div>
+    {% /if %}
+    
+    {% if showMoreParty %}
+    <div id="moreParty" style="text-align: center;margin-bottom: 20px">更多活动，请浏览精彩活动专栏</div>
+    {% /if %}
+
     <!-- 相关新闻 -->
     {% for relate in relates %}
     
     {% /for %}
     <!-- 热门跟贴 -->
     {% if comments %}{{comments}}{% /if %}
+
 
 </body>
 </html>

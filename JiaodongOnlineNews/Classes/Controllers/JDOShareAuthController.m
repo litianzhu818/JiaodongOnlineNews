@@ -103,7 +103,7 @@
 //            }];
             [ShareSDK getUserInfoWithType:type
                               authOptions:JDOGetOauthOptions(sharedDelegate)
-                                   result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
+                                   result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
                                        if (result){
                                            [item setObject:[userInfo nickname] forKey:@"username"];
                                            [item setObject:[NSNumber numberWithBool:true] forKey:@"selected"];

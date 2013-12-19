@@ -24,4 +24,6 @@
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *reviewService;
 @property (nonatomic,assign) BOOL read;
+
+@property (nonatomic,strong) NSString *contentType;
 @end

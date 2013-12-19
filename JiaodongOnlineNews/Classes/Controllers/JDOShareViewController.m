@@ -155,7 +155,7 @@
     
     [ShareSDK getUserInfoWithType:[[item objectForKey:@"type"] intValue]
                       authOptions:JDOGetOauthOptions(nil)
-                           result:^(BOOL result, id<ISSUserInfo> userInfo, id<ICMErrorInfo> error) {
+                           result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
                                if (result){
                                    [item setObject:[userInfo nickname] forKey:@"username"];
                                    [item setObject:[NSNumber numberWithBool:true] forKey:@"selected"];
@@ -268,10 +268,10 @@
                       type:shareType
                authOptions:JDOGetOauthOptions(nil)
              statusBarTips:YES
-                    result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-                        if (state == SSPublishContentStateSuccess){
+                    result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                        if (state == SSResponseStateSuccess){
                             NSLog(@"success");
-                        }else if (state == SSPublishContentStateFail){
+                        }else if (state == SSResponseStateFail){
                             NSLog(@"%d:%@",[error errorCode], [error errorDescription]);
                         }
                     }];

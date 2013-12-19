@@ -70,6 +70,7 @@
         _title.textColor = [UIColor colorWithHex:Black_Color_Type1];
         _title.backgroundColor = [UIColor clearColor];
         _title.font = [UIFont boldSystemFontOfSize:18];
+        _title.editable=NO;
         [self addSubview:_title];
         
         _title_left = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 8, 35)];

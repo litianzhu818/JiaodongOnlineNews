@@ -52,15 +52,15 @@
 }
 
 - (void) setupNavigationView{
-    [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    //[self.navigationView addRightButtonImage:@"right_menu_btn" highlightImage:@"right_menu_btn" target:self.viewDeckController action:@selector(toggleRightView)];
+    [self.navigationView addLeftButtonImage:@"left_menu_btn" highlightImage:@"left_menu_btn" target:self.viewDeckController action:@selector(toggleLeftView)];
+    [self.navigationView addRightButtonImage:@"right_menu_btn" highlightImage:@"right_menu_btn" target:self.viewDeckController action:@selector(toggleRightView)];
     [self.navigationView setTitle:@"精彩活动"];
 }
 
-- (void) onBackBtnClick{
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)SharedAppDelegate.deckController.centerController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
-}
+//- (void) onBackBtnClick{
+//    JDOCenterViewController *centerViewController = (JDOCenterViewController *)SharedAppDelegate.deckController.centerController;
+//    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+//}
 
 - (void)didReceiveMemoryWarning
 {

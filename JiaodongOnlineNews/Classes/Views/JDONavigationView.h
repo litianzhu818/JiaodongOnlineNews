@@ -20,6 +20,7 @@
 - (void) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage target:(id)target action:(SEL)selector;
 
 - (void) setTitle:(NSString *)title;
+-(void) setRightBtnCount:(NSString *)count;
 
 - (void) addBackButtonWithTarget:(id)target action:(SEL)selector;
 //- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector;

@@ -15,6 +15,7 @@
 #import "JDORightViewController.h"
 #import "JDOImageDetailController.h"
 #import "JDOTopicViewController.h"
+#import "JDOPartyViewController.h"
 #import "JDOLivehoodViewController.h"
 #import "JDONewsHeadCell.h"
 #import "JDONewsCategoryView.h"
@@ -89,6 +90,15 @@
     return _controller;
 }
 
++ (JDOPartyViewController *) sharedPartyViewController{
+    static JDOPartyViewController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOPartyViewController alloc] init];
+    });
+    return _controller;
+}
+
 - (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
@@ -106,6 +116,9 @@
             break;
         case MenuItemLivehood:
             controller = [[self class] sharedLivehoodViewController];
+            break;
+        case MenuItemParty:
+            controller = [[self class] sharedPartyViewController];
             break;
         default:
             break;
@@ -327,11 +340,12 @@
 
     if (viewDeckSide == IIViewDeckLeftSide){
         [(JDOLeftViewController *)viewDeckController.leftController transitionToAlpha:Max_Alpah Scale:Min_Scale];
-        // 每次打开左侧边栏都刷新天气
-        [(JDOLeftViewController *)viewDeckController.leftController updateWeather];
-        [(JDOLeftViewController *)viewDeckController.leftController updateCalendar];
+        
     }else if (viewDeckSide == IIViewDeckRightSide){
         [(JDORightViewController *)viewDeckController.rightController transitionToAlpha:Max_Alpah Scale:Min_Scale];
+        // 每次打开右侧边栏都刷新天气
+        [(JDORightViewController *)viewDeckController.rightController updateWeather];
+        [(JDORightViewController *)viewDeckController.rightController updateCalendar];
     }
     
     UIViewController *currentTopController = [self.viewControllers objectAtIndex:0];
