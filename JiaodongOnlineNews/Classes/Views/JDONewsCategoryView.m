@@ -119,10 +119,12 @@
     }
 }
 
+// 不勾选“特荐[a]”则认为是列表，与其他选项是否勾选无关
 - (NSDictionary *) newsListParam{
     return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a"};
 }
 
+// 后台勾选“特荐[a]”则认为是轮播，与其他选项是否勾选无关
 - (NSDictionary *) headLineParam{
     return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
 }
