@@ -4,7 +4,7 @@
 function adjustImgSize(){
     var width = 320*0.9;
     $(this).attr({width:width+"px"});
-    $(this).wrap("<div style='width:"+width+"px;height:180px;overflow:hidden;position:relative;'></div>");
+    $(this).wrap("<div style='width:"+width+"px;overflow:scroll;position:relative;'></div>");
     var linkId = $(this).closest("p").attr("id");
     if( linkId ){
         $(this).before("<img src='img_set_flag.png'  style='position:absolute;right:0;bottom:0;' />");
