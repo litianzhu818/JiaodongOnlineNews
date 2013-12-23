@@ -22,6 +22,7 @@
 
 @property (nonatomic,assign) UITableViewCellStyle style;
 //@property (nonatomic,strong) UIView *shadowView;
+@property (nonatomic,strong) UIButton *typeHint;
 
 @end
 
@@ -46,13 +47,21 @@
         self.detailTextLabel.highlightedTextColor = [UIColor colorWithHex:Gray_Color_Type1];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
+//        self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"news_content_background"]];
         self.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"news_content_background_selected"]];
         
 //        _shadowView = [[UIView alloc] initWithFrame:CGRectZero];
 //        _shadowView.backgroundColor =[UIColor clearColor];
 //        [self.contentView insertSubview:_shadowView belowSubview:self.imageView];
+        
+        // 使用Label在点击cell显示backgroundImage的时候会导致Label的背景色不显示，只能改用Button并设置selected状态的背景图
+        self.typeHint = [UIButton buttonWithType:UIButtonTypeCustom];
+        [[self.typeHint titleLabel] setFont:[UIFont systemFontOfSize:11]];
+        [[self.typeHint titleLabel] setTextAlignment:UITextAlignmentCenter];
+        [self.typeHint setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.typeHint setEnabled:true];
+        [self.contentView addSubview:self.typeHint];
     }
     return self;
 }
@@ -94,31 +103,61 @@
     self.textLabel.frame = CGRectMake(titleLeft,Top_Margin-1/*对齐*/,labelWdith,CGRectGetHeight(frame));
     frame = self.detailTextLabel.frame;
     self.detailTextLabel.frame = CGRectMake(titleLeft,CGRectGetMinY(frame)+1/*对齐*/,labelWdith,CGRectGetHeight(frame));
+    
+    self.typeHint.frame = CGRectMake(totalWidth - 28/*图标宽度*/ - Right_Margin, News_Cell_Height - 14/*图标高度*/ - 8/*下边距*/, 28, 14);
 }
 
 - (void)setModel:(JDONewsModel *)newsModel{
     __block UIImageView *blockImageView = self.imageView;
-    /*
+    
+    NSArray *types = [newsModel.atype componentsSeparatedByString:@","];
+    for (int i=0; i<[types count]; i++) {
+        NSString *aType = [types objectAtIndex:i];
+        if ([aType isEqualToString:@"g"]) { // 图集
+            newsModel.contentType = @"picture";
+            break;
+        } else if ([aType isEqualToString:@"t"]) {  // 话题
+            newsModel.contentType = @"topic";
+            break;
+        } else if ([aType isEqualToString:@"ac"]) { // 活动
+            newsModel.contentType = @"party";
+            break;
+        }
+    }
+    
+    self.typeHint.hidden = true;
     if ([newsModel.contentType isEqualToString:@"picture"]) {
-        [self.imageView setImage:[UIImage imageNamed:@"picture"]];
+        self.typeHint.hidden = false;
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_blue"] forState:UIControlStateNormal];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_blue"] forState:UIControlStateSelected];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_blue"] forState:UIControlStateHighlighted];
+        [self.typeHint setTitle:@"图集" forState:UIControlStateNormal];
     } else if ([newsModel.contentType isEqualToString:@"topic"]) {
-        [self.imageView setImage:[UIImage imageNamed:@"topic"]];
+        self.typeHint.hidden = false;
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_blue"] forState:UIControlStateNormal];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_blue"] forState:UIControlStateSelected];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_blue"] forState:UIControlStateHighlighted];
+        [self.typeHint setTitle:@"话题" forState:UIControlStateNormal];
     } else if ([newsModel.contentType isEqualToString:@"party"]) {
-        [self.imageView setImage:[UIImage imageNamed:@"party"]];
-    } else {
-     */
-        [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-            if(!cached){    // 非缓存加载时使用渐变动画
-                CATransition *transition = [CATransition animation];
-                transition.duration = 0.3;
-                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                transition.type = kCATransitionFade;
-                [blockImageView.layer addAnimation:transition forKey:nil];
-            }
-        } failure:^(NSError *error) {
-        
-        }];
-    //}
+        self.typeHint.hidden = false;
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateNormal];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateSelected];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateHighlighted];
+        [self.typeHint setTitle:@"活动" forState:UIControlStateNormal];
+    }
+    
+    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+        if(!cached){    // 非缓存加载时使用渐变动画
+            CATransition *transition = [CATransition animation];
+            transition.duration = 0.3;
+            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            transition.type = kCATransitionFade;
+            [blockImageView.layer addAnimation:transition forKey:nil];
+        }
+    } failure:^(NSError *error) {
+    
+    }];
+    
     self.textLabel.text = newsModel.title;
     self.detailTextLabel.text = newsModel.summary;
    // NSLog(@"JDONewsTableCell read: %@  id:%@",newsModel.read?@"YES":@"NO", newsModel.id);

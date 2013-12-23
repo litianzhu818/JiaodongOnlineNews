@@ -26,4 +26,6 @@
 
 - (id)initWithNewsModel:(JDONewsModel *)model;
 
+@property (nonatomic,strong) NSString *tinyurl;
+
 @end

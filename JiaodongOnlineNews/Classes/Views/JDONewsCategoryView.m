@@ -468,7 +468,23 @@
         // section0 由于存在scrollView与didSelectRowAtIndexPath冲突，不会进入该函数，通过给UIImageView设置gesture的方式解决
     }else{
         JDONewsModel* model = [self.listArray objectAtIndex:indexPath.row];
-        //if ([model.contentType isEqualToString:@"news"]) {
+        
+        NSArray *types = [model.atype componentsSeparatedByString:@","];
+        for (int i=0; i<[types count]; i++) {
+            NSString *aType = [types objectAtIndex:i];
+            if ([aType isEqualToString:@"g"]) { // 图集
+                model.contentType = @"picture";
+                break;
+            } else if ([aType isEqualToString:@"t"]) {  // 话题
+                model.contentType = @"topic";
+                break;
+            } else if ([aType isEqualToString:@"ac"]) { // 活动
+                model.contentType = @"party";
+                break;
+            }
+        }
+        
+        if (model.contentType == nil) {
             JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:model];
             [model setRead:TRUE];
             [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -476,7 +492,7 @@
             JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
             [centerController pushViewController:detailController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
-        /*} else if ([model.contentType isEqualToString:@"picture"]){
+        } else if ([model.contentType isEqualToString:@"picture"]) {
             JDOImageModel *imageModel = [[JDOImageModel alloc] initWithNewsModel:model];
             [model setRead:TRUE];
             JDOImageDetailController *imageController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
@@ -504,7 +520,6 @@
             [centerController pushViewController:partyController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
         }
-         */
     }
 }
 

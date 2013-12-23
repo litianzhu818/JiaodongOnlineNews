@@ -22,10 +22,10 @@
 #error "Nimbus requires ARC support."
 #endif
 
-static const CGFloat kMinimumWidth = 30.f;
+static const CGFloat kMinimumWidth = 20.f;
 static const CGFloat kHorizontalMargins = 20.f;
 static const CGFloat kVerticalMargins = 10.f;
-static const CGFloat kBadgeLineSize = 2.0f;
+static const CGFloat kBadgeLineSize = 1.0f;
 
 @implementation NIBadgeView
 
@@ -182,7 +182,7 @@ static const CGFloat kBadgeLineSize = 2.0f;
   [self.textColor set];
 
   [self.text drawAtPoint:CGPointMake(floorf((rect.size.width - textSize.width) / 2.f) - 0.f,
-                                     floorf((rect.size.height - textSize.height) / 2.f) - 2.f)
+                                     floorf((rect.size.height - textSize.height) / 2.f) - 1.5f)
                 withFont:self.font];
 }
 

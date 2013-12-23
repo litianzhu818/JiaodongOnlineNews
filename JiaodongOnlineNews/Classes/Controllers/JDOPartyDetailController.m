@@ -120,7 +120,7 @@ NSArray *imageUrls;
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
-                NSDictionary *dic = [responseObject objectForKey:@"data"];
+                NSMutableDictionary *dic = [[responseObject objectForKey:@"data"] mutableCopy];
                 [self saveNewsDetailToLocalCache:dic];
                 // 设置url短地址
                 self.newsModel.tinyurl = [dic objectForKey:@"tinyurl"];
@@ -132,9 +132,9 @@ NSArray *imageUrls;
                     self.newsModel.mpic =  [dic objectForKey:@"mpic"];
                 }
                 if (self.partyModel.showMore) {
-                    [detailModel setObject:@"1" forKey:@"showMore"];
+                    [dic setObject:@"1" forKey:@"showMore"];
                 } else {
-                    [detailModel setObject:@"0" forKey:@"showMore"];
+                    [dic setObject:@"0" forKey:@"showMore"];
                 }
                 NSString *mergedHTML = [JDOPartyDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:dic]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];

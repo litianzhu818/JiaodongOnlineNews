@@ -315,6 +315,7 @@
     }
     JDOImageDetailModel *model = (JDOImageDetailModel *)[_models objectAtIndex:i];
     _toolbar.model.imageurl = model.imageurl;
+    _toolbar.model.mpic = model.imageurl;
     _toolbar.model.summary = @"";//[[_photos objectAtIndex:i] caption];
     _toolbar.model.title = [[_photos objectAtIndex:i] title];
     _toolbar.model.tinyurl = model.tinyurl?model.tinyurl:@"";

@@ -226,14 +226,20 @@ NSArray *imageUrls;
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
                 NSMutableDictionary *dict = [responseObject mutableCopy];
                 [dict setObject:self.topicModel.id forKey:@"id"];
-                [dict setObject:self.topicModel.follownums forKey:@"commentCount"];
+                // 从新闻列表导航进来没有评论数，获取评论数需要sum，为防止性能问题暂不添加
+                if(self.topicModel.follownums == nil){
+                    [dict setObject:@"0" forKey:@"commentCount"];
+                }else{
+                    [dict setObject:self.topicModel.follownums forKey:@"commentCount"];
+                }
+                
                 [self saveTopicDetailToLocalCache:dict];
                 self.topicModel.tinyurl = [dict objectForKey:@"tinyurl"];
                 [self.navigationView setRightBtnCount:[dict objectForKey:@"commentCount"]];
                 if (self.topicModel.showMore) {
-                    [topicModel setObject:@"1" forKey:@"showMore"];
+                    [dict setObject:@"1" forKey:@"showMore"];
                 } else {
-                    [topicModel setObject:@"0" forKey:@"showMore"];
+                    [dict setObject:@"0" forKey:@"showMore"];
                 }
                 NSString *mergedHTML = [JDOTopicDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:dict]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];

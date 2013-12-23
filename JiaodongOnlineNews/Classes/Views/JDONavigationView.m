@@ -66,11 +66,18 @@
 }
 
 -(void) setRightBtnCount:(NSString *)count{
-    NIBadgeView *badgeView = [[NIBadgeView alloc] initWithFrame:CGRectMake(19, 0, 30, 30)];
-    badgeView.text = (NSString *)count;
-    badgeView.backgroundColor = [UIColor clearColor];
-    //badgeView.textColor = [UIColor redColor];
-    [self.rightBtn addSubview:badgeView];
+    NIBadgeView *badgeView = [[NIBadgeView alloc] initWithFrame:CGRectMake(19, 2, 25, 25)];
+    badgeView.userInteractionEnabled = false;
+    if([count intValue] > 0){
+        badgeView.font = [UIFont boldSystemFontOfSize:12];
+        badgeView.backgroundColor = [UIColor clearColor];
+        [self.rightBtn addSubview:badgeView];
+        if([count intValue] < 100){
+            badgeView.text = count;
+        }else{
+            badgeView.text = @"99";
+        }
+    }
 }
 
 - (void) setTitle:(NSString *)title{

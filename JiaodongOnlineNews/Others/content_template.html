@@ -132,6 +132,14 @@
             {% if date %}   <span>{{date}}</span>   {% /if %}
         </div>
     </div>
+    
+    {% if showMoreTopic %}
+    <div id="moreTopic" style="text-align: center;margin-bottom: 20px;font-size:13px;color:#be000a;">&lt;更多话题，请浏览左侧菜单每日一题专栏&gt;</div>
+    {% /if %}
+    
+    {% if showMoreParty %}
+    <div id="moreParty" style="text-align: center;margin-bottom: 20px;font-size:13px;color:#be000a;">&lt;更多活动，请浏览左侧菜单精彩活动专栏&gt;</div>
+    {% /if %}
         
     <div id="body_section" class="contentstyle {{font_class}}">
         {{content}}
@@ -171,14 +179,6 @@
     
     {% /if %}
     
-    
-    {% if showMoreTopic %}
-    <div id="moreTopic" style="text-align: center;margin-bottom: 20px">更多精彩话题，请浏览每日一题专栏</div>
-    {% /if %}
-    
-    {% if showMoreParty %}
-    <div id="moreParty" style="text-align: center;margin-bottom: 20px">更多活动，请浏览精彩活动专栏</div>
-    {% /if %}
 
     <!-- 相关新闻 -->
     {% for relate in relates %}

@@ -28,9 +28,23 @@
     [super loadView];
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,44,320,App_Height-44)];
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,44,320,App_Height-44)];
+//    [self.view addSubview:imageView];
+//    imageView.image = [UIImage imageNamed:@"aboutus"];
+    
+    float qrcodeSize = 120;
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((320-qrcodeSize)/2.0f,44+20,qrcodeSize,qrcodeSize)];
+    imageView.image = [UIImage imageNamed:@"aboutus_qrcode"];
     [self.view addSubview:imageView];
-    imageView.image = [UIImage imageNamed:@"aboutus"];
+    
+    float top = 44+20+qrcodeSize+10;
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(8,top,304,App_Height-top-10)];
+    textView.text = @"    胶东在线手机新闻客户端置了新闻、图片、网上民声，以及交通违章查询等便民信息，可实现新闻推送、互动分享、离线下载、投票、调查等服务功能，拥有良好的用户体验，满足了网民对本地信息的多样化需求。\r\n\r\n    胶东在线手机新闻客户端由胶东在线移动互联网设计、研发团队自主开发，专注于移动互联网跨平台应用技术研发，可以为有需求的客户提供创新易用的客户端设计方案，有效的提升您的产品服务和品牌价值，协助您快速占领、引领市场。";
+    textView.font = [UIFont systemFontOfSize:15];
+    textView.backgroundColor = [UIColor clearColor];
+    textView.scrollEnabled = true;
+    [self.view addSubview:textView];
+    
 }
 
 - (void)viewDidLoad
