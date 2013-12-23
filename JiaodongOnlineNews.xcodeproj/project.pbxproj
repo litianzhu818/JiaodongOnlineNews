@@ -582,6 +582,8 @@
 		A74EAF8017C75574000E249D /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A74EAF7F17C75574000E249D /* loading.png */; };
 		A75A4F0817B09DAF0084ADD5 /* ITWLoadingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = A75A4F0617B09DAF0084ADD5 /* ITWLoadingPanel.m */; };
 		A75A4F0917B09DAF0084ADD5 /* ITWLoadingPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75A4F0717B09DAF0084ADD5 /* ITWLoadingPanel.xib */; };
+		A761B5B61867DDAB001A27B8 /* libmtasdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A761B5B31867DDAB001A27B8 /* libmtasdk.a */; };
+		A761B5B81867DE11001A27B8 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A761B5B71867DE11001A27B8 /* AdSupport.framework */; };
 		A7668BEA17E00E8800D3D3C7 /* JDOPartyJoinController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7668BE917E00E8800D3D3C7 /* JDOPartyJoinController.m */; };
 		A76EC73D17A0C79E0063763C /* base_empty_view.png in Resources */ = {isa = PBXBuildFile; fileRef = A76EC73C17A0C79E0063763C /* base_empty_view.png */; };
 		A774BF23178D726100A3B866 /* JDOWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = A774BF22178D726100A3B866 /* JDOWeather.m */; };
@@ -1468,6 +1470,10 @@
 		A75A4F0517B09DAF0084ADD5 /* ITWLoadingPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITWLoadingPanel.h; sourceTree = "<group>"; };
 		A75A4F0617B09DAF0084ADD5 /* ITWLoadingPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITWLoadingPanel.m; sourceTree = "<group>"; };
 		A75A4F0717B09DAF0084ADD5 /* ITWLoadingPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ITWLoadingPanel.xib; sourceTree = "<group>"; };
+		A761B5B31867DDAB001A27B8 /* libmtasdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmtasdk.a; sourceTree = "<group>"; };
+		A761B5B41867DDAB001A27B8 /* MTA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTA.h; sourceTree = "<group>"; };
+		A761B5B51867DDAB001A27B8 /* MTAConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTAConfig.h; sourceTree = "<group>"; };
+		A761B5B71867DE11001A27B8 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		A7668BE817E00E8800D3D3C7 /* JDOPartyJoinController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyJoinController.h; sourceTree = "<group>"; };
 		A7668BE917E00E8800D3D3C7 /* JDOPartyJoinController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyJoinController.m; sourceTree = "<group>"; };
 		A76EC73C17A0C79E0063763C /* base_empty_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base_empty_view.png; sourceTree = "<group>"; };
@@ -1595,6 +1601,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A761B5B81867DE11001A27B8 /* AdSupport.framework in Frameworks */,
+				2D958590176E07F1009F5AE4 /* libsqlite3.dylib in Frameworks */,
+				A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */,
 				D8EFCF2417E2B47C00BCD8A4 /* libxml2.2.dylib in Frameworks */,
 				2D43F8E617A273EC0048815C /* StoreKit.framework in Frameworks */,
 				A7DD67C91839A8BC005AEAAA /* RennSDK.framework in Frameworks */,
@@ -1602,16 +1611,15 @@
 				A7DD67CA1839A8BC005AEAAA /* libSinaWeiboSDK.a in Frameworks */,
 				A7DD67CB1839A8BC005AEAAA /* libWeiboSDK.a in Frameworks */,
 				2DA3C4C5178E9B2F009817A6 /* libMobClickLibrary.a in Frameworks */,
-				A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */,
 				A7DD67C81839A8BC005AEAAA /* TencentOpenAPI.framework in Frameworks */,
 				2D958592176E082E009F5AE4 /* CoreTelephony.framework in Frameworks */,
-				2D958590176E07F1009F5AE4 /* libsqlite3.dylib in Frameworks */,
 				A7DD67BC1839A8BC005AEAAA /* QQConnection.framework in Frameworks */,
 				A7DD67BA1839A8BC005AEAAA /* DouBanConnection.framework in Frameworks */,
 				A7DD67C11839A8BC005AEAAA /* T163WeiboConnection.framework in Frameworks */,
 				A7DD67CC1839A8BC005AEAAA /* libWeChatSDK.a in Frameworks */,
 				A7DD67CD1839A8BC005AEAAA /* ShareSDK.framework in Frameworks */,
 				A7DD67C71839A8BC005AEAAA /* ShareSDKCoreService.framework in Frameworks */,
+				A761B5B61867DDAB001A27B8 /* libmtasdk.a in Frameworks */,
 				A7DD67C31839A8BC005AEAAA /* WeChatConnection.framework in Frameworks */,
 				2D95858E176E07D8009F5AE4 /* libstdc++.dylib in Frameworks */,
 				A7DD67C41839A8BC005AEAAA /* AGCommon.framework in Frameworks */,
@@ -1694,6 +1702,7 @@
 		2D080CD4173CE4D9005653A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A761B5B71867DE11001A27B8 /* AdSupport.framework */,
 				2DA4494B17C5A42700927906 /* Crashlytics.framework */,
 				2D9D08E817A0AD8400AC1924 /* StoreKit.framework */,
 				2D0D6161178FAA5A00934CCD /* CoreText.framework */,
@@ -1972,6 +1981,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				A761B5B21867DDAB001A27B8 /* mtasdk_1.2.4 */,
 				A7DD67951839A8BC005AEAAA /* ShareSDK_v2.6.0 */,
 				D8EFCF1917E2B43800BCD8A4 /* Hpple */,
 				2DA30FD317E2925700930EA2 /* HierarchyViewer */,
@@ -2952,6 +2962,16 @@
 				A75A4F0717B09DAF0084ADD5 /* ITWLoadingPanel.xib */,
 			);
 			path = ITWLoadingPanel;
+			sourceTree = "<group>";
+		};
+		A761B5B21867DDAB001A27B8 /* mtasdk_1.2.4 */ = {
+			isa = PBXGroup;
+			children = (
+				A761B5B31867DDAB001A27B8 /* libmtasdk.a */,
+				A761B5B41867DDAB001A27B8 /* MTA.h */,
+				A761B5B51867DDAB001A27B8 /* MTAConfig.h */,
+			);
+			path = mtasdk_1.2.4;
 			sourceTree = "<group>";
 		};
 		A7DD67951839A8BC005AEAAA /* ShareSDK_v2.6.0 */ = {
@@ -3990,6 +4010,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/SinaWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/WeChatSDK",
+					/Users/WaterMelon/Documents/WorkSpace/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/mtasdk_1.2.4,
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4047,6 +4068,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/SinaWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/WeChatSDK",
+					/Users/WaterMelon/Documents/WorkSpace/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/mtasdk_1.2.4,
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
