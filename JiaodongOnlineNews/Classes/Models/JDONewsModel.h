@@ -26,4 +26,5 @@
 @property (nonatomic,assign) BOOL read;
 
 @property (nonatomic,strong) NSString *contentType;
+//@property (nonatomic,strong) NSString *commentCount;
 @end

@@ -35,6 +35,7 @@
 #import "JDOMainViewController.h"
 #import "JDOViolationViewController.h"
 #import <Crashlytics/Crashlytics.h>
+#import "MTA.h"
 //#import "iOSHierarchyViewer.h"
 
 #define splash_stay_time 1.0 //1.0
@@ -240,6 +241,9 @@
     [self initializePlatform];
     //监听用户信息变更
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
+    
+    //腾讯统计
+    [MTA startWithAppkey:@"I8DAWBQ14Z3Q"];
     
     //友盟统计
 #warning 开发阶段关闭友盟统计

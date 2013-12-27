@@ -39,7 +39,6 @@ NSArray *reg_fields;
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
     UITapGestureRecognizer *tapGr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     tapGr.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGr];
@@ -50,14 +49,17 @@ NSArray *reg_fields;
     reg_fields = (NSArray *)[self.partyJoin objectForKey:@"reg_fields"];
     for (NSDictionary *reg_field in reg_fields) {
         if ([(NSString *)[reg_field objectForKey:@"active_required"] isEqualToString:@"1"]) {//必填项，加星号
-            UILabel *need = [[UILabel alloc] initWithFrame:CGRectMake(10, y+8, 10, 10)];
+            UILabel *need = [[UILabel alloc] initWithFrame:CGRectMake(20, y+8, 10, 10)];
             need.text = @"*";
             need.textColor = [UIColor redColor];
+            need.backgroundColor = [UIColor clearColor];
+            [need sizeToFit];
             [self.view addSubview:need];
         }
         if ([reg_field objectForKey:@"active_field_info"]) {//提交项名称
-            UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake(30, y, 90, 30)];
+            UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake(35, y, 90, 30)];
             info.text = [reg_field objectForKey:@"active_field_info"];
+            info.backgroundColor = [UIColor clearColor];
             [self.view addSubview:info];
         }
         NSString *field_type = (NSString *)[reg_field objectForKey:@"active_field_type"];
@@ -100,11 +102,14 @@ NSArray *reg_fields;
         }
     }
     UIButton *submit = [[UIButton alloc] initWithFrame:CGRectMake(20, y, 280, 50)];
-    [submit setBackgroundImage:[UIImage imageNamed:@"commit_btn"] forState:UIControlStateNormal];
-    [submit setTitle:@"提交" forState:UIControlStateNormal];
+    [submit setBackgroundImage:[UIImage imageNamed:@"vio_search"] forState:UIControlStateNormal];
+    [submit setTitle:@"提 交" forState:UIControlStateNormal];
     submit.userInteractionEnabled = YES;
+    [submit.titleLabel setShadowColor:[UIColor blackColor]];
+    [submit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     [submit addTarget:self action:@selector(submitClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:submit];
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
 }
 
 -(void)viewTapped:(UITapGestureRecognizer*)tapGr{

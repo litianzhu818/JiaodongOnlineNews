@@ -48,6 +48,8 @@
 
 - (void)sendToServer
 {
+    commit.enabled = false; // 防止重复提交
+    [commit setTitle:@"发送中..." forState:UIControlStateDisabled];
     [self hiddenKeyBoard];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:contentString forKey:@"content"];
@@ -60,23 +62,34 @@
     if (emailString.length != 0) {
         [params setValue:emailString forKey:@"email"];
     }
+    // 设备名称、系统版本、App版本
+    UIDevice *device = [[UIDevice alloc] init];
+    [params setValue:device.platformString forKey:@"device"];
+    [params setValue:device.systemVersion forKey:@"sysVer"];
+    [params setValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] forKey:@"appVer"];
+    
    
     JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
-    
     [httpclient getPath:FEEDBACK_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        commit.enabled = true;
         NSDictionary *json = [(NSData *)responseObject objectFromJSONData];
         id jsonvalue = [json objectForKey:@"status"];
         if ([jsonvalue isKindOfClass:[NSNumber class]]) {
             int status = [[json objectForKey:@"status"] intValue];
             if (status == 1) {
+                [commit setTitle:@"已提交" forState:UIControlStateDisabled];
                 [JDOCommonUtil showSuccessHUD:@"提交成功" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
             } else {
+                commit.enabled = true;
+                [commit setTitle:@"重新提交" forState:UIControlStateNormal];
                 [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
             }
         } else {
             [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        commit.enabled = true;
+        [commit setTitle:@"重新提交" forState:UIControlStateNormal];
         NSString *errorString = [JDOCommonUtil formatErrorWithOperation:operation error:error];
         [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
         NSLog(@"status:%@", errorString);

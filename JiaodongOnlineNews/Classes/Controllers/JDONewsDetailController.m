@@ -36,11 +36,13 @@
 @implementation JDONewsDetailController
 
 NSArray *imageUrls;
+NSDate *modifyTime;
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.newsModel = newsModel;
+        modifyTime = [NSDate dateWithTimeIntervalSince1970:0];
     }
     return self;
 }
@@ -49,6 +51,7 @@ NSArray *imageUrls;
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.newsModel = newsModel;
+        modifyTime = [NSDate dateWithTimeIntervalSince1970:0];
         self.isCollect = isCollect;
     }
     return self;
@@ -218,7 +221,14 @@ NSArray *imageUrls;
     NSDictionary *detailModel = [self readNewsDetailFromLocalCache];
     if (self.isPushNotification) {  // 推送消息忽略缓存
         detailModel = nil;
+    } else {
+        modifyTime = [JDOCommonUtil formatString:self.newsModel.modifytime withFormatter:DateFormatYMDHMS];
+        NSDate *modifyTime_db =[JDOCommonUtil formatString:[detailModel objectForKey:@"modifytime"] withFormatter:DateFormatYMDHMS];
+        if ([modifyTime compare:modifyTime_db] != NSOrderedSame) {//服务器修改时间与本地记录的不同，忽略缓存
+            detailModel = nil;
+        }
     }
+    
     if (detailModel /*有缓存*/) {
         [self setCurrentState:ViewStatusLoading];
         // 设置url短地址

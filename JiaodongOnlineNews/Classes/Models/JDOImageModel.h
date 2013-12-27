@@ -17,6 +17,7 @@
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *pubtime;
 @property (nonatomic,strong) NSString *tinyurl;
+@property (nonatomic,strong) NSString *mpic;
 
 // protocol
 @property (nonatomic,strong) NSString *summary;

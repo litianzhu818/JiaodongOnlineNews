@@ -35,7 +35,7 @@
         self.id = model.id;
         self.title = model.title;
         self.pubtime = model.pubtime;
-        //self.follownums = model.follownums;
+//        self.follownums = model.commentCount;
         self.tinyurl = model.tinyurl;
         self.imageurl = model.imageurl;
         self.summary = model.summary;

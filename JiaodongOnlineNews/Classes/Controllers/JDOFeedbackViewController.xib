@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1072</int>
-		<string key="IBDocument.SystemVersion">12F37</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4510</string>
-		<string key="IBDocument.AppKitVersion">1187.39</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.SystemVersion">13A603</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4514</string>
+		<string key="IBDocument.AppKitVersion">1265</string>
+		<string key="IBDocument.HIToolboxVersion">695.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">3742</string>
+			<string key="NS.object.0">3747</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -226,10 +226,11 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
 								</object>
-								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+								<object class="NSCustomResource" key="IBUIDisabledBackgroundImage" id="762776989">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">livehood_continue_button.png</string>
 								</object>
+								<reference key="IBUINormalBackgroundImage" ref="762776989"/>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">2</int>
 									<double key="pointSize">18</double>
@@ -529,6 +530,7 @@
 				<reference key="59.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="59.showNotes"/>
 				<string key="65.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="3" key="65.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<reference key="65.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="65.showNotes"/>
 				<string key="68.CustomClassName">TPKeyboardAvoidingScrollView</string>
@@ -565,6 +567,6 @@
 			<string key="livehood_continue_button.png">{297, 42}</string>
 			<string key="vio_textfield_back.png">{300, 70}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">3742</string>
+		<string key="IBCocoaTouchPluginVersion">3747</string>
 	</data>
 </archive>
