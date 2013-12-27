@@ -275,7 +275,7 @@ BOOL downloadItemClickable = TRUE;
             InsetsTextField *secretTextField = (InsetsTextField *)[alertView viewWithTag:23456];
             NSString *popularize_num = secretTextField.text;
             NSString *deviceID = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-            NSDictionary *params = @{@"num":popularize_num, @"deviceID":deviceID};
+            NSDictionary *params = @{@"code":popularize_num, @"deviceid":deviceID};
             [self sendToServer:params];
         }
     } else {
@@ -295,7 +295,7 @@ BOOL downloadItemClickable = TRUE;
             int status = [[json objectForKey:@"status"] intValue];
             if (status == 1) {
                 [JDOCommonUtil showSuccessHUD:@"提交成功" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
-                [[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"num"] forKey:@"popularize_num"];
+                [[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"code"] forKey:@"popularize_num"];
                 [self.navigationView hideRightButton];
             } else {
                 [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];

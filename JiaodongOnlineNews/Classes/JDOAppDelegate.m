@@ -36,6 +36,7 @@
 #import "JDOViolationViewController.h"
 #import <Crashlytics/Crashlytics.h>
 #import "MTA.h"
+#import "UIDevice+IdentifierAddition.h"
 //#import "iOSHierarchyViewer.h"
 
 #define splash_stay_time 1.0 //1.0
@@ -300,6 +301,32 @@
     [self clearNotifications];
     
     [Crashlytics startWithAPIKey:Crashlytics_Key];
+
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"appID"]) {
+        NSDictionary *params = @{@"deviceid":[[UIDevice currentDevice] uniqueDeviceIdentifier]};
+        JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
+        [httpclient getPath:APPID_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *json = [(NSData *)responseObject objectFromJSONData];
+            id statusvalue = [json objectForKey:@"status"];
+            if ([statusvalue isKindOfClass:[NSString class]]) {
+                NSString *statusString = [json objectForKey:@"status"];
+                if ([statusString isEqualToString:@"exist"]) {
+                    NSDictionary *data = [json objectForKey:@"data"];
+                    NSString *appID = [data objectForKey:@"code"];
+                    [[NSUserDefaults standardUserDefaults] setObject:appID forKey:@"appID"];
+                }
+            } else if ([statusvalue isKindOfClass:[NSNumber class]]) {
+                int statusInt = [[json objectForKey:@"status"] intValue];
+                if (statusInt == 1) {
+                    NSDictionary *data = [json objectForKey:@"data"];
+                    NSString *appID = [data objectForKey:@"code"];
+                    [[NSUserDefaults standardUserDefaults] setObject:appID forKey:@"appID"];
+                }
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }
     
     return YES;
 }

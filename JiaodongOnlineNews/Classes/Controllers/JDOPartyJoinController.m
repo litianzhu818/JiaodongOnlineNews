@@ -7,6 +7,7 @@
 //
 
 #import "JDOPartyJoinController.h"
+#import "UIDevice+IdentifierAddition.h"
 
 @interface JDOPartyJoinController ()
 
@@ -43,9 +44,46 @@ NSArray *reg_fields;
     tapGr.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGr];
     
+    UILabel *appidLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 50.0, 280.0, 40.0)];
+    [appidLabel setTextColor:[UIColor redColor]];
+    [appidLabel setFont:[UIFont systemFontOfSize:12.0]];
+    [appidLabel setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:appidLabel];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"appID"]) {
+        [appidLabel setText:[NSString stringWithFormat:@"您的AppID为：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"appID"]]];
+    } else {
+        NSDictionary *params = @{@"deviceid":[[UIDevice currentDevice] uniqueDeviceIdentifier]};
+        JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
+        [httpclient getPath:APPID_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *json = [(NSData *)responseObject objectFromJSONData];
+            id statusvalue = [json objectForKey:@"status"];
+            if ([statusvalue isKindOfClass:[NSString class]]) {
+                NSString *statusString = [json objectForKey:@"status"];
+                if ([statusString isEqualToString:@"exist"]) {
+                    NSDictionary *data = [json objectForKey:@"data"];
+                    NSString *appID = [data objectForKey:@"code"];
+                    [[NSUserDefaults standardUserDefaults] setObject:appID forKey:@"appID"];
+                    [appidLabel setText:[NSString stringWithFormat:@"您的AppID为：%@",appID]];
+                }
+            } else if ([statusvalue isKindOfClass:[NSNumber class]]) {
+                int statusInt = [[json objectForKey:@"status"] intValue];
+                if (statusInt == 1) {
+                    NSDictionary *data = [json objectForKey:@"data"];
+                    NSString *appID = [data objectForKey:@"code"];
+                    [[NSUserDefaults standardUserDefaults] setObject:appID forKey:@"appID"];
+                    [appidLabel setText:[NSString stringWithFormat:@"您的AppID为：%@",appID]];
+                } else {
+                    [appidLabel setText:@"无法获取您的AppID"];
+                }
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [appidLabel setText:@"无法获取您的AppID"];
+        }];
+    }
+    
     reg_views = [[NSMutableArray alloc] init];
     self.view.backgroundColor = [UIColor whiteColor];
-    int y = 50;
+    int y = 90;
     reg_fields = (NSArray *)[self.partyJoin objectForKey:@"reg_fields"];
     for (NSDictionary *reg_field in reg_fields) {
         if ([(NSString *)[reg_field objectForKey:@"active_required"] isEqualToString:@"1"]) {//必填项，加星号
