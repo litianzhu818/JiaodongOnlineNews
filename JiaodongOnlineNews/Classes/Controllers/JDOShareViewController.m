@@ -222,7 +222,7 @@
         case ShareTypeQQ:{
             content = [ShareSDK content:[self.model summary]
                                         defaultContent:nil
-                                                 image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                                 image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
                                                  title:[self.model title]
                                                    url:[self.model tinyurl]
                                            description:nil
@@ -231,7 +231,7 @@
         case ShareTypeQQSpace:{
             content = [ShareSDK content:_textView2.text
                          defaultContent:nil
-                                  image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                  image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
                                   title:[self.model title]
                                     url:[self.model tinyurl]
                             description:[self.model summary]
@@ -246,7 +246,7 @@
             }
             content = [ShareSDK content:comment
                                                defaultContent:nil
-                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
                                                         title:[self.model title]
                                                           url:[self.model tinyurl]
                                                   description:[self.model summary]
@@ -255,7 +255,7 @@
         default:{
             content = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingFormat:@" %@",[self.model tinyurl]]
                                                defaultContent:nil
-                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model mpic]]]
+                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
                                                         title:[self.model title]
                                                           url:[self.model tinyurl]
                                                   description:[self.model summary]

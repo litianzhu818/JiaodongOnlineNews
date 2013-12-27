@@ -60,10 +60,10 @@
     _tableView.scrollEnabled = false;
     [self.view addSubview:_tableView];
     
-    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Separator_Y, 320, 1)];
-    separateView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    separateView.image = [UIImage imageNamed:@"menu_separator.png"];
-    [self.view addSubview:separateView];
+//    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Separator_Y, 320, 1)];
+//    separateView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+//    separateView.image = [UIImage imageNamed:@"menu_separator.png"];
+//    [self.view addSubview:separateView];
     
     _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , App_Height)];
     _blackMask.backgroundColor = [UIColor blackColor];

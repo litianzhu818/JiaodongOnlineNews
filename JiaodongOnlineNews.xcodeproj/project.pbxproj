@@ -4018,7 +4018,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/SinaWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/WeChatSDK",
-					/Users/WaterMelon/Documents/WorkSpace/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/mtasdk_1.2.4,
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/mtasdk_1.2.4",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4076,7 +4076,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/SinaWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/WeChatSDK",
-					/Users/WaterMelon/Documents/WorkSpace/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/mtasdk_1.2.4,
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/mtasdk_1.2.4",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

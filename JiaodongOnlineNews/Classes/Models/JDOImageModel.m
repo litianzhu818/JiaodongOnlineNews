@@ -23,7 +23,6 @@
         self.follownums = [aDecoder decodeObjectForKey:@"follownums"];
         self.tinyurl = [aDecoder decodeObjectForKey:@"tinyurl"];
         self.imageurl = [aDecoder decodeObjectForKey:@"imageurl"];
-        self.mpic = [aDecoder decodeObjectForKey:@"mpic"];
     }
     return self;
 }
@@ -50,7 +49,6 @@
     [aCoder encodeObject:self.follownums forKey:@"follownums"];
     [aCoder encodeObject:self.tinyurl forKey:@"tinyurl"];
     [aCoder encodeObject:self.imageurl forKey:@"imageurl"];
-    [aCoder encodeObject:self.mpic forKey:@"mpic"];
 }
 
 @end

@@ -42,6 +42,7 @@
     [aCoder encodeObject:self.contentType forKey:@"contentType"];
 }
 
+// 统一分享获取缩略图地址的接口是imageurl
 - (NSString *) imageurl{
     return self.mpic;
 }

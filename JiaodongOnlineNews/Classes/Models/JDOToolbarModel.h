@@ -17,7 +17,7 @@
 @property (nonatomic,strong) NSString *imageurl;
 @property (nonatomic,strong) NSString *reviewService;
 @property (nonatomic,strong) NSString *tinyurl;
-@property (nonatomic,strong) NSString *mpic;
+//@property (nonatomic,strong) NSString *mpic;
 
 @property (nonatomic,strong) NSString *department;
 @property (nonatomic,strong) NSString *dept_code;
