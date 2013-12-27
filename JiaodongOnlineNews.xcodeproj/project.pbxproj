@@ -3429,6 +3429,7 @@
 				2DC49D5D179F9D03008374F2 /* status_no_network.png in Resources */,
 				2DC49D5E179F9D03008374F2 /* status_no_network@2x.png in Resources */,
 				2DC49D5F179F9D03008374F2 /* status_retry.png in Resources */,
+				2DA860AB186430BE003D6328 /* aboutus_qrcode@2x.png in Resources */,
 				D820DD91186D1E2000F4BA6F /* popularize_icon@2x.png in Resources */,
 				2DC49D60179F9D03008374F2 /* status_retry@2x.png in Resources */,
 				2DC49D61179F9D03008374F2 /* 详情页加载图片@2x.png in Resources */,
@@ -3573,8 +3574,6 @@
 				2D4621D717B8B0B400D5A750 /* Guide3-568h@2x.png in Resources */,
 				2DA7CD4217B9CC9700D3E701 /* Guide_Start.png in Resources */,
 				D820DD90186D1E2000F4BA6F /* popularize_icon.png in Resources */,
-				2DE46BBB17BA05FC0094F27B /* Introduce_Left@2x.png in Resources */,
-				2DE46BC117BA0B7D0094F27B /* Introduce_Left-568h@2x.png in Resources */,
 				2DE46BC217BA0B7D0094F27B /* Introduce_DeptList-568h@2x.png in Resources */,
 				2DE46BC317BA0B7D0094F27B /* Introduce_DeptList@2x.png in Resources */,
 				2DE46BC417BA0B7D0094F27B /* Introduce_NewsDetail-568h@2x.png in Resources */,
@@ -4027,7 +4026,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/SinaWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/WeChatSDK",
-					/Users/WaterMelon/Documents/WorkSpace/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/mtasdk_1.2.4,
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/mtasdk_1.2.4",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4085,7 +4084,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/SinaWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Extend/WeChatSDK",
-					/Users/WaterMelon/Documents/WorkSpace/JiaodongOnlineNews/JiaodongOnlineNews/Vendors/mtasdk_1.2.4,
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/mtasdk_1.2.4",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

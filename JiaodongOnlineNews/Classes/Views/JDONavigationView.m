@@ -42,9 +42,9 @@
     [self addSubview:self.rightBtn];
     
     // 有按钮有才增加分割线
-    UIImageView *separatorLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
-    separatorLine.frame = CGRectMake(320-44, 1, 1, 42);
-    [self addSubview:separatorLine];
+    separatorLineRight = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
+    separatorLineRight.frame = CGRectMake(320-44, 1, 1, 42);
+    [self addSubview:separatorLineRight];
 }
 
 - (UIButton *) getButtonWithFrame:(CGRect)frame image:(NSString *)image highlightImage:(NSString *)highlightImage{
@@ -96,6 +96,11 @@
     [self addLeftButtonImage:@"top_navigation_back" highlightImage:@"top_navigation_back" target:target action:selector];
 }
 
+
+- (void)hideRightButton{
+    [self.rightBtn setHidden:YES];
+    [separatorLineRight setHidden:YES];
+}
 //- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector {
 //    return [self addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:target action:selector];
 //}

@@ -25,5 +25,6 @@ typedef enum {
 @property (nonatomic,strong) JDORightViewController *rightController;
 
 - (void)onPopularizeButtonClick:(UIButton *)button;
+- (void)sendToServer:(NSDictionary *)params;
 
 @end

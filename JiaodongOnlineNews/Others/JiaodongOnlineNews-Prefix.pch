@@ -97,6 +97,7 @@
 #define NEWS_SERVICE @"Data/getArticles"
 #define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"
+#define POPULARIZE_SERVICE @"Data/popularize"
 #define ACTIVEREG_SERVICE @"Data/doActiveReg"
 #define RELATE_SERVICE @"Data/getRelateByAid"
 #define QUESTION_LIST_SERVICE @"Jdms/getQuestionList"
