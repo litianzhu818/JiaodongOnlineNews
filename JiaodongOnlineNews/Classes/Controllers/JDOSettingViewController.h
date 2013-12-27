@@ -24,4 +24,6 @@ typedef enum {
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) JDORightViewController *rightController;
 
+- (void)onPopularizeButtonClick:(UIButton *)button;
+
 @end

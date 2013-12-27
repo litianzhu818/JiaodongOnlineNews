@@ -53,8 +53,15 @@ BOOL downloadItemClickable = TRUE;
 
 - (void)setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
+    [self.navigationView addRightButtonImage:@"popularize_icon" highlightImage:nil target:self action:@selector(onPopularizeButtonClick:)];
     [self.navigationView setTitle:@"设置选项"];
 }
+
+- (void)onPopularizeButtonClick:(UIButton *)button
+{
+    
+}
+
 
 - (void) onBackBtnClick{
     [(JDORightViewController *)self.stackViewController popViewController];
