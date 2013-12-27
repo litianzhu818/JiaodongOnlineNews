@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface JDONavigationView : UIView
+{
+    UIImageView *separatorLineRight;
+}
 
 @property (nonatomic,strong) UIButton *leftBtn;
 @property (nonatomic,strong) UIButton *rightBtn;
@@ -24,5 +27,7 @@
 
 - (void) addBackButtonWithTarget:(id)target action:(SEL)selector;
 //- (UIButton *) addCustomButtonWithTarget:(id)target action:(SEL)selector;
+
+- (void) hideRightButton;
 
 @end

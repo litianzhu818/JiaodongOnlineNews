@@ -621,6 +621,8 @@
 		D81516C917B0761E008F32BA /* vio_done.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516C717B0761E008F32BA /* vio_done.png */; };
 		D81516CA17B0761E008F32BA /* vio_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516C817B0761E008F32BA /* vio_edit.png */; };
 		D81516CC17B0D6C4008F32BA /* background_black.png in Resources */ = {isa = PBXBuildFile; fileRef = D81516CB17B0D6C4008F32BA /* background_black.png */; };
+		D820DD90186D1E2000F4BA6F /* popularize_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D820DD8E186D1E2000F4BA6F /* popularize_icon.png */; };
+		D820DD91186D1E2000F4BA6F /* popularize_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D820DD8F186D1E2000F4BA6F /* popularize_icon@2x.png */; };
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
@@ -1525,6 +1527,8 @@
 		D81516C717B0761E008F32BA /* vio_done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_done.png; sourceTree = "<group>"; };
 		D81516C817B0761E008F32BA /* vio_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vio_edit.png; sourceTree = "<group>"; };
 		D81516CB17B0D6C4008F32BA /* background_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_black.png; sourceTree = "<group>"; };
+		D820DD8E186D1E2000F4BA6F /* popularize_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popularize_icon.png; sourceTree = "<group>"; };
+		D820DD8F186D1E2000F4BA6F /* popularize_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popularize_icon@2x.png"; sourceTree = "<group>"; };
 		D823DBC11762B88B0006F80B /* JDOConvenienceItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOConvenienceItemController.h; sourceTree = "<group>"; };
 		D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOConvenienceItemController.m; sourceTree = "<group>"; };
 		D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationViewController.h; sourceTree = "<group>"; };
@@ -1838,6 +1842,8 @@
 		2D6316171782B59400248FD6 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				D820DD8E186D1E2000F4BA6F /* popularize_icon.png */,
+				D820DD8F186D1E2000F4BA6F /* popularize_icon@2x.png */,
 				2DC49CC0179F9C27008374F2 /* left_menu_btn.png */,
 				2DC49CC1179F9C27008374F2 /* left_menu_btn@2x.png */,
 				2DC49CC2179F9C27008374F2 /* navigation_button_clicked.png */,
@@ -3424,6 +3430,7 @@
 				2DC49D5E179F9D03008374F2 /* status_no_network@2x.png in Resources */,
 				2DC49D5F179F9D03008374F2 /* status_retry.png in Resources */,
 				2DA860AB186430BE003D6328 /* aboutus_qrcode@2x.png in Resources */,
+				D820DD91186D1E2000F4BA6F /* popularize_icon@2x.png in Resources */,
 				2DC49D60179F9D03008374F2 /* status_retry@2x.png in Resources */,
 				2DC49D61179F9D03008374F2 /* 详情页加载图片@2x.png in Resources */,
 				2DC49D72179F9D27008374F2 /* inputField.png in Resources */,
@@ -3566,6 +3573,7 @@
 				2D4621D417B8AF7000D5A750 /* Guide2-568h@2x.png in Resources */,
 				2D4621D717B8B0B400D5A750 /* Guide3-568h@2x.png in Resources */,
 				2DA7CD4217B9CC9700D3E701 /* Guide_Start.png in Resources */,
+				D820DD90186D1E2000F4BA6F /* popularize_icon.png in Resources */,
 				2DE46BC217BA0B7D0094F27B /* Introduce_DeptList-568h@2x.png in Resources */,
 				2DE46BC317BA0B7D0094F27B /* Introduce_DeptList@2x.png in Resources */,
 				2DE46BC417BA0B7D0094F27B /* Introduce_NewsDetail-568h@2x.png in Resources */,
