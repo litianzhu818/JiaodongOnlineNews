@@ -33,7 +33,7 @@
         self.pageInfos = @[[NSDictionary dictionaryWithObject:@"新闻" forKey:@"title"],
                            [NSDictionary dictionaryWithObject:@"图集" forKey:@"title"],
                            [NSDictionary dictionaryWithObject:@"话题" forKey:@"title"],
-                           [NSDictionary dictionaryWithObject:@"民生" forKey:@"title"]];
+                           [NSDictionary dictionaryWithObject:@"民声" forKey:@"title"]];
     }
     return self;
 }

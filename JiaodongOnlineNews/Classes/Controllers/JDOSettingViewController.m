@@ -56,7 +56,7 @@ BOOL downloadItemClickable = TRUE;
 
 - (void)setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"popularize_num"]) {
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"had_submit_popularize"]) {
         [self.navigationView addRightButtonImage:@"popularize_icon" highlightImage:nil target:self action:@selector(onPopularizeButtonClick:)];
     }
     
@@ -74,28 +74,24 @@ BOOL downloadItemClickable = TRUE;
         title.text = @"请输入推荐码";
         title.backgroundColor = [UIColor clearColor];
         [containView addSubview:title];
-        InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(20,45, 240, 35)];
-        secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
-        secretTextField.secureTextEntry = YES;
-        //secretTextField.placeholder = @"6位数字";
-        secretTextField.keyboardType = UIKeyboardTypeNumberPad;
-        secretTextField.tag = 23456;
-        [containView addSubview:secretTextField];
+        InsetsTextField *popularTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(20,45, 240, 35)];
+        popularTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        popularTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+        popularTextField.keyboardType = UIKeyboardTypeNumberPad;
+        popularTextField.tag = 23456;
+        [containView addSubview:popularTextField];
         iOS7AlertView.containerView = containView;
         iOS7AlertView.buttonTitles = @[@"取消",@"确认"];
         [iOS7AlertView show];
     }else{
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"请输入推荐码" message:@"\n\n" delegate:self cancelButtonTitle:@"取消"otherButtonTitles:@"确认",nil];
         alertView.tag = 12345;
-        InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(12.0f, 51.0f, 260.0f, 35.0f)];
-        secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
-        secretTextField.secureTextEntry = YES;
-        //secretTextField.placeholder = @"6位数字";
-        secretTextField.keyboardType = UIKeyboardTypeNumberPad;
-        secretTextField.tag = 23456;
-        [alertView addSubview:secretTextField];
+        InsetsTextField *popularTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(12.0f, 51.0f, 260.0f, 35.0f)];
+        popularTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        popularTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+        popularTextField.keyboardType = UIKeyboardTypeNumberPad;
+        popularTextField.tag = 23456;
+        [alertView addSubview:popularTextField];
         [alertView show];
     }
 }
@@ -272,15 +268,37 @@ BOOL downloadItemClickable = TRUE;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 12345) {
         if (buttonIndex == 1) {
-            InsetsTextField *secretTextField = (InsetsTextField *)[alertView viewWithTag:23456];
-            NSString *popularize_num = secretTextField.text;
+            InsetsTextField *popularTextField = (InsetsTextField *)[alertView viewWithTag:23456];
+            NSString *popularize_num = popularTextField.text;
             NSString *deviceID = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+            if (JDOIsEmptyString(popularize_num) || JDOIsEmptyString(deviceID)){
+                return;
+            }
             NSDictionary *params = @{@"code":popularize_num, @"deviceid":deviceID};
             [self sendToServer:params];
         }
     } else {
         if (buttonIndex == 1) {
             [self startDownload];
+        }
+    }
+}
+
+- (void)customIOS7dialogButtonTouchUpInside: (CustomIOS7AlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 12345) {
+        if (buttonIndex == 1) { // 确认
+            InsetsTextField *popularTextField = (InsetsTextField *)[alertView.containerView viewWithTag:23456];
+            NSString *popularize_num = popularTextField.text;
+            NSString *deviceID = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+            if (JDOIsEmptyString(popularize_num) || JDOIsEmptyString(deviceID)){
+                return;
+            }
+            NSDictionary *params = @{@"code":popularize_num, @"deviceid":deviceID};
+            [self sendToServer:params];
+            [alertView close];
+        }else{  // 取消
+            [alertView close];
         }
     }
 }
@@ -294,19 +312,25 @@ BOOL downloadItemClickable = TRUE;
         if ([jsonvalue isKindOfClass:[NSNumber class]]) {
             int status = [[json objectForKey:@"status"] intValue];
             if (status == 1) {
-                [JDOCommonUtil showSuccessHUD:@"提交成功" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
-                [[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"code"] forKey:@"popularize_num"];
+                [JDOCommonUtil showSuccessHUD:@"推荐码提交成功" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"had_submit_popularize"];
                 [self.navigationView hideRightButton];
-            } else {
-                [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+            } else if (status == 0) {   // 提交的推荐码不存在
+                [JDOCommonUtil showHintHUD:@"提交的推荐码不存在,请重新提交" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
             }
-        } else {
-            [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+        } else if ([jsonvalue isKindOfClass:[NSString class]]){
+            NSString *statusString = [json objectForKey:@"status"];
+            if ([statusString isEqualToString:@"exist"]) {
+                [JDOCommonUtil showSuccessHUD:@"您之前已提交过推荐码,本次无效" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"had_submit_popularize"];
+                [self.navigationView hideRightButton];
+            }else{  // wrongparam
+                [JDOCommonUtil showHintHUD:[NSString stringWithFormat:@"提交失败:%@",statusString] inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *errorString = [JDOCommonUtil formatErrorWithOperation:operation error:error];
-        [JDOCommonUtil showHintHUD:@"提交失败" inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
-        NSLog(@"status:%@", errorString);
+        [JDOCommonUtil showHintHUD:[NSString stringWithFormat:@"提交失败:%@",errorString]  inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
     }];
 }
 

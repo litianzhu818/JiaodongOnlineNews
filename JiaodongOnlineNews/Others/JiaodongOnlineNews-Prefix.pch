@@ -86,7 +86,7 @@
 #define Debug_Guide_Introduce false
 
 // 服务器端接口
-#define SERVER_QUERY_URL [NSString stringWithFormat:@"http://192.168.10.7/mobileQuery/V%@",[[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""] substringToIndex:2]]
+#define SERVER_QUERY_URL [NSString stringWithFormat:@"http://p.jiaodong.net/mobileQuery/V%@",[[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""] substringToIndex:2]]
 #define SERVER_RESOURCE_URL @"http://p.jiaodong.net/jdmsys/"
 
 #define ADV_SERVICE @"Data/getAdv"
