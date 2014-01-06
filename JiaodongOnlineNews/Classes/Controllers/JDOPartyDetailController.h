@@ -12,7 +12,7 @@
 
 @class JDOPartyModel;
 
-@interface JDOPartyDetailController : JDONewsDetailController 
+@interface JDOPartyDetailController : JDOWebViewController
 
 @property (nonatomic,strong) JDOPartyModel *partyModel;
 

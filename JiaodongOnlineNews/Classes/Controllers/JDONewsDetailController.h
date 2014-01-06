@@ -8,22 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "JDOToolBar.h"
+#import "JDOWebViewController.h"
 
 @class JDONewsModel;
 
-@interface JDONewsDetailController : JDONavigationController <UIWebViewDelegate,UITextViewDelegate,JDOStatusView,JDOStatusViewDelegate,SDWebImageManagerDelegate,SDWebImageStoreDelegate,JDOShareTargetDelegate>
+@interface JDONewsDetailController : JDOWebViewController <UITextViewDelegate>
 
-@property (strong,nonatomic) JDOStatusView *statusView;
-@property (nonatomic,assign) ViewStatusType status;
-@property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDONewsModel *newsModel;
-@property (nonatomic,strong) JDOToolBar *toolbar;
 @property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
 @property (nonatomic,assign) BOOL isPushNotification;
-@property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
 - (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect;
-- (void) buildWebViewJavascriptBridge;
-- (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary;
+
 @end

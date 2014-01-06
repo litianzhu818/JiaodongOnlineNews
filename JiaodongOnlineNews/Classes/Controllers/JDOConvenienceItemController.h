@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WebViewJavascriptBridge_iOS.h"
+#import "JDOWebViewController.h"
 
-@interface JDOConvenienceItemController : JDONavigationController <JDOStatusView,JDOStatusViewDelegate,UIWebViewDelegate>
+@interface JDOConvenienceItemController : JDOWebViewController 
 
-@property (strong,nonatomic) JDOStatusView *statusView;
-@property (nonatomic,assign) ViewStatusType status;
-@property (nonatomic,strong) UIWebView *webView;
 @property BOOL deletetitle;
 
 @property (strong, nonatomic) NSString *service;
