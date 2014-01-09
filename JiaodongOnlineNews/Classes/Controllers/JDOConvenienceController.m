@@ -138,10 +138,6 @@
                 title = @"火车时刻";
                 channelId = @"23";
                 break;
-            case 3:
-                title = @"船运时刻";
-                channelId = @"24";
-                break;
             case 5:
                 title = @"航空时刻";
                 channelId = @"25";
