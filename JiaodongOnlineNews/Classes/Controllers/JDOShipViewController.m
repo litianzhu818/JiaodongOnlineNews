@@ -10,6 +10,7 @@
 #import "JDOHttpClient.h"
 #import "TFHpple.h"
 #import "JDOShipTableCell.h"
+#import "ActionSheetDatePicker.h"
 
 @interface JDOShipViewController ()
 
@@ -17,11 +18,17 @@
 
 @implementation JDOShipViewController
 
+@synthesize beg_date = _beg_date;
+@synthesize end_date = _end_date;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        self.beg_date = [NSDate date];
+        self.end_date = [NSDate date];
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy/MM/dd"];
     }
     return self;
 }
@@ -38,7 +45,7 @@
     [beglabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     UILabel *endlabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 95.0, 80.0, 35.0)];
     [endlabel setBackgroundColor:[UIColor clearColor]];
-    [endlabel setText:@"起始时间："];
+    [endlabel setText:@"结束时间："];
     [endlabel setFont:[UIFont systemFontOfSize:15.0]];
     [endlabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     
@@ -47,16 +54,25 @@
     
     begtime = [[UITextField alloc] initWithFrame:CGRectMake(110.0, 50.0, 140.0, 35.0)];
     [begtime setFont:[UIFont systemFontOfSize:15.0]];
+    [begtime setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"inputFidldBorder"]]];
     begtime.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
     begtime.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [begtime setTag:9009];
+    [begtime setDelegate:self];
+    [begtime addTarget:self action:@selector(selectBegDate:) forControlEvents:UIControlEventTouchDown];
+    [begtime setText:[dateFormatter stringFromDate:self.beg_date]];
+    
     endtime = [[UITextField alloc] initWithFrame:CGRectMake(110.0, 95.0, 140.0, 35.0)];
     [endtime setFont:[UIFont systemFontOfSize:15.0]];
     endtime.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
     endtime.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [endtime setTag:9010];
+    [endtime setDelegate:self];
+    [endtime addTarget:self action:@selector(selectEndDate:) forControlEvents:UIControlEventTouchDown];
+    [endtime setText:[dateFormatter stringFromDate:self.end_date]];
+    
     [self.view addSubview:begtime];
     [self.view addSubview:endtime];
-    [begtime setText:@"2013/09/30"];
-    [endtime setText:@"2013/09/30"];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20.0, 140.0, 280, 40)];
     [button setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
@@ -75,6 +91,34 @@
     [self.view addSubview:table];
 }
 
+- (void)selectBegDate:(id)sender
+{
+    ActionSheetDatePicker *actionSheetPicker = [[ActionSheetDatePicker alloc] initWithTitle:@"" datePickerMode:UIDatePickerModeDate selectedDate:self.beg_date target:self action:@selector(beg_dateWasSelected:) origin:sender];
+    [actionSheetPicker addCustomButtonWithTitle:@"今天" value:[NSDate date]];
+    actionSheetPicker.hideCancel = YES;
+    [actionSheetPicker showActionSheetPicker];
+}
+
+- (void)selectEndDate:(id)sender
+{
+    ActionSheetDatePicker *actionSheetPicker = [[ActionSheetDatePicker alloc] initWithTitle:@"" datePickerMode:UIDatePickerModeDate selectedDate:self.end_date target:self action:@selector(end_dateWasSelected:) origin:sender];
+    [actionSheetPicker addCustomButtonWithTitle:@"今天" value:[NSDate date]];
+    actionSheetPicker.hideCancel = YES;
+    [actionSheetPicker showActionSheetPicker];
+}
+
+- (void)beg_dateWasSelected:(NSDate *)selectedDate {
+    self.beg_date = selectedDate;
+    NSString *destDateString = [dateFormatter stringFromDate:self.beg_date];
+    begtime.text = destDateString;
+}
+
+- (void)end_dateWasSelected:(NSDate *)selectedDate {
+    self.end_date = selectedDate;
+    NSString *destDateString = [dateFormatter stringFromDate:self.beg_date];
+    endtime.text = destDateString;
+}
+
 // 所有有导航栏的界面navigationView都应该在视图层级的最后添加或者bringToFront
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
@@ -89,13 +133,10 @@
 
 - (void)submit
 {
-    //NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     NSURL *baseurl = [[NSURL alloc] initWithString:@"http://www.bohaiferry.com/"];
     JDOHttpClient *client = [[JDOHttpClient alloc] initWithBaseURL:baseurl];
     NSDictionary *params = @{@"beg_tim": begtime.text, @"end_tim": endtime.text, @"Submit": @"查询"};
     [client postPath:@"hangyun/ship.asp" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //NSString *html = [[NSString alloc] initWithData:responseObject encoding:enc];
-        //NSData *data = [html dataUsingEncoding:NSUTF8StringEncoding];
         TFHpple *hpple = [[TFHpple alloc] initWithHTMLData:responseObject encoding:@"GB2312"];
         tableArray = [hpple searchWithXPathQuery:@"//tr[@bgcolor='#F0F0F0']"];
         
@@ -144,6 +185,10 @@
 	return 1;
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return NO;
+}
 
 - (void)didReceiveMemoryWarning
 {
