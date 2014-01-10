@@ -66,7 +66,7 @@
         
         
         //float font18Height = [UIFont boldSystemFontOfSize:18].lineHeight;
-        _title = [[UITextView alloc] initWithFrame:CGRectMake(Padding+10, CGRectGetMaxY(_mpicView.frame)+5, _mpicView.frame.size.width, 35)];
+        _title = [[UITextView alloc] initWithFrame:CGRectMake(Padding+10, CGRectGetMaxY(_mpicView.frame)+5, _mpicView.frame.size.width-15/*左边括号的宽度*/, 35)];
         _title.textColor = [UIColor colorWithHex:Black_Color_Type1];
         _title.backgroundColor = [UIColor clearColor];
         _title.font = [UIFont boldSystemFontOfSize:18];
@@ -77,7 +77,7 @@
         _title_left.image = [UIImage imageNamed:@"left_text"];
         [_title addSubview:_title_left];
         
-        _title_right = [[UIImageView alloc] initWithFrame:CGRectMake(_title.frame.size.width-20, 0, 8, 35)];
+        _title_right = [[UIImageView alloc] initWithFrame:CGRectMake(_title.frame.size.width, 0, 8, 35)];
         _title_right.image = [UIImage imageNamed:@"right_text"];
         [_title addSubview:_title_right];
 
@@ -85,7 +85,7 @@
         _separatorLine.image = [UIImage imageNamed:@"topic_separator"];
         [self.contentView addSubview:self.separatorLine];
         
-        self.summary = [[UITextView alloc] initWithFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width, 100)];
+        self.summary = [[UITextView alloc] initWithFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width-8, 100)];
         self.summary.textColor = [UIColor colorWithHex:Black_Color_Type1];
         self.summary.backgroundColor = [UIColor clearColor];
         self.summary.font = [UIFont systemFontOfSize:16];
@@ -152,14 +152,17 @@
     int colomNumber = _title.contentSize.height/length;
     if (colomNumber >1) {
         [_title_left setFrame:CGRectMake(0, 10, 8, 35)];
-        [_title_right setFrame:CGRectMake(_title.frame.size.width-20, 10, 8, 35)];
+        [_title_right setFrame:CGRectMake(_title.frame.size.width-8, 10, 8, 35)];
+        [_separatorLine setFrame:CGRectMake(Padding+2, CGRectGetMaxY(_title.frame)+2, _mpicView.frame.size.width, 1)];
+        [_summary setFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width-8, 80)];
     } else {
         [_title_left setFrame:CGRectMake(0, 0, 8, 35)];
-        [_title_right setFrame:CGRectMake(_title.frame.size.width-20, 0, 8, 35)];
+        [_title_right setFrame:CGRectMake(_title.frame.size.width-8, 0, 8, 35)];
+        [_separatorLine setFrame:CGRectMake(Padding+2, CGRectGetMaxY(_title.frame)+2, _mpicView.frame.size.width, 1)];
+        [_summary setFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width-8, 100)];
     }
     
-    [_separatorLine setFrame:CGRectMake(Padding+2, CGRectGetMaxY(_title.frame)+2, _mpicView.frame.size.width, 1)];
-    [_summary setFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width, 100)];
+    
     
     self.summary.text = partyModel.summary;
     NSString *starttime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_starttime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];

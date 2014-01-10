@@ -161,8 +161,6 @@
 		2D958592176E082E009F5AE4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D958591176E082E009F5AE4 /* CoreTelephony.framework */; };
 		2D958595176E0EC0009F5AE4 /* AGCustomShareItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D958594176E0EC0009F5AE4 /* AGCustomShareItemView.m */; };
 		2D9678BB174AF78A008AC097 /* JDOImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9678BA174AF78A008AC097 /* JDOImageUtil.m */; };
-		2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D96C9901761661800D88EBA /* TPKeyboardAvoidingScrollView.m */; };
-		2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D96C9921761661800D88EBA /* TPKeyboardAvoidingTableView.m */; };
 		2D97A93E178506EA00CEEE82 /* JDOTopicDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D97A93D178506EA00CEEE82 /* JDOTopicDetailController.m */; };
 		2D97A94217850A4600CEEE82 /* image_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D97A94017850A4600CEEE82 /* image_background@2x.png */; };
 		2D97A94317850A4600CEEE82 /* image_mask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D97A94117850A4600CEEE82 /* image_mask@2x.png */; };
@@ -231,6 +229,10 @@
 		2DA566B917AB39E000987EDC /* JDOCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285A17A9887F0040F05F /* JDOCollectView.m */; };
 		2DA566BA17AB39E700987EDC /* JDOCollectDB.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62176617A0943A0020A8A4 /* JDOCollectDB.m */; };
 		2DA566BB17AB39F500987EDC /* JDOCollectNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF62285D17A98A1D0040F05F /* JDOCollectNewsView.m */; };
+		2DA59626187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA5961F187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.m */; };
+		2DA59627187CE14900F09D1E /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA59621187CE14900F09D1E /* TPKeyboardAvoidingScrollView.m */; };
+		2DA59628187CE14900F09D1E /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA59623187CE14900F09D1E /* TPKeyboardAvoidingTableView.m */; };
+		2DA59629187CE14900F09D1E /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA59625187CE14900F09D1E /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
 		2DA784BC17C6EF9D00171CAA /* image_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA784BB17C6EF9D00171CAA /* image_delete@2x.png */; };
 		2DA7CD4217B9CC9700D3E701 /* Guide_Start.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DA7CD4117B9CC9700D3E701 /* Guide_Start.png */; };
 		2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA81F9917967F1E00A528BA /* JDOWeatherForcast.m */; };
@@ -969,10 +971,6 @@
 		2D958594176E0EC0009F5AE4 /* AGCustomShareItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGCustomShareItemView.m; sourceTree = "<group>"; };
 		2D9678B9174AF78A008AC097 /* JDOImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOImageUtil.h; sourceTree = "<group>"; };
 		2D9678BA174AF78A008AC097 /* JDOImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOImageUtil.m; sourceTree = "<group>"; };
-		2D96C98F1761661800D88EBA /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
-		2D96C9901761661800D88EBA /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
-		2D96C9911761661800D88EBA /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
-		2D96C9921761661800D88EBA /* TPKeyboardAvoidingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingTableView.m; sourceTree = "<group>"; };
 		2D97A93C178506EA00CEEE82 /* JDOTopicDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOTopicDetailController.h; sourceTree = "<group>"; };
 		2D97A93D178506EA00CEEE82 /* JDOTopicDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOTopicDetailController.m; sourceTree = "<group>"; };
 		2D97A94017850A4600CEEE82 /* image_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image_background@2x.png"; sourceTree = "<group>"; };
@@ -1089,6 +1087,14 @@
 		2DA4494B17C5A42700927906 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		2DA4494D17C5A88100927906 /* train@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "train@2x.png"; sourceTree = "<group>"; };
 		2DA4494F17C5A8A800927906 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		2DA5961E187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
+		2DA5961F187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
+		2DA59620187CE14900F09D1E /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
+		2DA59621187CE14900F09D1E /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
+		2DA59622187CE14900F09D1E /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
+		2DA59623187CE14900F09D1E /* TPKeyboardAvoidingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingTableView.m; sourceTree = "<group>"; };
+		2DA59624187CE14900F09D1E /* UIScrollView+TPKeyboardAvoidingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TPKeyboardAvoidingAdditions.h"; sourceTree = "<group>"; };
+		2DA59625187CE14900F09D1E /* UIScrollView+TPKeyboardAvoidingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TPKeyboardAvoidingAdditions.m"; sourceTree = "<group>"; };
 		2DA784BB17C6EF9D00171CAA /* image_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image_delete@2x.png"; sourceTree = "<group>"; };
 		2DA7CD4117B9CC9700D3E701 /* Guide_Start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide_Start.png; sourceTree = "<group>"; };
 		2DA81F9817967F1E00A528BA /* JDOWeatherForcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOWeatherForcast.h; sourceTree = "<group>"; };
@@ -2389,10 +2395,14 @@
 		2D96C98E1761660800D88EBA /* TPKeyboardAvoiding */ = {
 			isa = PBXGroup;
 			children = (
-				2D96C98F1761661800D88EBA /* TPKeyboardAvoidingScrollView.h */,
-				2D96C9901761661800D88EBA /* TPKeyboardAvoidingScrollView.m */,
-				2D96C9911761661800D88EBA /* TPKeyboardAvoidingTableView.h */,
-				2D96C9921761661800D88EBA /* TPKeyboardAvoidingTableView.m */,
+				2DA5961E187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.h */,
+				2DA5961F187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.m */,
+				2DA59620187CE14900F09D1E /* TPKeyboardAvoidingScrollView.h */,
+				2DA59621187CE14900F09D1E /* TPKeyboardAvoidingScrollView.m */,
+				2DA59622187CE14900F09D1E /* TPKeyboardAvoidingTableView.h */,
+				2DA59623187CE14900F09D1E /* TPKeyboardAvoidingTableView.m */,
+				2DA59624187CE14900F09D1E /* UIScrollView+TPKeyboardAvoidingAdditions.h */,
+				2DA59625187CE14900F09D1E /* UIScrollView+TPKeyboardAvoidingAdditions.m */,
 			);
 			path = TPKeyboardAvoiding;
 			sourceTree = "<group>";
@@ -3717,11 +3727,13 @@
 				2D5409D7175DE60F00718FFB /* NSDictionary_DeepMutableCopy.m in Sources */,
 				2D5409DC175DEA5800718FFB /* JDONewsDetailController.m in Sources */,
 				2D5409DF175DEE2100718FFB /* UIWebView+RemoveShadow.m in Sources */,
+				2DA59626187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				2D1DDB58175E2AD10048F7A7 /* JDONewsDetailModel.m in Sources */,
 				2D1DDB5F175E39EE0048F7A7 /* jquery.min.js in Sources */,
 				2D996A94175ED55800C57673 /* JDOImageViewController.m in Sources */,
 				2D996A9B175F29AF00C57673 /* MLNavigationController.m in Sources */,
 				2D93122B17600A2500C73802 /* UIView+Transition.m in Sources */,
+				2DA59627187CE14900F09D1E /* TPKeyboardAvoidingScrollView.m in Sources */,
 				FF14D0F617615D1500D6D4F4 /* JDOImageModel.m in Sources */,
 				2D93122D17604A3900C73802 /* common.js in Sources */,
 				2D8DB0A31760C6DB00DB3EF0 /* NILauncherButtonView.m in Sources */,
@@ -3733,8 +3745,6 @@
 				2D8DB0AE1760CA8500DB3EF0 /* NIBadgeView.m in Sources */,
 				2D8DB0B11760D49C00DB3EF0 /* JDOConvenienceController.m in Sources */,
 				2D8DB0B41760D67400DB3EF0 /* BadgedLauncherButtonView.m in Sources */,
-				2D96C9931761661800D88EBA /* TPKeyboardAvoidingScrollView.m in Sources */,
-				2D96C9941761661800D88EBA /* TPKeyboardAvoidingTableView.m in Sources */,
 				2D115D781762CAC30011C0D7 /* JDOCommentModel.m in Sources */,
 				2D115D7B1762F30A0011C0D7 /* JDOStatusView.m in Sources */,
 				2D141460176324E400A6A50A /* UIDevice+IdentifierAddition.m in Sources */,
@@ -3750,6 +3760,7 @@
 				2D8E00E917645877002F0590 /* SSLoadingView.m in Sources */,
 				2D8E00EA17645877002F0590 /* SSPieProgressView.m in Sources */,
 				2D8E00ED176459C3002F0590 /* SSTextView.m in Sources */,
+				2DA59628187CE14900F09D1E /* TPKeyboardAvoidingTableView.m in Sources */,
 				2D8E00F017645CDA002F0590 /* NSDate+SSToolkitAdditions.m in Sources */,
 				2D8E00F317645DEE002F0590 /* NSString+SSToolkitAdditions.m in Sources */,
 				2D8E00F617645F0E002F0590 /* NSData+SSToolkitAdditions.m in Sources */,
@@ -3773,6 +3784,7 @@
 				2D14665017782A13002BC44B /* JDOImageCell.m in Sources */,
 				2DDC4D3E177927A0007CF9E0 /* JDOImageDetailController.m in Sources */,
 				2DDC4D4717792F7C007CF9E0 /* JDOImageDetailModel.m in Sources */,
+				2DA59629187CE14900F09D1E /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				2D953DEA177A73FD00DF166B /* JDOToolBar.m in Sources */,
 				2D953DFD177AAC7700DF166B /* MWCaptionView.m in Sources */,
 				2D953DFE177AAC7700DF166B /* MWPhoto.m in Sources */,
@@ -3993,7 +4005,7 @@
 			baseConfigurationReference = 5F222CF8F96D417D992D04DB /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Yantai Jiaodong Online Network Media Co., Ltd (5BA6RP6GDL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yi zhang (XT5Z965G79)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK_v2.6.0/Connection",
@@ -4041,7 +4053,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DDECBE6B-AF18-4CE1-B916-72A25B82B140";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
