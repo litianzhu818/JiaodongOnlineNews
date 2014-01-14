@@ -64,7 +64,7 @@
             
         }
         
-        {% if hasJoin %}
+        {% if hasJoin!=0 %}
         function joinin(){
             bridge.callHandler('joinInParty',{'joinBtnStr':'{{joinBtnStr}}'},function(response){});
         }
@@ -172,7 +172,7 @@
         </div>
 	</div>
     {% /if %}
-    {% if hasJoin %}
+    {% if hasJoin!=0 %}
     <div style="text-align: center;margin-bottom: 20px">
         <input type="button"  onclick="javascript:joinin()" value="{{joinBtnStr}}" style="background:url(commit_btn.png);background-repeat:x-repeat;width:220px; height:50px;font-size: 20px;color: white">
     </div>

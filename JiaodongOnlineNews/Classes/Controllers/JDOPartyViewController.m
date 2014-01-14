@@ -73,10 +73,10 @@
 
 // 加了空section，为了补齐上边距
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 9;
+    return 18;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 9)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 18)];
     view.backgroundColor = [UIColor clearColor];
     return view;
 }
@@ -214,6 +214,7 @@
     }];
     
 }
+
 
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    if(self.listArray.count == 0){
