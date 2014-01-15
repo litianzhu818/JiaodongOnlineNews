@@ -19,11 +19,14 @@
 #define title_normal_shadow [UIColor whiteColor]
 #define title_highlight_color [UIColor whiteColor]
 #define title_highlight_shadow [UIColor blackColor]
-#define TagWidth 60
 
 @implementation JDOPageControl
 
 - (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage pages:(NSArray *)pages{
+    return [self initWithFrame:frame background:backgroundImage slider:sliderImage pages:pages scrollable:false tagWidth:0];
+}
+
+- (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage pages:(NSArray *)pages scrollable:(Boolean)scrollable tagWidth:(float)tagWidth{
     if (self = [super initWithFrame:frame]) {
         // 背景色
 		_backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height)];
@@ -34,7 +37,8 @@
 		_slider = [[UIImageView alloc] initWithFrame:CGRectZero];
         [_slider setImage:[UIImage imageNamed:sliderImage]];
         [self insertSubview:_slider aboveSubview:_backgroundView];
-        
+        self.scrollable = scrollable;
+        self.tagWidth = tagWidth;
         [self setPages:pages];
     }
     return self;
@@ -47,11 +51,11 @@
     _pages = pages;
     _numberOfPages = pages.count;
     //float width = (self.frame.size.width-Left_Margin*2)/pages.count;
-    float width = TagWidth;
+    float width = self.scrollable?self.tagWidth:(self.frame.size.width-Left_Margin*2)/pages.count;
     self.scroll = [[UIScrollView alloc] initWithFrame:_backgroundView.frame];
     self.scroll.contentSize = CGSizeMake(width*pages.count +Left_Margin,_backgroundView.frame.size.height);
     self.scroll.contentOffset = CGPointMake(0, 0);
-    self.scroll.scrollEnabled=TRUE;
+    self.scroll.scrollEnabled=self.scrollable;
     self.scroll.bounces=YES;
     self.scroll.delegate = self;
     [self.scroll setShowsHorizontalScrollIndicator:NO];
@@ -91,20 +95,22 @@
         [self setCurrentPage:toPageIndex animated:true];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
-    float x =TagWidth*toPageIndex-self.frame.size.width/2+TagWidth/2;
-    if (x<0) {
-        x=0;
-    } else if(x>TagWidth*_pages.count +Left_Margin-self.frame.size.width) {
-        x=TagWidth*_pages.count +Left_Margin-self.frame.size.width;
+    if (self.scrollable) {
+        float x =self.tagWidth*toPageIndex-self.frame.size.width/2+self.tagWidth/2;
+        if (x<0) {
+            x=0;
+        } else if(x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
+            x=self.tagWidth*_pages.count +Left_Margin-self.frame.size.width;
+        }
+        [self.scroll setContentOffset:CGPointMake(x, 0) animated:true];
     }
-    [self.scroll setContentOffset:CGPointMake(x, 0) animated:true];
+    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    float width = TagWidth;
-	float x = Left_Margin+width*_currentPage-scrollView.contentOffset.x;
+	float x = Left_Margin+self.tagWidth*_currentPage-scrollView.contentOffset.x;
     
-	[self.slider setFrame:CGRectMake(x+slider_padding,slider_top_margin,width-slider_padding*2,self.frame.size.height-slider_top_margin*2)];
+	[self.slider setFrame:CGRectMake(x+slider_padding,slider_top_margin,self.tagWidth-slider_padding*2,self.frame.size.height-slider_top_margin*2)];
 }
 
 - (void)setCurrentPage:(int)toPage{
@@ -126,12 +132,12 @@
 	}
 	
 	//float width = (self.frame.size.width-2*Left_Margin)/self.numberOfPages;
-    float width = TagWidth;
+    float width = self.scrollable?self.tagWidth:(self.frame.size.width-2*Left_Margin)/self.numberOfPages;
     UIButton *button = (UIButton *)[self viewWithTag:title_label_tag+_currentPage];
 	//float x = Left_Margin+width*_currentPage;
     float x=button.frame.origin.x;
-    if(x>TagWidth*_pages.count +Left_Margin-self.frame.size.width) {
-        x=button.frame.origin.x - (TagWidth*_pages.count +Left_Margin-self.frame.size.width);
+    if(self.scrollable && x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
+        x=button.frame.origin.x - (self.tagWidth*_pages.count +Left_Margin-self.frame.size.width);
     }
     
     // 也可以只修改center,设置为对应labelButton的center
@@ -171,7 +177,6 @@
 //		CGContextFillEllipseInRect(myContext, CGRectMake(x,(self.frame.size.height-diameter)/2,diameter,diameter));
 //	}
 //}
-
 
 -(void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context{
     if([animationID isEqualToString:@"moveSlider"] && [finished boolValue]){
