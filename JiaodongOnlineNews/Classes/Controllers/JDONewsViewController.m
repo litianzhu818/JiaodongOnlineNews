@@ -48,6 +48,12 @@
     _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos];
     [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_pageControl];
+    // 测试弹出浮动栏目选择面板
+    UIButton *b = [UIButton buttonWithType:UIButtonTypeInfoDark];
+    [b addTarget:self action:@selector(showChannelPane:) forControlEvents:UIControlEventTouchUpInside];
+    b.frame = CGRectMake(320-40, 44, 29, 29);
+    [self.view addSubview:b];
+    
     
     _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,44+News_Navbar_Height-1,[self.view bounds].size.width,[self.view bounds].size.height -44- News_Navbar_Height)];
     _scrollView.backgroundColor = [UIColor whiteColor];
@@ -58,6 +64,20 @@
     _scrollView.pageMargin = 0;
     _scrollView.pagingScrollView.scrollsToTop = false;
     [self.view addSubview:_scrollView];
+}
+
+- (void)showChannelPane:(UIButton *)sender{
+    // 计算需要的panel高度
+    float panelHeight = 300;
+    UIView *channelPane = [[UIView alloc] initWithFrame:CGRectMake(0, 44-panelHeight, 320, panelHeight+13.5/*下边框和阴影高度*/)];
+    channelPane.backgroundColor = [UIColor colorWithHex:@"F0F0F0"];
+    UIImageView *bottomEdge = [[UIImageView alloc] initWithFrame:CGRectMake(0, panelHeight, 320, 13.5)];
+    bottomEdge.image = [UIImage imageNamed:@"channel_background"];
+    [channelPane addSubview:bottomEdge];
+    [self.view insertSubview:channelPane aboveSubview:self.scrollView];
+    [UIView animateWithDuration:0.5 animations:^{
+        channelPane.frame = CGRectMake(0, 44, 320, panelHeight+13.5);
+    }];
 }
 
 
