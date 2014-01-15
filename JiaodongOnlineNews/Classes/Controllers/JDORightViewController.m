@@ -448,14 +448,18 @@ typedef enum {
 //            }
 //            [self pushViewController:_feedbackController];
 //            break;
-        case RightMenuItemAbout:
+        case RightMenuItemAbout:{
             // 测试自动收集崩溃日志是否起作用
 //            [[Crashlytics sharedInstance] crash];
             if( _aboutUsController == nil){
                 _aboutUsController = [[JDOAboutUsViewController alloc] init];
             }
-            [self pushViewController:_aboutUsController];
-            break;
+            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
+                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_aboutUsController orientation:JDOTransitionFromBottom animated:false];
+            } completion:^(IIViewDeckController *controller, BOOL success) {
+            }];
+            //[self pushViewController:_aboutUsController];
+            break;}
         case RightMenuItemBind:
             if( _shareAuthController == nil){
                 _shareAuthController = [[JDOShareAuthController alloc] init];

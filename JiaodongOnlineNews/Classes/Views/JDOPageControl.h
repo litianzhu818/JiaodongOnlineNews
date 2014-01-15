@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JDOPageControl : UIControl
+@interface JDOPageControl : UIControl<UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundView;
 @property (nonatomic, strong) UIImageView *slider;
+@property (nonatomic, strong) UIScrollView *scroll;
 @property (nonatomic, assign) int numberOfPages, currentPage, lastPageIndex;
 @property (nonatomic, strong) NSArray *pages;
 @property (nonatomic, assign,getter = isAnimating) BOOL animating;

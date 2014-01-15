@@ -19,6 +19,7 @@
 #define title_normal_shadow [UIColor whiteColor]
 #define title_highlight_color [UIColor whiteColor]
 #define title_highlight_shadow [UIColor blackColor]
+#define TagWidth 60
 
 @implementation JDOPageControl
 
@@ -40,11 +41,22 @@
 }
 
 -(void) setPages:(NSArray *)pages{
+    
     _animating = false;
     _currentPage = -1;
     _pages = pages;
     _numberOfPages = pages.count;
-    float width = (self.frame.size.width-Left_Margin*2)/pages.count;
+    //float width = (self.frame.size.width-Left_Margin*2)/pages.count;
+    float width = TagWidth;
+    self.scroll = [[UIScrollView alloc] initWithFrame:_backgroundView.frame];
+    self.scroll.contentSize = CGSizeMake(width*pages.count +Left_Margin,_backgroundView.frame.size.height);
+    self.scroll.contentOffset = CGPointMake(0, 0);
+    self.scroll.scrollEnabled=TRUE;
+    self.scroll.bounces=YES;
+    self.scroll.delegate = self;
+    [self.scroll setShowsHorizontalScrollIndicator:NO];
+    [self addSubview:self.scroll];
+    
     for (int i=0; i<pages.count; i++) {
         UIButton *titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(Left_Margin+i*width, 0, width,self.frame.size.height)];
         // pages中的内容必须是含有title属性的对象或包含该key值的Dictionary
@@ -60,7 +72,7 @@
         titleBtn.tag = title_label_tag+i;
         titleBtn.backgroundColor = [UIColor clearColor];
         [titleBtn addTarget:self action:@selector(onTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:titleBtn];
+        [self.scroll addSubview:titleBtn];
     }
 }
 
@@ -79,7 +91,20 @@
         [self setCurrentPage:toPageIndex animated:true];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
+    float x =TagWidth*toPageIndex-self.frame.size.width/2+TagWidth/2;
+    if (x<0) {
+        x=0;
+    } else if(x>TagWidth*_pages.count +Left_Margin-self.frame.size.width) {
+        x=TagWidth*_pages.count +Left_Margin-self.frame.size.width;
+    }
+    [self.scroll setContentOffset:CGPointMake(x, 0) animated:true];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    float width = TagWidth;
+	float x = Left_Margin+width*_currentPage-scrollView.contentOffset.x;
     
+	[self.slider setFrame:CGRectMake(x+slider_padding,slider_top_margin,width-slider_padding*2,self.frame.size.height-slider_top_margin*2)];
 }
 
 - (void)setCurrentPage:(int)toPage{
@@ -100,8 +125,15 @@
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	}
 	
-	float width = (self.frame.size.width-2*Left_Margin)/self.numberOfPages;
-	float x = Left_Margin+width*_currentPage;
+	//float width = (self.frame.size.width-2*Left_Margin)/self.numberOfPages;
+    float width = TagWidth;
+    UIButton *button = (UIButton *)[self viewWithTag:title_label_tag+_currentPage];
+	//float x = Left_Margin+width*_currentPage;
+    float x=button.frame.origin.x;
+    if(x>TagWidth*_pages.count +Left_Margin-self.frame.size.width) {
+        x=button.frame.origin.x - (TagWidth*_pages.count +Left_Margin-self.frame.size.width);
+    }
+    
     // 也可以只修改center,设置为对应labelButton的center
 	[self.slider setFrame:CGRectMake(x+slider_padding,slider_top_margin,width-slider_padding*2,self.frame.size.height-slider_top_margin*2)];
 	if (animated){
