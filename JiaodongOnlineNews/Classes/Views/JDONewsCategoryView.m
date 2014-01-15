@@ -19,9 +19,11 @@
 #import "JDOImageDetailController.h"
 #import "JDOTopicDetailController.h"
 #import "JDOPartyDetailController.h"
+#import "JDONewsSpecialController.h"
 #import "JDOImageModel.h"
 #import "JDOTopicModel.h"
 #import "JDOPartyModel.h"
+#import "JDONewsSpecialModel.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -481,6 +483,9 @@
             } else if ([aType isEqualToString:@"ac"]) { // 活动
                 model.contentType = @"party";
                 break;
+            } else if ([aType isEqualToString:@"s"]) { // 专题
+                model.contentType = @"special";
+                break;
             }
         }
         
@@ -518,6 +523,15 @@
             [self.readDB save:[model id]];
             JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
             [centerController pushViewController:partyController animated:true];
+            [tableView deselectRowAtIndexPath:indexPath animated:true];
+        } else if ([model.contentType isEqualToString:@"special"]) {
+            JDONewsSpecialModel *specialModel = [[JDONewsSpecialModel alloc] init];
+            specialModel.id = model.id;
+            specialModel.spic = model.spic;
+            JDONewsSpecialController *specialController = [[JDONewsSpecialController alloc] initWithModel:specialModel];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+            [centerController pushViewController:specialController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
         }
     }
