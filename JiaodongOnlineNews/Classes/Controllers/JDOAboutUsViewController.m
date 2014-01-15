@@ -8,6 +8,8 @@
 
 #import "JDOAboutUsViewController.h"
 #import "JDORightViewController.h"
+#import "JDOShareViewController.h"
+#import "JDONewsModel.h"
 
 @interface JDOAboutUsViewController ()
 
@@ -63,11 +65,24 @@
 
 - (void)setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
+    [self.navigationView addRightButtonImage:@"aboutus_share.png" highlightImage:@"aboutus_share.png" target:self action:@selector(onShareClick)];
     [self.navigationView setTitle:@"关于我们"];
 }
 
 - (void) onBackBtnClick{
-    [(JDORightViewController *)self.stackViewController popViewController];
+    JDOCenterViewController *centerViewController = (JDOCenterViewController *)SharedAppDelegate.deckController.centerController;
+    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+}
+
+-(void) onShareClick {
+    JDONewsModel *newsmodel = [[JDONewsModel alloc] init];
+    newsmodel.mpic = @"/editorfiles/127/images/jdm_127_20140110_110830.png";
+    newsmodel.tinyurl = @"http://m.jiaodong.net/app/";
+    newsmodel.title = @"看天下，知烟台，尽在胶东在线！";
+    newsmodel.summary = @"我正在使用胶东在线新闻客户端，小伙伴们快来下载吧！";
+    JDOShareViewController *shareViewController = [[JDOShareViewController alloc] initWithModel:newsmodel];
+    shareViewController.titleFront = @"";
+    [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController  pushViewController:shareViewController orientation:JDOTransitionFromBottom animated:true];
 }
 
 - (void)didReceiveMemoryWarning

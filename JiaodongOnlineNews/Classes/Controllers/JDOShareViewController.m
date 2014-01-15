@@ -45,13 +45,13 @@
     if (self) {
         _shareTypeArray = [JDOCommonUtil getAuthList];
         self.model = model;
+        self.titleFront = @"分享胶东在线新闻:";
     }
     return self;
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
     [self.ShareBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;
@@ -195,11 +195,11 @@
 }
 
 - (NSString *) getShareTitle{
-    return [NSString stringWithFormat:@"//分享胶东在线新闻:「%@」",[self.model title]];
+    return [NSString stringWithFormat:@"//%@「%@」",self.titleFront,[self.model title]];
 }
 
 - (NSString *) getShareTitleAndContent{
-    return [NSString stringWithFormat:@"//分享胶东在线新闻:「%@」%@",[self.model title],[self.model summary]];
+    return [NSString stringWithFormat:@"//%@「%@」%@",self.titleFront,[self.model title],[self.model summary]];
 }
 
 - (IBAction)onQQClicked:(UIButton *)sender {

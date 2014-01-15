@@ -16,6 +16,7 @@
 // 为了避免NavigationView跟着滚动,应该在view的层级中添加独立的TPKeyboardAvoidingScrollView
 @property (strong, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *mainView;
 
+@property (strong, nonatomic) NSString *titleFront;
 - (id) initWithModel:(id<JDOToolbarModel>) model;
 
 @end

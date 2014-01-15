@@ -12,7 +12,7 @@
 #import "JDOPartyModel.h"
 #import "JDOPartyDetailModel.h"
 #import "JDONewsDetailModel.h"
-#import "JDONewsModel.h"
+#import "JDOWebModel.h"
 
 @interface JDOPartyDetailController ()
 
@@ -29,11 +29,7 @@ NSArray *imageUrls;
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.partyModel = partyModel;
-        self.newsModel = [[JDONewsModel alloc] init];
-        self.newsModel.id = partyModel.id;
-        self.newsModel.mpic = partyModel.mpic;
-        self.newsModel.title = partyModel.title;
-        self.newsModel.summary = partyModel.summary;
+        self.model = [[JDOWebModel alloc] initWithId:partyModel.id andTitle:partyModel.title andImageurl:partyModel.mpic andSummary:partyModel.summary andTinyurl:partyModel.tinyurl];
     }
     return self;
 }
@@ -46,14 +42,8 @@ NSArray *imageUrls;
     return toolbarBtnConfig;
 }
 
-#pragma mark - View Life Cycle
-
-- (BOOL) onSharedClicked {
-    if (self.partyModel == nil) {
-        [JDOCommonUtil showHintHUD:@"活动尚未加载！" inView:self.view];
-        return FALSE;
-    }
-    return TRUE;
+-(void)viewDidLoad {
+    [super viewDidLoad];
 }
 
 - (void) buildWebViewJavascriptBridge{
@@ -96,13 +86,10 @@ NSArray *imageUrls;
 
 - (void) loadWebView{
     NSMutableDictionary *detailModel = [self readNewsDetailFromLocalCache];
-    if (self.isPushNotification) {  // 推送消息忽略缓存
-        detailModel = nil;
-    }
     if (detailModel /*有缓存*/) {
         [self setCurrentState:ViewStatusLoading];
         // 设置url短地址
-        self.newsModel.tinyurl = [detailModel objectForKey:@"tinyurl"];
+        self.model.tinyurl = [detailModel objectForKey:@"tinyurl"];
         if (self.partyModel.showMore) {
             [detailModel setObject:@"1" forKey:@"showMore"];
         } else {
@@ -115,7 +102,7 @@ NSArray *imageUrls;
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
         [self setCurrentState:ViewStatusLoading];
-        [[JDOJsonClient sharedClient] getPath:PARTY_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[JDOJsonClient sharedClient] getPath:PARTY_DETAIL_SERVICE parameters:@{@"aid":self.model.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];
@@ -123,14 +110,7 @@ NSArray *imageUrls;
                 NSMutableDictionary *dic = [[responseObject objectForKey:@"data"] mutableCopy];
                 [self saveNewsDetailToLocalCache:dic];
                 // 设置url短地址
-                self.newsModel.tinyurl = [dic objectForKey:@"tinyurl"];
-                
-                // 推送新闻不是从列表导航进入,所以newsModel中只存在id,其他JDOToolbarMoedl需要的信息都要从detail的信息中复制
-                if (self.isPushNotification) {
-                    self.newsModel.title = [dic objectForKey:@"title"];
-                    self.newsModel.summary = [dic objectForKey:@"summary"];
-                    self.newsModel.mpic =  [dic objectForKey:@"mpic"];
-                }
+                self.model.tinyurl = [dic objectForKey:@"tinyurl"];
                 if (self.partyModel.showMore) {
                     [dic setObject:@"1" forKey:@"showMore"];
                 } else {

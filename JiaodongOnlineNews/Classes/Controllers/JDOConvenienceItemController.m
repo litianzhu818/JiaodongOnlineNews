@@ -32,42 +32,6 @@
     return self;
 }
 
-- (void)loadView
-{
-    [super loadView];
-	
-    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)]; // 去掉导航栏和工具栏
-    [self.webView makeTransparentAndRemoveShadow];
-    self.webView.delegate = self;
-    self.webView.scalesPageToFit = true;
-    [self.view addSubview:_webView];
-    
-    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
-    self.statusView.delegate = self;
-    [self.view addSubview:self.statusView];
-
-}
-
-- (void) onRetryClicked:(JDOStatusView *) statusView{
-    [self loadWebView];
-}
-
-- (void) onNoNetworkClicked:(JDOStatusView *) statusView{
-    [self loadWebView];
-}
-
-- (void) setCurrentState:(ViewStatusType)status{
-    _status = status;
-    
-    self.statusView.status = status;
-    if(status == ViewStatusNormal){
-        self.webView.hidden = false;
-    }else{
-        self.webView.hidden = true;
-    }
-}
-
 // 所有有导航栏的界面navigationView都应该在视图层级的最后添加或者bringToFront
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToParent)];
@@ -77,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadWebView];
+    [self.toolbar removeFromSuperview];
 }
 
 -(void)viewDidUnload{
@@ -119,7 +83,7 @@
             }
             [self saveDetailToLocalCache:response];
             //            JDONewsDetailModel *detailModel = [(NSDictionary *)responseObject jsonDictionaryToModel:[JDONewsDetailModel class]];
-            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:response];
+            NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:response]];
             NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
             [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
         }
@@ -137,27 +101,5 @@
         [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count -2] animated:true];
     }
 }
-
-#pragma mark - Webview delegate
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        return false;
-    }
-    return true;
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView{
-
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView{
-    [self setCurrentState:ViewStatusNormal];
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    [self setCurrentState:ViewStatusRetry];
-}
-
 
 @end

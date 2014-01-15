@@ -122,6 +122,9 @@
         } else if ([aType isEqualToString:@"ac"]) { // 活动
             newsModel.contentType = @"party";
             break;
+        } else if ([aType isEqualToString:@"s"]) { // 活动
+            newsModel.contentType = @"special";
+            break;
         }
     }
     
@@ -144,6 +147,12 @@
         [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateSelected];
         [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateHighlighted];
         [self.typeHint setTitle:@"活动" forState:UIControlStateNormal];
+    } else if ([newsModel.contentType isEqualToString:@"special"]) {
+        self.typeHint.hidden = false;
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateNormal];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateSelected];
+        [self.typeHint setBackgroundImage:[UIImage imageNamed:@"news_type_hint_red"] forState:UIControlStateHighlighted];
+        [self.typeHint setTitle:@"专题" forState:UIControlStateNormal];
     }
     
     [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
