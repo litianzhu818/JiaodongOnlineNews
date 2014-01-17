@@ -95,6 +95,7 @@
 #define PARTY_DETAIL_SERVICE @"Data/getActiveDetail"
 #define PARTY_JOIN_SERVICE @"Data/getActiveConfig"
 #define NEWS_SERVICE @"Data/getArticles"
+#define NEWS_SPECIAL_SERVICE @"Data/getRelateByAid"
 #define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"
 #define POPULARIZE_SERVICE @"Spread/doSpreadReg"
