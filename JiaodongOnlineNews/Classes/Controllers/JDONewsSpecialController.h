@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "JDONewsSpecialModel.h"
-
-@interface JDONewsSpecialController : JDONavigationController
+@class JDONewsModel;
+@interface JDONewsSpecialController : JDONavigationController<JDOStatusView, UITableViewDelegate, UITableViewDataSource,JDOStatusViewDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *listArray;
 @property (nonatomic,strong) JDONewsSpecialModel *model;
+@property (strong,nonatomic) JDOStatusView *statusView;
+@property (nonatomic,assign) ViewStatusType status;
 -(id)initWithModel:(JDONewsSpecialModel *)model;
 @end
