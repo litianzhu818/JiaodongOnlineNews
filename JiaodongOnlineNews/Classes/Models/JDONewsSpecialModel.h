@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JDONewsSpecialModel : NSObject<UITableViewDelegate,UITableViewDataSource>
+@interface JDONewsSpecialModel : NSObject
 @property (nonatomic,copy) NSString *id;
 @property (nonatomic,copy) NSString *spic;
 @end
