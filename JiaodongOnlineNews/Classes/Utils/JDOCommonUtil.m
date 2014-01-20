@@ -13,6 +13,7 @@
 #import "WBSuccessNoticeView.h"
 #import "Reachability.h"
 #import "SDImageCache.h"
+#import "STKeychain.h"
 
 #define NUMBERS @"0123456789"
 
@@ -468,23 +469,24 @@ NSString* JDOGetDocumentFilePath(NSString *fileName){
 
 
 NSString* JDOGetUUID(){
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
-        return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-//        [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    }else{
-//        KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"UUID" accessGroup:@"YOUR_BUNDLE_SEED.com.yourcompany.userinfo"];
-//        NSString *strUUID = [keychainItem objectForKey:(id)kSecValueData];
-//        if ([strUUID isEqualToString:@""]){
-//            CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
-//            CFStringRef stringRef = CFUUIDCreateString (kCFAllocatorDefault,uuidRef);
-//            strUUID = (__bridge_transfer NSString*)stringRef;
-//            [keychainItem setObject:strUUID forKey:(id)kSecValueData];
-//            CFRelease(uuidRef);
-//            CFRelease(stringRef);
-//        }
-//        return strUUID;
-        return @"";
+    NSError *error;
+    NSString *uuid = [STKeychain getPasswordForUsername:@"JiaodongNews" andServiceName:@"uuid" error:&error];
+    if (uuid == nil) {
+        NSLog(@"GetUUID Error:%i",error.code);
+        return nil;
     }
+    if ([uuid isEqualToString:@""]){
+        CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+        CFStringRef stringRef = CFUUIDCreateString (kCFAllocatorDefault,uuidRef);
+        uuid = (__bridge_transfer NSString*)stringRef;
+        BOOL success = [STKeychain storeUsername:@"JiaodongNews" andPassword:uuid forServiceName:@"uuid" updateExisting:true error:&error];
+        if (!success) {
+            NSLog(@"SaveUUID Error:%i",error.code);
+        }
+        CFRelease(uuidRef);
+        CFRelease(stringRef);
+    }
+    return uuid;
 }
 
 id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){

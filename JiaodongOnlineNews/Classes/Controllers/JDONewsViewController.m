@@ -11,17 +11,21 @@
 #import "JDONewsCategoryView.h"
 #import "JDONewsCategoryInfo.h"
 #import "JDOReadDB.h"
+#import "JDOChannelSetting.h"
 #define News_Navbar_Height 35.0f
 
 @interface JDONewsViewController()
 
 @property (nonatomic,strong) NSArray *pageInfos; // 新闻页面基本信息
 @property (nonatomic,strong) JDOReadDB *readDB; // 新闻页面基本信息
+@property (nonatomic,strong) UIView *channelPane;
+
 @end
 
 @implementation JDONewsViewController{
     BOOL pageControlUsed;
     int lastCenterPageIndex;
+    float channelPaneHeight; // 自定义栏目面板的高度
 }
 
 - (void)didReceiveMemoryWarning{
@@ -51,12 +55,12 @@
     _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos scrollable:TRUE tagWidth:60];
     [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_pageControl];
-    // 测试弹出浮动栏目选择面板
-    UIButton *b = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    [b addTarget:self action:@selector(showChannelPane:) forControlEvents:UIControlEventTouchUpInside];
-    b.frame = CGRectMake(320-40, 44, 29, 29);
-    [self.view addSubview:b];
-    
+    // 弹出浮动栏目选择面板
+    UIButton *channelSetting = [UIButton buttonWithType:UIButtonTypeCustom];
+    [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_add_icon"] forState:UIControlStateNormal];
+    [channelSetting setFrame:CGRectMake(320-48.5, 44, 48.5, News_Navbar_Height)];
+    [channelSetting addTarget:self action:@selector(showChannelPane:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:channelSetting];
     
     _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,44+News_Navbar_Height-1,[self.view bounds].size.width,[self.view bounds].size.height -44- News_Navbar_Height)];
     _scrollView.backgroundColor = [UIColor whiteColor];
@@ -70,16 +74,39 @@
 }
 
 - (void)showChannelPane:(UIButton *)sender{
+    [SharedAppDelegate.deckController setEnabled:false];
+    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height)];
+    [background setBackgroundColor:[UIColor blackColor]];
+    background.alpha = 0;
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeChannelPane:)];
+    [background addGestureRecognizer:gesture];
+    [self.view insertSubview:background aboveSubview:self.scrollView];
     // 计算需要的panel高度
-    float panelHeight = 300;
-    UIView *channelPane = [[UIView alloc] initWithFrame:CGRectMake(0, 44-panelHeight, 320, panelHeight+13.5/*下边框和阴影高度*/)];
-    channelPane.backgroundColor = [UIColor colorWithHex:@"F0F0F0"];
-    UIImageView *bottomEdge = [[UIImageView alloc] initWithFrame:CGRectMake(0, panelHeight, 320, 13.5)];
-    bottomEdge.image = [UIImage imageNamed:@"channel_background"];
-    [channelPane addSubview:bottomEdge];
-    [self.view insertSubview:channelPane aboveSubview:self.scrollView];
+    channelPaneHeight = 300;
+    if (self.channelPane == nil) {
+        self.channelPane = [[UIView alloc] initWithFrame:CGRectMake(0, 44-channelPaneHeight, 320, channelPaneHeight+13.5/*下边框和阴影高度*/)];
+        self.channelPane.backgroundColor = [UIColor clearColor];
+        JDOChannelSetting *content = [[JDOChannelSetting alloc] initWithFrame:CGRectMake(0, 0, 320, channelPaneHeight)];
+        [self.channelPane addSubview:content];
+        UIImageView *bottomEdge = [[UIImageView alloc] initWithFrame:CGRectMake(0, channelPaneHeight, 320, 13.5)];
+        bottomEdge.image = [UIImage imageNamed:@"channel_background"];
+        [self.channelPane addSubview:bottomEdge];
+    }
+    [self.view insertSubview:self.channelPane aboveSubview:background];
     [UIView animateWithDuration:0.5 animations:^{
-        channelPane.frame = CGRectMake(0, 44, 320, panelHeight+13.5);
+        self.channelPane.frame = CGRectMake(0, 44, 320, channelPaneHeight+13.5);
+        background.alpha = 0.6;
+    }];
+}
+
+- (void)closeChannelPane:(UITapGestureRecognizer *)gesture{
+    [SharedAppDelegate.deckController setEnabled:true];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.channelPane.frame = CGRectMake(0, 44-channelPaneHeight, 320, channelPaneHeight+13.5);
+        gesture.view.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.channelPane removeFromSuperview];
+        [gesture.view removeFromSuperview];
     }];
 }
 
