@@ -38,20 +38,20 @@
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
         if(![Reachability isEnableNetwork]){
             // 无网络时，若已经在UserDefault中缓存过栏目列表，则从UserDefault中读取，否则只显示一个烟台栏目
-            NSArray *channelList = [userDefault objectForKey:@"channel_list"];
-            if(channelList == nil){
-                _pageInfos = @[[[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"]];
-            }else{
-                NSMutableArray *tempList = [NSMutableArray array];
-                for (int i=0; i<channelList.count; i++) {
-                    NSDictionary *channel = [channelList objectAtIndex:i];
-                    NSString *channelId = [channel objectForKey:@"id"];
-                    NSString *channelName = [channel objectForKey:@"channelname"];
-                    JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
-                    [tempList addObject:categoryInfo];
-                }
-                _pageInfos = [NSArray arrayWithArray:tempList];
-            }
+//            NSArray *channelList = [userDefault objectForKey:@"channel_list"];
+//            if(channelList == nil){
+//                _pageInfos = @[[[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"]];
+//            }else{
+//                NSMutableArray *tempList = [NSMutableArray array];
+//                for (int i=0; i<channelList.count; i++) {
+//                    NSDictionary *channel = [channelList objectAtIndex:i];
+//                    NSString *channelId = [channel objectForKey:@"id"];
+//                    NSString *channelName = [channel objectForKey:@"channelname"];
+//                    JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
+//                    [tempList addObject:categoryInfo];
+//                }
+//                _pageInfos = [NSArray arrayWithArray:tempList];
+//            }
         }else{
             // 从网络获取栏目列表，因初始化的时候需要栏目总数量等关键数据，必须完全获得栏目信息才能进行后续操作，使用同步网络请求
 //            NSString *channelsUrl = [SERVER_QUERY_URL stringByAppendingString:[NSString stringWithFormat:@"/%@",GET_CHANNELS]];
@@ -114,16 +114,16 @@
 //            }
         }
         
-//        _pageInfos = @[
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
+        _pageInfos = @[
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
+           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
 //           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
 //           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
 //           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
 //           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
 //           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
 //           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"]
-//           ];
+           ];
         self.readDB = [[JDOReadDB alloc] init];
     }
     return self;

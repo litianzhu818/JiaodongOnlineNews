@@ -136,8 +136,11 @@
     UIButton *button = (UIButton *)[self viewWithTag:title_label_tag+_currentPage];
 	//float x = Left_Margin+width*_currentPage;
     float x=button.frame.origin.x;
-    if(self.scrollable && x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
-        x=button.frame.origin.x - (self.tagWidth*_pages.count +Left_Margin-self.frame.size.width);
+    //如果当前Tag总宽度不足够填充全宽度
+    if (self.tagWidth*_pages.count>self.frame.size.width) {
+        if(self.scrollable && x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
+            x=button.frame.origin.x - (self.tagWidth*_pages.count +Left_Margin-self.frame.size.width);
+        }
     }
     
     // 也可以只修改center,设置为对应labelButton的center
