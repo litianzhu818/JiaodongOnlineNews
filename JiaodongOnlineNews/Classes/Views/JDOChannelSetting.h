@@ -9,6 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "JDOChannelItem.h"
 
+@class JDOChannelSetting;
+
+@protocol JDOChannelSettingDelegate
+
+- (void)onSettingFinished:(JDOChannelSetting *)settingPanel;
+
+@end
+
 @interface JDOChannelSetting : UIView <JDOChannelItemDelegate>
+
+@property (nonatomic, assign) id<JDOChannelSettingDelegate> delegate;
 
 @end

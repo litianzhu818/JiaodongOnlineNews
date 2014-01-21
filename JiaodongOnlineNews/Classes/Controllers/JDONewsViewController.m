@@ -14,7 +14,7 @@
 #import "JDOChannelSetting.h"
 #define News_Navbar_Height 35.0f
 
-@interface JDONewsViewController()
+@interface JDONewsViewController() <JDOChannelSettingDelegate>
 
 @property (nonatomic,strong) NSArray *pageInfos; // 新闻页面基本信息
 @property (nonatomic,strong) JDOReadDB *readDB; // 新闻页面基本信息
@@ -26,6 +26,7 @@
     BOOL pageControlUsed;
     int lastCenterPageIndex;
     float channelPaneHeight; // 自定义栏目面板的高度
+    UIView *settingBackground;
 }
 
 - (void)didReceiveMemoryWarning{
@@ -34,16 +35,95 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
-        _pageInfos = @[
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"],
-           ];
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        if(![Reachability isEnableNetwork]){
+            // 无网络时，若已经在UserDefault中缓存过栏目列表，则从UserDefault中读取，否则只显示一个烟台栏目
+            NSArray *channelList = [userDefault objectForKey:@"channel_list"];
+            if(channelList == nil){
+                _pageInfos = @[[[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"]];
+            }else{
+                NSMutableArray *tempList = [NSMutableArray array];
+                for (int i=0; i<channelList.count; i++) {
+                    NSDictionary *channel = [channelList objectAtIndex:i];
+                    NSString *channelId = [channel objectForKey:@"id"];
+                    NSString *channelName = [channel objectForKey:@"channelname"];
+                    JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
+                    [tempList addObject:categoryInfo];
+                }
+                _pageInfos = [NSArray arrayWithArray:tempList];
+            }
+        }else{
+            // 从网络获取栏目列表，因初始化的时候需要栏目总数量等关键数据，必须完全获得栏目信息才能进行后续操作，使用同步网络请求
+//            NSString *channelsUrl = [SERVER_QUERY_URL stringByAppendingString:[NSString stringWithFormat:@"/%@",GET_CHANNELS]];
+//            NSError *error ;
+//            
+//            NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:channelsUrl] options:NSDataReadingUncached error:&error];
+//            if(error != nil){
+//                
+//                return;
+//            }
+//            NSDictionary *jsonObject = [jsonData objectFromJSONData];
+//            
+//            // 每次广告图更新后的URL会变动，则URL缓存就能够区分出是从本地获取还是从网络获取，没有必要使用版本号机制
+//            NSString *advServerURL = [jsonObject valueForKey:@"path"];
+//            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//            NSString *advLocalURL = [userDefault objectForKey:@"adv_url"];
+//            
+//            // 第一次加载或者NSUserDefault被清空，以及服务器地址与本地不一致时，从网络加载图片。
+//            if(advLocalURL ==nil || ![advLocalURL isEqualToString:advServerURL]){
+//                NSString *advImgUrl = [SERVER_RESOURCE_URL stringByAppendingString:[jsonObject valueForKey:@"path"]];
+//                // 同步方法不使用URLCache，若使用AFNetworking则无法禁用缓存
+//                NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advImgUrl] options:NSDataReadingUncached error:&error];
+//                if(error != nil){
+//                    NSLog(@"获取广告页图片出错:%@",error);
+//                    return;
+//                }
+//                UIImage *downloadImage = [UIImage imageWithData:imgData];
+//                // 同比缩放
+//                //            advImage=[JDOImageUtil adjustImage:downloadImage toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
+//                // 调整为后台上传多套广告图来适配不同屏幕尺寸，不需要再在客户端进行图片调整也可以。
+//                advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320*[UIScreen mainScreen].scale, App_Height*[UIScreen mainScreen].scale)];
+//                //            advImage = downloadImage;
+//                
+//                // 图片加载成功后才保存服务器版本号
+//                [userDefault setObject:advServerURL forKey:@"adv_url"];
+//                [userDefault synchronize];
+//                // 图片缓存到磁盘
+//                [imgData writeToFile:NIPathForDocumentsResource(advertise_file_name) options:NSDataWritingAtomic error:&error];
+//                if(error != nil){
+//                    NSLog(@"磁盘缓存广告页图片出错:%@",error);
+//                    return;
+//                }
+//            }else{
+//                // 从磁盘读取，也可以使用[NSData dataWithContentsOfFile];
+//                NSFileManager * fm = [NSFileManager defaultManager];
+//                NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
+//                if(imgData){
+//                    // 同比缩放
+//                    //                advImage = [JDOImageUtil adjustImage:[UIImage imageWithData:imgData] toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
+//                    advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320*[UIScreen mainScreen].scale, App_Height*[UIScreen mainScreen].scale)];
+//                    //                advImage = [UIImage imageWithData:imgData];
+//                }else{
+//                    // 从本地路径加载缓存广告图失败,使用默认广告图
+//                    advImage = [UIImage imageNamed:@"default_adv"];
+//                    // 本地广告图不存在,则UserDefault中缓存的adv_url也应该失效
+//                    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//                    [userDefault removeObjectForKey:@"adv_url"];
+//                    [userDefault synchronize];
+//                }
+//            }
+        }
+        
+//        _pageInfos = @[
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
+//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"]
+//           ];
         self.readDB = [[JDOReadDB alloc] init];
     }
     return self;
@@ -75,27 +155,28 @@
 
 - (void)showChannelPane:(UIButton *)sender{
     [SharedAppDelegate.deckController setEnabled:false];
-    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height)];
-    [background setBackgroundColor:[UIColor blackColor]];
-    background.alpha = 0;
+    settingBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height)];
+    [settingBackground setBackgroundColor:[UIColor blackColor]];
+    settingBackground.alpha = 0;
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeChannelPane:)];
-    [background addGestureRecognizer:gesture];
-    [self.view insertSubview:background aboveSubview:self.scrollView];
+    [settingBackground addGestureRecognizer:gesture];
+    [self.view insertSubview:settingBackground aboveSubview:self.scrollView];
     // 计算需要的panel高度
     channelPaneHeight = 300;
     if (self.channelPane == nil) {
         self.channelPane = [[UIView alloc] initWithFrame:CGRectMake(0, 44-channelPaneHeight, 320, channelPaneHeight+13.5/*下边框和阴影高度*/)];
         self.channelPane.backgroundColor = [UIColor clearColor];
         JDOChannelSetting *content = [[JDOChannelSetting alloc] initWithFrame:CGRectMake(0, 0, 320, channelPaneHeight)];
+        content.delegate = self;
         [self.channelPane addSubview:content];
         UIImageView *bottomEdge = [[UIImageView alloc] initWithFrame:CGRectMake(0, channelPaneHeight, 320, 13.5)];
         bottomEdge.image = [UIImage imageNamed:@"channel_background"];
         [self.channelPane addSubview:bottomEdge];
     }
-    [self.view insertSubview:self.channelPane aboveSubview:background];
+    [self.view insertSubview:self.channelPane aboveSubview:settingBackground];
     [UIView animateWithDuration:0.5 animations:^{
         self.channelPane.frame = CGRectMake(0, 44, 320, channelPaneHeight+13.5);
-        background.alpha = 0.6;
+        settingBackground.alpha = 0.6;
     }];
 }
 
@@ -103,11 +184,15 @@
     [SharedAppDelegate.deckController setEnabled:true];
     [UIView animateWithDuration:0.5 animations:^{
         self.channelPane.frame = CGRectMake(0, 44-channelPaneHeight, 320, channelPaneHeight+13.5);
-        gesture.view.alpha = 0;
+        settingBackground.alpha = 0;
     } completion:^(BOOL finished) {
         [self.channelPane removeFromSuperview];
-        [gesture.view removeFromSuperview];
+        [settingBackground removeFromSuperview];
     }];
+}
+
+- (void)onSettingFinished:(JDOChannelSetting *)settingPanel{
+    [self closeChannelPane:nil];
 }
 
 

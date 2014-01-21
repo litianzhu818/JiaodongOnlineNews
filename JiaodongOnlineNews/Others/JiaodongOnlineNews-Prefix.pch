@@ -122,3 +122,4 @@
 #define SETVIOPUSHPERMISSION_SERVICE @"Data/setVioPushPermission"
 #define DELVIOLATIONINFO_SERVICE @"Data/delViolationInfo"
 #define SETNEWSPUSH @"Data/bindClientConfig"
+#define GET_CHANNELS @"Data/getChannels"

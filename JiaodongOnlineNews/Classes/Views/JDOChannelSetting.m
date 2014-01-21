@@ -25,6 +25,14 @@
         UIImageView *section0 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 34.5)];
         section0.image = [UIImage imageNamed:@"channel_section0"];
         [self addSubview:section0];
+        UIButton *finishBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        finishBtn.frame = CGRectMake(275, 7, 35, 20);
+        [finishBtn setTitle:@"完成" forState:UIControlStateNormal];
+        [finishBtn setTitleColor:[UIColor colorWithHex:@"0053a1"] forState:UIControlStateNormal];
+        [finishBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
+        [finishBtn setBackgroundColor:[UIColor clearColor]];
+        [finishBtn addTarget:self action:@selector(onFinished) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:finishBtn];
         UIImageView *section1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 150, 320, 34.5)];
         section1.image = [UIImage imageNamed:@"channel_section1"];
         [self addSubview:section1];
@@ -40,6 +48,8 @@
             [item setDelegate:self];
             if (i == 0) {   // "烟台"栏目不能移动也不能删除，包括:1.不响应单击 2.不响应长按 3.不响应排序
                 item.enabled = false;
+                [item setBackgroundImage:nil forState:UIControlStateNormal];
+                [item setTitleColor:[UIColor colorWithHex:@"969696"] forState:UIControlStateNormal];
             }
             [item addTarget:self action:@selector(addOrDelete:) forControlEvents:UIControlEventTouchUpInside];
             [selectedItems addObject:item];
@@ -57,6 +67,13 @@
         }
     }
     return self;
+}
+
+- (void)onFinished{
+    // 保存栏目
+    // 刷新界面
+    
+    [self.delegate onSettingFinished:self];
 }
 
 - (void)addOrDelete:(JDOChannelItem *)sender{
