@@ -59,8 +59,9 @@
 //            
 //            NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:channelsUrl] options:NSDataReadingUncached error:&error];
 //            if(error != nil){
+//                NSLog(@"获取频道列表错误:%@",error.code);
+//                // 使用默认频道列表
 //                
-//                return;
 //            }
 //            NSDictionary *jsonObject = [jsonData objectFromJSONData];
 //            
