@@ -36,95 +36,112 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        // 默认频道列表
+        _pageInfos = @[
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"16" title:@"烟台" channel:@"16"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"7" title:@"要闻" channel:@"7"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"11" title:@"社会" channel:@"11"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"31" title:@"房产" channel:@"31"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"32" title:@"理财" channel:@"32"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"33" title:@"汽车" channel:@"33"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"34" title:@"影讯" channel:@"34"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"35" title:@"生活" channel:@"35"],
+                       [[JDONewsCategoryInfo alloc] initWithReuseId:@"-1" title:@"文体" channel:@"-1"]
+                       ];
         if(![Reachability isEnableNetwork]){
-            // 无网络时，若已经在UserDefault中缓存过栏目列表，则从UserDefault中读取，否则只显示一个烟台栏目
-//            NSArray *channelList = [userDefault objectForKey:@"channel_list"];
-//            if(channelList == nil){
-//                _pageInfos = @[[[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"]];
-//            }else{
-//                NSMutableArray *tempList = [NSMutableArray array];
-//                for (int i=0; i<channelList.count; i++) {
-//                    NSDictionary *channel = [channelList objectAtIndex:i];
-//                    NSString *channelId = [channel objectForKey:@"id"];
-//                    NSString *channelName = [channel objectForKey:@"channelname"];
-//                    JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
-//                    [tempList addObject:categoryInfo];
-//                }
-//                _pageInfos = [NSArray arrayWithArray:tempList];
-//            }
+            // 无网络时，若已经在UserDefault中缓存过栏目列表，则从UserDefault中读取，否则显示所有默认栏目
+            NSArray *channelList = [userDefault objectForKey:@"channel_list"];
+            if(channelList != nil){
+                NSMutableArray *tempList = [NSMutableArray array];
+                for (int i=0; i<channelList.count; i++) {
+                    NSDictionary *channel = [channelList objectAtIndex:i];
+                    NSString *channelId = [channel objectForKey:@"id"];
+                    NSString *channelName = [channel objectForKey:@"channelname"];
+                    BOOL isShow = [[channel objectForKey:@"isShow"] boolValue];
+                    if ( isShow ) {
+                        JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
+                        [tempList addObject:categoryInfo];
+                    }
+                }
+                _pageInfos = [NSArray arrayWithArray:tempList];
+            }
         }else{
             // 从网络获取栏目列表，因初始化的时候需要栏目总数量等关键数据，必须完全获得栏目信息才能进行后续操作，使用同步网络请求
-//            NSString *channelsUrl = [SERVER_QUERY_URL stringByAppendingString:[NSString stringWithFormat:@"/%@",GET_CHANNELS]];
-//            NSError *error ;
-//            
-//            NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:channelsUrl] options:NSDataReadingUncached error:&error];
-//            if(error != nil){
-//                NSLog(@"获取频道列表错误:%@",error.code);
-//                // 使用默认频道列表
-//                
-//            }
-//            NSDictionary *jsonObject = [jsonData objectFromJSONData];
-//            
-//            // 每次广告图更新后的URL会变动，则URL缓存就能够区分出是从本地获取还是从网络获取，没有必要使用版本号机制
-//            NSString *advServerURL = [jsonObject valueForKey:@"path"];
-//            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-//            NSString *advLocalURL = [userDefault objectForKey:@"adv_url"];
-//            
-//            // 第一次加载或者NSUserDefault被清空，以及服务器地址与本地不一致时，从网络加载图片。
-//            if(advLocalURL ==nil || ![advLocalURL isEqualToString:advServerURL]){
-//                NSString *advImgUrl = [SERVER_RESOURCE_URL stringByAppendingString:[jsonObject valueForKey:@"path"]];
-//                // 同步方法不使用URLCache，若使用AFNetworking则无法禁用缓存
-//                NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advImgUrl] options:NSDataReadingUncached error:&error];
-//                if(error != nil){
-//                    NSLog(@"获取广告页图片出错:%@",error);
-//                    return;
-//                }
-//                UIImage *downloadImage = [UIImage imageWithData:imgData];
-//                // 同比缩放
-//                //            advImage=[JDOImageUtil adjustImage:downloadImage toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
-//                // 调整为后台上传多套广告图来适配不同屏幕尺寸，不需要再在客户端进行图片调整也可以。
-//                advImage = [JDOImageUtil resizeImage:downloadImage inRect:CGRectMake(0,0, 320*[UIScreen mainScreen].scale, App_Height*[UIScreen mainScreen].scale)];
-//                //            advImage = downloadImage;
-//                
-//                // 图片加载成功后才保存服务器版本号
-//                [userDefault setObject:advServerURL forKey:@"adv_url"];
-//                [userDefault synchronize];
-//                // 图片缓存到磁盘
-//                [imgData writeToFile:NIPathForDocumentsResource(advertise_file_name) options:NSDataWritingAtomic error:&error];
-//                if(error != nil){
-//                    NSLog(@"磁盘缓存广告页图片出错:%@",error);
-//                    return;
-//                }
-//            }else{
-//                // 从磁盘读取，也可以使用[NSData dataWithContentsOfFile];
-//                NSFileManager * fm = [NSFileManager defaultManager];
-//                NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
-//                if(imgData){
-//                    // 同比缩放
-//                    //                advImage = [JDOImageUtil adjustImage:[UIImage imageWithData:imgData] toSize:CGSizeMake(advertise_img_width, advertise_img_height) type:ImageAdjustTypeShrink];
-//                    advImage = [JDOImageUtil resizeImage:[UIImage imageWithData:imgData] inRect:CGRectMake(0,0, 320*[UIScreen mainScreen].scale, App_Height*[UIScreen mainScreen].scale)];
-//                    //                advImage = [UIImage imageWithData:imgData];
-//                }else{
-//                    // 从本地路径加载缓存广告图失败,使用默认广告图
-//                    advImage = [UIImage imageNamed:@"default_adv"];
-//                    // 本地广告图不存在,则UserDefault中缓存的adv_url也应该失效
-//                    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-//                    [userDefault removeObjectForKey:@"adv_url"];
-//                    [userDefault synchronize];
-//                }
-//            }
+            NSString *channelsUrl = [SERVER_QUERY_URL stringByAppendingString:[NSString stringWithFormat:@"/%@",GET_CHANNELS]];
+            NSError *error ;
+            
+            NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:channelsUrl] options:NSDataReadingUncached error:&error];
+            if(error != nil){
+                NSLog(@"获取频道列表错误:%@",error.domain);
+                // 使用默认频道列表
+            }else{
+                NSDictionary *jsonObject = [jsonData objectFromJSONData];
+                id jsonvalue = [jsonObject objectForKey:@"status"];
+                if ([jsonvalue isKindOfClass:[NSNumber class]] && [jsonvalue intValue]==1) {
+                    NSArray *remoteChannelList = [jsonObject valueForKey:@"data"];
+                    NSMutableArray *channelList = [[userDefault objectForKey:@"channel_list"] mutableCopy];
+                    // 第一次运行，本地还没有channelList，则将remoteChannelList保存到本地，并且显示所有栏目(isShow=1)
+                    if(channelList == nil){
+                        channelList = [NSMutableArray array];
+                        NSMutableArray *tempList = [NSMutableArray array];
+                        for (int i=0; i<remoteChannelList.count; i++) {
+                            NSMutableDictionary *channel = [[remoteChannelList objectAtIndex:i] mutableCopy];
+                            NSString *channelId = [channel objectForKey:@"id"];
+                            NSString *channelName = [channel objectForKey:@"channelname"];
+                            // 默认全部栏目都在显示状态
+                            [channel setObject:[NSNumber numberWithBool:true] forKey:@"isShow"];
+                            [channelList addObject:channel];
+                            JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
+                            [tempList addObject:categoryInfo];
+                        }
+                        // 保存channelList至UserDefault
+                        [userDefault setObject:channelList forKey:@"channel_list"];
+                        [userDefault synchronize];
+                        _pageInfos = [NSArray arrayWithArray:tempList];
+                    }else{  // 将remoteChannelList与本地的channelList比对，不能改变本地list的顺序和选中状态，只能添加remoteChannelList中存在而本地list中不存在的项目至列表末尾，并设置为不显示状态
+                        for (int i=0; i<remoteChannelList.count; i++) {
+                            NSMutableDictionary *remoteChannel = [[remoteChannelList objectAtIndex:i] mutableCopy];
+                            NSString *rChannelId = [remoteChannel objectForKey:@"id"];
+//                            NSString *rChannelName = [remoteChannel objectForKey:@"channelname"];
+                            
+                            BOOL exist = false;
+                            for (int j=0; j<channelList.count; j++) {
+                                NSDictionary *localChannel = [channelList objectAtIndex:j];
+                                NSString *lChannelId = [localChannel objectForKey:@"id"];
+//                                NSString *lChannelName = [localChannel objectForKey:@"channelname"];
+                                // id相同则认为栏目相同，不考虑改名字的情况，事实上不应该允许频道在后台改名字
+                                if ([rChannelId isEqualToString:lChannelId]) {
+                                    exist = true;
+                                    break;
+                                }
+                            }
+                            if (!exist) {   // 远程获取的栏目不存在，则加入到本地不显示的栏目中
+                                [remoteChannel setObject:[NSNumber numberWithBool:false] forKey:@"isShow"];
+                                [channelList addObject:remoteChannel];
+                            }
+                        }
+                        [userDefault setObject:channelList forKey:@"channel_list"];
+                        [userDefault synchronize];
+                        NSMutableArray *tempList = [NSMutableArray array];
+                        for (int i=0; i<channelList.count; i++) {
+                            NSDictionary *channel = [channelList objectAtIndex:i];
+                            NSString *channelId = [channel objectForKey:@"id"];
+                            NSString *channelName = [channel objectForKey:@"channelname"];
+                            BOOL isShow = [[channel objectForKey:@"isShow"] boolValue];
+                            if ( isShow ) {
+                                JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
+                                [tempList addObject:categoryInfo];
+                            }
+                        }
+                        _pageInfos = [NSArray arrayWithArray:tempList];
+                    }
+                }else{
+                    NSLog(@"获取频道列表错误:%@",jsonvalue);
+                    // 使用默认频道列表
+                }
+            }
         }
         
-        _pageInfos = @[
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Local" title:@"烟台" channel:@"16"],
-           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Important" title:@"要闻" channel:@"7"],
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Social" title:@"社会" channel:@"11"],
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Entertainment" title:@"娱乐" channel:@"12"],
-//           [[JDONewsCategoryInfo alloc] initWithReuseId:@"Sport" title:@"体育" channel:@"13"]
-           ];
         self.readDB = [[JDOReadDB alloc] init];
     }
     return self;

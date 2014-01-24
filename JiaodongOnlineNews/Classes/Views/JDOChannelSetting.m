@@ -41,12 +41,13 @@
         selectedItems = [NSMutableArray array];
         unselectedItems = [NSMutableArray array];
         
+        int disableIndex = 1;
         for(int i=0; i<selectedTitles.count; i++){
             JDOChannelItem *item = [[JDOChannelItem alloc] initWithTitle:selectedTitles[i]];
             [item setSection:ChannelItemSectionSelected];
             [item refreshFrameWithPos:i];
             [item setDelegate:self];
-            if (i == 0) {   // "烟台"栏目不能移动也不能删除，包括:1.不响应单击 2.不响应长按 3.不响应排序
+            if (i <= disableIndex) {   // "烟台"栏目不能移动也不能删除，包括:1.不响应单击 2.不响应长按 3.不响应排序
                 item.enabled = false;
                 [item setBackgroundImage:nil forState:UIControlStateNormal];
                 [item setTitleColor:[UIColor colorWithHex:@"969696"] forState:UIControlStateNormal];
