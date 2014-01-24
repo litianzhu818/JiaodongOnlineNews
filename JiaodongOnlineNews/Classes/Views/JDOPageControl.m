@@ -138,9 +138,10 @@
     float x=button.frame.origin.x;
     //如果当前Tag总宽度不足够填充全宽度
     if (self.tagWidth*_pages.count>self.frame.size.width) {
-        if(self.scrollable && x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
-            x=button.frame.origin.x - (self.tagWidth*_pages.count +Left_Margin-self.frame.size.width);
-        }
+        //if(self.scrollable && x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
+            //x=button.frame.origin.x - (self.tagWidth*_pages.count +Left_Margin-self.frame.size.width);
+            x=Left_Margin+self.tagWidth*_currentPage-self.scroll.contentOffset.x;
+        //}
     }
     
     // 也可以只修改center,设置为对应labelButton的center
@@ -156,6 +157,13 @@
     if(index<0) return;
     UIButton *titleButton = (UIButton *)[self viewWithTag:title_label_tag+index];
     [titleButton setTitleColor:color forState:UIControlStateNormal];
+    float x =self.tagWidth*index-self.frame.size.width/2+self.tagWidth/2;
+    if (x<0) {
+        x=0;
+    } else if(x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
+        x=self.tagWidth*_pages.count +Left_Margin-self.frame.size.width;
+    }
+    [self.scroll setContentOffset:CGPointMake(x, 0) animated:true];
 //    titleButton.titleLabel.shadowOffset = offset;
 //    [titleButton setTitleShadowColor:shadowColor forState:UIControlStateNormal];
 }
