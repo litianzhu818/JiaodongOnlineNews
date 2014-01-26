@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define MTA_SDK_VERSION @"1.2.4"
+#define MTA_SDK_VERSION @"1.2.5"
 #define MTA_APP_USER_VERSION  @"MTA_USER_APP_VER" 
 
 typedef enum {
@@ -29,6 +29,7 @@ typedef enum {
 
 
 @interface MTA : NSObject
++(id)getInstance;
 +(void) startWithAppkey:(NSString*) appkey;
 +(BOOL) startWithAppkey:(NSString*) appkey checkedSdkVersion:(NSString*)ver;
 

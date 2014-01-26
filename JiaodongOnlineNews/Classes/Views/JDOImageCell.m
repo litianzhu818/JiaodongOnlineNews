@@ -9,6 +9,7 @@
 #import "JDOImageCell.h"
 #import "JDOImageModel.h"
 #import "SSLineView.h"
+#import "UIView+Common.h"
 #import "JDOCommonUtil.h"
 
 #define Default_Image @"news_head_placeholder.png"

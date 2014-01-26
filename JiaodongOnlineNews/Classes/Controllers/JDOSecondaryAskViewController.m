@@ -9,8 +9,9 @@
 #import "JDOSecondaryAskViewController.h"
 #import "JDOQuestionDetailController.h"
 #import "JDOHttpClient.h"
+#import "UIView+Common.h"
 #import "JDOCommonUtil.h"
-
+#import <UIKit/UIGeometry.h>
 
 @interface JDOSecondaryAskViewController ()
 

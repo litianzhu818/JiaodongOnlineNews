@@ -10,6 +10,7 @@
 #import "JDOHttpClient.h"
 #import "JDORightViewController.h"
 #import "JDOCommonUtil.h"
+#import "UIView+Common.h"
 
 @interface JDOFeedbackViewController () <UITextFieldDelegate>
 

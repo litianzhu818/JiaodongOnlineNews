@@ -14,7 +14,7 @@
 #import "JDORightViewController.h"
 //#import "MBSwitch.h"
 #import "TTFadeSwitch.h"
-
+#import "UIView+Common.h"
 #define TARGET_CELL_ID @"targetCell"
 #define BASE_TAG 100
 

@@ -14,6 +14,7 @@
 #import "NSDate+SSToolkitAdditions.h"
 #import "SDImageCache.h"
 #import "JDOConvenienceItemController.h"
+#import "UIView+Common.h"
 
 #define NewsList_Page_Size 20
 #define Finished_Label_Tag 111

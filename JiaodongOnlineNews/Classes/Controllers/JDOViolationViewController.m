@@ -11,6 +11,7 @@
 #import "JDOViolationTableCell.h"
 #import "JDOCarManagerViewController.h"
 #import "JDOCommonUtil.h"
+#import "UIView+Common.h"
 
 @interface JDOViolationViewController ()
 
