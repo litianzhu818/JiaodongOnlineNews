@@ -115,11 +115,31 @@
                                     break;
                                 }
                             }
-                            if (!exist) {   // 远程获取的栏目不存在，则加入到本地不显示的栏目中
+                            if (!exist) {   // 远程获取的栏目本地不存在，则加入到本地不显示的栏目中
                                 [remoteChannel setObject:[NSNumber numberWithBool:false] forKey:@"isShow"];
                                 [channelList addObject:remoteChannel];
                             }
                         }
+                        // 从本地list中删除远程服务器中已经禁用的栏目
+                        NSMutableArray *deleteList = [NSMutableArray array];
+                        for(int i=0; i<channelList.count; i++){
+                            NSDictionary *lChannel = [channelList objectAtIndex:i];
+                            NSString *lChannelId = [lChannel objectForKey:@"id"];
+                            
+                            BOOL exist = false;
+                            for (int j=0; j<remoteChannelList.count; j++) {
+                                NSDictionary *rChannel = [remoteChannelList objectAtIndex:j];
+                                NSString *rChannelId = [rChannel objectForKey:@"id"];
+                                if ([lChannelId isEqualToString:rChannelId]) {
+                                    exist = true;
+                                    break;
+                                }
+                            }
+                            if (!exist) {   // 本地已经有的栏目在远程不存在，则需要从本地列表中删除
+                                [deleteList addObject:lChannel];
+                            }
+                        }
+                        [channelList removeObjectsInArray:deleteList]; // 从本地删除远程服务器中已经禁用的栏目
                         [userDefault setObject:channelList forKey:@"channel_list"];
                         [userDefault synchronize];
                         NSMutableArray *tempList = [NSMutableArray array];
