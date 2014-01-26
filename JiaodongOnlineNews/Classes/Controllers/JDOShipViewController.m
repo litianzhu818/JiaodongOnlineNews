@@ -8,6 +8,7 @@
 
 #import "JDOShipViewController.h"
 #import "JDOHttpClient.h"
+#import "UIView+Common.h"
 #import "TFHpple.h"
 #import "JDOShipTableCell.h"
 #import "ActionSheetDatePicker.h"

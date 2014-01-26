@@ -8,6 +8,7 @@
 //
 
 #import "AGShareCell.h"
+#import "UIView+Common.h"
 
 #define IMAGE_SIZE 35.0
 

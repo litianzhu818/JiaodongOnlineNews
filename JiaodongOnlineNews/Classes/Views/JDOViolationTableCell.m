@@ -7,6 +7,7 @@
 //
 
 #import "JDOViolationTableCell.h"
+#import "UIView+Common.h"
 
 #define Image_Seperator_Tag 101
 

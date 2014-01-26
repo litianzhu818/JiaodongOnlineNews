@@ -3,7 +3,7 @@
 //  ViewDeckExample
 //
 
-
+#import "UIView+Common.h"
 #import "JDORightViewController.h"
 #import "JDOLeftViewController.h"
 #import "JDONewsViewController.h"

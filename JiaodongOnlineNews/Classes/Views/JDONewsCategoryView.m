@@ -103,14 +103,14 @@
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
-    [self setCurrentPage:ViewStatusLoading];
+    [self setCurrentState:ViewStatusLoading];
     self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
     self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
     [self loadDataFromNetwork];
 }
 
 - (void) onNoNetworkClicked:(JDOStatusView *) statusView{
-    [self setCurrentPage:ViewStatusLoading];
+    [self setCurrentState:ViewStatusLoading];
     self.headArray = [[NSMutableArray alloc] initWithCapacity:NewsHead_Page_Size];
     self.listArray = [[NSMutableArray alloc] initWithCapacity:NewsList_Page_Size];
     [self loadDataFromNetwork];

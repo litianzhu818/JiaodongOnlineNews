@@ -18,7 +18,7 @@
 #import "JDORightViewController.h"
 #import "JDOCenterViewController.h"
 #import <ShareSDK/ShareSDK.h>
-#import "WBApi.h"
+#import "WeiboApi.h"
 #import <RennSDK/RennSDK.h>
 #import <TencentOpenAPI/QQApi.h>
 #import <TencentOpenAPI/QQApiInterface.h>
@@ -234,7 +234,7 @@
     
     // 注册ShareSDK相关服务
     [ShareSDK registerApp:ShareSDK_Key];
-    [ShareSDK convertUrlEnabled:NO];
+    //[ShareSDK convertUrlEnabled:NO];
     [ShareSDK statEnabled:true];
     // 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
     //[ShareSDK ssoEnabled:true];    // 禁用SSO
@@ -514,7 +514,7 @@
     [ShareSDK connectTencentWeiboWithAppKey:@"801373665"
                                   appSecret:@"ec5dc114d77ea5d544d1af204d46dd5e"
                                 redirectUri:@"http://m.jiaodong.net"
-                                   wbApiCls:[WBApi class]];
+                                   wbApiCls:[WeiboApi class]];
     /**
      http://connect.qq.com/intro/login/上申请加入QQ登录，并将相关信息填写到以下字段
      如果需要实现SSO，需要导入TencentOpenAPI.framework,并引入QQApiInterface.h和TencentOAuth.h，将QQApiInterface和TencentOAuth的类型传入接口

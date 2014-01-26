@@ -7,6 +7,7 @@
 //
 
 #import "AGCustomShareItemView.h"
+#import "UIView+Common.h"
 
 #define ICON_WIDTH 30.0
 #define ICON_HEIGHT 30.0
