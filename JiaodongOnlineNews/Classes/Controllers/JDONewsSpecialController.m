@@ -42,7 +42,7 @@
     self.listArray = [[NSMutableArray alloc] init];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44)];
-//    //self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
+    //    //self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
@@ -50,12 +50,17 @@
     self.tableView.rowHeight = News_Cell_Height;
     [self.view addSubview:self.tableView];
     
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView.delegate = self;
+    [self.view addSubview:self.statusView];
+    
+    [self loadDataFromNetwork];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadDataFromNetwork];
+    
 }
 - (void)setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
@@ -141,10 +146,12 @@
 }
 
 - (void) handleLoadError:(NSString *) errorStr{
+    [self dismissHUDOnLoadFinished];
     if(self.status == ViewStatusLoading){
         [self setCurrentState:ViewStatusRetry];
     }else if(self.status == ViewStatusNormal){
         [self dismissHUDOnLoadFailed:errorStr];
+        [self setCurrentState:ViewStatusRetry];
     }
 }
 
