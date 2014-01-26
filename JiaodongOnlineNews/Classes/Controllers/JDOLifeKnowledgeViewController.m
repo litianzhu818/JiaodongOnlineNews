@@ -91,12 +91,12 @@
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
-    [self setCurrentPage:ViewStatusLoading];
+    [self setCurrentState:ViewStatusLoading];
     [self loadDataFromNetwork];
 }
 
 - (void) onNoNetworkClicked:(JDOStatusView *) statusView{
-    [self setCurrentPage:ViewStatusLoading];
+    [self setCurrentState:ViewStatusLoading];
     [self loadDataFromNetwork];
 }
 

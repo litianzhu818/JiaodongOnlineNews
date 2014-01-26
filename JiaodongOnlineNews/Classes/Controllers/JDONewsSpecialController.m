@@ -123,13 +123,13 @@
 }
 
 - (void) onRetryClicked:(JDOStatusView *) statusView{
-    [self setCurrentPage:ViewStatusLoading];
+    [self setCurrentState:ViewStatusLoading];
     self.listArray = [[NSMutableArray alloc] init];
     [self loadDataFromNetwork];
 }
 
 - (void) onNoNetworkClicked:(JDOStatusView *) statusView{
-    [self setCurrentPage:ViewStatusLoading];
+    [self setCurrentState:ViewStatusLoading];
     self.listArray = [[NSMutableArray alloc] init];
     [self loadDataFromNetwork];
 }
@@ -146,12 +146,12 @@
 }
 
 - (void) handleLoadError:(NSString *) errorStr{
-    [self dismissHUDOnLoadFinished];
+    //[self dismissHUDOnLoadFinished];
     if(self.status == ViewStatusLoading){
         [self setCurrentState:ViewStatusRetry];
     }else if(self.status == ViewStatusNormal){
         [self dismissHUDOnLoadFailed:errorStr];
-        [self setCurrentState:ViewStatusRetry];
+        [self setCurrentState:ViewStatusNoNetwork];
     }
 }
 
