@@ -8,17 +8,19 @@
 
 #import "JDONavigationController.h"
 #import "WebViewJavascriptBridge_iOS.h"
-#import "JDOWebModel.h"
 #import "JDOToolBar.h"
+#import "JDOToolbarModel.h"
 
 @interface JDOWebViewController : JDONavigationController<UIWebViewDelegate,JDOStatusView,JDOStatusViewDelegate,SDWebImageManagerDelegate,SDWebImageStoreDelegate,JDOShareTargetDelegate>
 @property (strong, nonatomic) WebViewJavascriptBridge *bridge;
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) JDOToolBar *toolbar;
-@property (nonatomic,strong) JDOWebModel *model;
+@property (nonatomic,strong) id<JDOToolbarModel> model;
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
+@property (nonatomic, strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
 - (void) buildWebViewJavascriptBridge;
 - (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary;
+- (void) backToListView;
 @end

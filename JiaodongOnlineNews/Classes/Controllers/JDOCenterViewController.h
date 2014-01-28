@@ -11,23 +11,16 @@
 
 typedef enum {
     MenuItemNews = 0,
+    MenuItemParty,
     MenuItemImage,
     MenuItemTopic,
     MenuItemConvenience,
     MenuItemLivehood,
-    MenuItemParty,
     MenuItemCount
 } MenuItem;
 
 @class JDONewsViewController;
 @class JDOImageViewController;
-
-typedef enum {
-    RootViewControllerNews,
-    RootViewControllerImage,
-    RootViewControllerTopic,
-    
-} RootViewControllerType;
 
 @interface JDOCenterViewController : MLNavigationController <IIViewDeckControllerDelegate,UIGestureRecognizerDelegate>
 

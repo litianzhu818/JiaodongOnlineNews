@@ -471,22 +471,42 @@ NSString* JDOGetDocumentFilePath(NSString *fileName){
 NSString* JDOGetUUID(){
     NSError *error;
     NSString *uuid = [STKeychain getPasswordForUsername:@"JiaodongNews" andServiceName:@"uuid" error:&error];
-    if (uuid == nil) {
+    if (error != nil) {
         NSLog(@"GetUUID Error:%i",error.code);
-        return nil;
+        return @"";
     }
-    if ([uuid isEqualToString:@""]){
+    if (uuid == nil || [uuid isEqualToString:@""]){
         CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
         CFStringRef stringRef = CFUUIDCreateString (kCFAllocatorDefault,uuidRef);
         uuid = (__bridge_transfer NSString*)stringRef;
         BOOL success = [STKeychain storeUsername:@"JiaodongNews" andPassword:uuid forServiceName:@"uuid" updateExisting:true error:&error];
+        // 这个应该在哪里release?
+//        CFRelease(uuidRef);
+//        CFRelease(stringRef);
         if (!success) {
             NSLog(@"SaveUUID Error:%i",error.code);
+            return @"";
         }
-        CFRelease(uuidRef);
-        CFRelease(stringRef);
     }
     return uuid;
+}
+
+BOOL JDODeleteUUID(){
+    NSError *error;
+    NSString *uuid = [STKeychain getPasswordForUsername:@"JiaodongNews" andServiceName:@"uuid" error:&error];
+    if (error != nil) {
+        NSLog(@"GetUUID Error:%i",error.code);
+        return false;
+    }
+    if (uuid == nil || [uuid isEqualToString:@""]){
+        return true;
+    }else{
+        BOOL success = [STKeychain deleteItemForUsername:@"JiaodongNews" andServiceName:@"uuid" error:&error];
+        if(success) {
+            return true;
+        }
+    }
+    return false;
 }
 
 id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){

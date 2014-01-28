@@ -12,6 +12,7 @@
 #define UPPER_TOUCH_LIMIT -10
 #define LOWER_TOUCH_LIMIT 10
 #define Left_Margin 6.5f
+#define Right_Margin 6.5f
 #define slider_top_margin 3.5f
 #define slider_padding 3.5f
 #define title_label_tag 100
@@ -20,7 +21,10 @@
 #define title_highlight_color [UIColor whiteColor]
 #define title_highlight_shadow [UIColor blackColor]
 
-@implementation JDOPageControl
+@implementation JDOPageControl{
+    UIImageView *leftShadow;
+    UIImageView *rightShadow;
+}
 
 - (id)initWithFrame:(CGRect)frame background:(NSString *)backgroundImage slider:(NSString *)sliderImage pages:(NSArray *)pages{
     return [self initWithFrame:frame background:backgroundImage slider:sliderImage pages:pages scrollable:false tagWidth:0];
@@ -39,6 +43,18 @@
         [self insertSubview:_slider aboveSubview:_backgroundView];
         self.scrollable = scrollable;
         self.tagWidth = tagWidth;
+        
+        // 左侧滚动阴影
+        leftShadow = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15.5, self.frame.size.height)];
+        leftShadow.image = [UIImage imageNamed:@"channel_left_edge"];
+        leftShadow.hidden = true;
+        [self addSubview:leftShadow];
+        // 右侧滚动阴影
+        rightShadow = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width-5.5+1, 0, 5.5, self.frame.size.height)];
+        rightShadow.image = [UIImage imageNamed:@"channel_right_edge"];
+        rightShadow.hidden = true;
+        [self addSubview:rightShadow];
+        
         [self setPages:pages];
     }
     return self;
@@ -50,10 +66,12 @@
     _currentPage = -1;
     _pages = pages;
     _numberOfPages = pages.count;
+    // 从视图中移除之前的scrollView
+    [self.scroll removeFromSuperview];
     //float width = (self.frame.size.width-Left_Margin*2)/pages.count;
-    float width = self.scrollable?self.tagWidth:(self.frame.size.width-Left_Margin*2)/pages.count;
+    float width = self.scrollable?self.tagWidth:(self.frame.size.width-Left_Margin-Right_Margin)/pages.count;
     self.scroll = [[UIScrollView alloc] initWithFrame:_backgroundView.frame];
-    self.scroll.contentSize = CGSizeMake(width*pages.count +Left_Margin,_backgroundView.frame.size.height);
+    self.scroll.contentSize = CGSizeMake(width*pages.count +Left_Margin+Right_Margin,_backgroundView.frame.size.height);
     self.scroll.contentOffset = CGPointMake(0, 0);
     self.scroll.scrollEnabled=self.scrollable;
     self.scroll.bounces=YES;
@@ -78,6 +96,16 @@
         [titleBtn addTarget:self action:@selector(onTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.scroll addSubview:titleBtn];
     }
+    
+    // 阴影放到视图层级的最上面
+    [self bringSubviewToFront:leftShadow];
+    [self bringSubviewToFront:rightShadow];
+    leftShadow.hidden = true;
+    if(self.scrollable && self.scroll.contentSize.width>self.frame.size.width){
+        rightShadow.hidden = false;
+    }else{
+        rightShadow.hidden = true;
+    }
 }
 
 - (void) setTitleFontSize:(CGFloat) size{
@@ -99,8 +127,8 @@
         float x =self.tagWidth*toPageIndex-self.frame.size.width/2+self.tagWidth/2;
         if (x<0) {
             x=0;
-        } else if(x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
-            x=self.tagWidth*_pages.count +Left_Margin-self.frame.size.width;
+        } else if(x>self.tagWidth*_pages.count +Left_Margin+Right_Margin-self.frame.size.width) {
+            x=self.tagWidth*_pages.count +Left_Margin+Right_Margin-self.frame.size.width;
         }
         [self.scroll setContentOffset:CGPointMake(x, 0) animated:true];
     }
@@ -111,6 +139,16 @@
 	float x = Left_Margin+self.tagWidth*_currentPage-scrollView.contentOffset.x;
     
 	[self.slider setFrame:CGRectMake(x+slider_padding,slider_top_margin,self.tagWidth-slider_padding*2,self.frame.size.height-slider_top_margin*2)];
+    if (self.scrollable && self.scroll.contentOffset.x <= 0) {
+        leftShadow.hidden = true;
+    }else{
+        leftShadow.hidden = false;
+    }
+    if (self.scrollable && self.scroll.contentOffset.x >= self.scroll.contentSize.width-self.frame.size.width) {
+        rightShadow.hidden = true;
+    }else{
+        rightShadow.hidden = false;
+    }
 }
 
 - (void)setCurrentPage:(int)toPage{
@@ -132,7 +170,7 @@
 	}
 	
 	//float width = (self.frame.size.width-2*Left_Margin)/self.numberOfPages;
-    float width = self.scrollable?self.tagWidth:(self.frame.size.width-2*Left_Margin)/self.numberOfPages;
+    float width = self.scrollable?self.tagWidth:(self.frame.size.width-Left_Margin-Right_Margin)/self.numberOfPages;
     UIButton *button = (UIButton *)[self viewWithTag:title_label_tag+_currentPage];
 	//float x = Left_Margin+width*_currentPage;
     float x=button.frame.origin.x;
@@ -160,8 +198,8 @@
     float x =self.tagWidth*index-self.frame.size.width/2+self.tagWidth/2;
     if (x<0) {
         x=0;
-    } else if(x>self.tagWidth*_pages.count +Left_Margin-self.frame.size.width) {
-        x=self.tagWidth*_pages.count +Left_Margin-self.frame.size.width;
+    } else if(x>self.tagWidth*_pages.count +Left_Margin+Right_Margin-self.frame.size.width) {
+        x=self.tagWidth*_pages.count +Left_Margin+Right_Margin-self.frame.size.width;
     }
     [self.scroll setContentOffset:CGPointMake(x, 0) animated:true];
 //    titleButton.titleLabel.shadowOffset = offset;

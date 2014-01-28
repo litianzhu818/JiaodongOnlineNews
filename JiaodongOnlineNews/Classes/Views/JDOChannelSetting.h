@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "JDOChannelItem.h"
 
+
+
 @class JDOChannelSetting;
 
 @protocol JDOChannelSettingDelegate
 
-- (void)onSettingFinished:(JDOChannelSetting *)settingPanel;
+- (void)onSettingFinished:(BOOL) changed;
 
 @end
 

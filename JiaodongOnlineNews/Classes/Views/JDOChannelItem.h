@@ -6,6 +6,8 @@
 //  Copyright (c) 2014年 胶东在线. All rights reserved.
 //
 
+#define section2startY 170
+
 typedef enum {
     ChannelItemSectionSelected = 0,
 	ChannelItemSectionUnselected
@@ -29,12 +31,13 @@ typedef enum {
     NSTimer *timer;
 }
 
+@property (nonatomic, strong) NSDictionary *model;
 @property (nonatomic, assign) ChannelItemSection section;
 @property (nonatomic, assign) int pos;
 @property (nonatomic, assign) CGPoint lastCenter;
 @property (nonatomic, assign) id<JDOChannelItemDelegate> delegate;
 
-- (id)initWithTitle:(NSString *)title;
+- (id)initWithModel:(NSDictionary *)model;
 - (void)refreshFrameWithPos:(int)pos;
 - (void)setSubstituteWithPos:(int)pos;
 - (void)startShake;

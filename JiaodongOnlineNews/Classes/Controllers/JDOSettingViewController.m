@@ -271,7 +271,8 @@ BOOL downloadItemClickable = TRUE;
         if (buttonIndex == 1) {
             InsetsTextField *popularTextField = (InsetsTextField *)[alertView viewWithTag:23456];
             NSString *popularize_num = popularTextField.text;
-            NSString *deviceID = [[UIDevice currentDevice] uniqueDeviceIdentifier]; // iOS7以下使用mac地址唯一标示
+//            NSString *deviceID = [[UIDevice currentDevice] uniqueDeviceIdentifier]; // iOS7以下使用mac地址唯一标示
+            NSString *deviceID = JDOGetUUID();
             if (JDOIsEmptyString(popularize_num) || JDOIsEmptyString(deviceID)){
                 return;
             }
@@ -297,12 +298,11 @@ BOOL downloadItemClickable = TRUE;
             // identifierForVendor在删除同一个开发商的最后一个应用之后也会被删除，所以不能作为设备的永久唯一标示
 //            NSString *deviceID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
             // advertisingIdentifier也有可能在隐私->广告中被重置，但考虑到知道的人比较少，而且没有更好的解决方案，暂时使用该id作为唯一标示
-            NSString *deviceID = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+//            NSString *deviceID = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
             
 #warning 尚未测试该方案
             // 2014-1-16 更新方案：使用CreateUUID创建新的唯一识别码，并保存到KeyChain中，目前看来这是最有效的解决方案
-//            NSString *deviceID = JDOGetUUID();
-            
+            NSString *deviceID = JDOGetUUID();
             if (JDOIsEmptyString(popularize_num) || JDOIsEmptyString(deviceID)){
                 return;
             }

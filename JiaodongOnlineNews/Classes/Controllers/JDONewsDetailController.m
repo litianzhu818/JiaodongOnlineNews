@@ -16,7 +16,7 @@
 #import "DCKeyValueObjectMapping.h"
 #import "JDOCommonUtil.h"
 #import "JDORightViewController.h"
-#import "JDOWebModel.h"
+#import <AdSupport/AdSupport.h>
 
 @interface JDONewsDetailController ()
 
@@ -36,8 +36,7 @@ NSDate *modifyTime;
         self.newsModel = newsModel;
         modifyTime = [NSDate dateWithTimeIntervalSince1970:0];
         self.isCollect = isCollect;
-        self.model = [[JDOWebModel alloc] initWithId:newsModel.id andTitle:newsModel.title andImageurl:newsModel.imageurl andSummary:newsModel.summary andTinyurl:newsModel.tinyurl];
-        
+        self.model = self.newsModel;
     }
     return self;
 }
@@ -49,14 +48,14 @@ NSDate *modifyTime;
 #pragma mark - Navigation
 
 - (void) setupNavigationView{
-    [self.navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
+    [self.navigationView addBackButtonWithTarget:self action:@selector(backToListView)];
     [self.navigationView setTitle:@"新闻详情"];
     [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
 }
 
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeNews params:@{@"aid":self.newsModel.id,@"deviceId":[[UIDevice currentDevice] uniqueDeviceIdentifier]}];
+    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeNews params:@{@"aid":self.newsModel.id,@"deviceId":JDOGetUUID()}];
     reviewController.model = self.newsModel;
     [centerViewController pushViewController:reviewController animated:true];
 }

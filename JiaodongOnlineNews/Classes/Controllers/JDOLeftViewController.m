@@ -34,8 +34,8 @@
     self = [super init];
     if (self) {
         _lastSelectedRow = 0;
-        iconNames = @[@"menu_news",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood",@"menu_party"];
-        iconSelectedNames = @[@"menu_news_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected",@"menu_party_selected"];
+        iconNames = @[@"menu_news",@"menu_party",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood"];
+        iconSelectedNames = @[@"menu_news_selected",@"menu_party_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected"];
         //iconTitles = @[@"胶东在线",@"精选图片",@"每日一题",@"便民查询",@"网上民声"];
         
     }
@@ -140,7 +140,12 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin, 0, 115, Menu_Cell_Height)];
+        // 因为图片大小不一致,调整frame以对齐
+//        if (indexPath.row == MenuItemParty || indexPath.row == MenuItemLivehood) {
+//            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+1, 0, 115, Menu_Cell_Height)];
+//        }else{
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin, 0, 115, Menu_Cell_Height)];
+//        }
         [imageView setTag:Menu_Image_Tag];
         [cell.contentView addSubview:imageView];
     }
@@ -156,7 +161,6 @@
         //        cell.textLabel.textColor = [UIColor whiteColor];
     }
     //    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
-    
     return cell;
 }
 

@@ -134,9 +134,10 @@
 }
 
 - (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    if( [self.viewControllers indexOfObject:viewController] == 0){
-        [self.viewDeckController setEnabled:true] ;
-    }
+    // 为防止从详情视图通过右滑手势回到列表视图的同时带出来左菜单(两个手势同时生效),将viewDeck的enable延迟到动画完成块中执行
+//    if( [self.viewControllers indexOfObject:viewController] == 0){
+//        [self.viewDeckController setEnabled:true] ;
+//    }
     return [self popToViewController:viewController orientation:JDOTransitionToRight animated:animated];
 }
 
@@ -156,6 +157,9 @@
 - (NSArray *)popToViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated{
     if (animated) {
         [self.view popView:viewController.view orientation:orientation complete:^{
+            if( [self.viewControllers indexOfObject:viewController] == 0){
+                [self.viewDeckController setEnabled:true] ;
+            }
             [self.view.blackMask removeFromSuperview];
             self.view.frame = Transition_View_Center;
             [viewController.view removeFromSuperview];
@@ -163,6 +167,9 @@
         }];
         return nil;
     }else{
+        if( [self.viewControllers indexOfObject:viewController] == 0){
+            [self.viewDeckController setEnabled:true] ;
+        }
         return [super popToViewController:viewController animated:false];
     }
 }
@@ -186,6 +193,10 @@
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    // 新闻详情、话题详情、活动详情等页面的右滑返回手势
+    if (otherGestureRecognizer.view.tag == Global_Receive_Gesture_Tag) {
+        return true;
+    }
     NIPagingScrollView *targetView;
     UIViewController *currentTopController = [self.viewControllers objectAtIndex:0];
     if ([currentTopController isKindOfClass:[JDONewsViewController class]]) {

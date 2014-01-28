@@ -12,7 +12,6 @@
 #import "JDOPartyModel.h"
 #import "JDOPartyDetailModel.h"
 #import "JDONewsDetailModel.h"
-#import "JDOWebModel.h"
 
 @interface JDOPartyDetailController ()
 
@@ -29,7 +28,7 @@ NSArray *imageUrls;
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.partyModel = partyModel;
-        self.model = [[JDOWebModel alloc] initWithId:partyModel.id andTitle:partyModel.title andImageurl:partyModel.mpic andSummary:partyModel.summary andTinyurl:partyModel.tinyurl];
+        self.model = self.partyModel;
     }
     return self;
 }
@@ -68,7 +67,7 @@ NSArray *imageUrls;
 #pragma mark - Navigation
 
 - (void) setupNavigationView{
-    [self.navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
+    [self.navigationView addBackButtonWithTarget:self action:@selector(backToListView)];
     [self.navigationView setTitle:@"精彩活动"];
 }
 

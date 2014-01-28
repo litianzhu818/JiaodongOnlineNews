@@ -170,13 +170,14 @@
 -(void)loadView{
     [super loadView];
     
-    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width-42, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos scrollable:TRUE tagWidth:60];
+    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width-43.5, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos scrollable:TRUE tagWidth:57];
     [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_pageControl];
     // 弹出浮动栏目选择面板
     UIButton *channelSetting = [UIButton buttonWithType:UIButtonTypeCustom];
-    [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_add_icon"] forState:UIControlStateNormal];
-    [channelSetting setFrame:CGRectMake(320-48.5, 44, 48.5, News_Navbar_Height)];
+    [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_plus_icon"] forState:UIControlStateNormal];
+    [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_plus_highlight"] forState:UIControlStateHighlighted];
+    [channelSetting setFrame:CGRectMake(320-43.5, 44, 43.5, News_Navbar_Height)];
     [channelSetting addTarget:self action:@selector(showChannelPane:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:channelSetting];
     
@@ -196,11 +197,12 @@
     settingBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height)];
     [settingBackground setBackgroundColor:[UIColor blackColor]];
     settingBackground.alpha = 0;
+    // 单击阴影部分相当于取消
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeChannelPane:)];
     [settingBackground addGestureRecognizer:gesture];
     [self.view insertSubview:settingBackground aboveSubview:self.scrollView];
-    // 计算需要的panel高度
-    channelPaneHeight = 300;
+    // 计算需要的panel高度，现在固定设置3行的高度
+    channelPaneHeight = section2startY*2;
     if (self.channelPane == nil) {
         self.channelPane = [[UIView alloc] initWithFrame:CGRectMake(0, 44-channelPaneHeight, 320, channelPaneHeight+13.5/*下边框和阴影高度*/)];
         self.channelPane.backgroundColor = [UIColor clearColor];
@@ -229,8 +231,31 @@
     }];
 }
 
-- (void)onSettingFinished:(JDOChannelSetting *)settingPanel{
+- (void)onSettingFinished:(BOOL) changed{
     [self closeChannelPane:nil];
+    if (!changed) {
+        return;
+    }
+    // 刷新pageControl
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSArray *channelList = [userDefault objectForKey:@"channel_list"];
+    if(channelList != nil){
+        NSMutableArray *tempList = [NSMutableArray array];
+        for (int i=0; i<channelList.count; i++) {
+            NSDictionary *channel = [channelList objectAtIndex:i];
+            NSString *channelId = [channel objectForKey:@"id"];
+            NSString *channelName = [channel objectForKey:@"channelname"];
+            BOOL isShow = [[channel objectForKey:@"isShow"] boolValue];
+            if ( isShow ) {
+                JDONewsCategoryInfo *categoryInfo = [[JDONewsCategoryInfo alloc] initWithReuseId:channelId title:channelName channel:channelId];
+                [tempList addObject:categoryInfo];
+            }
+        }
+        _pageInfos = [NSArray arrayWithArray:tempList];
+    }
+    [self.pageControl setPages:_pageInfos];
+
+    [self refreshPage];
 }
 
 
@@ -238,6 +263,10 @@
     [super viewDidLoad];
 //    self.view.userInteractionEnabled = false; // 所有子视图都会忽略手势事件
     
+    [self refreshPage];
+}
+
+- (void)refreshPage{
     [_pageControl setCurrentPage:0 animated:false];
     
     [_scrollView reloadData];
