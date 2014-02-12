@@ -85,6 +85,9 @@
 // 调试开关
 #define Debug_Guide_Introduce false
 
+// 全局可接受左右滑动手势的视图Tag，标示与ViewDeck冲突的手势视图
+#define Global_Receive_Gesture_Tag 88888
+
 // 服务器端接口
 #define SERVER_QUERY_URL [NSString stringWithFormat:@"http://p.jiaodong.net/mobileQuery/V%@",[[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""] substringToIndex:2]]
 #define SERVER_RESOURCE_URL @"http://p.jiaodong.net/jdmsys/"

@@ -238,7 +238,7 @@
     [params setObject:[_reviewPanel.textView.text stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters] forKey:@"content"];
     [params setObject:@"" forKey:@"nickName"];
     [params setObject:@"" forKey:@"uid"];
-    [params setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"deviceId"];
+    [params setObject:JDOGetUUID() forKey:@"deviceId"];
     
     [[JDOHttpClient sharedClient] getJSONByServiceName:[self.model reviewService] modelClass:nil params:params success:^(NSDictionary *result) {
         NSNumber *status = [result objectForKey:@"status"];

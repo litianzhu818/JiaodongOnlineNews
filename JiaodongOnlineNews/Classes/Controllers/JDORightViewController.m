@@ -239,6 +239,7 @@ typedef enum {
             NSLog(@"解析天气XML失败");
         }
     } failure:^(NSString *errorStr) {
+#warning 天气服务webservice不可用时，应该能从本地接口访问
         NSLog(@"%@",errorStr);
         [self readWeatherFromLocalCache];
     }];

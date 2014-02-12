@@ -11,10 +11,11 @@
 @implementation JDOChannelSetting {
     NSMutableArray *selectedItems;
     NSMutableArray *unselectedItems;
-    NSMutableArray *selectedTitles;
-    NSMutableArray *unselectedTitles;
+    NSMutableArray *selectedModels;
+    NSMutableArray *unselectedModels;
     bool isMoving;
     bool isAnimating;
+    bool isChanged;
 }
 
 - (id)initWithFrame:(CGRect)frame{
@@ -33,17 +34,35 @@
         [finishBtn setBackgroundColor:[UIColor clearColor]];
         [finishBtn addTarget:self action:@selector(onFinished) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:finishBtn];
-        UIImageView *section1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 150, 320, 34.5)];
+        UIImageView *section1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, section2startY, 320, 34.5)];
         section1.image = [UIImage imageNamed:@"channel_section1"];
         [self addSubview:section1];
-        selectedTitles = [NSMutableArray arrayWithObjects:@"烟台",@"要闻",@"社会",@"文体",@"房产",@"汽车", nil];
-        unselectedTitles = [NSMutableArray arrayWithObjects:@"理财",@"影讯", nil];
+        
+        isMoving=false;
+        isAnimating=false;
+        isChanged=false;
+        
         selectedItems = [NSMutableArray array];
         unselectedItems = [NSMutableArray array];
+        selectedModels = [NSMutableArray array];
+        unselectedModels = [NSMutableArray array];
         
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSArray *channelList = [userDefault objectForKey:@"channel_list"];
+        for (int i=0; i<channelList.count; i++) {
+            NSDictionary *channel = [channelList objectAtIndex:i];
+            BOOL isShow = [[channel objectForKey:@"isShow"] boolValue];
+            if (isShow) {
+                [selectedModels addObject:channel];
+            }else{
+                [unselectedModels addObject:channel];
+            }
+        }
+        
+#warning 设置前两项不允许删除和移动(烟台、要闻)，但并不能保证前两项从服务器获得的一定是这两个
         int disableIndex = 1;
-        for(int i=0; i<selectedTitles.count; i++){
-            JDOChannelItem *item = [[JDOChannelItem alloc] initWithTitle:selectedTitles[i]];
+        for(int i=0; i<selectedModels.count; i++){
+            JDOChannelItem *item = [[JDOChannelItem alloc] initWithModel:[selectedModels objectAtIndex:i]];
             [item setSection:ChannelItemSectionSelected];
             [item refreshFrameWithPos:i];
             [item setDelegate:self];
@@ -57,8 +76,8 @@
             [self addSubview:item];
         }
         
-        for(int i=0; i<unselectedTitles.count; i++){
-            JDOChannelItem *item=[[JDOChannelItem alloc] initWithTitle:unselectedTitles[i]];
+        for(int i=0; i<unselectedModels.count; i++){
+            JDOChannelItem *item=[[JDOChannelItem alloc] initWithModel:[unselectedModels objectAtIndex:i]];
             [item setSection:ChannelItemSectionUnselected];
             [item refreshFrameWithPos:i];
             [item setDelegate:self];
@@ -72,9 +91,26 @@
 
 - (void)onFinished{
     // 保存栏目
-    // 刷新界面
+    NSMutableArray *channelList = [NSMutableArray array];
+    for (int i=0; i<selectedItems.count; i++) {
+        JDOChannelItem *item = [selectedItems objectAtIndex:i];
+        NSMutableDictionary *model = [item.model mutableCopy];
+        [model setObject:[NSNumber numberWithBool:true] forKey:@"isShow"];
+        [channelList addObject:model];
+    }
+    for (int i=0; i<unselectedItems.count; i++) {
+        JDOChannelItem *item = [unselectedItems objectAtIndex:i];
+        NSMutableDictionary *model = [item.model mutableCopy];
+        [model setObject:[NSNumber numberWithBool:false] forKey:@"isShow"];
+        [channelList addObject:model];
+    }
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault setObject:channelList forKey:@"channel_list"];
+    [userDefault synchronize];
+    // 刷新界面和隐藏面板放到delegate的回调中处理
     
-    [self.delegate onSettingFinished:self];
+    [self.delegate onSettingFinished:isChanged];
+    isChanged = false;
 }
 
 - (void)addOrDelete:(JDOChannelItem *)sender{
@@ -82,6 +118,7 @@
         return;
     }
     isMoving = true;
+    isChanged = true;
     if (sender.section == ChannelItemSectionSelected){ //点上方删除的项目
         int oldPos = sender.pos;
         [UIView animateWithDuration:0.4 animations:^{
@@ -126,12 +163,14 @@
         JDOChannelItem *item = (JDOChannelItem *)[selectedItems objectAtIndex:i];
         if (item != shakingButton){
             CGRect intersection = CGRectIntersection(shakingButton.frame, item.frame);
+            // 重合面积判断比中心距离判断更合理一些
             if (CGRectGetWidth(intersection)*CGRectGetHeight(intersection)>(72/2 * 31/2) && item.enabled) {
 //            float distance = sqrtf(powf(shakingButton.center.x-item.center.x,2) + powf(shakingButton.center.y-item.center.y,2));
 //            if(distance < 16){
                 [selectedItems removeObjectAtIndex:oldPos];
                 [selectedItems insertObject:shakingButton atIndex:i];
                 isAnimating = true;
+                isChanged = true;
                 [UIView animateWithDuration:0.4 animations:^{
                     for(int j=MIN(oldPos, i); j<selectedItems.count; j++){
                         JDOChannelItem *item = [selectedItems objectAtIndex:j];

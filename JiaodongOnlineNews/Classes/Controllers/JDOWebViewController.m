@@ -42,9 +42,13 @@ NSArray *imageUrls;
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
+    self.webView.tag = Global_Receive_Gesture_Tag;
     self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
     [self.rightSwipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.webView addGestureRecognizer:self.rightSwipeGestureRecognizer];
+    self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    [self.leftSwipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.webView addGestureRecognizer:self.leftSwipeGestureRecognizer];
     
     [self.view addSubview:self.webView];
     
@@ -66,9 +70,13 @@ NSArray *imageUrls;
 
 - (void)handleSwipes:(UISwipeGestureRecognizer *)sender
 {
-//    if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
-//        [self backToViewList];
-//    }
+    if ( sender.direction == UISwipeGestureRecognizerDirectionRight) {// 右滑回列表页
+        [self backToListView];
+    }else if ( sender.direction == UISwipeGestureRecognizerDirectionLeft){// 左滑至评论页
+        if ([self respondsToSelector:@selector(showReviewList)]) {
+            [self performSelector:@selector(showReviewList)];
+        }
+    }
 }
 
 - (BOOL) onSharedClicked {
@@ -82,6 +90,7 @@ NSArray *imageUrls;
 -(void)viewDidUnload{
     [super viewDidUnload];
     [self.webView removeGestureRecognizer:self.rightSwipeGestureRecognizer];
+    [self.webView removeGestureRecognizer:self.leftSwipeGestureRecognizer];
     [self setWebView:nil];
     [self setToolbar:nil];
     [self setStatusView:nil];
@@ -89,7 +98,7 @@ NSArray *imageUrls;
     [_blackMask removeGestureRecognizer:self.closeReviewGesture];
 }
 
-- (void) backToViewList{
+- (void) backToListView{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];
 }

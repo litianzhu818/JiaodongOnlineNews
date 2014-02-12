@@ -15,6 +15,7 @@
 #import "JDOReviewListController.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "JDORightViewController.h"
+#import <AdSupport/AdSupport.h>
 
 @interface JDOTopicDetailController ()
 
@@ -33,7 +34,7 @@ NSArray *imageUrls;
     if (self) {
         self.topicModel = topicModel;
         self.pController = pController;
-        self.model = [[JDOWebModel alloc] initWithId:topicModel.id andTitle:topicModel.title andImageurl:topicModel.imageurl andSummary:topicModel.summary andTinyurl:topicModel.tinyurl];
+        self.model = self.topicModel;
     }
     return self;
 }
@@ -57,7 +58,7 @@ NSArray *imageUrls;
 
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)[SharedAppDelegate deckController].centerController;
-    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeNews params:@{@"aid":self.topicModel.id,@"deviceId":[[UIDevice currentDevice] uniqueDeviceIdentifier]}];
+    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeNews params:@{@"aid":self.topicModel.id,@"deviceId":JDOGetUUID()}];
     reviewController.model = self.topicModel;
     [centerViewController pushViewController:reviewController animated:true];
 }

@@ -302,8 +302,9 @@
     
     [Crashlytics startWithAPIKey:Crashlytics_Key];
 
+    // 提交设备UUID，服务器返回可读的唯一标示
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"appID"]) {
-        NSDictionary *params = @{@"deviceid":[[UIDevice currentDevice] uniqueDeviceIdentifier]};
+        NSDictionary *params = @{@"deviceid":JDOGetUUID()};
         JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
         [httpclient getPath:APPID_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *json = [(NSData *)responseObject objectFromJSONData];

@@ -154,7 +154,7 @@
         [_title_left setFrame:CGRectMake(0, 10, 8, 35)];
         [_title_right setFrame:CGRectMake(_title.frame.size.width-8, 10, 8, 35)];
         [_separatorLine setFrame:CGRectMake(Padding+2, CGRectGetMaxY(_title.frame)+2, _mpicView.frame.size.width, 1)];
-        [_summary setFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width-8, 80)];
+        [_summary setFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width-8, 70)];
     } else {
         [_title_left setFrame:CGRectMake(0, 0, 8, 35)];
         [_title_right setFrame:CGRectMake(_title.frame.size.width-8, 0, 8, 35)];

@@ -14,15 +14,17 @@
     UIImageView *substitute;
 }
 
-- (id)initWithTitle:(NSString *)title
+- (id)initWithModel:(NSDictionary *)model
 {
     self = [super init];
     if (self) {
+        self.model = model;
         self.lastCenter = self.center;
         itemWidth = 72;
         itemHeight = 31;
         substitute = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"channel_sort_border"]];
         
+        NSString *title = [model objectForKey:@"channelname"];
         [self setTitle:title forState:UIControlStateNormal];
         [self setTitleColor:[UIColor colorWithHex:@"646464"] forState:UIControlStateNormal];
         [self.titleLabel setFont:[UIFont systemFontOfSize:16]];
@@ -35,9 +37,11 @@
     _section = section;
     if (section == ChannelItemSectionSelected){
         [self setBackgroundImage:[UIImage imageNamed:@"channel_selected"] forState:UIControlStateNormal];
+        [self setBackgroundImage:[UIImage imageNamed:@"channel_item_highlight"] forState:UIControlStateHighlighted];
         [self addGestureRecognizer:longPress];
     }else if(section == ChannelItemSectionUnselected){
         [self setBackgroundImage:[UIImage imageNamed:@"channel_unselected"] forState:UIControlStateNormal];
+        [self setBackgroundImage:[UIImage imageNamed:@"channel_item_highlight"] forState:UIControlStateHighlighted];
         [self removeGestureRecognizer:longPress];
     }
 }
@@ -48,12 +52,12 @@
     if (self.section == ChannelItemSectionSelected){
         yOffset= 34.5;
     }else if(self.section == ChannelItemSectionUnselected){
-        yOffset= 150+34.5;
+        yOffset= section2startY+34.5;
     }
     self.frame=CGRectMake(10+pos%4*(4/*左右间距*/+itemWidth), 10+yOffset+pos/4*(10/*上下间距*/+itemHeight), itemWidth, itemHeight);
 }
 
-- (void) setSubstituteWithPos:(int)pos{
+- (void) setSubstituteWithPos:(int)pos{ // 虚线框的位置
     self.pos = pos;
     float yOffset = 34.5;
     substitute.frame = CGRectMake(10+pos%4*(4/*左右间距*/+itemWidth), 10+yOffset+pos/4*(10/*上下间距*/+itemHeight), itemWidth, itemHeight);
@@ -68,9 +72,10 @@
         case UIGestureRecognizerStateBegan:
             [self setAlpha:0.7];
             lastPoint = point;
-            [self.layer setShadowColor:[UIColor grayColor].CGColor];
-            [self.layer setShadowOpacity:1.0f];
-            [self.layer setShadowRadius:10.0f];
+//            [self.layer setShadowColor:[UIColor grayColor].CGColor];
+//            [self.layer setShadowOpacity:1.0f];
+//            [self.layer setShadowRadius:5.0f];
+//            [self.layer setShadowOffset:CGSizeMake(1, 1)];
             [self startShake];
             [self setSubstituteWithPos:self.pos];
             break;
@@ -80,7 +85,7 @@
             float offY = point.y - lastPoint.y;
             [self setCenter:CGPointMake(self.center.x + offX, self.center.y + offY)];
             // 不能移动出section区域
-            CGRect section = CGRectMake(0, 34.5, 320, 150-34.5);
+            CGRect section = CGRectMake(0, 34.5, 320, section2startY-34.5);
             if (!CGRectContainsRect(section,self.frame)) {
                 // 重置回出界前的位置
                 [self setCenter:CGPointMake(self.center.x - offX, self.center.y - offY)];

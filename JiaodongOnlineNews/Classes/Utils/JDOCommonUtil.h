@@ -75,5 +75,6 @@ NSString* JDOGetTmpFilePath(NSString *fileName);
 NSString* JDOGetCacheFilePath(NSString *fileName);
 NSString* JDOGetDocumentFilePath(NSString *fileName);
 NSString* JDOGetUUID();
+BOOL JDODeleteUUID();
 
 id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate);

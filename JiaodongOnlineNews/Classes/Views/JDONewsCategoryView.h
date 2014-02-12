@@ -24,7 +24,7 @@ typedef enum {
 
 - (id)initWithFrame:(CGRect)frame info:(JDONewsCategoryInfo *)info readDB:(JDOReadDB*)readDB;
 
-@property (nonatomic,assign) JDONewsCategoryInfo *info;
+@property (nonatomic,strong) JDONewsCategoryInfo *info;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *headArray;
 @property (nonatomic,strong) NSMutableArray *listArray;

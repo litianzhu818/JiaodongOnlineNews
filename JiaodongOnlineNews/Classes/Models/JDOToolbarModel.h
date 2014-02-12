@@ -28,4 +28,5 @@
 
 @property (nonatomic,strong) NSNumber *secret;
 @property (nonatomic,strong) NSString *pwd;
+@property (nonatomic,strong) NSString *collectType;
 @end

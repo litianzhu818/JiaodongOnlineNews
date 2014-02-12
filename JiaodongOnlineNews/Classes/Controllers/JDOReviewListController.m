@@ -24,6 +24,7 @@
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
 @property (strong, nonatomic) UIView *blackMask;
 @property (nonatomic,strong) JDOToolBar *toolbar;
+@property (strong, nonatomic) UISwipeGestureRecognizer *swipeReviewGesture;
 
 @end
 
@@ -77,9 +78,20 @@
     self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
     _blackMask = self.view.blackMask;
     [_blackMask addGestureRecognizer:self.closeReviewGesture];
+    
+    // 右滑返回
+    self.swipeReviewGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(backToDetailList)];
+    [self.swipeReviewGesture setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:self.swipeReviewGesture];
+    self.view.tag = Global_Receive_Gesture_Tag;
 }
 
+//- (void)handleSwipes:(UISwipeGestureRecognizer *)gesture{
+//    [self backToDetailList];
+//}
+
 - (void)viewDidUnload{
+    [self.view removeGestureRecognizer:self.swipeReviewGesture];
     [super viewDidUnload];
     [self setToolbar:nil];
     
