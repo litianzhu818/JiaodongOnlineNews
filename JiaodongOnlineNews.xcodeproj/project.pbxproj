@@ -595,6 +595,7 @@
 		A733FE2617B234E30085DEDA /* downloadComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = A733FE2417B234E30085DEDA /* downloadComplete.png */; };
 		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
 		A73FDFC817F956180003AD1C /* addr_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A73FDFC717F956180003AD1C /* addr_icon.png */; };
+		A740749B18C45CC900B17E85 /* JDONewsImageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A740749A18C45CC900B17E85 /* JDONewsImageTableCell.m */; };
 		A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */; };
 		A74BFC4118864B240042E034 /* aboutus_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A74BFC4018864B240042E034 /* aboutus_share@2x.png */; };
 		A74BFC47188671470042E034 /* JDONewsSpecialController.m in Sources */ = {isa = PBXBuildFile; fileRef = A74BFC46188671470042E034 /* JDONewsSpecialController.m */; };
@@ -1516,6 +1517,8 @@
 		A7341C7C178EB77C00ADD976 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		A7341C7F178EB7EC00ADD976 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A73FDFC717F956180003AD1C /* addr_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addr_icon.png; path = Party/addr_icon.png; sourceTree = "<group>"; };
+		A740749918C45CC900B17E85 /* JDONewsImageTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsImageTableCell.h; sourceTree = "<group>"; };
+		A740749A18C45CC900B17E85 /* JDONewsImageTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsImageTableCell.m; sourceTree = "<group>"; };
 		A74328BF17AA4B89002B6CEA /* JDOOffDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOOffDownloadManager.h; sourceTree = "<group>"; };
 		A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOOffDownloadManager.m; sourceTree = "<group>"; };
 		A74BFC4018864B240042E034 /* aboutus_share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aboutus_share@2x.png"; sourceTree = "<group>"; };
@@ -2208,6 +2211,8 @@
 				2D89BA4B1754825600960614 /* JDONewsCategoryView.m */,
 				2D86D5A3175885E50000AA6A /* JDONewsTableCell.h */,
 				2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */,
+				A740749918C45CC900B17E85 /* JDONewsImageTableCell.h */,
+				A740749A18C45CC900B17E85 /* JDONewsImageTableCell.m */,
 				2DE0845D175B872700A1A6BC /* JDONewsHeadCell.h */,
 				2DE0845E175B872700A1A6BC /* JDONewsHeadCell.m */,
 				2D8E00D517643F1E002F0590 /* JDONewsReviewCell.h */,
@@ -3877,6 +3882,7 @@
 				2D8E00ED176459C3002F0590 /* SSTextView.m in Sources */,
 				2DA59628187CE14900F09D1E /* TPKeyboardAvoidingTableView.m in Sources */,
 				2D8E00F017645CDA002F0590 /* NSDate+SSToolkitAdditions.m in Sources */,
+				A740749B18C45CC900B17E85 /* JDONewsImageTableCell.m in Sources */,
 				2D8E00F317645DEE002F0590 /* NSString+SSToolkitAdditions.m in Sources */,
 				2D8E00F617645F0E002F0590 /* NSData+SSToolkitAdditions.m in Sources */,
 				2D8E00F917646147002F0590 /* UIColor+SSToolkitAdditions.m in Sources */,

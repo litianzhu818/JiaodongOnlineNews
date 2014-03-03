@@ -9,6 +9,7 @@
 #import "JDONewsCategoryView.h"
 #import "JDONewsModel.h"
 #import "JDONewsTableCell.h"
+#import "JDONewsImageTableCell.h"
 #import "JDONewsHeadCell.h"
 #import "SVPullToRefresh.h"
 #import "JDONewsDetailController.h"
@@ -439,12 +440,30 @@
         }
         return cell;
     }else{
+        listIdentifier = @"listIdentifier";
         JDONewsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
+        JDONewsModel *newsModel = nil;
+        if(self.listArray.count > 0){
+            newsModel = [self.listArray objectAtIndex:indexPath.row];
+        }
+        NSArray *types = [newsModel.atype componentsSeparatedByString:@","];
+        for (int i=0; i<[types count]; i++) {
+            NSString *aType = [types objectAtIndex:i];
+            if ([aType isEqualToString:@"g"]) { // 图集
+                JDONewsImageTableCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"listImageIdentifier"];
+                if (cell1 == nil){
+                    cell1 =[[JDONewsImageTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"listImageIdentifier"];
+                }
+                if (newsModel != nil) {
+                    [cell1 setModel:newsModel];
+                }
+                return cell1;
+            }
+        }
         if (cell == nil){
             cell =[[JDONewsTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:listIdentifier];
         }
-        if(self.listArray.count > 0){
-            JDONewsModel *newsModel = [self.listArray objectAtIndex:indexPath.row];
+        if (newsModel != nil) {
             [cell setModel:newsModel];
         }
         return cell;
@@ -462,6 +481,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0)  return Headline_Height;
+    JDONewsModel *newsModel = nil;
+    if(self.listArray.count > 0){
+        newsModel = [self.listArray objectAtIndex:indexPath.row];
+        NSArray *types = [newsModel.atype componentsSeparatedByString:@","];
+        for (int i=0; i<[types count]; i++) {
+            NSString *aType = [types objectAtIndex:i];
+            if ([aType isEqualToString:@"g"]) { // 图集
+                return News_Cell_Image_Height;
+            }
+        }
+    }
     return News_Cell_Height;
 }
 
