@@ -25,8 +25,8 @@
 @property (nonatomic,strong) UIImageView *title_left;
 @property (nonatomic,strong) UIImageView *title_right;
 @property (nonatomic,strong) UITextView *summary;
-@property (nonatomic,strong) UILabel *time;
-@property (nonatomic,strong) UILabel *place;
+//@property (nonatomic,strong) UILabel *time;
+//@property (nonatomic,strong) UILabel *place;
 @property (nonatomic,strong) UIImageView *background;
 
 @end
@@ -42,7 +42,7 @@
 //        self.layer.borderWidth = 1.0f;
 //        self.backgroundColor = [UIColor whiteColor];
         
-        _background = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, 0, [UIScreen mainScreen].bounds.size.width-Padding*2, 380.0f)];
+        _background = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, 0, [UIScreen mainScreen].bounds.size.width-Padding*2, 335.0f)];
         
         _background.image = [UIImage imageNamed:@"party_bound"];
         [self.contentView addSubview:_background];
@@ -92,25 +92,25 @@
         self.summary.editable = false;
         [self.contentView addSubview:self.summary];
         
-        UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(self.summary.frame)+2, 15, 15)];
-        timeIcon.image = [UIImage imageNamed:@"time_icon"];
-        [self.contentView addSubview:timeIcon];
+//        UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(self.summary.frame)+2, 15, 15)];
+//        timeIcon.image = [UIImage imageNamed:@"time_icon"];
+//        [self.contentView addSubview:timeIcon];
+//        
+//        self.time = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(timeIcon.frame)+5, CGRectGetMaxY(self.summary.frame), self.summary.bounds.size.width-timeIcon.bounds.size.width, 20)];
+//        self.time.textColor = [UIColor colorWithHex:Gray_Color_Type1];
+//        self.time.backgroundColor = [UIColor clearColor];
+//        self.time.font = [UIFont systemFontOfSize:14];
+//        [self.contentView addSubview:self.time];
+//        
+//        UIImageView *placeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(timeIcon.frame) + 2, 15, 15)];
+//        placeIcon.image = [UIImage imageNamed:@"addr_icon"];
+//        [self.contentView addSubview:placeIcon];
         
-        self.time = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(timeIcon.frame)+5, CGRectGetMaxY(self.summary.frame), self.summary.bounds.size.width-timeIcon.bounds.size.width, 20)];
-        self.time.textColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.time.backgroundColor = [UIColor clearColor];
-        self.time.font = [UIFont systemFontOfSize:14];
-        [self.contentView addSubview:self.time];
-        
-        UIImageView *placeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(timeIcon.frame) + 2, 15, 15)];
-        placeIcon.image = [UIImage imageNamed:@"addr_icon"];
-        [self.contentView addSubview:placeIcon];
-        
-        self.place = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(placeIcon.frame)+5, CGRectGetMaxY(timeIcon.frame)+2, self.summary.bounds.size.width-placeIcon.bounds.size.width, 20)];
-        self.place.textColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.place.backgroundColor = [UIColor clearColor];
-        self.place.font = [UIFont systemFontOfSize:14];
-        [self.contentView addSubview:self.place];
+//        self.place = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(placeIcon.frame)+5, CGRectGetMaxY(timeIcon.frame)+2, self.summary.bounds.size.width-placeIcon.bounds.size.width, 20)];
+//        self.place.textColor = [UIColor colorWithHex:Gray_Color_Type1];
+//        self.place.backgroundColor = [UIColor clearColor];
+//        self.place.font = [UIFont systemFontOfSize:14];
+//        [self.contentView addSubview:self.place];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -165,10 +165,10 @@
     
     
     self.summary.text = partyModel.summary;
-    NSString *starttime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_starttime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
-    NSString *endtime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_endtime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
-    self.time.text = [[starttime stringByAppendingString:@"--"] stringByAppendingString:endtime];
-    self.place.text = partyModel.active_address;
+//    NSString *starttime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_starttime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
+//    NSString *endtime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_endtime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
+//    self.time.text = [[starttime stringByAppendingString:@"--"] stringByAppendingString:endtime];
+//    self.place.text = partyModel.active_address;
     
     //self.title.bounds.size.height = titieHeight;
 }
