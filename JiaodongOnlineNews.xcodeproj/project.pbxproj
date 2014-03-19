@@ -637,6 +637,8 @@
 		A7821A6417F81D740058B62D /* menu_party.png in Resources */ = {isa = PBXBuildFile; fileRef = A7821A6017F81D730058B62D /* menu_party.png */; };
 		A7821A6517F81D740058B62D /* menu_party@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7821A6117F81D730058B62D /* menu_party@2x.png */; };
 		A782FDD017D58F370015965D /* JDOPartyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A782FDCF17D58F370015965D /* JDOPartyViewController.m */; };
+		A795D18A18D97B6800736B8F /* party_end.png in Resources */ = {isa = PBXBuildFile; fileRef = A795D18818D97B6800736B8F /* party_end.png */; };
+		A795D18B18D97B6800736B8F /* party_ready.png in Resources */ = {isa = PBXBuildFile; fileRef = A795D18918D97B6800736B8F /* party_ready.png */; };
 		A7BCF07818921E1700774037 /* AGCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BCF06F18921E1700774037 /* AGCommon.framework */; };
 		A7BCF07918921E1800774037 /* ShareSDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7BCF07118921E1700774037 /* ShareSDKLocalizable.strings */; };
 		A7BCF07A18921E1800774037 /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A7BCF07318921E1700774037 /* Resource.bundle */; };
@@ -1576,6 +1578,8 @@
 		A7821A6117F81D730058B62D /* menu_party@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_party@2x.png"; sourceTree = "<group>"; };
 		A782FDCE17D58F370015965D /* JDOPartyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOPartyViewController.h; sourceTree = "<group>"; };
 		A782FDCF17D58F370015965D /* JDOPartyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOPartyViewController.m; sourceTree = "<group>"; };
+		A795D18818D97B6800736B8F /* party_end.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = party_end.png; path = Party/party_end.png; sourceTree = "<group>"; };
+		A795D18918D97B6800736B8F /* party_ready.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = party_ready.png; path = Party/party_ready.png; sourceTree = "<group>"; };
 		A7BCF06F18921E1700774037 /* AGCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AGCommon.framework; sourceTree = "<group>"; };
 		A7BCF07218921E1700774037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ShareSDKLocalizable.strings; sourceTree = "<group>"; };
 		A7BCF07318921E1700774037 /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resource.bundle; sourceTree = "<group>"; };
@@ -3036,6 +3040,8 @@
 		A7335F0617D71C0B00ABFFFC /* Party */ = {
 			isa = PBXGroup;
 			children = (
+				A795D18818D97B6800736B8F /* party_end.png */,
+				A795D18918D97B6800736B8F /* party_ready.png */,
 				A73FDFC717F956180003AD1C /* addr_icon.png */,
 				A72F384617F91EE1000F1099 /* addr_icon@2x.png */,
 				A72F384717F91EE1000F1099 /* time_icon@2x.png */,
@@ -3377,6 +3383,7 @@
 				2D97A94217850A4600CEEE82 /* image_background@2x.png in Resources */,
 				A77594FC18920D5E00F2B7EA /* WeiboSDK.bundle in Resources */,
 				2D97A94317850A4600CEEE82 /* image_mask@2x.png in Resources */,
+				A795D18A18D97B6800736B8F /* party_end.png in Resources */,
 				A77594F818920D5E00F2B7EA /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				2D97A94817851C5200CEEE82 /* content_template.html in Resources */,
 				2D97A94C17853D4C00CEEE82 /* gou.png in Resources */,
@@ -3609,6 +3616,7 @@
 				2DC49DCC179F9D8F008374F2 /* topic_image_mask.png in Resources */,
 				2DC49DCD179F9D8F008374F2 /* topic_image_mask@2x.png in Resources */,
 				2DC49DCE179F9D8F008374F2 /* topic_separator.png in Resources */,
+				A795D18B18D97B6800736B8F /* party_ready.png in Resources */,
 				2DC49DCF179F9D8F008374F2 /* topic_separator@2x.png in Resources */,
 				2DC49DEC179F9DB2008374F2 /* vio_btn_add_car.png in Resources */,
 				2DC49DED179F9DB2008374F2 /* vio_btn_add_car@2x.png in Resources */,

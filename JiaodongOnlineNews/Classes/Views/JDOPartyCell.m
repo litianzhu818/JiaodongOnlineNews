@@ -23,6 +23,7 @@
 @property (nonatomic,strong) UIImageView *mpicView;
 @property (nonatomic,strong) UITextView *title;
 @property (nonatomic,strong) UIImageView *title_left;
+@property (nonatomic,strong) UIImageView *ready;
 @property (nonatomic,strong) UIImageView *title_right;
 @property (nonatomic,strong) UITextView *summary;
 //@property (nonatomic,strong) UILabel *time;
@@ -59,12 +60,6 @@
         //_mpicView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_mpicView];
         
-//        self.imageMask = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, Padding, _mpicView.width-Padding*2, imageHeight)];
-//        self.imageMask.image = [UIImage imageNamed:@"topic_image_mask"];
-//        [self.contentView addSubview:self.imageMask];
-        
-        
-        
         //float font18Height = [UIFont boldSystemFontOfSize:18].lineHeight;
         _title = [[UITextView alloc] initWithFrame:CGRectMake(Padding+10, CGRectGetMaxY(_mpicView.frame)+5, _mpicView.frame.size.width-15/*左边括号的宽度*/, 35)];
         _title.textColor = [UIColor colorWithHex:Black_Color_Type1];
@@ -91,6 +86,9 @@
         self.summary.font = [UIFont systemFontOfSize:16];
         self.summary.editable = false;
         [self.contentView addSubview:self.summary];
+        
+        _ready = [[UIImageView alloc] initWithFrame:CGRectMake(220, _mpicView.frame.size.height+30, 80.0f, 50.0f)];
+        [self.contentView addSubview:self.ready];
         
 //        UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(self.summary.frame)+2, 15, 15)];
 //        timeIcon.image = [UIImage imageNamed:@"time_icon"];
@@ -162,9 +160,20 @@
         [_summary setFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width-8, 100)];
     }
     
-    
-    
     self.summary.text = partyModel.summary;
+    
+    NSDate *starttime = [JDOCommonUtil formatString:self.partyModel.active_starttime withFormatter:DateFormatYMDHMS];
+    NSDate *endtime = [JDOCommonUtil formatString:self.partyModel.active_endtime withFormatter:DateFormatYMDHMS];
+    NSDate *now = [NSDate date];
+    if ([now compare:starttime] == NSOrderedAscending) {
+        _ready.hidden = FALSE;
+        _ready.image = [UIImage imageNamed:@"party_ready"];
+    } else if([now compare:endtime] == NSOrderedDescending){
+        _ready.hidden = FALSE;
+        _ready.image = [UIImage imageNamed:@"party_end"];
+    } else {
+        _ready.hidden = TRUE;
+    }
 //    NSString *starttime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_starttime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
 //    NSString *endtime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_endtime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
 //    self.time.text = [[starttime stringByAppendingString:@"--"] stringByAppendingString:endtime];
