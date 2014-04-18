@@ -27,6 +27,7 @@
 @implementation JDONewsSpecialController{
     MBProgressHUD *HUD;
     NSDate *HUDShowTime;
+    float headerHeight;
 }
 
 -(id)initWithModel:(JDONewsSpecialModel *)model{
@@ -177,7 +178,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.section == 0)  return Headline_Height;
+    if(indexPath.section == 0){
+        return headerHeight;
+    }
     return News_Cell_Height;
 }
 
@@ -189,9 +192,13 @@
         UITableViewCell *topCell = [tableView dequeueReusableCellWithIdentifier:topIdentifier];
         if (topCell == nil) {
             topCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:topIdentifier];
-            UIImageView *topimage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, Headline_Height)];
+            //UIImageView *topimage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, Headline_Height)];
+            UIImageView *topimage = [[UIImageView alloc] init];
+            topimage.contentMode = UIViewContentModeScaleAspectFit;
             //topimage.image = [UIImage imageNamed:Default_Image];
             [topimage setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:self.model.spic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+                headerHeight = 320*topimage.image.size.height/topimage.image.size.width;
+                topimage.frame = CGRectMake(0, 0, 320, headerHeight);
                 if(!cached){    // 非缓存加载时使用渐变动画
                     CATransition *transition = [CATransition animation];
                     transition.duration = 0.3;
@@ -202,6 +209,8 @@
             } failure:^(NSError *error) {
                 
             }];
+            headerHeight = 320*topimage.image.size.height/topimage.image.size.width;
+            topimage.frame = CGRectMake(0, 0, 320, headerHeight);
             [topCell.contentView addSubview:topimage];
         }
         return topCell;
