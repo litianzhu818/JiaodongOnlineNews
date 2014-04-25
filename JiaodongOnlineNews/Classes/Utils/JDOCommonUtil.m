@@ -107,6 +107,7 @@ static bool isShowingHint;
         case DateFormatYMD:    formatString = @"yyyy/MM/dd";  break;
         case DateFormatMD:     formatString = @"MM/dd";  break;
         case DateFormatYMDHM:  formatString = @"yyyy/MM/dd HH:mm";  break;
+        case DateFormatYMDHMS: formatString = @"yyyy/MM/dd HH:mm:ss";  break;
         case DateFormatMDHM:   formatString = @"MM-dd HH:mm";  break;
         default:    break;
     }
@@ -122,8 +123,8 @@ static bool isShowingHint;
         case DateFormatYMD:    formatString = @"yyyy/MM/dd";  break;
         case DateFormatMD:     formatString = @"MM/dd";  break;
         case DateFormatYMDHM:  formatString = @"yyyy/MM/dd HH:mm";  break;
+        case DateFormatYMDHMS: formatString = @"yyyy-MM-dd HH:mm:ss"; break;
         case DateFormatMDHM:   formatString = @"MM/dd HH:mm";  break;
-        case DateFormatYMDHMS:  formatString = @"yyyy-MM-dd HH:mm:ss"; break;
         default:    break;
     }
     [dateFormatter setDateFormat:formatString];

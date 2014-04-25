@@ -564,6 +564,29 @@
 		2DE932061772E3E500A87ACC /* 中雪@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E61772E3E500A87ACC /* 中雪@2x.png */; };
 		2DE932071772E3E500A87ACC /* 中雨@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DE931E71772E3E500A87ACC /* 中雨@2x.png */; };
 		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
+		2DF49D0E19010D3E00C866AF /* JDOVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D0D19010D3E00C866AF /* JDOVideoViewController.m */; };
+		2DF49D111901141900C866AF /* JDOVideoLiveList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D101901141800C866AF /* JDOVideoLiveList.m */; };
+		2DF49D141901143E00C866AF /* JDOVideoReplayList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D131901143E00C866AF /* JDOVideoReplayList.m */; };
+		2DF49D171901145400C866AF /* JDOAudioLiveList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D161901145400C866AF /* JDOAudioLiveList.m */; };
+		2DF49D1A19011FE800C866AF /* JDOVideoLiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D1919011FE700C866AF /* JDOVideoLiveCell.m */; };
+		2DF49D1D1901223A00C866AF /* JDOVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D1C1901223A00C866AF /* JDOVideoModel.m */; };
+		2DF49D2419025FA600C866AF /* JDOVideoLiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D2319025FA600C866AF /* JDOVideoLiveModel.m */; };
+		2DF49D2719026ECF00C866AF /* JDOVideoDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D2619026ECF00C866AF /* JDOVideoDetailController.m */; };
+		2DF49D29190272B400C866AF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D28190272B300C866AF /* AVFoundation.framework */; };
+		2DF49D2B190272C800C866AF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D2A190272C700C866AF /* AudioToolbox.framework */; };
+		2DF49D2D190272D700C866AF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D2C190272D700C866AF /* CoreMedia.framework */; };
+		2DF49D311902730C00C866AF /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D301902730C00C866AF /* CoreVideo.framework */; };
+		2DF49D331902734300C866AF /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D321902734300C866AF /* MediaPlayer.framework */; };
+		2DF49D351902734900C866AF /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D341902734800C866AF /* OpenGLES.framework */; };
+		2DF49D371902736800C866AF /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D361902736800C866AF /* libbz2.dylib */; };
+		2DF49D39190273AD00C866AF /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D38190273AD00C866AF /* libiconv.dylib */; };
+		2DF49D481902742500C866AF /* libffmpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D451902742500C866AF /* libffmpeg.a */; };
+		2DF49D491902742500C866AF /* libopenssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D461902742500C866AF /* libopenssl.a */; };
+		2DF49D4A1902742500C866AF /* libVitamio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF49D471902742500C866AF /* libVitamio.a */; };
+		2DF49D511902758000C866AF /* VSegmentSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D4C1902758000C866AF /* VSegmentSlider.m */; };
+		2DF49D521902758000C866AF /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D4E1902758000C866AF /* VAppInfo.m */; };
+		2DF49D531902758000C866AF /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D501902758000C866AF /* Utilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2DF49D551902773200C866AF /* JDOVideoDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DF49D541902773200C866AF /* JDOVideoDetailController.xib */; };
 		2DF9AB8A17B48AC300C1C7E6 /* airplane@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DF9AB8717B48AC300C1C7E6 /* airplane@2x.png */; };
 		2DF9AB8B17B48AC300C1C7E6 /* ship@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DF9AB8817B48AC300C1C7E6 /* ship@2x.png */; };
 		2DF9AB8C17B48AC300C1C7E6 /* breakrule@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DF9AB8917B48AC300C1C7E6 /* breakrule@2x.png */; };
@@ -596,7 +619,6 @@
 		A7335F0C17D71C5600ABFFFC /* time_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A7335F0917D71C5600ABFFFC /* time_icon.png */; };
 		A733FE2517B234E30085DEDA /* cancelDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = A733FE2317B234E30085DEDA /* cancelDownload.png */; };
 		A733FE2617B234E30085DEDA /* downloadComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = A733FE2417B234E30085DEDA /* downloadComplete.png */; };
-		A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7341C7F178EB7EC00ADD976 /* libz.dylib */; };
 		A73FDFC817F956180003AD1C /* addr_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A73FDFC717F956180003AD1C /* addr_icon.png */; };
 		A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A74328C017AA4B89002B6CEA /* JDOOffDownloadManager.m */; };
 		A74BFC4118864B240042E034 /* aboutus_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A74BFC4018864B240042E034 /* aboutus_share@2x.png */; };
@@ -1470,6 +1492,49 @@
 		2DE931E61772E3E500A87ACC /* 中雪@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雪@2x.png"; sourceTree = "<group>"; };
 		2DE931E71772E3E500A87ACC /* 中雨@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雨@2x.png"; sourceTree = "<group>"; };
 		2DE932081772E99D00A87ACC /* weather.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = weather.xml; sourceTree = "<group>"; };
+		2DF49D0C19010D3E00C866AF /* JDOVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoViewController.h; sourceTree = "<group>"; };
+		2DF49D0D19010D3E00C866AF /* JDOVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoViewController.m; sourceTree = "<group>"; };
+		2DF49D0F1901141800C866AF /* JDOVideoLiveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoLiveList.h; sourceTree = "<group>"; };
+		2DF49D101901141800C866AF /* JDOVideoLiveList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoLiveList.m; sourceTree = "<group>"; };
+		2DF49D121901143E00C866AF /* JDOVideoReplayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoReplayList.h; sourceTree = "<group>"; };
+		2DF49D131901143E00C866AF /* JDOVideoReplayList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoReplayList.m; sourceTree = "<group>"; };
+		2DF49D151901145400C866AF /* JDOAudioLiveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAudioLiveList.h; sourceTree = "<group>"; };
+		2DF49D161901145400C866AF /* JDOAudioLiveList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAudioLiveList.m; sourceTree = "<group>"; };
+		2DF49D1819011FE700C866AF /* JDOVideoLiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoLiveCell.h; sourceTree = "<group>"; };
+		2DF49D1919011FE700C866AF /* JDOVideoLiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoLiveCell.m; sourceTree = "<group>"; };
+		2DF49D1B1901223A00C866AF /* JDOVideoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoModel.h; sourceTree = "<group>"; };
+		2DF49D1C1901223A00C866AF /* JDOVideoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoModel.m; sourceTree = "<group>"; };
+		2DF49D2219025FA600C866AF /* JDOVideoLiveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoLiveModel.h; sourceTree = "<group>"; };
+		2DF49D2319025FA600C866AF /* JDOVideoLiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoLiveModel.m; sourceTree = "<group>"; };
+		2DF49D2519026ECF00C866AF /* JDOVideoDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoDetailController.h; sourceTree = "<group>"; };
+		2DF49D2619026ECF00C866AF /* JDOVideoDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoDetailController.m; sourceTree = "<group>"; };
+		2DF49D28190272B300C866AF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		2DF49D2A190272C700C866AF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		2DF49D2C190272D700C866AF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		2DF49D2E190272E600C866AF /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		2DF49D301902730C00C866AF /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		2DF49D321902734300C866AF /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		2DF49D341902734800C866AF /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		2DF49D361902736800C866AF /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
+		2DF49D38190273AD00C866AF /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		2DF49D3D1902742500C866AF /* VDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefines.h; sourceTree = "<group>"; };
+		2DF49D3E1902742500C866AF /* Vitamio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vitamio.h; sourceTree = "<group>"; };
+		2DF49D3F1902742500C866AF /* VMediaExtracter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaExtracter.h; sourceTree = "<group>"; };
+		2DF49D401902742500C866AF /* VMediaExtracterDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaExtracterDef.h; sourceTree = "<group>"; };
+		2DF49D411902742500C866AF /* VMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaPlayer.h; sourceTree = "<group>"; };
+		2DF49D421902742500C866AF /* VMediaPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaPlayerDelegate.h; sourceTree = "<group>"; };
+		2DF49D431902742500C866AF /* VPlayerManageDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPlayerManageDef.h; sourceTree = "<group>"; };
+		2DF49D441902742500C866AF /* VSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSingleton.h; sourceTree = "<group>"; };
+		2DF49D451902742500C866AF /* libffmpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffmpeg.a; sourceTree = "<group>"; };
+		2DF49D461902742500C866AF /* libopenssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libopenssl.a; sourceTree = "<group>"; };
+		2DF49D471902742500C866AF /* libVitamio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVitamio.a; sourceTree = "<group>"; };
+		2DF49D4B1902758000C866AF /* VSegmentSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSegmentSlider.h; sourceTree = "<group>"; };
+		2DF49D4C1902758000C866AF /* VSegmentSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSegmentSlider.m; sourceTree = "<group>"; };
+		2DF49D4D1902758000C866AF /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
+		2DF49D4E1902758000C866AF /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
+		2DF49D4F1902758000C866AF /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		2DF49D501902758000C866AF /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		2DF49D541902773200C866AF /* JDOVideoDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOVideoDetailController.xib; sourceTree = "<group>"; };
 		2DF9AB8717B48AC300C1C7E6 /* airplane@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplane@2x.png"; sourceTree = "<group>"; };
 		2DF9AB8817B48AC300C1C7E6 /* ship@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ship@2x.png"; sourceTree = "<group>"; };
 		2DF9AB8917B48AC300C1C7E6 /* breakrule@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakrule@2x.png"; sourceTree = "<group>"; };
@@ -1667,7 +1732,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DF49D39190273AD00C866AF /* libiconv.dylib in Frameworks */,
+				2DF49D371902736800C866AF /* libbz2.dylib in Frameworks */,
+				2DF49D351902734900C866AF /* OpenGLES.framework in Frameworks */,
+				2DF49D331902734300C866AF /* MediaPlayer.framework in Frameworks */,
+				2D080CD8173CE4D9005653A7 /* Foundation.framework in Frameworks */,
+				2DF49D311902730C00C866AF /* CoreVideo.framework in Frameworks */,
+				2DF49D2D190272D700C866AF /* CoreMedia.framework in Frameworks */,
+				2DF49D2B190272C800C866AF /* AudioToolbox.framework in Frameworks */,
+				2DF49D29190272B400C866AF /* AVFoundation.framework in Frameworks */,
 				2DA596471887E3C600F09D1E /* Security.framework in Frameworks */,
+				2DF49D4A1902742500C866AF /* libVitamio.a in Frameworks */,
+				2DF49D491902742500C866AF /* libopenssl.a in Frameworks */,
 				A7BCF07B18921E1800774037 /* ShareSDKCoreService.framework in Frameworks */,
 				2D958590176E07F1009F5AE4 /* libsqlite3.dylib in Frameworks */,
 				2D95858E176E07D8009F5AE4 /* libstdc++.dylib in Frameworks */,
@@ -1679,7 +1755,6 @@
 				A77594F718920D5E00F2B7EA /* TencentOpenAPI.framework in Frameworks */,
 				A761B5B81867DE11001A27B8 /* AdSupport.framework in Frameworks */,
 				A77594ED18920D5E00F2B7EA /* WeChatConnection.framework in Frameworks */,
-				A7341C80178EB7EC00ADD976 /* libz.dylib in Frameworks */,
 				A77594E918920D5E00F2B7EA /* SinaWeiboConnection.framework in Frameworks */,
 				A77594E818920D5E00F2B7EA /* RenRenConnection.framework in Frameworks */,
 				A77594E618920D5E00F2B7EA /* QQConnection.framework in Frameworks */,
@@ -1696,10 +1771,10 @@
 				A761B5B61867DDAB001A27B8 /* libmtasdk.a in Frameworks */,
 				A775950018920D5F00F2B7EA /* ShareSDK.framework in Frameworks */,
 				A77594E518920D5E00F2B7EA /* KaiXinConnection.framework in Frameworks */,
+				2DF49D481902742500C866AF /* libffmpeg.a in Frameworks */,
 				2D8B403B175A37A700C8B04F /* QuartzCore.framework in Frameworks */,
 				2D01E67F1748D84E00B81568 /* SystemConfiguration.framework in Frameworks */,
 				2D080CD6173CE4D9005653A7 /* UIKit.framework in Frameworks */,
-				2D080CD8173CE4D9005653A7 /* Foundation.framework in Frameworks */,
 				2D080CDA173CE4D9005653A7 /* CoreGraphics.framework in Frameworks */,
 				C59C19336B7C490A80E26DCF /* libPods.a in Frameworks */,
 				2DA4494C17C5A42700927906 /* Crashlytics.framework in Frameworks */,
@@ -1715,6 +1790,12 @@
 		2D01E67A1748D78300B81568 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2DF49D4B1902758000C866AF /* VSegmentSlider.h */,
+				2DF49D4C1902758000C866AF /* VSegmentSlider.m */,
+				2DF49D4D1902758000C866AF /* VAppInfo.h */,
+				2DF49D4E1902758000C866AF /* VAppInfo.m */,
+				2DF49D4F1902758000C866AF /* Utilities.h */,
+				2DF49D501902758000C866AF /* Utilities.m */,
 				2D5CB30017F91E880053F556 /* CustomIOS7AlertView.h */,
 				2D5CB30117F91E880053F556 /* CustomIOS7AlertView.m */,
 				2D01E67B1748D82E00B81568 /* Reachability.h */,
@@ -1773,6 +1854,15 @@
 		2D080CD4173CE4D9005653A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2DF49D38190273AD00C866AF /* libiconv.dylib */,
+				2DF49D361902736800C866AF /* libbz2.dylib */,
+				2DF49D341902734800C866AF /* OpenGLES.framework */,
+				2DF49D321902734300C866AF /* MediaPlayer.framework */,
+				2DF49D301902730C00C866AF /* CoreVideo.framework */,
+				2DF49D2E190272E600C866AF /* CoreFoundation.framework */,
+				2DF49D2C190272D700C866AF /* CoreMedia.framework */,
+				2DF49D2A190272C700C866AF /* AudioToolbox.framework */,
+				2DF49D28190272B300C866AF /* AVFoundation.framework */,
 				2DA596461887E3C600F09D1E /* Security.framework */,
 				A761B5B71867DE11001A27B8 /* AdSupport.framework */,
 				2DA4494B17C5A42700927906 /* Crashlytics.framework */,
@@ -1948,6 +2038,10 @@
 		2D86D59317584E030000AA6A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2DF49D2219025FA600C866AF /* JDOVideoLiveModel.h */,
+				2DF49D2319025FA600C866AF /* JDOVideoLiveModel.m */,
+				2DF49D1B1901223A00C866AF /* JDOVideoModel.h */,
+				2DF49D1C1901223A00C866AF /* JDOVideoModel.m */,
 				A74BFC48188675BD0042E034 /* JDONewsSpecialModel.h */,
 				A74BFC49188675BD0042E034 /* JDONewsSpecialModel.m */,
 				A781101C17D5BE7000C0359F /* JDOPartyDetailModel.h */,
@@ -2056,6 +2150,7 @@
 		2D8B403C175A467C00C8B04F /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				2DF49D3A190273CE00C866AF /* Vitamio */,
 				A761B5B21867DDAB001A27B8 /* mtasdk_1.2.4 */,
 				A77594A818920D5E00F2B7EA /* ShareSDK */,
 				D8EFCF1917E2B43800BCD8A4 /* Hpple */,
@@ -2193,6 +2288,14 @@
 		2D8D44F9174DF21800786545 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2DF49D0F1901141800C866AF /* JDOVideoLiveList.h */,
+				2DF49D101901141800C866AF /* JDOVideoLiveList.m */,
+				2DF49D1819011FE700C866AF /* JDOVideoLiveCell.h */,
+				2DF49D1919011FE700C866AF /* JDOVideoLiveCell.m */,
+				2DF49D121901143E00C866AF /* JDOVideoReplayList.h */,
+				2DF49D131901143E00C866AF /* JDOVideoReplayList.m */,
+				2DF49D151901145400C866AF /* JDOAudioLiveList.h */,
+				2DF49D161901145400C866AF /* JDOAudioLiveList.m */,
 				A781102217D5C4FE00C0359F /* JDOPartyCell.h */,
 				A781102317D5C4FE00C0359F /* JDOPartyCell.m */,
 				FF62285917A988760040F05F /* JDOCollectView.h */,
@@ -2682,6 +2785,11 @@
 		2D9BCEEB176D88580040DDA0 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2DF49D0C19010D3E00C866AF /* JDOVideoViewController.h */,
+				2DF49D0D19010D3E00C866AF /* JDOVideoViewController.m */,
+				2DF49D2519026ECF00C866AF /* JDOVideoDetailController.h */,
+				2DF49D2619026ECF00C866AF /* JDOVideoDetailController.m */,
+				2DF49D541902773200C866AF /* JDOVideoDetailController.xib */,
 				2DA29D3117B8743300CE2F7B /* JDOMainViewController.h */,
 				2DA29D3217B8743300CE2F7B /* JDOMainViewController.m */,
 				2D86D5AC175894970000AA6A /* JDOCenterViewController.h */,
@@ -2975,6 +3083,40 @@
 				2DE931E71772E3E500A87ACC /* 中雨@2x.png */,
 			);
 			path = Weather;
+			sourceTree = "<group>";
+		};
+		2DF49D3A190273CE00C866AF /* Vitamio */ = {
+			isa = PBXGroup;
+			children = (
+				2DF49D3B1902742500C866AF /* include */,
+				2DF49D451902742500C866AF /* libffmpeg.a */,
+				2DF49D461902742500C866AF /* libopenssl.a */,
+				2DF49D471902742500C866AF /* libVitamio.a */,
+			);
+			path = Vitamio;
+			sourceTree = "<group>";
+		};
+		2DF49D3B1902742500C866AF /* include */ = {
+			isa = PBXGroup;
+			children = (
+				2DF49D3C1902742500C866AF /* Vitamio */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		2DF49D3C1902742500C866AF /* Vitamio */ = {
+			isa = PBXGroup;
+			children = (
+				2DF49D3D1902742500C866AF /* VDefines.h */,
+				2DF49D3E1902742500C866AF /* Vitamio.h */,
+				2DF49D3F1902742500C866AF /* VMediaExtracter.h */,
+				2DF49D401902742500C866AF /* VMediaExtracterDef.h */,
+				2DF49D411902742500C866AF /* VMediaPlayer.h */,
+				2DF49D421902742500C866AF /* VMediaPlayerDelegate.h */,
+				2DF49D431902742500C866AF /* VPlayerManageDef.h */,
+				2DF49D441902742500C866AF /* VSingleton.h */,
+			);
+			path = Vitamio;
 			sourceTree = "<group>";
 		};
 		2DFC0751178579A1005C73F0 /* Convenience */ = {
@@ -3627,6 +3769,7 @@
 				2DA860A51864207F003D6328 /* news_type_hint_blue.png in Resources */,
 				2DC49E2C179FA007008374F2 /* leftside_shadow_bg@2x.png in Resources */,
 				2DC49E30179FA04F008374F2 /* img_set_flag.png in Resources */,
+				2DF49D551902773200C866AF /* JDOVideoDetailController.xib in Resources */,
 				A7173D83179FA8DD00AB2D43 /* NoticeView.bundle in Resources */,
 				A76EC73D17A0C79E0063763C /* base_empty_view.png in Resources */,
 				D8A9BE5217A6087800F47D34 /* vio_lineshadow.png in Resources */,
@@ -3781,10 +3924,12 @@
 				A728D78A18711D6E0098E770 /* JDOWebViewController.m in Sources */,
 				2D329AD51750A91100003EA2 /* JDOScrollView.m in Sources */,
 				2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */,
+				2DF49D111901141900C866AF /* JDOVideoLiveList.m in Sources */,
 				FFD8B6851756DD69007B878C /* JDOAboutUsViewController.m in Sources */,
 				D8A2B50B1756FABF005FC835 /* JDOFeedbackViewController.m in Sources */,
 				2D86D59617584E420000AA6A /* JDONewsCategoryInfo.m in Sources */,
 				2D86D59F175872FE0000AA6A /* JDONewsModel.m in Sources */,
+				2DF49D171901145400C866AF /* JDOAudioLiveList.m in Sources */,
 				2DA59645188783A100F09D1E /* STKeychain.m in Sources */,
 				2D86D5A5175885E50000AA6A /* JDONewsTableCell.m in Sources */,
 				2D86D5AB17588E330000AA6A /* JDOCommonUtil.m in Sources */,
@@ -3811,6 +3956,7 @@
 				2D8B4093175A495600C8B04F /* NISDKAvailability.m in Sources */,
 				2D8B4094175A495600C8B04F /* NISnapshotRotation.m in Sources */,
 				2D8B4095175A495600C8B04F /* NIState.m in Sources */,
+				2DF49D1A19011FE800C866AF /* JDOVideoLiveCell.m in Sources */,
 				2D8B4096175A495600C8B04F /* NIViewRecycler.m in Sources */,
 				2D8B4097175A495600C8B04F /* NSString+NimbusCore.m in Sources */,
 				2D8B40A1175A496200C8B04F /* NIPageView.m in Sources */,
@@ -3828,6 +3974,7 @@
 				2D5409D6175DE60F00718FFB /* NSArray_DeepMutableCopy.m in Sources */,
 				2D5409D7175DE60F00718FFB /* NSDictionary_DeepMutableCopy.m in Sources */,
 				2D5409DC175DEA5800718FFB /* JDONewsDetailController.m in Sources */,
+				2DF49D0E19010D3E00C866AF /* JDOVideoViewController.m in Sources */,
 				2D5409DF175DEE2100718FFB /* UIWebView+RemoveShadow.m in Sources */,
 				2DA59626187CE14900F09D1E /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				2D1DDB58175E2AD10048F7A7 /* JDONewsDetailModel.m in Sources */,
@@ -3897,8 +4044,10 @@
 				D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */,
 				A7BCF08018921F4300774037 /* UIView+Common.m in Sources */,
 				D8F10187177BB9890024A93A /* SBTableAlert.m in Sources */,
+				2DF49D511902758000C866AF /* VSegmentSlider.m in Sources */,
 				2D4C7A711781183300AA6280 /* JDOTopicViewController.m in Sources */,
 				2D6316161782B4B400248FD6 /* JDOTopicCell.m in Sources */,
+				2DF49D2419025FA600C866AF /* JDOVideoLiveModel.m in Sources */,
 				2D6316261782D6D300248FD6 /* HGPageScrollView.m in Sources */,
 				2D6316281782D6D300248FD6 /* HGPageView.m in Sources */,
 				2D6316291782D6D300248FD6 /* HGPageImageView.m in Sources */,
@@ -3911,6 +4060,7 @@
 				2D97A9461785113000CEEE82 /* JDOTopicDetailModel.m in Sources */,
 				D8F1A71F17851CE000E95FFB /* JDOLifeKnowledgeViewController.m in Sources */,
 				2D9B54071786448F0027123D /* JDOLivehoodViewController.m in Sources */,
+				2DF49D1D1901223A00C866AF /* JDOVideoModel.m in Sources */,
 				2D9B540E178667ED0027123D /* JDOLivehoodDeptList.m in Sources */,
 				2D9B541117867EF80027123D /* JDOLivehoodQuestionList.m in Sources */,
 				2D9B541417867F0B0027123D /* JDOLivehoodAskQuestion.m in Sources */,
@@ -3929,6 +4079,7 @@
 				2D98E203179245F30033951D /* DCCustomParser.m in Sources */,
 				2D98E204179245F30033951D /* DCDictionaryRearranger.m in Sources */,
 				2D98E205179245F30033951D /* DCDynamicAttribute.m in Sources */,
+				2DF49D521902758000C866AF /* VAppInfo.m in Sources */,
 				2D98E206179245F30033951D /* DCGenericConverter.m in Sources */,
 				2D98E207179245F30033951D /* DCKeyValueObjectMapping.m in Sources */,
 				2D98E208179245F30033951D /* DCNSArrayConverter.m in Sources */,
@@ -3951,6 +4102,7 @@
 				2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */,
 				2D0DE2F91796940500A7C813 /* AbstractActionSheetPicker.m in Sources */,
 				2D0DE2FA1796940500A7C813 /* ActionSheetCustomPicker.m in Sources */,
+				2DF49D141901143E00C866AF /* JDOVideoReplayList.m in Sources */,
 				2D0DE2FB1796940500A7C813 /* ActionSheetDatePicker.m in Sources */,
 				2D0DE2FC1796940500A7C813 /* ActionSheetDistancePicker.m in Sources */,
 				2D0DE2FD1796940500A7C813 /* ActionSheetStringPicker.m in Sources */,
@@ -3960,6 +4112,7 @@
 				2D9F37C8179CD37800A9D6E0 /* TTSwitch.m in Sources */,
 				2D9F37C9179CD37800A9D6E0 /* TTFadeSwitch.m in Sources */,
 				2D9F37CC179D2ED100A9D6E0 /* UIResponder+KeyboardCache.m in Sources */,
+				2DF49D531902758000C866AF /* Utilities.m in Sources */,
 				2DBE84BA179D344700181141 /* iToast.m in Sources */,
 				A7173D84179FA8DD00AB2D43 /* NSOperationQueue+WBNoticeExtensions.m in Sources */,
 				A7173D85179FA8DD00AB2D43 /* UILabel+WBExtensions.m in Sources */,
@@ -3973,6 +4126,7 @@
 				A7173D8D179FA8DD00AB2D43 /* WBSuccessNoticeView.m in Sources */,
 				2D9D08EF17A0B53400AC1924 /* iVersion.m in Sources */,
 				2DA5964218868EC200F09D1E /* JDOChannelSetting.m in Sources */,
+				2DF49D2719026ECF00C866AF /* JDOVideoDetailController.m in Sources */,
 				2D43F8E517A266980048815C /* iRate.m in Sources */,
 				A74328C117AA4B89002B6CEA /* JDOOffDownloadManager.m in Sources */,
 				2DA566B817AB39C800987EDC /* JDOCollectViewController.m in Sources */,
@@ -4145,6 +4299,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK/Extend/WeChatSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/mtasdk_1.2.4",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Vitamio",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4160,10 +4315,12 @@
 					SystemConfiguration,
 					"-framework",
 					UIKit,
+					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DDECBE6B-AF18-4CE1-B916-72A25B82B140";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6F80EEB5-1512-454B-BCF2-0878A6C35B96";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4205,6 +4362,7 @@
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK/Extend/TencentWeiboSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/ShareSDK/Extend/WeChatSDK",
 					"$(SRCROOT)/JiaodongOnlineNews/Vendors/mtasdk_1.2.4",
+					"$(SRCROOT)/JiaodongOnlineNews/Vendors/Vitamio",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4220,10 +4378,12 @@
 					SystemConfiguration,
 					"-framework",
 					UIKit,
+					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2AAB7361-372F-4C4E-8C09-C404C0AE45DF";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
