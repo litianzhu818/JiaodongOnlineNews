@@ -12,6 +12,9 @@
 #import "JDOTopicModel.h"
 #import "JDOTopicDetailController.h"
 #import "Reachability.h"
+#import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
 
 #define TopicList_Page_Size 10
 #define ScrollView_Tag 108
@@ -147,7 +150,11 @@
         [self setCurrentState:ViewStatusLoading];
     }
     self.currentPage = 1;
-    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:NSClassFromString(self.modelClass) forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:@"JDOArrayModel" config:config params:self.listParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         [self dataLoadFinished:dataList];
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
@@ -174,7 +181,11 @@
 - (void) loadMore{
     self.currentPage += 1;
     [self.listParam setObject:[NSNumber numberWithInt:self.currentPage] forKey:@"p"];
-    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:NSClassFromString(self.modelClass) forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:@"JDOArrayModel" config:config params:self.listParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList == nil || dataList.count == 0){    // 数据加载完成
             isLoadFinised = true;
         }else if(dataList.count >0){

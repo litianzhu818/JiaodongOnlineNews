@@ -25,6 +25,9 @@
 #import "JDOTopicModel.h"
 #import "JDOPartyModel.h"
 #import "JDONewsSpecialModel.h"
+#import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -162,9 +165,12 @@
         HUDShowTime = [NSDate date];
 //        [HUD addObserver:self forKeyPath:@"frame" options:15 context:nil];
     }
-    
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
     // 加载头条
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.headLineParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -173,15 +179,14 @@
                 [self loadFinished];
                 [self dismissHUDOnLoadFinished];
             }
-        }else{
-            
         }
     } failure:^(NSString *errorStr) {
         [self handleLoadError:errorStr];
     }];
     
     // 加载列表
-    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.newsListParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
@@ -191,7 +196,7 @@
                 [self loadFinished];
                 [self dismissHUDOnLoadFinished];
             }
-            if( dataList.count<NewsList_Page_Size ){
+            if(dataList.count<NewsList_Page_Size ){
                 [self.tableView.infiniteScrollingView setEnabled:false];
                 // 总数量不足第一页时不显示"已加载完成"提示
                 [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
@@ -254,8 +259,12 @@
     self.currentPage = 1;
     __block bool headlineFinished = false;
     __block bool newslistFinished = false;
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
     // 刷新头条
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.headLineParam success:^(NSArray *dataList) {
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.headLineParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -268,9 +277,9 @@
         [self.tableView.pullToRefreshView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
-    
     // 刷新列表
-    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.newsListParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
@@ -279,7 +288,7 @@
             if(headlineFinished){
                 [self loadFinished];
             }
-            if( dataList.count<NewsList_Page_Size ){
+            if(dataList.count<NewsList_Page_Size ){
                 [self.tableView.infiniteScrollingView setEnabled:false];
                 // 总数量不足第一页时不显示"已加载完成"提示
                 [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
@@ -287,13 +296,12 @@
                 [self.tableView.infiniteScrollingView setEnabled:true];
                 [self.tableView.infiniteScrollingView viewWithTag:Finished_Label_Tag].hidden = true;
             }
-        }else {
-            // 无数据
         }
     } failure:^(NSString *errorStr) {
         [self.tableView.pullToRefreshView stopAnimating];
         [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
+    
 }
 
 - (void) handleLoadError:(NSString *) errorStr{
@@ -351,7 +359,7 @@
     self.listArray = [[NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:self.info.reuseId]]] mutableCopy];
     [self.readDB isExistById:self.listArray];
     needReloadHeaderSection = true;
-    // 任何一个数组为空都任务本地缓存无效
+    // 任何一个数组为空都认为本地缓存无效
     return self.headArray && self.listArray;
 }
 
@@ -363,9 +371,11 @@
     }
     
     self.currentPage += 1;
-    
-    // 加载列表
-    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.newsListParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;
         if(dataList == nil || dataList.count == 0){    // 数据加载完成

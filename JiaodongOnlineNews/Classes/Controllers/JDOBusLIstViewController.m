@@ -11,6 +11,9 @@
 #import "JDONewsModel.h"
 #import "JDOConvenienceItemController.h"
 #import "Reachability.h"
+#import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
 
 @interface JDOBusLIstViewController ()
 
@@ -54,7 +57,11 @@
     [self setCurrentState:ViewStatusLoading];
     buslines = [[NSMutableArray alloc] init];
     NSDictionary *params = @{@"channelid" : @"19", @"pageSize" : @"1000"};
-    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:params success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:params success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList == nil){
             BOOL hasCache = [self readListFromLocalCache];
             if (hasCache) {

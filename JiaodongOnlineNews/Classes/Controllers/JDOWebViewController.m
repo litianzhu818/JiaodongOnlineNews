@@ -182,6 +182,10 @@ NSArray *imageUrls;
     }
     NSMutableDictionary *newsDetail = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
     [newsDetail setObject:html forKey:@"content"];
+    if ([dictionary objectForKey:@"advs"] != nil) {
+        NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
+        [newsDetail setObject:adv_img forKey:@"adv"];
+    }
     return newsDetail;
 }
 

@@ -71,7 +71,8 @@
         return;
     }
     [self setCurrentState:ViewStatusLoading];
-    [[JDOJsonClient sharedClient] getPath:self.service parameters:self.params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[JDOJsonClient sharedClient] getPath:self.service parameters:self.params success:^(AFHTTPRequestOperation *operation, id object) {
+        id responseObject = [(NSDictionary *)object objectForKey:@"data"];
         if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
             // 新闻不存在
         }else if([responseObject isKindOfClass:[NSDictionary class]]){

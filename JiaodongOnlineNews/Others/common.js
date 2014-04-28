@@ -12,20 +12,24 @@ function adjustImgSize(){
 }
 
 function clickImageEvent(event) {
-	if(this.attributes["src"].nodeValue!="news_head_placeholder.png" && this.attributes["src"].nodeValue!="img_set_flag.png"){
-        var index = $.inArray(this,$("img[src!='img_set_flag.png']"));
-        var linkId = $(this).closest("p").attr("id");
-        
-        if( linkId ){
-            bridge.callHandler('showImageSet', {'linkId': linkId}, function(response) {
-                               
-                               });
-        }else{
-            bridge.callHandler('showImageDetail', {'imageId': index}, function(response) {
-                               
-                               });
+    if($(this).attr("isadv")!="true") {
+        if(this.attributes["src"].nodeValue!="news_head_placeholder.png" && this.attributes["src"].nodeValue!="img_set_flag.png"){
+            var index = $.inArray(this,$("img[src!='img_set_flag.png']"));
+            var linkId = $(this).closest("p").attr("id");
+            
+            if( linkId ){
+                bridge.callHandler('showImageSet', {'linkId': linkId}, function(response) {
+                                   
+                                   });
+            }else{
+                bridge.callHandler('showImageDetail', {'imageId': index}, function(response) {
+                                   
+                                   });
+            }
         }
+    } else {
     }
+	
 }
 
 function refreshImg(realURL, localURL) {

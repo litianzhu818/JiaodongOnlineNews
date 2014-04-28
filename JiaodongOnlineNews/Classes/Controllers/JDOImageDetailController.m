@@ -12,6 +12,10 @@
 #import "SDImageCache.h"
 #import "JDOCommonUtil.h"
 #import "JDORightViewController.h"
+#import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
+
 @interface JDOImageDetailController ()
 
 @property (assign, nonatomic,getter = isCollected) BOOL collected;
@@ -209,10 +213,13 @@
         if (imageDataList) {//有缓存
             [self dealImageDataList];
         } else {
-            [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOImageDetailModel" params:@{@"aid":self.imageModel.id} success:^(NSArray *dataList) {
-                imageDataList = dataList;
+            DCParserConfiguration *config = [DCParserConfiguration configuration];
+            DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOImageDetailModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+            [config addArrayMapper:mapper];
+            [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_DETAIL_SERVICE modelClass:@"JDOArrayModel" config:config params:@{@"aid":self.imageModel.id} success:^(JDOArrayModel *dataList) {
+                imageDataList = (NSArray *)dataList.data;
                 [self dealImageDataList];
-                [self saveImageDetailToLocalCache:dataList];                
+                [self saveImageDetailToLocalCache:(NSArray *)dataList.data];
             } failure:^(NSString *errorStr) {
                 [JDOCommonUtil showHintHUD:errorStr inView:self.view];
             }];

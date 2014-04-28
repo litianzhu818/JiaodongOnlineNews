@@ -36,6 +36,7 @@
         self.clicknum = [aDecoder decodeObjectForKey:@"clicknum"];
         self.relates = [aDecoder decodeObjectForKey:@"relates"];
         self.tinyurl = [aDecoder decodeObjectForKey:@"tinyurl"];
+        self.advs = [aDecoder decodeObjectForKey:@"advs"];
     }
     return self;
 }
@@ -56,6 +57,7 @@
     [aCoder encodeObject:self.clicknum forKey:@"clicknum"];
     [aCoder encodeObject:self.relates forKey:@"relates"];
     [aCoder encodeObject:self.tinyurl forKey:@"tinyurl"];
+    [aCoder encodeObject:self.advs forKey:@"advs"];
 }
 
 + (NSString *) mergeToHTMLTemplateFromDictionary:(NSDictionary *)dictionary{

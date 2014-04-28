@@ -15,6 +15,8 @@
 #import "SDImageCache.h"
 #import "DCKeyValueObjectMapping.h"
 #import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
 
 #define Default_Head_Size 3
 #define Default_News_Size 40
@@ -84,7 +86,11 @@ NSMutableArray *operations;
 -(void) downloadNewsHeadWithChannelIndex:(int) i{
     [self callBackToTargetWithTitle:@"正在下载新闻头条"];
     [operations removeAllObjects];
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:[self headLineParamWithChannelIndex:i] success:^(NSArray *dataList){
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:[self headLineParamWithChannelIndex:i] success:^(JDOArrayModel *dataModel){
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsHeadCache" stringByAppendingString:[channelReuseIdArray objectAtIndex:i]]]];
             for (JDONewsModel *newsModel in dataList) {
@@ -117,7 +123,11 @@ NSMutableArray *operations;
 -(void) downloadNewsListWithChannelIndex:(int) i{
     [self callBackToTargetWithTitle:@"正在下载新闻列表"];
     [operations removeAllObjects];
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDONewsModel" params:[self newsListParamWithChannelIndex:i] success:^(NSArray *dataList){
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:[self newsListParamWithChannelIndex:i] success:^(JDOArrayModel *dataModel){
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"NewsListCache" stringByAppendingString:[channelReuseIdArray objectAtIndex:i]]]];
             for (JDONewsModel *newsModel in dataList) {
@@ -150,7 +160,11 @@ NSMutableArray *operations;
 -(void) downloadImageList{
     [self callBackToTargetWithTitle:@"正在下载图片列表"];
     [operations removeAllObjects];
-    [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_SERVICE modelClass:@"JDOImageModel" params:@{@"pageSize":@Default_Image_Size} success:^(NSArray *dataList){
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOImageModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOJsonClient sharedClient] getJSONByServiceName:IMAGE_SERVICE modelClass:@"JDOArrayModel" config:config params:@{@"pageSize":@Default_Image_Size} success:^(JDOArrayModel *dataModel){
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"ImageListCache"]];
             for (JDOImageModel *imageModel in dataList) {
@@ -185,7 +199,11 @@ NSMutableArray *operations;
 -(void) downloadTopicList{
     [self callBackToTargetWithTitle:@"正在下载话题列表"];
     [operations removeAllObjects];
-    [[JDOJsonClient sharedClient] getJSONByServiceName:TOPIC_LIST_SERVICE modelClass:@"JDOTopicModel" params:@{@"pageSize":@Default_Topic_Size} success:^(NSArray *dataList){
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOTopicModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOJsonClient sharedClient] getJSONByServiceName:TOPIC_LIST_SERVICE modelClass:@"JDOArrayModel" config:config params:@{@"pageSize":@Default_Topic_Size} success:^(JDOArrayModel *dataModel){
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"TopicListCache"]];
             for (JDOTopicModel *topicModel in dataList) {
