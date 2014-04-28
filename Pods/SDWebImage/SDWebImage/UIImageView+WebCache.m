@@ -62,8 +62,9 @@
     
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     UIImage *cachedImage = [imageCache imageFromKey:[url absoluteString] fromDisk:YES]; // 将需要缓存的图片加载进来
-    if (cachedImage) {//有缓存，就先使用缓存
+    if (cachedImage) {  //有缓存，就先使用缓存
         self.image = cachedImage;
+        success(self.image, true);
     } else {
         self.image = placeholder;
         if (url && !noImage) {

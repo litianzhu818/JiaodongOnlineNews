@@ -13,8 +13,8 @@
 @interface JDOHttpClient : JDOWebClient
 
 + (JDOHttpClient *)sharedClient;
-
 + (JDOHttpClient *)sharedResourceClient;
++ (JDOHttpClient *)sharedVideoClient;
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 
