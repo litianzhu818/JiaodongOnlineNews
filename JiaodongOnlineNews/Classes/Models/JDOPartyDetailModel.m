@@ -45,7 +45,9 @@
 
     NSMutableDictionary *variables = [[NSMutableDictionary alloc] init];
     [variables setValue:fontClass forKey:@"font_class"];
-    [variables setValue:[dictionary objectForKey:@"active_allowreg"] forKey:@"hasJoin"];
+    if ([(NSNumber *)[dictionary objectForKey:@"active_allowreg"] intValue]== 1) {
+        [variables setValue:[dictionary objectForKey:@"active_allowreg"] forKey:@"hasJoin"];
+    }
     NSDate *starttime = [JDOCommonUtil formatString:[dictionary objectForKey:@"active_starttime"] withFormatter:DateFormatYMDHMS];
     NSDate *endtime = [JDOCommonUtil formatString:[dictionary objectForKey:@"active_endtime"] withFormatter:DateFormatYMDHMS];
     NSDate *regendtime = [JDOCommonUtil formatString:[dictionary objectForKey:@"active_regendtime"] withFormatter:DateFormatYMDHMS];
