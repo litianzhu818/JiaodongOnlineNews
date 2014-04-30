@@ -20,7 +20,8 @@ typedef enum{
     DateFormatMD,
     DateFormatYMDHM,
     DateFormatYMDHMS,
-    DateFormatMDHM
+    DateFormatMDHM,
+    DateFormatHM,
 }DateFormatType;
 
 @interface JDOCommonUtil : NSObject

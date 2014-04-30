@@ -7,7 +7,6 @@
 //
 
 #import "JDOVideoLiveList.h"
-#import "JDOQuestionModel.h"
 #import "JDOVideoLiveCell.h"
 #import "SVPullToRefresh.h"
 #import "JDOVideoDetailController.h"

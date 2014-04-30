@@ -11,11 +11,6 @@
 #import "JDOPageControl.h"
 #import "Math.h"
 #import "NIPagingScrollView.h"
-#import "JDOLivehoodDeptList.h"
-#import "JDOLivehoodQuestionList.h"
-#import "JDOLivehoodAskQuestion.h"
-#import "JDOLivehoodMyQuestion.h"
-#import "TPKeyboardAvoidingScrollView.h"
 #import "JDOVideoLiveList.h"
 
 #define News_Navbar_Height 35.0f
@@ -204,9 +199,6 @@
     lastCenterPageIndex = _scrollView.centerPageIndex;
     UIView<NIPagingScrollViewPage> *page = _scrollView.centerPageView;
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
-    if (_scrollView.centerPageIndex == 3) {
-        [(JDOLivehoodMyQuestion *)page loadDataFromNetwork];
-    }
 }
 
 @end

@@ -18,6 +18,7 @@
 
 #import "Utilities.h"
 #import "VSegmentSlider.h"
+#import "JDOVideoEPG.h"
 
 #define Dept_Label_Tag 101
 #define Title_Label_Tag 102
@@ -135,6 +136,9 @@
 //    [_blackMask addGestureRecognizer:self.closeReviewGesture];
 //    
 //    [self loadDataFromNetwork];
+    
+    JDOVideoEPG *epg = [[JDOVideoEPG alloc] initWithFrame:CGRectMake(0, 257, 320, App_Height-257) model:self.videoModel delegate:self];
+    [_mainView addSubview:epg];
     
 }
 
@@ -343,6 +347,7 @@
     //	[player setAdaptiveStream:YES];
     
 	[player setVideoQuality:VMVideoQualityHigh];    // VMVideoQualityLow(默认) ,VMVideoQualityMedium ,VMVideoQualityHigh
+    // 开启缓存时候，第二次播放直播流会无法播放，未解决
 //    [player setUseCache:true];
 //	[player setCacheDirectory:[self getCacheRootDirectory]];
 }
@@ -691,25 +696,28 @@
 }
 
 - (NSURL *)playCtrlGetCurrMediaTitle:(NSString **)title lastPlayPos:(long *)lastPlayPos{
-//	return [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	return [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 //    return [NSURL URLWithString:@"http://vod.av.jiaodong.net/vod_storage/vol1/2014/03/19/5328fce906a83/01b70087af0c11e3a5fa848f69e075fe.mp4"];
-    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1398129434000,1398129430000,20000"];
-//    return self.videoURL;
+//    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1398129434000,1398129438000,5000"];
+}
+
+- (void) onVideoChanged:(JDOVideoEPGModel *)epgModel{
+    long lastPos = 0;
+    long startTime = [NSNumber numberWithDouble:epgModel.startTime].longValue;
+    long endTime = [NSNumber numberWithDouble:epgModel.endTime].longValue;
+    NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@/%ld000,%ld000,5000",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	if (url) {
+		[self quicklyReplayMovie:url title:epgModel.name seekToPos:lastPos];
+	} else {
+		NSLog(@"WARN: No previous media url found!");
+	}
 }
 
 - (NSURL *)playCtrlGetNextMediaTitle:(NSString **)title lastPlayPos:(long *)lastPlayPos{
-//	int num = sizeof(sMediaURLs) / sizeof(sMediaURLs[0]);
-//	sCurrPlayIdx = (sCurrPlayIdx + num + 1) % num;
-//	NSString *v = sMediaURLs[sCurrPlayIdx];
-//	return [NSURL URLWithString:[v stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     return [NSURL URLWithString:@"http://hot.vrs.sohu.com/ipad1407291_4596271359934_4618512.m3u8"];
 }
 
 - (NSURL *)playCtrlGetPrevMediaTitle:(NSString **)title lastPlayPos:(long *)lastPlayPos{
-//	int num = sizeof(sMediaURLs) / sizeof(sMediaURLs[0]);
-//	sCurrPlayIdx = (sCurrPlayIdx + num - 1) % num;
-//	NSString *v = sMediaURLs[sCurrPlayIdx];
-//	return [NSURL URLWithString:[v stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     return [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 

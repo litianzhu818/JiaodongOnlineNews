@@ -81,6 +81,8 @@
 		2D89A63418A467DF004B6348 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D89A63618A467DF004B6348 /* Localizable.strings */; };
 		2D89A63718A467F4004B6348 /* ShareSDKLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D89A63918A467F4004B6348 /* ShareSDKLocalizable.strings */; };
 		2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D89BA4B1754825600960614 /* JDONewsCategoryView.m */; };
+		2D8A3149190A3A0200B36D72 /* JDOVideoEPGList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8A3148190A3A0200B36D72 /* JDOVideoEPGList.m */; };
+		2D8A314C190A5CCB00B36D72 /* JDOVideoEPGModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8A314B190A5CCB00B36D72 /* JDOVideoEPGModel.m */; };
 		2D8AC1541763854D006B4A22 /* JDOReviewListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8AC1531763854C006B4A22 /* JDOReviewListController.m */; };
 		2D8B403B175A37A700C8B04F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8B403A175A37A700C8B04F /* QuartzCore.framework */; };
 		2D8B4081175A495600C8B04F /* NIActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B404F175A495500C8B04F /* NIActions.m */; };
@@ -566,7 +568,7 @@
 		2DE932091772E99D00A87ACC /* weather.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2DE932081772E99D00A87ACC /* weather.xml */; };
 		2DF49D0E19010D3E00C866AF /* JDOVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D0D19010D3E00C866AF /* JDOVideoViewController.m */; };
 		2DF49D111901141900C866AF /* JDOVideoLiveList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D101901141800C866AF /* JDOVideoLiveList.m */; };
-		2DF49D141901143E00C866AF /* JDOVideoReplayList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D131901143E00C866AF /* JDOVideoReplayList.m */; };
+		2DF49D141901143E00C866AF /* JDOVideoEPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D131901143E00C866AF /* JDOVideoEPG.m */; };
 		2DF49D171901145400C866AF /* JDOAudioLiveList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D161901145400C866AF /* JDOAudioLiveList.m */; };
 		2DF49D1A19011FE800C866AF /* JDOVideoLiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D1919011FE700C866AF /* JDOVideoLiveCell.m */; };
 		2DF49D1D1901223A00C866AF /* JDOVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF49D1C1901223A00C866AF /* JDOVideoModel.m */; };
@@ -857,6 +859,10 @@
 		2D89A63C18A46801004B6348 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2D89BA4A1754825600960614 /* JDONewsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = JDONewsCategoryView.h; sourceTree = "<group>"; };
 		2D89BA4B1754825600960614 /* JDONewsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = JDONewsCategoryView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		2D8A3147190A3A0100B36D72 /* JDOVideoEPGList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoEPGList.h; sourceTree = "<group>"; };
+		2D8A3148190A3A0200B36D72 /* JDOVideoEPGList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoEPGList.m; sourceTree = "<group>"; };
+		2D8A314A190A5CCB00B36D72 /* JDOVideoEPGModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoEPGModel.h; sourceTree = "<group>"; };
+		2D8A314B190A5CCB00B36D72 /* JDOVideoEPGModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoEPGModel.m; sourceTree = "<group>"; };
 		2D8AC1521763854C006B4A22 /* JDOReviewListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOReviewListController.h; sourceTree = "<group>"; };
 		2D8AC1531763854C006B4A22 /* JDOReviewListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOReviewListController.m; sourceTree = "<group>"; };
 		2D8B403A175A37A700C8B04F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1496,8 +1502,8 @@
 		2DF49D0D19010D3E00C866AF /* JDOVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoViewController.m; sourceTree = "<group>"; };
 		2DF49D0F1901141800C866AF /* JDOVideoLiveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoLiveList.h; sourceTree = "<group>"; };
 		2DF49D101901141800C866AF /* JDOVideoLiveList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoLiveList.m; sourceTree = "<group>"; };
-		2DF49D121901143E00C866AF /* JDOVideoReplayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoReplayList.h; sourceTree = "<group>"; };
-		2DF49D131901143E00C866AF /* JDOVideoReplayList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoReplayList.m; sourceTree = "<group>"; };
+		2DF49D121901143E00C866AF /* JDOVideoEPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoEPG.h; sourceTree = "<group>"; };
+		2DF49D131901143E00C866AF /* JDOVideoEPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoEPG.m; sourceTree = "<group>"; };
 		2DF49D151901145400C866AF /* JDOAudioLiveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAudioLiveList.h; sourceTree = "<group>"; };
 		2DF49D161901145400C866AF /* JDOAudioLiveList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAudioLiveList.m; sourceTree = "<group>"; };
 		2DF49D1819011FE700C866AF /* JDOVideoLiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoLiveCell.h; sourceTree = "<group>"; };
@@ -2042,6 +2048,8 @@
 				2DF49D2319025FA600C866AF /* JDOVideoLiveModel.m */,
 				2DF49D1B1901223A00C866AF /* JDOVideoModel.h */,
 				2DF49D1C1901223A00C866AF /* JDOVideoModel.m */,
+				2D8A314A190A5CCB00B36D72 /* JDOVideoEPGModel.h */,
+				2D8A314B190A5CCB00B36D72 /* JDOVideoEPGModel.m */,
 				A74BFC48188675BD0042E034 /* JDONewsSpecialModel.h */,
 				A74BFC49188675BD0042E034 /* JDONewsSpecialModel.m */,
 				A781101C17D5BE7000C0359F /* JDOPartyDetailModel.h */,
@@ -2292,8 +2300,10 @@
 				2DF49D101901141800C866AF /* JDOVideoLiveList.m */,
 				2DF49D1819011FE700C866AF /* JDOVideoLiveCell.h */,
 				2DF49D1919011FE700C866AF /* JDOVideoLiveCell.m */,
-				2DF49D121901143E00C866AF /* JDOVideoReplayList.h */,
-				2DF49D131901143E00C866AF /* JDOVideoReplayList.m */,
+				2DF49D121901143E00C866AF /* JDOVideoEPG.h */,
+				2DF49D131901143E00C866AF /* JDOVideoEPG.m */,
+				2D8A3147190A3A0100B36D72 /* JDOVideoEPGList.h */,
+				2D8A3148190A3A0200B36D72 /* JDOVideoEPGList.m */,
 				2DF49D151901145400C866AF /* JDOAudioLiveList.h */,
 				2DF49D161901145400C866AF /* JDOAudioLiveList.m */,
 				A781102217D5C4FE00C0359F /* JDOPartyCell.h */,
@@ -3939,6 +3949,7 @@
 				2D8B4083175A495600C8B04F /* NICommonMetrics.m in Sources */,
 				2D8B4084175A495600C8B04F /* NIDataStructures.m in Sources */,
 				2D8B4085175A495600C8B04F /* NIDebuggingTools.m in Sources */,
+				2D8A3149190A3A0200B36D72 /* JDOVideoEPGList.m in Sources */,
 				A74BFC47188671470042E034 /* JDONewsSpecialController.m in Sources */,
 				2D8B4086175A495600C8B04F /* NIDeviceOrientation.m in Sources */,
 				2D8B4087175A495600C8B04F /* NIError.m in Sources */,
@@ -3987,6 +3998,7 @@
 				2D93122D17604A3900C73802 /* common.js in Sources */,
 				2D8DB0A31760C6DB00DB3EF0 /* NILauncherButtonView.m in Sources */,
 				2D8DB0A41760C6DB00DB3EF0 /* NILauncherPageView.m in Sources */,
+				2D8A314C190A5CCB00B36D72 /* JDOVideoEPGModel.m in Sources */,
 				2D8DB0A51760C6DB00DB3EF0 /* NILauncherView.m in Sources */,
 				2D8DB0A61760C6DB00DB3EF0 /* NILauncherViewController.m in Sources */,
 				2D8DB0A71760C6DB00DB3EF0 /* NILauncherViewModel.m in Sources */,
@@ -4102,7 +4114,7 @@
 				2DA81F9A17967F1E00A528BA /* JDOWeatherForcast.m in Sources */,
 				2D0DE2F91796940500A7C813 /* AbstractActionSheetPicker.m in Sources */,
 				2D0DE2FA1796940500A7C813 /* ActionSheetCustomPicker.m in Sources */,
-				2DF49D141901143E00C866AF /* JDOVideoReplayList.m in Sources */,
+				2DF49D141901143E00C866AF /* JDOVideoEPG.m in Sources */,
 				2D0DE2FB1796940500A7C813 /* ActionSheetDatePicker.m in Sources */,
 				2D0DE2FC1796940500A7C813 /* ActionSheetDistancePicker.m in Sources */,
 				2D0DE2FD1796940500A7C813 /* ActionSheetStringPicker.m in Sources */,

@@ -11,8 +11,9 @@
 
 @class JDOVideoModel;
 @class JDOToolBar;
+@protocol JDOVideoEPGDelegate;
 
-@interface JDOVideoDetailController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate,VMediaPlayerDelegate>
+@interface JDOVideoDetailController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate,VMediaPlayerDelegate,JDOVideoEPGDelegate>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
