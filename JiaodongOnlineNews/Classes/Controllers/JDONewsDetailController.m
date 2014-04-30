@@ -95,7 +95,8 @@ NSDate *modifyTime;
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
         [self setCurrentState:ViewStatusLoading];
-        [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id,@"advCid":@"35",@"advLimit":@"1"} success:^(AFHTTPRequestOperation *operation, id object) {
+            id responseObject = [((NSDictionary *)object) objectForKey:@"data"];
             if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];

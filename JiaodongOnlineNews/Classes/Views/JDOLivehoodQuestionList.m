@@ -15,6 +15,9 @@
 #import "FXLabel.h"
 #import "InsetsTextField.h"
 #import "CustomIOS7AlertView.h"
+#import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
 //#import "XYInputView.h"
 
 #define QuestionList_Page_Size 20
@@ -334,7 +337,11 @@
 
     // 有可能再翻页之后再进行搜索,所以需要将页码置为1
     self.currentPage = 1;
-    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOQuestionModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOArrayModel" config:config params:[self listParam] success:^(JDOArrayModel *model) {
+        NSArray *dataList = model.data;
         [self setCurrentState:ViewStatusNormal];
         if(dataList == nil || dataList.count == 0){
             // 搜索时很有可能返回结果为空
@@ -357,8 +364,11 @@
     }
     
     self.currentPage = 1;
-    
-    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList)  {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOQuestionModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" config:config params:[self listParam] success:^(JDOArrayModel *model)  {
+        NSArray *dataList = model.data;
         [self.tableView.pullToRefreshView stopAnimating];
         if(dataList == nil || dataList.count == 0){
             self.noDataView.hidden = false;
@@ -406,8 +416,11 @@
         return ;
     }
     self.currentPage += 1;
-
-    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOQuestionModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" config:config params:[self listParam] success:^(JDOArrayModel *model) {
+        NSArray *dataList = model.data;
         [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;
         if(dataList == nil || dataList.count == 0){    // 数据加载完成

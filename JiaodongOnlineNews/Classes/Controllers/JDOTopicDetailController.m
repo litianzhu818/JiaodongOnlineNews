@@ -92,7 +92,8 @@ NSArray *imageUrls;
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
         [self setCurrentState:ViewStatusLoading];
-        [[JDOJsonClient sharedClient] getPath:TOPIC_DETAIL_SERVICE parameters:@{@"aid":self.topicModel.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[JDOJsonClient sharedClient] getPath:TOPIC_DETAIL_SERVICE parameters:@{@"aid":self.topicModel.id} success:^(AFHTTPRequestOperation *operation, id object) {
+            id responseObject = [(NSDictionary *)object objectForKey:@"data"];
             if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];

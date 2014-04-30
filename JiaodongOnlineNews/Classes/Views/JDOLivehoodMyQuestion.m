@@ -103,7 +103,8 @@
     self.idsArray = [NSKeyedUnarchiver unarchiveObjectWithFile: [[SharedAppDelegate cachePath] stringByAppendingPathComponent:@"QuesMessage"]];
     if (self.idsArray) {
         // 有可能再翻页之后再进行搜索,所以需要将页码置为1
-        [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSArray *dataList) {
+        [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" params:[self listParam] success:^(NSDictionary *dic) {
+            NSArray *dataList = [dic objectForKey:@"data"];
             [self setCurrentState:ViewStatusNormal];
             if(dataList == nil || dataList.count == 0){
                 [self.tableView setHidden:YES];

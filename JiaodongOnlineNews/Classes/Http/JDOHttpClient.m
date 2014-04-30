@@ -55,7 +55,6 @@
 // 此时使用HttpClient类型代替JsonClient
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
-    
     [self getJSONByServiceName:serviceName modelClass:modelClass config:[DCParserConfiguration configuration] params:params success:success failure:failure];
     
 }
