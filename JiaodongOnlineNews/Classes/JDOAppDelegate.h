@@ -23,9 +23,13 @@
 @property (strong, nonatomic) NSString *convenienceCachePath;
 
 @property (assign, nonatomic) NSString * currentPushTag;
+@property (nonatomic) BOOL hasNewAction;
+
 
 - (IIViewDeckController *)generateControllerStack;
 - (void)checkForNewVersion;
 - (void)promptForRating;
+- (void)advViewClicked;
+- (void)checkForNewAction;
 
 @end

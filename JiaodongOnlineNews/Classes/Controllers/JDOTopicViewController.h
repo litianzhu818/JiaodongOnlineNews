@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HGPageScrollView.h"
 #import "HGPageImageView.h"
+#import "JDOAppDelegate.h"
 
 @interface JDOTopicViewController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate,HGPageScrollViewDelegate, HGPageScrollViewDataSource>
 
@@ -23,6 +24,8 @@
 @property (nonatomic,copy) NSString *modelClass;
 @property (nonatomic,strong) NSMutableDictionary *listParam;
 @property (nonatomic,assign) BOOL isCollect;//判断是否是从收藏列表里进入，如果是的话返回右菜单
+
+@property (nonatomic,strong) JDOAppDelegate *myDelegate;
 
 - (void) returnFromDetail;
 

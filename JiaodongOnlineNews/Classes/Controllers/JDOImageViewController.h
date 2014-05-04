@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "JDOListViewController.h"
+#import "JDOAppDelegate.h"
+
 @interface JDOImageViewController : JDOListViewController< UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) JDOAppDelegate *myDelegate;
 
 @end

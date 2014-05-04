@@ -11,7 +11,6 @@
 #import "JDOViolationViewController.h"
 #import "JDOBusLIstViewController.h"
 #import "JDOLifeKnowledgeViewController.h"
-
 #import "JDOShipViewController.h"
 
 @interface JDOConvenienceController () <NILauncherViewModelDelegate>
@@ -22,6 +21,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+        self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSArray *icons = @[@"bus",@"transport",@"train",@"ship",@"breakrule",@"airplane",@"telnumber",@"lifeknowledge",@"tobecontinued",@"",@"",@""];
         NSArray *titles = @[@"公交班次",@"客运时刻",@"火车时刻",@"船运时刻",@"违章查询",@"航空时刻",@"常用电话",@"生活常识",@"敬请期待",@"",@"",@""];
         
@@ -43,6 +43,16 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (self.myDelegate.hasNewAction) {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateHighlighted];
+    } else {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateHighlighted];
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

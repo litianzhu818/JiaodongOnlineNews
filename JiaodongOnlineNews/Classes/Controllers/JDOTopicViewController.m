@@ -32,6 +32,7 @@
 -(id)init{
     
     if(self = [super init]){
+        self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
         self.serviceName = TOPIC_LIST_SERVICE;
         self.listArray = [[NSMutableArray alloc] initWithCapacity : 10];
         self.modelClass = @"JDOTopicModel";
@@ -42,6 +43,17 @@
         self.currentPage = 1;
     }
     return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (self.myDelegate.hasNewAction) {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateHighlighted];
+    } else {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateHighlighted];
+    }
 }
 
 -(void)loadView{
