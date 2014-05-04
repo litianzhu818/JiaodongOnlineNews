@@ -15,5 +15,6 @@
 
 @property (nonatomic,strong) NIPagingScrollView *scrollView;
 @property (nonatomic,strong) JDOPageControl *pageControl;
+@property (nonatomic,strong) JDOAppDelegate *myDelegate;
 
 @end

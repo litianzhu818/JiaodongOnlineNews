@@ -35,8 +35,8 @@
     if (self) {
         self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
         _lastSelectedRow = 0;
-        iconNames = [[NSMutableArray alloc] initWithArray:@[@"menu_news",@"menu_party",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood"]];
-        iconSelectedNames = [[NSMutableArray alloc] initWithArray:@[@"menu_news_selected",@"menu_party_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected"]];
+        iconNames = @[@"menu_news",@"menu_party",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood",@"menu_livehood"];
+        iconSelectedNames = @[@"menu_news_selected",@"menu_party_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected",@"menu_livehood_selected"];
         //iconTitles = @[@"胶东在线",@"精选图片",@"每日一题",@"便民查询",@"网上民声"];
     }
     return self;

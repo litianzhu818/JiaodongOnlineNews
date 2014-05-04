@@ -78,6 +78,18 @@
     [self setScrollView:nil];
 }
 
+//如果有新活动，设置左上角图标提醒
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (self.myDelegate.hasNewAction) {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateHighlighted];
+    } else {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateHighlighted];
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     return YES;
 }
