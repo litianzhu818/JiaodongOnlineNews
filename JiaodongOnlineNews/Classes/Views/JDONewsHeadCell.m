@@ -20,6 +20,7 @@
 @implementation JDONewsHeadCell {
     NSArray *originModels;
     NSArray *originImages;
+    NSTimer *myTimer;
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -68,6 +69,7 @@
         [self.contentView addSubview:_pageControl];
         
         self.currentPage = 0;
+        myTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(scrollToNextPage:) userInfo:nil repeats:true];
     }
     return self;
 }
@@ -142,11 +144,35 @@
 }
 
 - (void)dealloc{
+    [myTimer invalidate];
     for(UIImageView *imageView in self.imageViews){
         [imageView removeGestureRecognizer:[imageView.gestureRecognizers lastObject] ];
     }
 }
 
+-(void)scrollToNextPage:(id)sender{
+    
+    float pageWidth = CGRectGetWidth(self.bounds);
+    int page = _scrollView.contentOffset.x / pageWidth;
+    if (page == _models.count-1) {
+        page=0;
+    } else {
+        page+=1;
+    }
+    CGRect rect=CGRectMake(page*self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+    [_scrollView scrollRectToVisible:rect animated:TRUE];
+
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    if ([myTimer isValid]) {
+        float pageWidth = CGRectGetWidth(self.bounds);
+        self.currentPage = _scrollView.contentOffset.x / pageWidth;
+        JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self.currentPage];
+        _pageControl.currentPage = [originModels indexOfObject:newsModel];
+        _titleLabel.text = newsModel.title;
+    }
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // 修改pageControl的位置和titleLabel的内容
@@ -204,6 +230,16 @@
             }
         }
     }
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [myTimer invalidate];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    myTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(scrollToNextPage:) userInfo:nil repeats:true];
 }
 
 -(void)setPageFrame {

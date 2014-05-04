@@ -17,6 +17,9 @@
 #import "JDONewsTableCell.h"
 #import "DCKeyValueObjectMapping.h"
 #import "DCParserConfiguration.h"
+#import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
 
 #define Default_Image @"news_head_placeholder.png"
 
@@ -105,8 +108,11 @@
 //    }];
     
 //    // 加载列表
-    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SPECIAL_SERVICE modelClass:@"JDONewsModel" params:self.newsListParam success:^(NSArray *dataList) {
-        
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SPECIAL_SERVICE modelClass:@"JDOArrayModel" config:config params:self.newsListParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];

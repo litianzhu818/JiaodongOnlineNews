@@ -186,7 +186,8 @@
     }
     NSDictionary *param = @{@"letter":deptKey};
     // 加载列表
-    [[JDOJsonClient sharedClient] getJSONByServiceName:BRANCHS_LIST_SERVICE modelClass:nil params:param success:^(NSArray *dataList) {
+    [[JDOJsonClient sharedClient] getJSONByServiceName:BRANCHS_LIST_SERVICE modelClass:nil params:param success:^(NSDictionary *dic) {
+        NSArray *dataList = [dic objectForKey:@"data"];
         if( dataList == nil || dataList.count == 0){  /* NSDictionary : dept_code,dept_name */
             [self dismissHUDOnLoadFailed:@"没有部门"];
         }else{

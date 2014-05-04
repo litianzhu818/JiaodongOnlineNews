@@ -26,6 +26,7 @@
 @property (nonatomic,copy) NSString *clicknum;//点击量
 @property (nonatomic,copy) NSArray *relates;
 @property (nonatomic,copy) NSString *tinyurl;
+@property (nonatomic,copy) NSArray *advs;
 
 + (MGTemplateEngine *) sharedTemplateEngine;
 + (NSString *) mergeToHTMLTemplateFromDictionary:(NSDictionary *)dictionary;

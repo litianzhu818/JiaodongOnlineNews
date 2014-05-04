@@ -208,7 +208,7 @@
     
     [[JDOJsonClient sharedClient] getPath:VIOLATION_SERVICE parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([[(NSDictionary *)responseObject objectForKey:@"status"] isKindOfClass:[NSNumber class]]) {
-            NSArray *datas = [(NSDictionary *)responseObject objectForKey:@"data"];
+            NSArray *datas = [[(NSDictionary *)responseObject objectForKey:@"data"] objectForKey:@"data"];
             [defaultback setHidden:YES];
             [resultline_shadow setHidden:NO];
             [resultline setHidden:NO];

@@ -655,7 +655,8 @@
     }
     NSDictionary *param = @{@"letter":deptKey};
     // 加载列表
-    [[JDOJsonClient sharedClient] getJSONByServiceName:BRANCHS_LIST_SERVICE modelClass:nil params:param success:^(NSArray *dataList) {
+    [[JDOJsonClient sharedClient] getJSONByServiceName:BRANCHS_LIST_SERVICE modelClass:nil params:param success:^(NSDictionary *dic) {
+        NSArray *dataList = [dic objectForKey:@"data"];
         if( dataList != nil && dataList.count > 0){  /* NSDictionary : dept_code,dept_name */
             [self recordLastUpdateSuccessTime:row];
             [NSKeyedArchiver archiveRootObject:dataList toFile:[[SharedAppDelegate cachePath] stringByAppendingPathComponent:[@"LivehoodDeptCache" stringByAppendingFormat:@"%d",row+1]]];

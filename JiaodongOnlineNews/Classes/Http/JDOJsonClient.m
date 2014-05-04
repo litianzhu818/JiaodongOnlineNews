@@ -21,6 +21,15 @@
     return _sharedClient;
 }
 
++ (JDOJsonClient *)sharedVideoClient {
+    static JDOJsonClient *_sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedClient = [[JDOJsonClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_VIDEO_URL]];
+    });
+    return _sharedClient;
+}
+
 - (id)initWithBaseURL:(NSURL *)url {
     if (self = [super initWithBaseURL:url]) {
         [AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"text/html"]];

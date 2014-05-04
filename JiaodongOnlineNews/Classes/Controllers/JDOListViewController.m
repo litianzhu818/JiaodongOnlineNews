@@ -10,6 +10,9 @@
 #import "SVPullToRefresh.h"
 #import "NimbusPagingScrollView.h"
 #import "Reachability.h"
+#import "DCParserConfiguration.h"
+#import "DCArrayMapping.h"
+#import "JDOArrayModel.h"
 
 #define Default_Page_Size 20
 
@@ -138,7 +141,11 @@
     }else{  // 从网络加载数据，切换到loading状态
         [self setCurrentState:ViewStatusLoading];   
     }
-    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:NSClassFromString(self.modelClass) forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:@"JDOArrayModel" config:config params:self.listParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         [self setCurrentState:ViewStatusNormal];
         if(dataList == nil || dataList.count == 0){
             _noDataView.hidden = false;
@@ -160,8 +167,11 @@
     
     self.currentPage = 1;
     [self.listParam setObject:@1 forKey:@"p"];
-    
-    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList)  {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:NSClassFromString(self.modelClass) forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:@"JDOArrayModel" config:config params:self.listParam success:^(JDOArrayModel *dataModel)  {
+        NSArray *dataList = (NSArray *)dataModel.data;
         [self.tableView.pullToRefreshView stopAnimating];
         if(dataList == nil || dataList.count == 0){
             _noDataView.hidden = false;  
@@ -231,8 +241,11 @@
     
     self.currentPage += 1;
     [self.listParam setObject:[NSNumber numberWithInt:self.currentPage] forKey:@"p"];
-    
-    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:self.modelClass params:self.listParam success:^(NSArray *dataList) {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:NSClassFromString(self.modelClass) forAttribute:@"data" onClass:[JDOArrayModel class]];
+    [config addArrayMapper:mapper];
+    [[JDOHttpClient sharedClient] getJSONByServiceName:_serviceName modelClass:@"JDOArrayModel" config:config params:self.listParam success:^(JDOArrayModel *dataModel) {
+        NSArray *dataList = (NSArray *)dataModel.data;
         [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;
         if(dataList == nil || dataList.count == 0){    // 数据加载完成

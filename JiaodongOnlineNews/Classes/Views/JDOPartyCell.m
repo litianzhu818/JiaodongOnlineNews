@@ -23,10 +23,11 @@
 @property (nonatomic,strong) UIImageView *mpicView;
 @property (nonatomic,strong) UITextView *title;
 @property (nonatomic,strong) UIImageView *title_left;
+@property (nonatomic,strong) UIImageView *ready;
 @property (nonatomic,strong) UIImageView *title_right;
 @property (nonatomic,strong) UITextView *summary;
-@property (nonatomic,strong) UILabel *time;
-@property (nonatomic,strong) UILabel *place;
+//@property (nonatomic,strong) UILabel *time;
+//@property (nonatomic,strong) UILabel *place;
 @property (nonatomic,strong) UIImageView *background;
 
 @end
@@ -42,7 +43,7 @@
 //        self.layer.borderWidth = 1.0f;
 //        self.backgroundColor = [UIColor whiteColor];
         
-        _background = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, 0, [UIScreen mainScreen].bounds.size.width-Padding*2, 380.0f)];
+        _background = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, 0, [UIScreen mainScreen].bounds.size.width-Padding*2, 335.0f)];
         
         _background.image = [UIImage imageNamed:@"party_bound"];
         [self.contentView addSubview:_background];
@@ -58,12 +59,6 @@
         //_mpicView.layer.masksToBounds = true;
         //_mpicView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_mpicView];
-        
-//        self.imageMask = [[UIImageView alloc] initWithFrame:CGRectMake(Padding, Padding, _mpicView.width-Padding*2, imageHeight)];
-//        self.imageMask.image = [UIImage imageNamed:@"topic_image_mask"];
-//        [self.contentView addSubview:self.imageMask];
-        
-        
         
         //float font18Height = [UIFont boldSystemFontOfSize:18].lineHeight;
         _title = [[UITextView alloc] initWithFrame:CGRectMake(Padding+10, CGRectGetMaxY(_mpicView.frame)+5, _mpicView.frame.size.width-15/*左边括号的宽度*/, 35)];
@@ -92,25 +87,28 @@
         self.summary.editable = false;
         [self.contentView addSubview:self.summary];
         
-        UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(self.summary.frame)+2, 15, 15)];
-        timeIcon.image = [UIImage imageNamed:@"time_icon"];
-        [self.contentView addSubview:timeIcon];
+        _ready = [[UIImageView alloc] initWithFrame:CGRectMake(220, _mpicView.frame.size.height+30, 80.0f, 50.0f)];
+        [self.contentView addSubview:self.ready];
         
-        self.time = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(timeIcon.frame)+5, CGRectGetMaxY(self.summary.frame), self.summary.bounds.size.width-timeIcon.bounds.size.width, 20)];
-        self.time.textColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.time.backgroundColor = [UIColor clearColor];
-        self.time.font = [UIFont systemFontOfSize:14];
-        [self.contentView addSubview:self.time];
+//        UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(self.summary.frame)+2, 15, 15)];
+//        timeIcon.image = [UIImage imageNamed:@"time_icon"];
+//        [self.contentView addSubview:timeIcon];
+//        
+//        self.time = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(timeIcon.frame)+5, CGRectGetMaxY(self.summary.frame), self.summary.bounds.size.width-timeIcon.bounds.size.width, 20)];
+//        self.time.textColor = [UIColor colorWithHex:Gray_Color_Type1];
+//        self.time.backgroundColor = [UIColor clearColor];
+//        self.time.font = [UIFont systemFontOfSize:14];
+//        [self.contentView addSubview:self.time];
+//        
+//        UIImageView *placeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(timeIcon.frame) + 2, 15, 15)];
+//        placeIcon.image = [UIImage imageNamed:@"addr_icon"];
+//        [self.contentView addSubview:placeIcon];
         
-        UIImageView *placeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Padding+4+10, CGRectGetMaxY(timeIcon.frame) + 2, 15, 15)];
-        placeIcon.image = [UIImage imageNamed:@"addr_icon"];
-        [self.contentView addSubview:placeIcon];
-        
-        self.place = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(placeIcon.frame)+5, CGRectGetMaxY(timeIcon.frame)+2, self.summary.bounds.size.width-placeIcon.bounds.size.width, 20)];
-        self.place.textColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.place.backgroundColor = [UIColor clearColor];
-        self.place.font = [UIFont systemFontOfSize:14];
-        [self.contentView addSubview:self.place];
+//        self.place = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(placeIcon.frame)+5, CGRectGetMaxY(timeIcon.frame)+2, self.summary.bounds.size.width-placeIcon.bounds.size.width, 20)];
+//        self.place.textColor = [UIColor colorWithHex:Gray_Color_Type1];
+//        self.place.backgroundColor = [UIColor clearColor];
+//        self.place.font = [UIFont systemFontOfSize:14];
+//        [self.contentView addSubview:self.place];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -162,13 +160,24 @@
         [_summary setFrame:CGRectMake(Padding+10, CGRectGetMaxY(_separatorLine.frame), _mpicView.frame.size.width-8, 100)];
     }
     
-    
-    
     self.summary.text = partyModel.summary;
-    NSString *starttime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_starttime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
-    NSString *endtime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_endtime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
-    self.time.text = [[starttime stringByAppendingString:@"--"] stringByAppendingString:endtime];
-    self.place.text = partyModel.active_address;
+    
+    NSDate *starttime = [JDOCommonUtil formatString:self.partyModel.active_starttime withFormatter:DateFormatYMDHMS];
+    NSDate *endtime = [JDOCommonUtil formatString:self.partyModel.active_endtime withFormatter:DateFormatYMDHMS];
+    NSDate *now = [NSDate date];
+    if ([now compare:starttime] == NSOrderedAscending) {
+        _ready.hidden = FALSE;
+        _ready.image = [UIImage imageNamed:@"party_ready"];
+    } else if([now compare:endtime] == NSOrderedDescending){
+        _ready.hidden = FALSE;
+        _ready.image = [UIImage imageNamed:@"party_end"];
+    } else {
+        _ready.hidden = TRUE;
+    }
+//    NSString *starttime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_starttime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
+//    NSString *endtime = [JDOCommonUtil formatDate:[JDOCommonUtil formatString:partyModel.active_endtime withFormatter:DateFormatYMDHMS] withFormatter:DateFormatMDHM];
+//    self.time.text = [[starttime stringByAppendingString:@"--"] stringByAppendingString:endtime];
+//    self.place.text = partyModel.active_address;
     
     //self.title.bounds.size.height = titieHeight;
 }

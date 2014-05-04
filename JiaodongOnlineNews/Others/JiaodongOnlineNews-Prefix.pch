@@ -49,6 +49,7 @@
 
 // 新闻
 #define Headline_Height 176.0f
+#define News_Cell_Image_Height 100.0f
 #define News_Cell_Height 70.0f
 #define Review_Font_Size 14
 
@@ -89,10 +90,14 @@
 #define Global_Receive_Gesture_Tag 88888
 
 // 服务器端接口
-#define SERVER_QUERY_URL [NSString stringWithFormat:@"http://p.jiaodong.net/mobileQuery/V%@",[[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""] substringToIndex:2]]
+#define SERVER_QUERY_URL2 [NSString stringWithFormat:@"http://192.168.10.7/mobileQuery/V%@",[[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""] substringToIndex:2]]
+#define SERVER_QUERY_URL1 @"http://192.168.10.7/mobileQuery/V11/"
+#define SERVER_QUERY_URL @"http://p.jiaodong.net/mobileQuery/V11/"
+#define SERVER_RESOURCE_URL1 @"http://192.168.10.7/jdmsys/"
 #define SERVER_RESOURCE_URL @"http://p.jiaodong.net/jdmsys/"
+#define SERVER_VIDEO_URL @"http://api.av.jiaodong.net:8080/"
 
-#define ADV_SERVICE @"Data/getAdv"
+#define ADV_SERVICE @"Data/getAdv" // 广告位
 #define IMAGE_SERVICE @"Data/getImages"
 #define PARTY_SERVICE @"Data/getActives"
 #define PARTY_DETAIL_SERVICE @"Data/getActiveDetail"
@@ -125,4 +130,5 @@
 #define SETVIOPUSHPERMISSION_SERVICE @"Data/setVioPushPermission"
 #define DELVIOLATIONINFO_SERVICE @"Data/delViolationInfo"
 #define SETNEWSPUSH @"Data/bindClientConfig"
-#define GET_CHANNELS @"Data/getChannels"
+#define GET_CHANNELS @"Data/getChannels" // 新闻频道列表
+#define VIDEO_LIVE @"mcms/api2/mod/live/" // 直播列表

@@ -20,6 +20,7 @@
 #import "JDONewsHeadCell.h"
 #import "JDONewsCategoryView.h"
 #import "JDOPageControl.h"
+#import "JDOVideoViewController.h"
 
 @interface JDOCenterViewController ()
 
@@ -99,6 +100,15 @@
     return _controller;
 }
 
++ (JDOVideoViewController *) sharedVideoViewController{
+    static JDOVideoViewController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOVideoViewController alloc] init];
+    });
+    return _controller;
+}
+
 - (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
@@ -119,6 +129,9 @@
             break;
         case MenuItemParty:
             controller = [[self class] sharedPartyViewController];
+            break;
+        case MenuItemVideo:
+            controller = [[self class] sharedVideoViewController];
             break;
         default:
             break;

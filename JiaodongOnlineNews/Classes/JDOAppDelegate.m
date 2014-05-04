@@ -83,7 +83,7 @@
             NSLog(@"获取广告页json出错:%@",error);
             return;
         }
-        NSDictionary *jsonObject = [jsonData objectFromJSONData];
+        NSDictionary *jsonObject = [[jsonData objectFromJSONData] objectForKey:@"data"];
         
         // 每次广告图更新后的URL会变动，则URL缓存就能够区分出是从本地获取还是从网络获取，没有必要使用版本号机制
         NSString *advServerURL = [jsonObject valueForKey:@"path"];

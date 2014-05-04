@@ -30,6 +30,15 @@
     return _sharedClient;
 }
 
++ (JDOHttpClient *)sharedVideoClient {
+    static JDOHttpClient *_sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedClient = [[JDOHttpClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_VIDEO_URL]];
+    });
+    return _sharedClient;
+}
+
 - (id)initWithBaseURL:(NSURL *)url {
     if (self = [super initWithBaseURL:url]) {
         [self registerHTTPOperationClass:[AFHTTPRequestOperation class]];
@@ -46,7 +55,6 @@
 // 此时使用HttpClient类型代替JsonClient
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
-    
     [self getJSONByServiceName:serviceName modelClass:modelClass config:[DCParserConfiguration configuration] params:params success:success failure:failure];
     
 }
