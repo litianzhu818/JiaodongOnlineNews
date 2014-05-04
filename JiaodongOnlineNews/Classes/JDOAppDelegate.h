@@ -22,8 +22,10 @@
 @property (strong, nonatomic) NSString *partyDetailCachePath;
 @property (strong, nonatomic) NSString *convenienceCachePath;
 
-@property (assign, nonatomic) NSString * currentPushTag;
+@property (assign, nonatomic) NSString *currentPushTag;
 @property (nonatomic) BOOL hasNewAction;
+@property (nonatomic) BOOL advHasClickd;
+@property (nonatomic, strong) NSString *advTargetId;
 
 
 - (IIViewDeckController *)generateControllerStack;

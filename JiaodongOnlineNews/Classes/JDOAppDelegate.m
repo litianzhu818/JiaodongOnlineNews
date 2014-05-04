@@ -40,7 +40,7 @@
 //#import "iOSHierarchyViewer.h"
 
 #define splash_stay_time 1.0 //1.0
-#define advertise_stay_time 1.0 //2.0
+#define advertise_stay_time 2.0
 #define splash_adv_fadetime 0.5
 #define adv_main_fadetime 0.5
 #define max_memory_cache 10
@@ -71,6 +71,7 @@
 }
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
+    self.advHasClickd = NO;
     advView.userInteractionEnabled = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         int width = [[NSNumber numberWithFloat:320*[UIScreen mainScreen].scale] intValue];
@@ -89,6 +90,7 @@
         NSString *advServerURL = [jsonObject valueForKey:@"path"];
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
         NSString *advLocalURL = [userDefault objectForKey:@"adv_url"];
+        self.advTargetId = [jsonObject valueForKey:@"targetid"];
         
         // 第一次加载或者NSUserDefault被清空，以及服务器地址与本地不一致时，从网络加载图片。
         if(advLocalURL ==nil || ![advLocalURL isEqualToString:advServerURL]){
@@ -175,7 +177,9 @@
 
 - (void)advViewClicked
 {
-    
+    if (self.advTargetId&&![self.advTargetId isEqualToString:@""]) {
+        self.advHasClickd = YES;
+    }
 }
 
 - (void)checkForNewAction
@@ -219,8 +223,10 @@
 //            self.deckController.view.frame = CGRectOffset(self.deckController.view.frame, 0, 20);
 //        }
         
+        if (self.advHasClickd) {
+            [self openNewsDetail:@"24018"];
+        } else if (launchOptions != nil){
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
-        if (launchOptions != nil){
             NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
             if (dictionary != nil){
                 NSString *newsId = [dictionary objectForKey:@"newsid"];
