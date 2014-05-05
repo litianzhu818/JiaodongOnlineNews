@@ -224,7 +224,7 @@
 //        }
         
         if (self.advHasClickd) {
-            [self openNewsDetail:@"24018"];
+            [self openNewsDetail:self.advTargetId];
         } else if (launchOptions != nil){
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
             NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];

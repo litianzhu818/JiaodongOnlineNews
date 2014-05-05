@@ -28,6 +28,7 @@
 #import "DCParserConfiguration.h"
 #import "DCArrayMapping.h"
 #import "JDOArrayModel.h"
+#import "JDOAdvCell.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -435,7 +436,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *headlineIdentifier = @"headlineIdentifier";
     static NSString *listIdentifier = @"listIdentifier";
-    
+    static NSString *advIdentifier = @"advIdentifier";
     if(indexPath.section == 0){
         JDONewsHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:headlineIdentifier];
         if(cell == nil){
@@ -450,6 +451,11 @@
         }
         return cell;
     }else{
+        if (indexPath.row == 3) {
+            JDOAdvCell *advcell = [tableView dequeueReusableCellWithIdentifier:advIdentifier];
+            return advcell;
+        }
+        
         listIdentifier = @"listIdentifier";
         JDONewsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
         JDONewsModel *newsModel = nil;
