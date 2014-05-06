@@ -76,7 +76,7 @@
 }
 - (void)setModel:(JDONewsModel *)newsModel{
     __block UIImageView *blockImageView = self.imageView;
-    [_imageView1 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+    [_imageView1 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[((NSDictionary *)[newsModel.g_pics objectAtIndex:0]) objectForKey:@"picurl"]]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         if(!cached){    // 非缓存加载时使用渐变动画
             CATransition *transition = [CATransition animation];
             transition.duration = 0.3;
@@ -87,7 +87,7 @@
     } failure:^(NSError *error) {
         
     }];
-    [_imageView2 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+    [_imageView2 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[((NSDictionary *)[newsModel.g_pics objectAtIndex:1]) objectForKey:@"picurl"]]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         if(!cached){    // 非缓存加载时使用渐变动画
             CATransition *transition = [CATransition animation];
             transition.duration = 0.3;
@@ -98,7 +98,7 @@
     } failure:^(NSError *error) {
         
     }];
-    [_imageView3 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+    [_imageView3 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[((NSDictionary *)[newsModel.g_pics objectAtIndex:2]) objectForKey:@"picurl"]]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
         if(!cached){    // 非缓存加载时使用渐变动画
             CATransition *transition = [CATransition animation];
             transition.duration = 0.3;

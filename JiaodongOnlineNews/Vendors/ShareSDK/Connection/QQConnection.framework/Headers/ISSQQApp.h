@@ -6,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
 #import "SSQQErrorInfo.h"
@@ -23,7 +22,6 @@
  *	@return	应用ID
  */
 - (NSString *)appId;
-
 
 /**
  *	@brief	分享文本信息
@@ -46,7 +44,6 @@
     description:(NSString *)description
             pic:(id<ISSCAttachment>)pic
          result:(SSShareResultEvent)result;
-
 
 /**
  *	@brief	分享新闻信息

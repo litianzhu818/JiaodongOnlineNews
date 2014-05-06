@@ -1,6 +1,4 @@
 //
-//  HTTPRequestParameters.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 
 /**
@@ -68,7 +65,6 @@
  *	@param 	dictionary 	请求参数字典
  */
 - (void)addParametersWithDictionary:(NSDictionary *)dictionary;
-
 
 /**
  *	@brief	删除参数

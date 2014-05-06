@@ -197,5 +197,26 @@ typedef enum
 }
 SSEverNoteType;
 
+/**
+ *	@brief	获得金币行为
+ */
+typedef enum
+{
+	SSObtainCoinsActionInitalActivation = 1, /**< 首次激活 */
+	SSObtainCoinsActionDailyActivation = 2, /**< 每日激活 */
+	SSObtainCoinsActionShare = 3 /**< 分享 */
+}
+SSObtainCoinsAction;
+
+/**
+ *	@brief	UI风格
+ */
+typedef enum
+{
+	SSUIStyleiOS7 = 0, /**< iOS7风格 */
+	SSUIStyleiOS7Below = 1 /**< iOS7系统版本以下风格 */
+}
+SSUIStyle;
+
 
 #endif

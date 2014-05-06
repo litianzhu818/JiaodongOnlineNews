@@ -146,6 +146,12 @@ NSArray *imageUrls;
         [centerController pushViewController:detailController animated:true];
         responseCallback(linkId);
     }];
+    [_bridge registerHandler:@"showAdv" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *linkId = [(NSDictionary *)data valueForKey:@"advid"];
+        NSLog(@"linkid: %@",linkId);
+#warning 这里做广告详情页的跳转
+        responseCallback(linkId);
+    }];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
@@ -184,7 +190,9 @@ NSArray *imageUrls;
     [newsDetail setObject:html forKey:@"content"];
     if ([dictionary objectForKey:@"advs"] != nil) {
         NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
-        [newsDetail setObject:adv_img forKey:@"adv"];
+        NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"id"];
+        [newsDetail setObject:adv_img forKey:@"advimg"];
+        [newsDetail setObject:advid forKey:@"advid"];
     }
     return newsDetail;
 }

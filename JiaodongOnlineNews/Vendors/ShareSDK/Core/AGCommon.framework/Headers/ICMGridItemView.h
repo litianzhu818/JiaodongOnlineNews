@@ -1,6 +1,4 @@
 //
-//  IGridItemView.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 
 /**
@@ -19,17 +16,20 @@
 @required
 
 /**
-	获取数据
-	@returns 数据对象
+ *	@brief	获取数据.
+ *
+ *	@return	数据对象.
  */
 - (id)data;
 
 
 /**
-	设置数据
-	@param data 数据对象
+ *	@brief	设置数据.
+ *
+ *	@param 	data 	数据对象.
  */
 - (void)setData:(id)data;
+
 
 /**
  *	@brief	获取索引
@@ -38,14 +38,11 @@
  */
 - (NSInteger)index;
 
-
 /**
  *	@brief	设置索引
  *
  *	@param 	index 	索引值
  */
 - (void)setIndex:(NSInteger)index;
-
-
 
 @end

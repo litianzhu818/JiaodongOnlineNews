@@ -1,6 +1,4 @@
 //
-//  IQuiltItemView.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 
 @protocol ICMQuiltItemViewConstructorDelegate;
@@ -42,7 +39,6 @@
  *          - (void)quiltItemView:(UIView<IQuiltItemView> *)quiltItemView frame:(CGRect)frame;
  */
 - (void)layout:(CGFloat)itemWidth;
-
 
 /**
  *	@brief	获取构造器协议对象

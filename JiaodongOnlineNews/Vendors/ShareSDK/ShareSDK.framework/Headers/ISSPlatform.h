@@ -76,6 +76,15 @@
 - (void)unregisterApp:(id<ISSPlatformApp>)app;
 
 /**
+ *	@brief	判断是否已经注册应用
+ *
+ *	@param 	appInfo 	应用信息
+ *
+ *	@return	YES 表示已经注册，NO 表示尚未注册
+ */
+- (BOOL)hasRegisteredWithAppInfo:(NSDictionary *)appInfo;
+
+/**
  *	@brief	获取已注册应用
  *
  *	@param 	key 	应用Key
