@@ -71,7 +71,6 @@
 }
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
-    self.advHasClickd = NO;
     advView.userInteractionEnabled = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         int width = [[NSNumber numberWithFloat:320*[UIScreen mainScreen].scale] intValue];
@@ -171,6 +170,7 @@
     }
     completion:^(BOOL finished){
         [splashView removeFromSuperview];
+        self.launchOptions = launchOptions;
         [self performSelector:@selector(navigateToMainView:) withObject:launchOptions afterDelay:advertise_stay_time];
     }];
 }
@@ -178,7 +178,14 @@
 - (void)advViewClicked
 {
     if (self.advTargetId&&![self.advTargetId isEqualToString:@""]) {
-        self.advHasClickd = YES;
+        [JDOAppDelegate cancelPreviousPerformRequestsWithTarget:self selector:@selector(navigateToMainView:) object:self.launchOptions];
+        
+        self.deckController = [self generateControllerStack];
+        [self.window insertSubview:self.deckController.view belowSubview:advView];
+        [advView removeFromSuperview];
+        [self.deckController.view removeFromSuperview];
+        self.window.rootViewController = self.deckController;
+        [self openNewsDetail:@"24001"];
     }
 }
 
@@ -202,6 +209,7 @@
 }
 
 - (void)navigateToMainView:(NSDictionary *)launchOptions{
+    advView.userInteractionEnabled = NO;
     self.deckController = [self generateControllerStack];
     bool showGuide = ![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce;
     if( showGuide ){
@@ -223,9 +231,7 @@
 //            self.deckController.view.frame = CGRectOffset(self.deckController.view.frame, 0, 20);
 //        }
         
-        if (self.advHasClickd) {
-            [self openNewsDetail:self.advTargetId];
-        } else if (launchOptions != nil){
+        if (launchOptions != nil){
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
             NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
             if (dictionary != nil){

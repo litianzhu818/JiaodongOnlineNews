@@ -106,7 +106,7 @@ NSDate *modifyTime;
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
                 
                 // 推送新闻不是从列表导航进入,所以newsModel中只存在id,其他JDOToolbarMoedl需要的信息都要从detail的信息中复制
-                if (self.isPushNotification) {  
+                if (self.isPushNotification) {
                     self.newsModel.title = [responseObject objectForKey:@"title"];
                     self.newsModel.summary = [responseObject objectForKey:@"summary"];
                     self.newsModel.mpic =  [responseObject objectForKey:@"mpic"];

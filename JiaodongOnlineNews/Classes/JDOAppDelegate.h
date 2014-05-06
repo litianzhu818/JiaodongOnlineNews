@@ -21,10 +21,9 @@
 @property (strong, nonatomic) NSString *topicDetailCachePath;
 @property (strong, nonatomic) NSString *partyDetailCachePath;
 @property (strong, nonatomic) NSString *convenienceCachePath;
-
+@property (strong, nonatomic) NSDictionary *launchOptions;
 @property (assign, nonatomic) NSString *currentPushTag;
 @property (nonatomic) BOOL hasNewAction;
-@property (nonatomic) BOOL advHasClickd;
 @property (nonatomic, strong) NSString *advTargetId;
 
 
