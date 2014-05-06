@@ -31,9 +31,11 @@ function clickImageEvent(event) {
             }
         }
     } else {
-        bridge.callHandler('showAdv', {'advid': $(this).attr("advid")}, function(response) {
-                           
-                           });
+        if($(this).attr("advid")){
+           bridge.callHandler('showAdv', {'advid': $(this).attr("advid")}, function(response) {
+                              
+                              });
+        }
 	}
 	
 }
