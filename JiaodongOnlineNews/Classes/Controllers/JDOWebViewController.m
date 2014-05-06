@@ -34,6 +34,16 @@ NSArray *imageUrls;
                                   ];
     return toolbarBtnConfig;
 }
+
+- (NSArray *)setupToolBarBtnConfigWithAdv {
+    NSArray *toolbarBtnConfig = @[
+                                  [NSNumber numberWithInt:ToolBarButtonReview],
+                                  [NSNumber numberWithInt:ToolBarButtonShare],
+                                  [NSNumber numberWithInt:ToolBarButtonFont],
+                                  ];
+    return toolbarBtnConfig;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -52,7 +62,11 @@ NSArray *imageUrls;
     
     [self.view addSubview:self.webView];
     
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:[self setupToolBarBtnConfig] widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    if (self.isAdv) {
+        _toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:[self setupToolBarBtnConfigWithAdv] widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    } else {
+        _toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:[self setupToolBarBtnConfig] widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    }
     _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     

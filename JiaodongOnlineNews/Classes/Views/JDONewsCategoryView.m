@@ -612,10 +612,12 @@
             JDOAdvCell *advcell = (JDOAdvCell *)[tableView cellForRowAtIndexPath:indexPath];
             NSLog(@"%d", [advcell getCurrentLayer]);
             NSString *newsid = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"murl"];
+            NSString *NewsTitle = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"title"];
             JDONewsModel *newsModel = [[JDONewsModel alloc] init];
             newsModel.id = newsid;
-            JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel];
-            detailController.isPushNotification = YES;
+            newsModel.title = NewsTitle;
+            newsModel.summary = @" ";
+            JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel Collect:NO isAdv:YES];
             JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
             [centerController pushViewController:detailController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
