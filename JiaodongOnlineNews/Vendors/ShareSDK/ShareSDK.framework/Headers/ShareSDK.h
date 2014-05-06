@@ -21,6 +21,8 @@
 #import "ISSShareViewDelegate.h"
 #import "ISSShareActionSheetItem.h"
 #import "ISSUserField.h"
+#import "SSAwardViewController.h"
+#import "UIViewController+ShareSDK.h"
 
 /**
  *	@brief	ShareSDK类，为整个SDK的顶层接口类，所有功能都由此类进行提供（包括分享、授权等等）
@@ -38,6 +40,9 @@
  *	@brief	注册应用。
  *
  *  @since  ver2.2.6
+ *  @since  ver2.9.0
+ *
+ *  @deprecated     已过期，默认会同时使用本地配置和服务器托管配置。其优先级为：服务器托管配置 > 本地配置
  *
  *	@param 	appKey 	应用Key,在ShareSDK官网中注册的应用Key
  *	@param 	useAppTrusteeship 	是否使用平台信息托管，如果为YES则获取在服务器中配置的平台信息，NO表示获取本地配置信息。
@@ -1010,6 +1015,14 @@
  */
 + (NSString *)version;
 
+/**
+ *	@brief	设置UI显示风格，默认为iOS7风格
+ *
+ *  @since  ver2.9.0
+ *
+ *	@param 	style 	UI显示风格
+ */
++ (void)setUIStyle:(SSUIStyle)style;
 
 
 #pragma mark 授权
@@ -1446,5 +1459,29 @@
                       type:(ShareType)type
              statusBarTips:(BOOL)statusBarTips
                     result:(SSPublishContentEventHandler)result;
+
+#pragma mark - 分享有奖
+
+/**
+ *	@brief	创建分享有奖视图控制器
+ *
+ *	@return	分享有奖视图控制器
+ */
++ (SSAwardViewController *)awardViewController;
+
+/**
+ *	@brief	设置获取金币通知处理
+ *
+ *	@param 	handler 	通知处理器
+ */
++ (void)setObtainCoinsHandler:(SSAwardObtainCoinsHandler)handler;
+
+/**
+ *	@brief	设置购买物品通知处理
+ *
+ *	@param 	handler 	通知处理器
+ */
++ (void)setBuyItemHandler:(SSAwardBuyItemHandler)handler;
+
 
 @end

@@ -6,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
 #import "SSDouBanUser.h"
@@ -15,7 +14,7 @@
 #import <ShareSDK/ShareSDKPlugin.h>
 
 /**
- *	@brief	新浪微博请求方式
+ *	@brief	豆瓣请求方式
  */
 typedef enum
 {

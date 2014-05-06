@@ -1,6 +1,4 @@
 //
-//  IEventDispatcher.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,9 +6,11 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 
+/**
+ *	@brief	事件派发器
+ */
 @protocol ICMEventDispatcher <NSObject>
 
 /**
@@ -24,7 +24,6 @@
                          target:(id)target
                          action:(SEL)action;
 
-
 /**
  *	@brief	移除通知监听
  *
@@ -34,14 +33,12 @@
 - (void)removeNotificationWithName:(NSString *)name
                             target:(id)target;
 
-
 /**
  *	@brief	移除某个监听目标的所有通知
  *
  *	@param 	target 	监听目标
  */
 - (void)removeAllNotificationWithTarget:(id)target;
-
 
 /**
  *	@brief	派发通知

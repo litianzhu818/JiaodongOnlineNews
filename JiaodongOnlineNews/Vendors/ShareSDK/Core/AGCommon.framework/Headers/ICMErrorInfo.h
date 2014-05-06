@@ -1,6 +1,4 @@
 //
-//  ICMErrorInfo.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 
 /**
@@ -22,31 +19,29 @@ typedef enum
 }
 CMErrorLevel;
 
-
 /**
  *	@brief	错误信息
  */
 @protocol ICMErrorInfo <NSObject>
 
-
 /**
- *	@brief	错误代码，如果为调用API出错则应该参考API错误码对照表，如果为HTTP错误，此属性则指示HTTP错误码。
+ *	@brief	获取错误代码，如果为调用API出错则应该参考API错误码对照表，如果为HTTP错误，此属性则指示HTTP错误码。
  *
  *	@return	错误代码
  */
 - (NSInteger)errorCode;
 
 /**
- *	@brief	错误描述，对应相应的错误码的描述
+ *	@brief	获取错误描述，对应相应的错误码的描述
  *
  *	@return	错误描述
  */
 - (NSString *)errorDescription;
 
 /**
- *	@brief	错误类型
+ *	@brief	获取错误级别
  *
- *	@return	错误类型
+ *	@return	错误级别
  */
 - (CMErrorLevel)errorLevel;
 

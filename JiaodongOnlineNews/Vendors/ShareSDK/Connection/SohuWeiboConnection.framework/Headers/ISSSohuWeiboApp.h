@@ -6,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
 #import "SSSohuWeiboUser.h"
@@ -24,7 +23,6 @@ typedef enum
 	SSSohuWeiboRequestMethodMultipartPost = 2 /**< Multipart POST方式，用于上传文件的api接口 */
 }
 SSSohuWeiboRequestMethod;
-
 
 /**
  *	@brief	搜狐微博应用
@@ -56,6 +54,7 @@ SSSohuWeiboRequestMethod;
  *	@brief	调用开放平台API
  *
  *	@param 	path 	路径
+ *  @param  method  请求方法
  *	@param 	params 	请求参数
  *  @param  user    授权用户,如果传入nil则表示默认的授权用户
  *  @param  result  返回回调

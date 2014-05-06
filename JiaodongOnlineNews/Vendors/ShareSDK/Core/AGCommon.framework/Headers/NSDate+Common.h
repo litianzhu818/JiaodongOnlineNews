@@ -1,6 +1,4 @@
 //
-//  NSDate+Additions.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,11 +6,13 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 
-
+/**
+ *	@brief	日期类目
+ */
 @interface NSDate (Common)
+
 
 /**
  *	@brief	获取NSDate的年份部分
@@ -68,7 +68,6 @@
  */
 + (NSInteger)getSecond:(NSDate *)date;
 
-
 /**
  *	@brief	根据字符串格式转换字符串为日期
  *
@@ -84,7 +83,7 @@
  *
  *	@param 	format 	日期格式字符串
  *	@param 	dateString 	日期字符串
- *	@param 	locale 	本地化参数
+ *	@param 	locale 	语言环境
  *
  *	@return	日期对象
  */

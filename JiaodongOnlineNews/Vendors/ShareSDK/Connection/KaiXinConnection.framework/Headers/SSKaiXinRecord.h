@@ -6,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import "SSKaiXinUser.h"
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
@@ -57,7 +56,6 @@
  *	@brief	原始数据
  */
 @property (nonatomic,retain) NSDictionary *sourceData;
-
 
 /**
  *	@brief	创建记录信息

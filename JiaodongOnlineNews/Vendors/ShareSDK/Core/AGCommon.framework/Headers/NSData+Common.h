@@ -1,6 +1,4 @@
 //
-//  NSData+Common.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,11 +6,14 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonCrypto.h>
 
+/**
+ *	@brief	NSData类目
+ */
 @interface NSData (Common)
+
 
 /**
  *	@brief	使用Key进行HMAC-SHA1加密
@@ -36,7 +37,6 @@
  *	@return	16进制字符串
  */
 - (NSString *)hexString;
-
 
 /**
  *	@brief	AES128位加密
@@ -97,7 +97,6 @@
 - (NSData *)dataUsingAES128DecryptWithKey:(NSData *)key
                                        iv:(NSData *)iv
                                   options:(CCOptions)options;
-
 
 /**
  *	@brief	AES256位加密

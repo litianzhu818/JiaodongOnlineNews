@@ -6,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import "SSDouBanCredential.h"
 #import <ShareSDKCoreService/ISSCUserDescriptor.h>
@@ -18,6 +17,7 @@
  */
 @interface SSDouBanUser : NSObject <ISSPlatformUser,
                                     NSCoding>
+
 /**
  *	@brief	所属平台
  */

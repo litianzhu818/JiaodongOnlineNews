@@ -68,4 +68,16 @@ typedef void(^SSPublishContentEventHandler) (ShareType type, SSResponseState sta
  */
 typedef void(^SSShareActionSheetItemClickHandler) ();
 
+/**
+ *	@brief	获取金币通知
+ */
+typedef void(^SSAwardObtainCoinsHandler) (SSObtainCoinsAction action, NSInteger coins);
+
+/**
+ *	@brief	购买商品通知
+ */
+typedef void(^SSAwardBuyItemHandler) (SSResponseState state, NSString *itemId, NSString *data, NSString *errorMsg);
+
+
+
 #endif

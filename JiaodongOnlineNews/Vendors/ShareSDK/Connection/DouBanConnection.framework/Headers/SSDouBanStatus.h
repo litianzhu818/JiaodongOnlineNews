@@ -6,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import "SSDouBanUser.h"
 #import <ShareSDKCoreService/ShareSDKCoreService.h>
@@ -59,11 +58,11 @@
 @property (nonatomic,retain) NSDictionary *sourceData;
 
 /**
- *	@brief	创建微博信息
+ *	@brief	创建广播信息
  *
  *	@param 	response 	服务器回复数据
  *
- *	@return	微博信息
+ *	@return	广播信息
  */
 + (SSDouBanStatus *)statusWithResponse:(NSDictionary *)response;
 

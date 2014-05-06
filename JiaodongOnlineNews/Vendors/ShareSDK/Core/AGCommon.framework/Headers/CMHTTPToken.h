@@ -1,6 +1,4 @@
 //
-//  HTTPToken.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import "CMEventDispatcher.h"
 
@@ -77,7 +74,6 @@
  */
 - (void)httpCacheResult:(CMHTTPToken *)token cacheData:(NSString *)cacheData;
 
-
 /**
  *	@brief	http错误
  *
@@ -129,7 +125,6 @@
  *	@brief	使用缓存回复, YES 表示使用， NO 表示不使用
  */
 @property (nonatomic) BOOL useCacheResponse;
-
 
 /**
  *	@brief	请求对象
@@ -196,7 +191,6 @@
                          worker:(id<ICMHTTPWorker>)worker;
 
 
-
 /**
  *	@brief	初始化令牌
  *
@@ -222,8 +216,6 @@
 - (id)initWithURLString:(NSString *)urlString
                userData:(id)userData
                  worker:(id<ICMHTTPWorker>)worker;
-
-
 
 /**
  *	@brief	初始化令牌
