@@ -683,6 +683,7 @@
 		D823DBC31762B88B0006F80B /* JDOConvenienceItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = D823DBC21762B88B0006F80B /* JDOConvenienceItemController.m */; };
 		D82D7C0B177975B50090E5C1 /* JDOViolationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */; };
 		D82D7C0C177975B60090E5C1 /* JDOViolationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */; };
+		D83410761917349C001FC692 /* JDOAdvCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D83410751917349C001FC692 /* JDOAdvCell.m */; };
 		D86423DA17A650620075B221 /* vio_result_label.png in Resources */ = {isa = PBXBuildFile; fileRef = D86423D917A650620075B221 /* vio_result_label.png */; };
 		D86423DC17A651810075B221 /* vio_result_background.png in Resources */ = {isa = PBXBuildFile; fileRef = D86423DB17A651810075B221 /* vio_result_background.png */; };
 		D86423DE17A6657E0075B221 /* vio_textfield_back.png in Resources */ = {isa = PBXBuildFile; fileRef = D86423DD17A6657D0075B221 /* vio_textfield_back.png */; };
@@ -1683,6 +1684,8 @@
 		D82D7C08177975B50090E5C1 /* JDOViolationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOViolationViewController.h; sourceTree = "<group>"; };
 		D82D7C09177975B50090E5C1 /* JDOViolationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOViolationViewController.m; sourceTree = "<group>"; };
 		D82D7C0A177975B50090E5C1 /* JDOViolationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOViolationViewController.xib; sourceTree = "<group>"; };
+		D83410741917349C001FC692 /* JDOAdvCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOAdvCell.h; sourceTree = "<group>"; };
+		D83410751917349C001FC692 /* JDOAdvCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOAdvCell.m; sourceTree = "<group>"; };
 		D83DAB711756DD6C0019B316 /* JDOFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOFeedbackViewController.h; sourceTree = "<group>"; };
 		D83DAB721756DD6C0019B316 /* JDOFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOFeedbackViewController.m; sourceTree = "<group>"; };
 		D83DAB731756DD6C0019B316 /* JDOFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JDOFeedbackViewController.xib; sourceTree = "<group>"; };
@@ -2346,6 +2349,8 @@
 				2D329AD41750A91100003EA2 /* JDOScrollView.m */,
 				2D89BA4A1754825600960614 /* JDONewsCategoryView.h */,
 				2D89BA4B1754825600960614 /* JDONewsCategoryView.m */,
+				D83410741917349C001FC692 /* JDOAdvCell.h */,
+				D83410751917349C001FC692 /* JDOAdvCell.m */,
 				2D86D5A3175885E50000AA6A /* JDONewsTableCell.h */,
 				2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */,
 				A740749918C45CC900B17E85 /* JDONewsImageTableCell.h */,
@@ -4198,6 +4203,7 @@
 				2DE46BB117B9ECCA0094F27B /* UIImage+Retina4.m in Sources */,
 				D8AF844917BA21B7005CB425 /* JDOSecondaryAskViewController.m in Sources */,
 				2DD8ED5917E2EBCA00A1038A /* Base64.m in Sources */,
+				D83410761917349C001FC692 /* JDOAdvCell.m in Sources */,
 				2DD8ED5A17E2EBCA00A1038A /* GzipCompressor.m in Sources */,
 				2DD8ED5C17E2EBCA00A1038A /* OpenUDID.m in Sources */,
 				A782FDD017D58F370015965D /* JDOPartyViewController.m in Sources */,

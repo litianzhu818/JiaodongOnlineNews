@@ -54,6 +54,9 @@ static NSString* TABLENAME = @"reads";
     [sql appendFormat:@"select id from %@ where",TABLENAME];
     for(int i = 0; i < [objs count]; ++i){
         id<JDOReadModel> obj = [objs objectAtIndex:i];
+        if ([obj isKindOfClass:[NSArray class]]) {
+            continue;
+        }
         if(i == 0){
             [sql appendFormat:@" id='%@' ",[obj id]];
         }else{
@@ -70,6 +73,9 @@ static NSString* TABLENAME = @"reads";
             NSString *field1Str = [[NSString alloc] initWithUTF8String: field1];
             for(int i = 0; i < [objs count]; ++i){
                 id<JDOReadModel> obj = [objs objectAtIndex:i];
+                if ([obj isKindOfClass:[NSArray class]]) {
+                    continue;
+                }
                 if([[obj id] isEqualToString:field1Str]){
                     [obj setRead:TRUE];
                     break;
