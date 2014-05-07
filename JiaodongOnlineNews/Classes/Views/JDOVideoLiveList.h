@@ -9,14 +9,14 @@
 #import "NimbusPagingScrollView.h"
 
 @protocol JDOStatusViewDelegate;
+@protocol JDOVideoLiveDelegate;
 
-@interface JDOVideoLiveList : NIPageView <JDOStatusView, UITableViewDelegate, UITableViewDataSource,JDOStatusViewDelegate>
+@interface JDOVideoLiveList : NIPageView <JDOStatusView, UITableViewDelegate, UITableViewDataSource,JDOStatusViewDelegate,JDOVideoLiveDelegate>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *listArray;
-@property (strong,nonatomic) UIView *rootView;
 
 - (id)initWithFrame:(CGRect)frame identifier:(NSString *)reuseId;
 

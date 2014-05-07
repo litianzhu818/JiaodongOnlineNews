@@ -11,6 +11,7 @@
 #import "WebViewJavascriptBridge_iOS.h"
 #import "SDImageCache.h"
 #import "JDOImageDetailController.h"
+#import "JDONewsDetailController.h"
 #import "JDOImageModel.h"
 #import "JDOImageDetailModel.h"
 #import "JDORegxpUtil.h"
@@ -162,8 +163,13 @@ NSArray *imageUrls;
     }];
     [_bridge registerHandler:@"showAdv" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *linkId = [(NSDictionary *)data valueForKey:@"advid"];
-        NSLog(@"linkid: %@",linkId);
-#warning 这里做广告详情页的跳转
+        JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+        newsModel.id = linkId;
+        newsModel.title = @" ";//[(NSDictionary *)data valueForKey:@"advtitle"];
+        newsModel.summary = @" ";
+        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel Collect:NO isAdv:YES];
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+        [centerController pushViewController:detailController animated:true];
         responseCallback(linkId);
     }];
 }
@@ -202,11 +208,13 @@ NSArray *imageUrls;
     }
     NSMutableDictionary *newsDetail = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
     [newsDetail setObject:html forKey:@"content"];
-    if ([dictionary objectForKey:@"advs"] != nil) {
+    if ([dictionary objectForKey:@"advs"] != nil && [dictionary objectForKey:@"advs"] != [NSNull null]) {
         NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
         NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"id"];
+        NSString *advtitle = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"title"];
         [newsDetail setObject:adv_img forKey:@"advimg"];
         [newsDetail setObject:advid forKey:@"advid"];
+        [newsDetail setObject:advtitle forKey:@"advtitle"];
     }
     return newsDetail;
 }

@@ -32,7 +32,7 @@ function clickImageEvent(event) {
         }
     } else {
         if($(this).attr("advid")){
-           bridge.callHandler('showAdv', {'advid': $(this).attr("advid")}, function(response) {
+            bridge.callHandler('showAdv', {'advid': $(this).attr("advid")}, function(response) {
                               
                               });
         }

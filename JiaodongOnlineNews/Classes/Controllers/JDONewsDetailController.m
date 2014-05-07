@@ -79,6 +79,14 @@ NSDate *modifyTime;
     return detailModel;
 }
 
+- (NSDictionary *) getParam{
+    if(self.isAdv){
+        return @{@"aid":self.newsModel.id};
+    } else {
+        return @{@"aid":self.newsModel.id,@"advCid":@"41",@"advLimit":@"1"};
+    }
+}
+
 - (void) loadWebView{
     NSMutableDictionary *detailModel = [self readNewsDetailFromLocalCache];
     if (self.isPushNotification) {  // 推送消息忽略缓存
@@ -97,7 +105,7 @@ NSDate *modifyTime;
         self.newsModel.tinyurl = [detailModel objectForKey:@"tinyurl"];
         //[self.navigationView setRightBtnCount:@"555"];
         [self.navigationView setRightBtnCount:[detailModel objectForKey:@"commentCount"]];
-        if (self.isAdv) {
+        if (self.isAdv) {//广告不显示来源和添加时间
             [detailModel removeObjectForKey:@"addtime"];
             [detailModel removeObjectForKey:@"source"];
             [detailModel removeObjectForKey:@"advs"];
@@ -109,13 +117,14 @@ NSDate *modifyTime;
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
         [self setCurrentState:ViewStatusLoading];
-        [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id,@"advCid":@"35",@"advLimit":@"1"} success:^(AFHTTPRequestOperation *operation, id object) {
+        [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:[self getParam] success:^(AFHTTPRequestOperation *operation, id object) {
             id responseObject = [((NSDictionary *)object) objectForKey:@"data"];
             if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
                 [self saveNewsDetailToLocalCache:responseObject];
+                NSMutableDictionary *mdic = [[NSMutableDictionary alloc] initWithDictionary:responseObject];
                 // 设置url短地址
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
                 
@@ -132,7 +141,7 @@ NSDate *modifyTime;
                     [detailModel removeObjectForKey:@"advs"];
                 }
                 [self.navigationView setRightBtnCount:[responseObject objectForKey:@"commentCount"]];
-                NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
+                NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:mdic]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
             }else{
