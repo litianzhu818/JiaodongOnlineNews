@@ -1,6 +1,4 @@
 //
-//  U6ImagePool.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import "CMImageLoader.h"
 
 /**
@@ -58,7 +55,7 @@
 /**
  *	@brief	获取图片
  *
- *	@param 	url 	图片路径，可以未本地或者网络路径
+ *	@param 	url 	图片路径，可以为本地或者网络路径
  *	@param 	cornerRadius 	圆角值，此值对应实际显示尺寸的圆角值
  *	@param 	size 	实际显示尺寸
  *
@@ -67,7 +64,6 @@
 - (CMImageLoader *)getImage:(NSString *)url
              cornerRadius:(CGFloat)cornerRadius
                      size:(CGSize)size;
-
 
 /**
  *	@brief	获取图片
@@ -83,7 +79,6 @@
              cornerRadius:(CGFloat)cornerRadius
                      size:(CGSize)size
                  clipType:(CMImageClipType)clipType;
-
 
 /**
  *	@brief	判断图片缓存是否存在,使用getImage:得到的图片用此方法

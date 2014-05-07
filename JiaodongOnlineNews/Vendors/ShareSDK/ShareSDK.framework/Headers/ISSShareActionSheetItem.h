@@ -7,11 +7,26 @@
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
 #import <Foundation/Foundation.h>
+#import "ShareSDKEventHandlerDef.h"
 
 /**
  *	@brief	分享菜单项协议
  */
 @protocol ISSShareActionSheetItem <NSObject>
 
+/**
+ *	@brief	标题
+ */
+- (NSString *)title;
+
+/**
+ *	@brief	图标
+ */
+- (UIImage *)icon;
+
+/**
+ *	@brief	点击事件处理器
+ */
+- (SSShareActionSheetItemClickHandler)clickHandler;
 
 @end

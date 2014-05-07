@@ -26,8 +26,10 @@
 #import "JDOPartyModel.h"
 #import "JDONewsSpecialModel.h"
 #import "DCParserConfiguration.h"
+#import "DCKeyValueObjectMapping.h"
 #import "DCArrayMapping.h"
 #import "JDOArrayModel.h"
+#import "JDOAdvCell.h"
 
 #define NewsHead_Page_Size 3
 #define NewsList_Page_Size 20
@@ -133,7 +135,7 @@
 
 // 不勾选“特荐[a]”则认为是列表，与其他选项是否勾选无关
 - (NSDictionary *) newsListParam{
-    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a"};
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a",@"advCid":@"40",@"advPosition":@"3",@"advPage":@"1",@"advLimit":@"4"};
 }
 
 // 后台勾选“特荐[a]”则认为是轮播，与其他选项是否勾选无关
@@ -185,8 +187,17 @@
     }];
     
     // 加载列表
-    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.newsListParam success:^(JDOArrayModel *dataModel) {
-        NSArray *dataList = (NSArray *)dataModel.data;
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" params:self.newsListParam success:^(JDOArrayModel *dataModel) {
+        NSArray *data = dataModel.data;
+        NSMutableArray *dataList = [[NSMutableArray alloc] init];
+        for (int i = 0; i < data.count; i++) {
+            if ([[data objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDONewsModel class]];
+                [dataList addObject:[mapper parseDictionary:[data objectAtIndex:i]]];
+            } else {
+                [dataList addObject:[data objectAtIndex:i]];
+            }
+        }
         if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
@@ -278,8 +289,18 @@
         [JDOCommonUtil showHintHUD:errorStr inView:self];
     }];
     // 刷新列表
-    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.newsListParam success:^(JDOArrayModel *dataModel) {
-        NSArray *dataList = (NSArray *)dataModel.data;
+    [[JDOHttpClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" params:self.newsListParam success:^(JDOArrayModel *dataModel) {
+        NSArray *data = dataModel.data;
+        NSMutableArray *dataList = [[NSMutableArray alloc] init];
+        for (int i = 0; i < data.count; i++) {
+            if ([[data objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDONewsModel class]];
+                [dataList addObject:[mapper parseDictionary:[data objectAtIndex:i]]];
+            } else {
+                [dataList addObject:[data objectAtIndex:i]];
+            }
+        }
+
         if(dataList != nil && dataList.count >0){
             [self.listArray removeAllObjects];
             [self.listArray addObjectsFromArray:dataList];
@@ -435,7 +456,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *headlineIdentifier = @"headlineIdentifier";
     static NSString *listIdentifier = @"listIdentifier";
-    
+    static NSString *advIdentifier = @"advIdentifier";
     if(indexPath.section == 0){
         JDONewsHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:headlineIdentifier];
         if(cell == nil){
@@ -450,6 +471,14 @@
         }
         return cell;
     }else{
+        if (self.listArray.count > 0&&![[self.listArray objectAtIndex:indexPath.row] isKindOfClass:[JDONewsModel class]]) {
+            JDOAdvCell *advcell = [tableView dequeueReusableCellWithIdentifier:advIdentifier];
+            if (advcell == nil) {
+                advcell = [[JDOAdvCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:advIdentifier datas:[self.listArray objectAtIndex:indexPath.row]];
+            }
+            return advcell;
+        }
+        
         listIdentifier = @"listIdentifier";
         JDONewsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:listIdentifier];
         JDONewsModel *newsModel = nil;
@@ -493,13 +522,17 @@
     if(indexPath.section == 0)  return Headline_Height;
     JDONewsModel *newsModel = nil;
     if(self.listArray.count > 0){
-        newsModel = [self.listArray objectAtIndex:indexPath.row];
-        NSArray *types = [newsModel.atype componentsSeparatedByString:@","];
-        for (int i=0; i<[types count]; i++) {
-            NSString *aType = [types objectAtIndex:i];
-            if ([aType isEqualToString:@"g"]) { // 图集
-                return News_Cell_Image_Height;
+        if ([[self.listArray objectAtIndex:indexPath.row] isKindOfClass:[JDONewsModel class]]) {
+            newsModel = [self.listArray objectAtIndex:indexPath.row];
+            NSArray *types = [newsModel.atype componentsSeparatedByString:@","];
+            for (int i=0; i<[types count]; i++) {
+                NSString *aType = [types objectAtIndex:i];
+                if ([aType isEqualToString:@"g"]) { // 图集
+                    return News_Cell_Image_Height;
+                }
             }
+        } else {
+            return Adv_Cell_Height;
         }
     }
     return News_Cell_Height;
@@ -509,73 +542,88 @@
     if(indexPath.section == 0){
         // section0 由于存在scrollView与didSelectRowAtIndexPath冲突，不会进入该函数，通过给UIImageView设置gesture的方式解决
     }else{
-        JDONewsModel* model = [self.listArray objectAtIndex:indexPath.row];
+        if ([[self.listArray objectAtIndex:indexPath.row] isKindOfClass:[JDONewsModel class]]) {
+            JDONewsModel* model = [self.listArray objectAtIndex:indexPath.row];
         
-        NSArray *types = [model.atype componentsSeparatedByString:@","];
-        for (int i=0; i<[types count]; i++) {
-            NSString *aType = [types objectAtIndex:i];
-            if ([aType isEqualToString:@"g"]) { // 图集
-                model.contentType = @"picture";
-                break;
-            } else if ([aType isEqualToString:@"t"]) {  // 话题
-                model.contentType = @"topic";
-                break;
-            } else if ([aType isEqualToString:@"ac"]) { // 活动
-                model.contentType = @"party";
-                break;
-            } else if ([aType isEqualToString:@"s"]) { // 专题
-                model.contentType = @"special";
-                break;
+            NSArray *types = [model.atype componentsSeparatedByString:@","];
+            for (int i=0; i<[types count]; i++) {
+                NSString *aType = [types objectAtIndex:i];
+                if ([aType isEqualToString:@"g"]) { // 图集
+                    model.contentType = @"picture";
+                    break;
+                } else if ([aType isEqualToString:@"t"]) {  // 话题
+                    model.contentType = @"topic";
+                    break;
+                } else if ([aType isEqualToString:@"ac"]) { // 活动
+                    model.contentType = @"party";
+                    break;
+                } else if ([aType isEqualToString:@"s"]) { // 专题
+                    model.contentType = @"special";
+                    break;
+                }
             }
-        }
         
-        if (model.contentType == nil) {
-            JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:model];
-            [model setRead:TRUE];
-            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.readDB save:[model id]];
+            if (model.contentType == nil) {
+                JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:model];
+                [model setRead:TRUE];
+                [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.readDB save:[model id]];
+                JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+                [centerController pushViewController:detailController animated:true];
+                [tableView deselectRowAtIndexPath:indexPath animated:true];
+            } else if ([model.contentType isEqualToString:@"picture"]) {
+                JDOImageModel *imageModel = [[JDOImageModel alloc] initWithNewsModel:model];
+                [model setRead:TRUE];
+                JDOImageDetailController *imageController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
+                [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.readDB save:[model id]];
+                JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+                [centerController pushViewController:imageController animated:true];
+                [tableView deselectRowAtIndexPath:indexPath animated:true];
+            } else if ([model.contentType isEqualToString:@"topic"]) {
+                JDOTopicModel *topicModel = [[JDOTopicModel alloc] initWithNewsModel:model];
+                [model setRead:TRUE];
+                JDOTopicDetailController *topicController = [[JDOTopicDetailController alloc] initWithTopicModel:topicModel pController:nil];
+                [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.readDB save:[model id]];
+                JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+                [centerController pushViewController:topicController animated:true];
+                [tableView deselectRowAtIndexPath:indexPath animated:true];
+            } else if ([model.contentType isEqualToString:@"party"]) {
+                JDOPartyModel *partyModel = [[JDOPartyModel alloc] initWithNewsModel:model];
+                [model setRead:TRUE];
+                JDOPartyDetailController *partyController = [[JDOPartyDetailController alloc] initWithPartyModel:partyModel];
+                [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.readDB save:[model id]];
+                JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+                [centerController pushViewController:partyController animated:true];
+                [tableView deselectRowAtIndexPath:indexPath animated:true];
+            } else if ([model.contentType isEqualToString:@"special"]) {
+                JDONewsSpecialModel *specialModel = [[JDONewsSpecialModel alloc] init];
+                specialModel.id = model.id;
+                specialModel.spic = model.spic;
+                JDONewsSpecialController *specialController = [[JDONewsSpecialController alloc] initWithModel:specialModel];
+                [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+                [centerController pushViewController:specialController animated:true];
+                [tableView deselectRowAtIndexPath:indexPath animated:true];
+            }
+        } else {
+            JDOAdvCell *advcell = (JDOAdvCell *)[tableView cellForRowAtIndexPath:indexPath];
+            NSLog(@"%d", [advcell getCurrentLayer]);
+            NSString *newsid = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"murl"];
+            NSString *NewsTitle = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"title"];
+            JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+            newsModel.id = newsid;
+            newsModel.title = NewsTitle;
+            newsModel.summary = @" ";
+            JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel Collect:NO isAdv:YES];
             JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
             [centerController pushViewController:detailController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
-        } else if ([model.contentType isEqualToString:@"picture"]) {
-            JDOImageModel *imageModel = [[JDOImageModel alloc] initWithNewsModel:model];
-            [model setRead:TRUE];
-            JDOImageDetailController *imageController = [[JDOImageDetailController alloc] initWithImageModel:imageModel];
-            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.readDB save:[model id]];
-            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-            [centerController pushViewController:imageController animated:true];
-            [tableView deselectRowAtIndexPath:indexPath animated:true];
-        } else if ([model.contentType isEqualToString:@"topic"]) {
-            JDOTopicModel *topicModel = [[JDOTopicModel alloc] initWithNewsModel:model];
-            [model setRead:TRUE];
-            JDOTopicDetailController *topicController = [[JDOTopicDetailController alloc] initWithTopicModel:topicModel pController:nil];
-            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.readDB save:[model id]];
-            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-            [centerController pushViewController:topicController animated:true];
-            [tableView deselectRowAtIndexPath:indexPath animated:true];
-        } else if ([model.contentType isEqualToString:@"party"]) {
-            JDOPartyModel *partyModel = [[JDOPartyModel alloc] initWithNewsModel:model];
-            [model setRead:TRUE];
-            JDOPartyDetailController *partyController = [[JDOPartyDetailController alloc] initWithPartyModel:partyModel];
-            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.readDB save:[model id]];
-            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-            [centerController pushViewController:partyController animated:true];
-            [tableView deselectRowAtIndexPath:indexPath animated:true];
-        } else if ([model.contentType isEqualToString:@"special"]) {
-            JDONewsSpecialModel *specialModel = [[JDONewsSpecialModel alloc] init];
-            specialModel.id = model.id;
-            specialModel.spic = model.spic;
-            JDONewsSpecialController *specialController = [[JDONewsSpecialController alloc] initWithModel:specialModel];
-            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
-            [centerController pushViewController:specialController animated:true];
-            [tableView deselectRowAtIndexPath:indexPath animated:true];
+            [advcell setCurrentLayer:0];
         }
     }
 }
-
 
 @end

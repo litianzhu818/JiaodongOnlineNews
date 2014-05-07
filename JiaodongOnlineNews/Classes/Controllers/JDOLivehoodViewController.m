@@ -36,6 +36,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
+        self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
         _pageInfos = @[
             @{@"reuseId":@"Department",@"title":@"参与部门"},
             @{@"reuseId":@"QuestionList",@"title":@"相关问题"},
@@ -65,6 +66,16 @@
     [self.view addSubview:_scrollView];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (self.myDelegate.hasNewAction) {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateHighlighted];
+    } else {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateHighlighted];
+    }
+}
 
 - (void)viewDidLoad{
     [super viewDidLoad];

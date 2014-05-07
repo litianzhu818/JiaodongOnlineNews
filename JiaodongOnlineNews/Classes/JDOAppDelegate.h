@@ -21,11 +21,16 @@
 @property (strong, nonatomic) NSString *topicDetailCachePath;
 @property (strong, nonatomic) NSString *partyDetailCachePath;
 @property (strong, nonatomic) NSString *convenienceCachePath;
+@property (strong, nonatomic) NSDictionary *launchOptions;
+@property (assign, nonatomic) NSString *currentPushTag;
+@property (nonatomic) BOOL hasNewAction;
+@property (nonatomic, strong) NSString *advTargetId;
 
-@property (assign, nonatomic) NSString * currentPushTag;
 
 - (IIViewDeckController *)generateControllerStack;
 - (void)checkForNewVersion;
 - (void)promptForRating;
+- (void)advViewClicked;
+- (void)checkForNewAction;
 
 @end

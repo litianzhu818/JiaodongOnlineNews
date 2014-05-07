@@ -25,19 +25,19 @@
 @end
 
 @implementation JDOLeftViewController{
-    NSArray *iconNames;
-    NSArray *iconSelectedNames;
+    NSMutableArray *iconNames;
+    NSMutableArray *iconSelectedNames;
     //NSArray *iconTitles;
 }
 
 - (id)init{
     self = [super init];
     if (self) {
+        self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
         _lastSelectedRow = 0;
         iconNames = @[@"menu_news",@"menu_party",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood",@"menu_video"];
         iconSelectedNames = @[@"menu_news_selected",@"menu_party_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected",@"menu_video_selected"];
         //iconTitles = @[@"胶东在线",@"精选图片",@"每日一题",@"便民查询",@"网上民声"];
-        
     }
     return self;
 }
@@ -135,6 +135,7 @@
     static NSString *CellIdentifier = @"MenuItem";
     
     UIImageView *imageView;
+    
     UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -148,6 +149,14 @@
 //        }
         [imageView setTag:Menu_Image_Tag];
         [cell.contentView addSubview:imageView];
+        
+        if (indexPath.row == 1) {
+            [hasNewView setHidden:NO];
+            hasNewView = [[UIImageView alloc] initWithFrame:CGRectMake(155.0, 8.0, 26.0, 19.0)];
+            [hasNewView setImage:[UIImage imageNamed:@"menu_party_hasnew"]];
+            [cell.contentView addSubview:hasNewView];
+        }
+        
     }
     
     imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
@@ -184,6 +193,10 @@
 //        lastSelectedCell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:lastSelectedRow]];
 //        lastSelectedCell.backgroundView = nil;
 //    }
+    if (indexPath.row == 1) {
+        self.myDelegate.hasNewAction = NO;
+        [hasNewView setHidden:YES];
+    }
     _lastSelectedRow = indexPath.row;
     [tableView reloadData];
     

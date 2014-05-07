@@ -1,11 +1,11 @@
 //
-//  SSDouBanAttachmentReader.h
-//  DouBanConnection
+//  Created by ShareSDK.cn on 13-1-14.
+//  官网地址:http://www.ShareSDK.cn
+//  技术支持邮箱:support@sharesdk.cn
+//  官方微信:ShareSDK   （如果发布新版本的话，我们将会第一时间通过微信将版本更新内容推送给您。如果使用过程中有任何问题，也可以通过微信与我们取得联系，我们将会在24小时内给予回复）
+//  商务QQ:4006852216
+//  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-//  Created by 冯 鸿杰 on 13-10-22.
-//  Copyright (c) 2013年 掌淘科技. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 /**
@@ -38,8 +38,8 @@
 @property (nonatomic,readonly) NSString *href;
 
 /**
- *	@brief	富媒体，允许 image, flash, music 单条广播所有[[BR]]图片无最小值限制，
- *  文件最大不超过3M[[BR]]缩略图：最大边150px[[BR]]点击展开后：宽度最大460px，高度不限[[BR]]原图大小无宽高限制
+ *	@brief	富媒体，允许 image, flash, music 单条广播所有图片无最小值限制，
+ *  文件最大不超过3M。缩略图：最大边150px。点击展开后：宽度最大460px，高度不限。原图大小无宽高限制
  */
 @property (nonatomic,readonly) NSArray *media;
 

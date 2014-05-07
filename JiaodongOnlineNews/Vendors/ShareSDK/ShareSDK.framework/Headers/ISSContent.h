@@ -380,6 +380,23 @@
                          resources:(NSArray *)resources;
 
 /**
+ *	@brief	添加印象笔记内容单元
+ *
+ *  @since  ver2.9.0
+ *
+ *	@param 	content 	内容
+ *	@param 	title 	标题
+ *	@param 	resources 	图片资源列表，元素为ISSAttachment协议对象。如果设置为INHERIT_VALUE则继承父级内容的image。
+ *  @param  notebookGuid    笔记本ID
+ *  @param  tagsGuid    标签ID列表
+ */
+- (void)addEvernoteUnitWithContent:(NSString *)content
+                             title:(NSString *)title
+                         resources:(NSArray *)resources
+                      notebookGuid:(NSString *)notebookGuid
+                          tagsGuid:(NSArray *)tagsGuid;
+
+/**
  *	@brief	添加新浪微博内容单元
  *
  *  @since  ver2.2.0

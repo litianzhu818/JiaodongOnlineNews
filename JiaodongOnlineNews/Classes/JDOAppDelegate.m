@@ -40,7 +40,7 @@
 //#import "iOSHierarchyViewer.h"
 
 #define splash_stay_time 1.0 //1.0
-#define advertise_stay_time 1.0 //2.0
+#define advertise_stay_time 2.0
 #define splash_adv_fadetime 0.5
 #define adv_main_fadetime 0.5
 #define max_memory_cache 10
@@ -71,7 +71,7 @@
 }
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
-    
+    advView.userInteractionEnabled = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         int width = [[NSNumber numberWithFloat:320*[UIScreen mainScreen].scale] intValue];
         int height = [[NSNumber numberWithFloat:App_Height*[UIScreen mainScreen].scale] intValue];
@@ -89,6 +89,7 @@
         NSString *advServerURL = [jsonObject valueForKey:@"path"];
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
         NSString *advLocalURL = [userDefault objectForKey:@"adv_url"];
+        self.advTargetId = [jsonObject valueForKey:@"targetid"];
         
         // 第一次加载或者NSUserDefault被清空，以及服务器地址与本地不一致时，从网络加载图片。
         if(advLocalURL ==nil || ![advLocalURL isEqualToString:advServerURL]){
@@ -142,6 +143,8 @@
     advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
     // 2秒之后仍未加载完成,则显示已缓存的广告图
     if(advImage == nil){
+        advImage = [UIImage imageNamed:@"default_adv"];
+        /*
         NSFileManager * fm = [NSFileManager defaultManager];
         NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
         if(imgData){
@@ -150,6 +153,11 @@
             // 本地缓存尚不存在,加载默认广告图
             advImage = [UIImage imageNamed:@"default_adv"];
         }
+         */
+    } else {
+        advView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(advViewClicked)];
+        [advView addGestureRecognizer:singleTap];
     }
     advView.image = advImage;
     advView.alpha = 0;
@@ -162,11 +170,46 @@
     }
     completion:^(BOOL finished){
         [splashView removeFromSuperview];
+        self.launchOptions = launchOptions;
         [self performSelector:@selector(navigateToMainView:) withObject:launchOptions afterDelay:advertise_stay_time];
     }];
 }
 
+- (void)advViewClicked
+{
+    if (self.advTargetId&&![self.advTargetId isEqualToString:@""]) {
+        [JDOAppDelegate cancelPreviousPerformRequestsWithTarget:self selector:@selector(navigateToMainView:) object:self.launchOptions];
+        
+        self.deckController = [self generateControllerStack];
+        [self.window insertSubview:self.deckController.view belowSubview:advView];
+        [advView removeFromSuperview];
+        [self.deckController.view removeFromSuperview];
+        self.window.rootViewController = self.deckController;
+        [self openNewsDetail:@"24001"];
+    }
+}
+
+- (void)checkForNewAction
+{
+    self.hasNewAction = YES;
+    JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
+    [httpclient getPath:FEEDBACK_SERVICE parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *json = [(NSData *)responseObject objectFromJSONData];
+        id jsonvalue = [json objectForKey:@"status"];
+        if ([jsonvalue isKindOfClass:[NSNumber class]]) {
+            int status = [[json objectForKey:@"status"] intValue];
+            if (status == 1) {
+                //活动有更新
+                self.hasNewAction = YES;
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
+
 - (void)navigateToMainView:(NSDictionary *)launchOptions{
+    advView.userInteractionEnabled = NO;
     self.deckController = [self generateControllerStack];
     bool showGuide = ![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce;
     if( showGuide ){
@@ -188,8 +231,8 @@
 //            self.deckController.view.frame = CGRectOffset(self.deckController.view.frame, 0, 20);
 //        }
         
-        // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
         if (launchOptions != nil){
+        // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
             NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
             if (dictionary != nil){
                 NSString *newsId = [dictionary objectForKey:@"newsid"];
@@ -328,6 +371,9 @@
             
         }];
     }
+    
+    self.hasNewAction = NO;
+    [self checkForNewAction];
     
     return YES;
 }

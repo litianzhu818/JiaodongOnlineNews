@@ -30,15 +30,20 @@ NSDate *modifyTime;
     return [self initWithNewsModel:newsModel Collect:false];
 }
 
-- (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect{
+- (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect isAdv:(BOOL)isAdv{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        self.isAdv = isAdv;
         self.newsModel = newsModel;
         modifyTime = [NSDate dateWithTimeIntervalSince1970:0];
         self.isCollect = isCollect;
         self.model = self.newsModel;
     }
     return self;
+}
+
+- (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect{
+    return [self initWithNewsModel:newsModel Collect:isCollect isAdv:NO];
 }
 
 - (void)viewDidLoad{
@@ -49,8 +54,12 @@ NSDate *modifyTime;
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToListView)];
-    [self.navigationView setTitle:@"新闻详情"];
-    [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
+    if (self.isAdv) {
+        [self.navigationView setTitle:@"广告详情"];
+    } else {
+        [self.navigationView setTitle:@"新闻详情"];
+        [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
+    }
 }
 
 - (void) showReviewList{
@@ -70,8 +79,16 @@ NSDate *modifyTime;
     return detailModel;
 }
 
+- (NSDictionary *) getParam{
+    if(self.isAdv){
+        return @{@"aid":self.newsModel.id};
+    } else {
+        return @{@"aid":self.newsModel.id,@"advCid":@"41",@"advLimit":@"1"};
+    }
+}
+
 - (void) loadWebView{
-    NSDictionary *detailModel = [self readNewsDetailFromLocalCache];
+    NSMutableDictionary *detailModel = [self readNewsDetailFromLocalCache];
     if (self.isPushNotification) {  // 推送消息忽略缓存
         detailModel = nil;
     } else {
@@ -88,6 +105,10 @@ NSDate *modifyTime;
         self.newsModel.tinyurl = [detailModel objectForKey:@"tinyurl"];
         //[self.navigationView setRightBtnCount:@"555"];
         [self.navigationView setRightBtnCount:[detailModel objectForKey:@"commentCount"]];
+        if (self.isAdv) {//广告不显示来源和添加时间
+            [detailModel removeObjectForKey:@"addtime"];
+            [detailModel removeObjectForKey:@"source"];
+        }
         NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:detailModel]];
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
         [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
@@ -95,24 +116,30 @@ NSDate *modifyTime;
         [self setCurrentState:ViewStatusNoNetwork];
     }else{
         [self setCurrentState:ViewStatusLoading];
-        [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:@{@"aid":self.newsModel.id,@"advCid":@"35",@"advLimit":@"1"} success:^(AFHTTPRequestOperation *operation, id object) {
+        [[JDOJsonClient sharedClient] getPath:NEWS_DETAIL_SERVICE parameters:[self getParam] success:^(AFHTTPRequestOperation *operation, id object) {
             id responseObject = [((NSDictionary *)object) objectForKey:@"data"];
             if([responseObject isKindOfClass:[NSArray class]] && [(NSArray *)responseObject count]==0){
                 // 新闻不存在
                 [self setCurrentState:ViewStatusRetry];
             }else if([responseObject isKindOfClass:[NSDictionary class]]){
                 [self saveNewsDetailToLocalCache:responseObject];
+                NSMutableDictionary *mdic = [[NSMutableDictionary alloc] initWithDictionary:responseObject];
                 // 设置url短地址
                 self.newsModel.tinyurl = [responseObject objectForKey:@"tinyurl"];
                 
                 // 推送新闻不是从列表导航进入,所以newsModel中只存在id,其他JDOToolbarMoedl需要的信息都要从detail的信息中复制
-                if (self.isPushNotification) {  
+                if (self.isPushNotification) {
                     self.newsModel.title = [responseObject objectForKey:@"title"];
                     self.newsModel.summary = [responseObject objectForKey:@"summary"];
                     self.newsModel.mpic =  [responseObject objectForKey:@"mpic"];
                 }
+                
+                if (self.isAdv) {
+                    [mdic removeObjectForKey:@"addtime"];
+                    [mdic removeObjectForKey:@"source"];
+                }
                 [self.navigationView setRightBtnCount:[responseObject objectForKey:@"commentCount"]];
-                NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];
+                NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:mdic]];
                 NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
                 [self.webView loadHTMLString:mergedHTML baseURL:[NSURL fileURLWithPath:bundlePath isDirectory:true]];
             }else{

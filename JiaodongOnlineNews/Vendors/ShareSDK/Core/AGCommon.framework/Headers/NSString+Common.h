@@ -1,6 +1,4 @@
 //
-//  NSString+Common.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,9 +6,11 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 
+/**
+ *	@brief	字符串类目
+ */
 @interface NSString (Common)
 
 /**
@@ -84,11 +84,10 @@
  */
 - (BOOL)containURL;
 
-
 /**
  *	@brief	URL编码
  *
- *	@param 	encoding 	编码标准｀
+ *	@param 	encoding 	编码标准
  *
  *	@return	编码后字符串
  */
@@ -102,7 +101,6 @@
  *	@return	解码后字符串
  */
 - (NSString *)urlDecode:(NSStringEncoding)encoding;
-
 
 /**
  *	@brief	BASE64编码

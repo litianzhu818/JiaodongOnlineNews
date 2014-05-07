@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "JDOAppDelegate.h"
 #import "NimbusPagingScrollView.h"
 
 @class JDOPageControl;
@@ -23,5 +23,7 @@
  顶部标签页
  */
 @property (nonatomic,strong) JDOPageControl *pageControl;
+
+@property (nonatomic,strong) JDOAppDelegate *myDelegate;
 
 @end

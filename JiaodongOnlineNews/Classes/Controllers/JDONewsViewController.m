@@ -12,6 +12,8 @@
 #import "JDONewsCategoryInfo.h"
 #import "JDOReadDB.h"
 #import "JDOChannelSetting.h"
+#import "JDOLeftViewController.h"
+
 #define News_Navbar_Height 35.0f
 
 @interface JDONewsViewController() <JDOChannelSettingDelegate>
@@ -35,6 +37,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
+        self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
         // 默认频道列表
         _pageInfos = @[
@@ -283,6 +286,17 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     return YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (self.myDelegate.hasNewAction) {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateHighlighted];
+    } else {
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateNormal];
+        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateHighlighted];
+    }
 }
 
 - (void) setupNavigationView{

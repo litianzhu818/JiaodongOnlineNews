@@ -10,9 +10,11 @@
 #import "NimbusLauncher.h"
 #import "JDOCenterViewController.h"
 #import "JDOConvenienceItemController.h"
+#import "JDOAppDelegate.h"
 
 @interface JDOConvenienceController : NILauncherViewController <JDONavigationView>
 
 @property (strong,nonatomic) JDONavigationView *navigationView;
+@property (strong,nonatomic) JDOAppDelegate *myDelegate;
 
 @end

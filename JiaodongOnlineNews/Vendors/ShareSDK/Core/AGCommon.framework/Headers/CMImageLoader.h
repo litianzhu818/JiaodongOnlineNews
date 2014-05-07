@@ -1,6 +1,4 @@
 //
-//  U6ImageLoader.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <UIKit/UIKit.h>
 #import "CMEventDispatcher.h"
 
@@ -26,7 +23,6 @@
  *	@brief	图片加载进度
  */
 #define NOTIF_IMAGE_LOAD_PROGRESS @"imageLoadProgress"
-
 
 /**
  *	@brief	图片数据
@@ -53,8 +49,6 @@
  */
 #define NOTIF_KEY_LOADED_BYTES @"loadedBytes"
 
-
-
 /**
  *	@brief	加载器状态
  */
@@ -75,9 +69,8 @@ typedef enum
     ImageLoaderSourceTypeFile		/**< 文件 */
 }CMImageLoaderSourceType;
 
-
 /**
-	图片裁剪类型
+ *	@brief	图片裁剪类型
  */
 typedef enum
 {
@@ -160,23 +153,9 @@ typedef enum
  *
  *	@return	加载器
  */
-- (id)initWithCornerRadius:(CGFloat)cornerRadius
-                      size:(CGSize)size;
-
-
-/**
- *	@brief	初始化图片加载器
- *
- *	@param 	clipSize 	裁剪尺寸
- *	@param 	clipType 	裁剪类型
- *	@param 	cornerRadius 	圆角
- *
- *	@return	加载器
- */
 - (id)initWithClipSize:(CGSize)clipSize
               clipType:(CMImageClipType)clipType
           cornerRadius:(CGFloat)cornerRadius;
-
 
 /**
  *	@brief	加载网络图片对象

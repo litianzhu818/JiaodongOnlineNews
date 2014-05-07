@@ -6,7 +6,6 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import "SSSohuWeiboCredential.h"
 #import <ShareSDKCoreService/ISSCUserDescriptor.h>
@@ -19,6 +18,7 @@
 @interface SSSohuWeiboUser : NSObject <ISSPlatformUser,
                                        NSCoding,
                                        ISSCDataObject>
+
 /**
  *	@brief	所属平台
  */

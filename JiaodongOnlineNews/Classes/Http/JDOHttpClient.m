@@ -56,7 +56,6 @@
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
     [self getJSONByServiceName:serviceName modelClass:modelClass config:[DCParserConfiguration configuration] params:params success:success failure:failure];
-    
 }
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass config:(DCParserConfiguration *)config params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure{
@@ -71,7 +70,7 @@
                     success(jsonResult);
                 }else{
                     Class _modelClass = NSClassFromString(modelClass);
-                    DCKeyValueObjectMapping *mapper  = [DCKeyValueObjectMapping mapperForClass:_modelClass andConfiguration:config];
+                    DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:_modelClass andConfiguration:config];
                     
                     if([jsonResult isKindOfClass:[NSArray class]]){
                         success([mapper parseArray:jsonResult]);

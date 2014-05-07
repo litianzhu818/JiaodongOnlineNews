@@ -11,6 +11,7 @@
 #import "WebViewJavascriptBridge_iOS.h"
 #import "SDImageCache.h"
 #import "JDOImageDetailController.h"
+#import "JDONewsDetailController.h"
 #import "JDOImageModel.h"
 #import "JDOImageDetailModel.h"
 #import "JDORegxpUtil.h"
@@ -34,6 +35,16 @@ NSArray *imageUrls;
                                   ];
     return toolbarBtnConfig;
 }
+
+- (NSArray *)setupToolBarBtnConfigWithAdv {
+    NSArray *toolbarBtnConfig = @[
+                                  [NSNumber numberWithInt:ToolBarButtonReview],
+                                  [NSNumber numberWithInt:ToolBarButtonShare],
+                                  [NSNumber numberWithInt:ToolBarButtonFont],
+                                  ];
+    return toolbarBtnConfig;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -52,7 +63,11 @@ NSArray *imageUrls;
     
     [self.view addSubview:self.webView];
     
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:[self setupToolBarBtnConfig] widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    if (self.isAdv) {
+        _toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:[self setupToolBarBtnConfigWithAdv] widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    } else {
+        _toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:[self setupToolBarBtnConfig] widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
+    }
     _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
@@ -146,6 +161,17 @@ NSArray *imageUrls;
         [centerController pushViewController:detailController animated:true];
         responseCallback(linkId);
     }];
+    [_bridge registerHandler:@"showAdv" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *linkId = [(NSDictionary *)data valueForKey:@"advid"];
+        JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+        newsModel.id = linkId;
+        newsModel.title = @" ";//[(NSDictionary *)data valueForKey:@"advtitle"];
+        newsModel.summary = @" ";
+        JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel Collect:NO isAdv:YES];
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+        [centerController pushViewController:detailController animated:true];
+        responseCallback(linkId);
+    }];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
@@ -184,7 +210,11 @@ NSArray *imageUrls;
     [newsDetail setObject:html forKey:@"content"];
     if ([dictionary objectForKey:@"advs"] != nil && [dictionary objectForKey:@"advs"] != [NSNull null]) {
         NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
-        [newsDetail setObject:adv_img forKey:@"adv"];
+        NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"id"];
+        NSString *advtitle = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"title"];
+        [newsDetail setObject:adv_img forKey:@"advimg"];
+        [newsDetail setObject:advid forKey:@"advid"];
+        [newsDetail setObject:advtitle forKey:@"advtitle"];
     }
     return newsDetail;
 }

@@ -20,5 +20,6 @@
 
 - (id)initWithNewsModel:(JDONewsModel *)newsModel;
 - (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect;
+- (id)initWithNewsModel:(JDONewsModel *)newsModel Collect:(BOOL)isCollect isAdv:(BOOL)isAdv;
 
 @end

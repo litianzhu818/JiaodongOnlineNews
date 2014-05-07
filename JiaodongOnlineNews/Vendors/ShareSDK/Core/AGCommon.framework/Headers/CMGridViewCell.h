@@ -1,6 +1,4 @@
 //
-//  ZGGridViewCell.h
-//
 //  Created by ShareSDK.cn on 13-1-14.
 //  官网地址:http://www.ShareSDK.cn
 //  技术支持邮箱:support@sharesdk.cn
@@ -8,10 +6,12 @@
 //  商务QQ:4006852216
 //  Copyright (c) 2013年 ShareSDK.cn. All rights reserved.
 //
-
 #import <UIKit/UIKit.h>
 #import "ICMGridItemView.h"
 
+/**
+ *	@brief	表格视图单元格
+ */
 @interface CMGridViewCell : UITableViewCell
 {
 @private
@@ -30,14 +30,15 @@
 }
 
 /**
-	更新列表项类型以及列数量
-    @param itemType 列表项类型
-    @param itemSize 列表项大小
-    @param topPadding 顶部边距
-    @param rightPadding 右边距
-    @param bottomPadding 底部边距
-    @param leftPadding 左边距
-    @param hGap 水平间距
+ *	@brief	更新列表项类型以及列数量
+ *
+ *	@param 	itemType 	列表项类型
+ *	@param 	itemSize 	列表项大小
+ *	@param 	topPadding 	顶部边距
+ *	@param 	rightPadding 	右边距
+ *	@param 	bottomPadding 	底部边距
+ *	@param 	leftPadding 	左边距
+ *	@param 	hGap 	水平间距
  */
 - (void)updateItemType:(Class)itemType
               itemSize:(CGSize)itemSize
@@ -47,19 +48,23 @@
            leftPadding:(CGFloat)leftPadding
                   hGap:(CGFloat)hGap;
 
+
 /**
-	获取表格项视图
-	@param index 索引位置
-	@returns 表格项视图对象
+ *	@brief	获取表格项视图
+ *
+ *	@param 	index 	索引位置
+ *
+ *	@return	表格项视图对象
  */
 - (UIView<ICMGridItemView> *)getItemAtIndex:(NSInteger)index;
 
+
 /**
-	从指定位置开始隐藏不必要的列表项
-	@param index 索引位置
+ *	@brief	从指定位置开始隐藏不必要的列表项
+ *
+ *	@param 	index 	索引位置
  */
 - (void)hideItemFromIndex:(NSInteger)index;
-
 
 
 @end

@@ -8,6 +8,7 @@
 //
 #import <Foundation/Foundation.h>
 #import "ISSContainer.h"
+#import "ShareSDKTypeDef.h"
 
 /**
  *	@brief	分享菜单协议
@@ -15,11 +16,18 @@
 @protocol ISSShareActionSheet <NSObject>
 
 /**
- *	@brief	显示到容器中
+ *	@brief	显示分享菜单
  *
  *	@param 	container 	容器
+ *	@param 	items 	分享菜单项列表
+ *  @param  itemClickHandler    点击事件处理
+ *  @param  cancelHandler   取消事件处理
  */
-- (void)showInContainer:(id<ISSContainer>)container;
+- (void)showWithContainer:(id<ISSContainer>)container
+                    items:(NSArray *)items
+              onItemClick:(void (^)(ShareType shareType))itemClickHandler
+                 onCancel:(void(^)())cancelHandler;
+
 
 /**
  *	@brief	关闭菜单

@@ -136,16 +136,21 @@
     int remaind = Review_Content_MaxLength - [_titleLabel.text length] - [_textView2.text length];
     self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
     NSURL *url;
-    if ([[self.model imageurl] hasPrefix:SERVER_RESOURCE_URL]) {
-        url = [NSURL URLWithString:[self.model imageurl]];
+    if ([self.model imageurl]) {
+        if ([[self.model imageurl] hasPrefix:SERVER_RESOURCE_URL]) {
+            url = [NSURL URLWithString:[self.model imageurl]];
+        } else {
+            url = [NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]];
+        }
+        [self.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"news_image_placeholder.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+            
+        } failure:^(NSError *error) {
+            
+        }];
     } else {
-        url = [NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]];
+        [self.imageView setImage:[UIImage imageNamed:@"icon"]];
     }
-    [self.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"news_image_placeholder.png"] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
+    
 }
 
 - (void) getAuth:(UIButton *)imageBtn{
@@ -216,13 +221,17 @@
 
 - (void) sendShareMessage:(ShareType) shareType{
     id<ISSContent> content=nil;
+    NSString *imageUrl = nil;
+    if ([self.model imageurl]) {
+        imageUrl = [SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]];
+    }
     switch (shareType) {
         case ShareTypeWeixiSession:
         case ShareTypeWeixiTimeline:
         case ShareTypeQQ:{
             content = [ShareSDK content:[self.model summary]
                                         defaultContent:nil
-                                                 image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
+                                                 image:imageUrl?[ShareSDK imageWithUrl:imageUrl] : nil
                                                  title:[self.model title]
                                                    url:[self.model tinyurl]
                                            description:nil
@@ -231,7 +240,7 @@
         case ShareTypeQQSpace:{
             content = [ShareSDK content:_textView2.text
                          defaultContent:nil
-                                  image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
+                                  image:imageUrl?[ShareSDK imageWithUrl:imageUrl] : nil
                                   title:[self.model title]
                                     url:[self.model tinyurl]
                             description:[self.model summary]
@@ -246,7 +255,7 @@
             }
             content = [ShareSDK content:comment
                                                defaultContent:nil
-                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
+                                                        image:imageUrl?[ShareSDK imageWithUrl:imageUrl] : nil
                                                         title:[self.model title]
                                                           url:[self.model tinyurl]
                                                   description:[self.model summary]
@@ -255,7 +264,7 @@
         default:{
             content = [ShareSDK content:[[_textView2.text stringByAppendingString:[self getShareTitleAndContent]] stringByAppendingFormat:@" %@",[self.model tinyurl]]
                                                defaultContent:nil
-                                                        image:[ShareSDK imageWithUrl:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]]
+                                                        image:imageUrl?[ShareSDK imageWithUrl:imageUrl] : nil
                                                         title:[self.model title]
                                                           url:[self.model tinyurl]
                                                   description:[self.model summary]

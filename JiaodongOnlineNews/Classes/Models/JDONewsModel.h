@@ -26,5 +26,7 @@
 @property (nonatomic,assign) BOOL read;
 
 @property (nonatomic,strong) NSString *contentType;
+
+@property (nonatomic,strong) NSArray *g_pics;
 //@property (nonatomic,strong) NSString *commentCount;
 @end

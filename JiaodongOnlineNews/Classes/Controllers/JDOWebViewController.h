@@ -20,6 +20,9 @@
 @property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic, strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
+@property (nonatomic) BOOL isAdv;
+
+
 - (void) buildWebViewJavascriptBridge;
 - (id) replaceUrlAndAsyncLoadImage:(NSDictionary *) dictionary;
 - (void) backToListView;
