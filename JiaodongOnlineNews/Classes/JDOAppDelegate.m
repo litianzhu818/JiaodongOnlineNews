@@ -109,6 +109,7 @@
             
             // 图片加载成功后才保存服务器版本号
             [userDefault setObject:advServerURL forKey:@"adv_url"];
+            [userDefault setObject:[jsonObject valueForKey:@"targetid"] forKey:@"adv_targetid"];
             [userDefault synchronize];
             // 图片缓存到磁盘
             [imgData writeToFile:NIPathForDocumentsResource(advertise_file_name) options:NSDataWritingAtomic error:&error];
@@ -149,6 +150,12 @@
         NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
         if(imgData){
             advImage = [UIImage imageWithData:imgData];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"adv_targetid"]) {
+                self.advTargetId = [[NSUserDefaults standardUserDefaults] objectForKey:@"adv_targetid"];
+                advView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(advViewClicked)];
+                [advView addGestureRecognizer:singleTap];
+            }
         }else{
             // 本地缓存尚不存在,加载默认广告图
             advImage = [UIImage imageNamed:@"default_adv"];
