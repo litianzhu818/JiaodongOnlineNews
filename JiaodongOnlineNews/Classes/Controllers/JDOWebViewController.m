@@ -210,7 +210,7 @@ NSArray *imageUrls;
     [newsDetail setObject:html forKey:@"content"];
     if ([dictionary objectForKey:@"advs"] != nil) {
         NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
-        NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"id"];
+        NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"murl"];
         NSString *advtitle = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"title"];
         [newsDetail setObject:adv_img forKey:@"advimg"];
         [newsDetail setObject:advid forKey:@"advid"];
