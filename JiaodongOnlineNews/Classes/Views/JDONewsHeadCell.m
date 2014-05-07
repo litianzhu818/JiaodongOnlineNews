@@ -17,7 +17,7 @@
 #define Right_Margin 7.5f
 #define PageControl_Width 40.0f
 
-#define Adv_Width 40.0f
+#define Adv_Width 70.0f
 
 @implementation JDONewsHeadCell {
     NSArray *originModels;
@@ -63,11 +63,11 @@
         _titleLabel.shadowOffset = CGSizeMake(0, 1);
         [self.contentView addSubview:_titleLabel];
         
-        _advLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height-Title_Height, Adv_Width, Title_Height)];
+        _advLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, height-Title_Height, Adv_Width, Title_Height)];
         _advLabel.font = [UIFont systemFontOfSize:16];
         _advLabel.textAlignment = UITextAlignmentCenter;
-        _advLabel.text = @"推广";
-        _advLabel.backgroundColor = [UIColor blueColor];
+        _advLabel.text = @"【推广】";
+        _advLabel.backgroundColor = [UIColor clearColor];
         _advLabel.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_advLabel];
         
@@ -124,7 +124,7 @@
             NSArray *advs = (NSArray *)[models objectAtIndex:i];
             if( i==self.currentPage ){
                 _titleLabel.text = [(NSDictionary *)[advs objectAtIndex:0] objectForKey:@"title"];
-                [_titleLabel setFrame:CGRectMake(Left_Margin + Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+                [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
                 [_advLabel setHidden:NO];
             }
             mpic = [(NSDictionary *)[advs objectAtIndex:0] objectForKey:@"mpic"];
@@ -206,7 +206,7 @@
             NSArray *adv = (NSArray *)[self.models objectAtIndex:self.currentPage];
             title = [(NSDictionary *)[adv objectAtIndex:0] objectForKey:@"title"];
             _pageControl.currentPage = [originModels indexOfObject:adv];
-            [_titleLabel setFrame:CGRectMake(Left_Margin + Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+            [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
             [_advLabel setHidden:NO];
         }
         _titleLabel.text = title;
@@ -232,7 +232,7 @@
         NSArray *adv = (NSArray *)[self.models objectAtIndex:self.currentPage];
         title = [(NSDictionary *)[adv objectAtIndex:0] objectForKey:@"title"];
         _pageControl.currentPage = [originModels indexOfObject:adv];
-        [_titleLabel setFrame:CGRectMake(Left_Margin + Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+        [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
         [_advLabel setHidden:NO];
     }
     _titleLabel.text = title;

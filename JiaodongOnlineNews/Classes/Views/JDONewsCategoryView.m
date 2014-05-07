@@ -135,12 +135,12 @@
 
 // 不勾选“特荐[a]”则认为是列表，与其他选项是否勾选无关
 - (NSDictionary *) newsListParam{
-    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a",@"advCid":@"40",@"advPosition":@"3",@"advPage":@"1",@"advLimit":@"4"};
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a",@"advCid":self.info.channel,@"advPosition":@"3",@"advPage":@"1",@"advLimit":@"4",@"adv_atype":@"c"};
 }
 
 // 后台勾选“特荐[a]”则认为是轮播，与其他选项是否勾选无关
 - (NSDictionary *) headLineParam{
-    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a",@"advCid":@"42",@"advPosition":@"2",@"advPage":@"1",@"advLimit":@"1"};
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a",@"advCid":self.info.channel,@"advPosition":@"2",@"advPage":@"1",@"advLimit":@"1",@"adv_atype":@"h"};
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
@@ -148,7 +148,6 @@
         NSLog(@"kind:%@,old:%@,new:%@",change[NSKeyValueChangeKindKey],change[NSKeyValueChangeOldKey],change[NSKeyValueChangeNewKey]);
     }
 }
-
 
 - (void)loadDataFromNetwork{
     __block bool headlineFinished = false;
@@ -291,6 +290,9 @@
         NSArray *data = dataModel.data;
         NSMutableArray *dataList = [[NSMutableArray alloc] init];
         for (int i = 0; i < data.count; i++) {
+            if (i >= 3) {
+                continue;
+            }
             if ([[data objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
                 DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDONewsModel class]];
                 [dataList addObject:[mapper parseDictionary:[data objectAtIndex:i]]];
@@ -654,7 +656,6 @@
             JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
             [centerController pushViewController:detailController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
-            [advcell setCurrentLayer:0];
         }
     }
 }
