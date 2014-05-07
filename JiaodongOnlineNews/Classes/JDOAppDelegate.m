@@ -144,7 +144,7 @@
     // 2秒之后仍未加载完成,则显示已缓存的广告图
     if(advImage == nil){
         advImage = [UIImage imageNamed:@"default_adv"];
-        /*
+        
         NSFileManager * fm = [NSFileManager defaultManager];
         NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
         if(imgData){
@@ -153,7 +153,6 @@
             // 本地缓存尚不存在,加载默认广告图
             advImage = [UIImage imageNamed:@"default_adv"];
         }
-         */
     } else {
         advView.userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(advViewClicked)];
@@ -177,7 +176,7 @@
 
 - (void)advViewClicked
 {
-    if (self.advTargetId&&![self.advTargetId isEqualToString:@""]) {
+    if (self.advTargetId&&![self.advTargetId isEqualToString:@"0"]) {
         [JDOAppDelegate cancelPreviousPerformRequestsWithTarget:self selector:@selector(navigateToMainView:) object:self.launchOptions];
         
         self.deckController = [self generateControllerStack];
