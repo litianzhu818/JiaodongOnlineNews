@@ -2164,6 +2164,8 @@
 			children = (
 				2D8A314F1910CB9100B36D72 /* menu_video@2x.png */,
 				2D8A31501910CB9100B36D72 /* menu_video_selected@2x.png */,
+				D80EDE6319161DE100DA0A76 /* menu_party_hasnew.png */,
+				D80EDE6419161DE100DA0A76 /* menu_party_hasnew@2x.png */,
 				A7821A5E17F81D730058B62D /* menu_party_selected.png */,
 				A7821A5F17F81D730058B62D /* menu_party_selected@2x.png */,
 				A7821A6017F81D730058B62D /* menu_party.png */,
