@@ -367,7 +367,7 @@
     DCParserConfiguration *config = [DCParserConfiguration configuration];
     DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOQuestionModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
     [config addArrayMapper:mapper];
-    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" config:config params:[self listParam] success:^(JDOArrayModel *model)  {
+    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOArrayModel" config:config params:[self listParam] success:^(JDOArrayModel *model)  {
         NSArray *dataList = model.data;
         [self.tableView.pullToRefreshView stopAnimating];
         if(dataList == nil || dataList.count == 0){
@@ -419,7 +419,7 @@
     DCParserConfiguration *config = [DCParserConfiguration configuration];
     DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOQuestionModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
     [config addArrayMapper:mapper];
-    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOQuestionModel" config:config params:[self listParam] success:^(JDOArrayModel *model) {
+    [[JDOHttpClient sharedClient] getJSONByServiceName:QUESTION_LIST_SERVICE modelClass:@"JDOArrayModel" config:config params:[self listParam] success:^(JDOArrayModel *model) {
         NSArray *dataList = model.data;
         [self.tableView.infiniteScrollingView stopAnimating];
         bool finished = false;

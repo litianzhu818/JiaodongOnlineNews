@@ -408,7 +408,7 @@
 
 - (void) loadMore{
     if(![Reachability isEnableNetwork]){
-        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self];
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self withSlidingMode:WBNoticeViewSlidingModeUp];
         [self.tableView.infiniteScrollingView stopAnimating];
         return ;
     }
@@ -457,7 +457,7 @@
         }
     } failure:^(NSString *errorStr) {
         [self.tableView.infiniteScrollingView stopAnimating];
-        [JDOCommonUtil showHintHUD:errorStr inView:self];
+        [JDOCommonUtil showHintHUD:errorStr inView:self withSlidingMode:WBNoticeViewSlidingModeUp];
     }];
 
 }
