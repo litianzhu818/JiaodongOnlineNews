@@ -8,8 +8,20 @@
 
 @class JDOVideoModel;
 
+@protocol JDOVideoLiveDelegate <NSObject>
+
+@required
+- (void) onLiveChannelClick:(NSInteger)index;
+
+@end
+
 @interface JDOVideoLiveCell : UITableViewCell
 
-- (void)setModel:(JDOVideoModel *)videoModel;
+@property (nonatomic,strong) NSArray* models;
+@property (nonatomic,assign) id<JDOVideoLiveDelegate> delegate;
+
+- (void)setContentByIndex:(NSInteger) index;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier models:(NSArray *)models;
 
 @end

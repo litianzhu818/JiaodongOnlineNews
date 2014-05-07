@@ -13,4 +13,6 @@
 @property (nonatomic,strong) NSString *liveUrl;
 @property (nonatomic,strong) NSString *epgApi;
 
+@property (nonatomic,strong) NSDate *serverCurrentTime; // 该字段赋值并传递用，不是从服务器Json获取内容
+
 @end

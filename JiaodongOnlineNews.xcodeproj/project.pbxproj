@@ -83,6 +83,17 @@
 		2D89BA4C1754825600960614 /* JDONewsCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D89BA4B1754825600960614 /* JDONewsCategoryView.m */; };
 		2D8A3149190A3A0200B36D72 /* JDOVideoEPGList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8A3148190A3A0200B36D72 /* JDOVideoEPGList.m */; };
 		2D8A314C190A5CCB00B36D72 /* JDOVideoEPGModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8A314B190A5CCB00B36D72 /* JDOVideoEPGModel.m */; };
+		2D8A31511910CB9100B36D72 /* menu_video@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A314F1910CB9100B36D72 /* menu_video@2x.png */; };
+		2D8A31521910CB9100B36D72 /* menu_video_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A31501910CB9100B36D72 /* menu_video_selected@2x.png */; };
+		2D8A31571910CC5300B36D72 /* ytv-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A31531910CC5300B36D72 /* ytv-1@2x.png */; };
+		2D8A31581910CC5300B36D72 /* ytv-2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A31541910CC5300B36D72 /* ytv-2@2x.png */; };
+		2D8A31591910CC5300B36D72 /* ytv-3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A31551910CC5300B36D72 /* ytv-3@2x.png */; };
+		2D8A315A1910CC5300B36D72 /* ytv-4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A31561910CC5300B36D72 /* ytv-4@2x.png */; };
+		2D8A315C1910CC6600B36D72 /* ytv_channel_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A315B1910CC6600B36D72 /* ytv_channel_background@2x.png */; };
+		2D8A31611910DC1600B36D72 /* ytv-1-logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A315D1910DC1600B36D72 /* ytv-1-logo.jpg */; };
+		2D8A31621910DC1600B36D72 /* ytv-2-logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A315E1910DC1600B36D72 /* ytv-2-logo.jpg */; };
+		2D8A31631910DC1600B36D72 /* ytv-3-logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A315F1910DC1600B36D72 /* ytv-3-logo.jpg */; };
+		2D8A31641910DC1600B36D72 /* ytv-4-logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2D8A31601910DC1600B36D72 /* ytv-4-logo.jpg */; };
 		2D8AC1541763854D006B4A22 /* JDOReviewListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8AC1531763854C006B4A22 /* JDOReviewListController.m */; };
 		2D8B403B175A37A700C8B04F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8B403A175A37A700C8B04F /* QuartzCore.framework */; };
 		2D8B4081175A495600C8B04F /* NIActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D8B404F175A495500C8B04F /* NIActions.m */; };
@@ -866,6 +877,17 @@
 		2D8A3148190A3A0200B36D72 /* JDOVideoEPGList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoEPGList.m; sourceTree = "<group>"; };
 		2D8A314A190A5CCB00B36D72 /* JDOVideoEPGModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOVideoEPGModel.h; sourceTree = "<group>"; };
 		2D8A314B190A5CCB00B36D72 /* JDOVideoEPGModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOVideoEPGModel.m; sourceTree = "<group>"; };
+		2D8A314F1910CB9100B36D72 /* menu_video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu_video@2x.png"; path = "../Video/menu_video@2x.png"; sourceTree = "<group>"; };
+		2D8A31501910CB9100B36D72 /* menu_video_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu_video_selected@2x.png"; path = "../Video/menu_video_selected@2x.png"; sourceTree = "<group>"; };
+		2D8A31531910CC5300B36D72 /* ytv-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytv-1@2x.png"; sourceTree = "<group>"; };
+		2D8A31541910CC5300B36D72 /* ytv-2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytv-2@2x.png"; sourceTree = "<group>"; };
+		2D8A31551910CC5300B36D72 /* ytv-3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytv-3@2x.png"; sourceTree = "<group>"; };
+		2D8A31561910CC5300B36D72 /* ytv-4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytv-4@2x.png"; sourceTree = "<group>"; };
+		2D8A315B1910CC6600B36D72 /* ytv_channel_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ytv_channel_background@2x.png"; sourceTree = "<group>"; };
+		2D8A315D1910DC1600B36D72 /* ytv-1-logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ytv-1-logo.jpg"; sourceTree = "<group>"; };
+		2D8A315E1910DC1600B36D72 /* ytv-2-logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ytv-2-logo.jpg"; sourceTree = "<group>"; };
+		2D8A315F1910DC1600B36D72 /* ytv-3-logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ytv-3-logo.jpg"; sourceTree = "<group>"; };
+		2D8A31601910DC1600B36D72 /* ytv-4-logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ytv-4-logo.jpg"; sourceTree = "<group>"; };
 		2D8AC1521763854C006B4A22 /* JDOReviewListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDOReviewListController.h; sourceTree = "<group>"; };
 		2D8AC1531763854C006B4A22 /* JDOReviewListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDOReviewListController.m; sourceTree = "<group>"; };
 		2D8B403A175A37A700C8B04F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -2103,9 +2125,27 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		2D8A314E1910CB6E00B36D72 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				2D8A315B1910CC6600B36D72 /* ytv_channel_background@2x.png */,
+				2D8A31531910CC5300B36D72 /* ytv-1@2x.png */,
+				2D8A31541910CC5300B36D72 /* ytv-2@2x.png */,
+				2D8A31551910CC5300B36D72 /* ytv-3@2x.png */,
+				2D8A31561910CC5300B36D72 /* ytv-4@2x.png */,
+				2D8A315D1910DC1600B36D72 /* ytv-1-logo.jpg */,
+				2D8A315E1910DC1600B36D72 /* ytv-2-logo.jpg */,
+				2D8A315F1910DC1600B36D72 /* ytv-3-logo.jpg */,
+				2D8A31601910DC1600B36D72 /* ytv-4-logo.jpg */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
 		2D8AABAF177203410049E730 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				2D8A314F1910CB9100B36D72 /* menu_video@2x.png */,
+				2D8A31501910CB9100B36D72 /* menu_video_selected@2x.png */,
 				A7821A5E17F81D730058B62D /* menu_party_selected.png */,
 				A7821A5F17F81D730058B62D /* menu_party_selected@2x.png */,
 				A7821A6017F81D730058B62D /* menu_party.png */,
@@ -2482,6 +2522,7 @@
 		2D8FAC211748969B0071A601 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2D8A314E1910CB6E00B36D72 /* Video */,
 				A7335F0617D71C0B00ABFFFC /* Party */,
 				2DE46BA217B9DAEF0094F27B /* Introduce */,
 				2DAADB3317AA4C6C001EBD43 /* Guide */,
@@ -3499,6 +3540,7 @@
 				2DE931F81772E3E500A87ACC /* 晴转阴@2x.png in Resources */,
 				2DE931F91772E3E500A87ACC /* 沙尘暴@2x.png in Resources */,
 				2DE931FA1772E3E500A87ACC /* 特大暴雨@2x.png in Resources */,
+				2D8A31621910DC1600B36D72 /* ytv-2-logo.jpg in Resources */,
 				2DE931FB1772E3E500A87ACC /* 雾@2x.png in Resources */,
 				2DE931FC1772E3E500A87ACC /* 小雪@2x.png in Resources */,
 				2DE931FD1772E3E500A87ACC /* 小雪转晴@2x.png in Resources */,
@@ -3523,6 +3565,7 @@
 				2D97A94317850A4600CEEE82 /* image_mask@2x.png in Resources */,
 				A795D18A18D97B6800736B8F /* party_end.png in Resources */,
 				A77594F818920D5E00F2B7EA /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
+				2D8A31581910CC5300B36D72 /* ytv-2@2x.png in Resources */,
 				2D97A94817851C5200CEEE82 /* content_template.html in Resources */,
 				2D97A94C17853D4C00CEEE82 /* gou.png in Resources */,
 				2D97A94D17853D4C00CEEE82 /* point_per.png in Resources */,
@@ -3570,6 +3613,7 @@
 				2DA860A8186421FD003D6328 /* Default-568h@2x.png in Resources */,
 				2DC49C9A179F9C07008374F2 /* menu_collect.png in Resources */,
 				2DC49C9B179F9C07008374F2 /* menu_collect@2x.png in Resources */,
+				2D8A31521910CB9100B36D72 /* menu_video_selected@2x.png in Resources */,
 				2DC49C9C179F9C07008374F2 /* menu_convenience_selected.png in Resources */,
 				2DC49C9D179F9C07008374F2 /* menu_convenience_selected@2x.png in Resources */,
 				2DA860A41864207F003D6328 /* news_type_hint_red.png in Resources */,
@@ -3639,6 +3683,7 @@
 				2DC49CFA179F9C83008374F2 /* news_content_background.png in Resources */,
 				2DC49CFB179F9C83008374F2 /* news_content_background@2x.png in Resources */,
 				2DC49CFC179F9C83008374F2 /* news_head_placeholder.png in Resources */,
+				2D8A31511910CB9100B36D72 /* menu_video@2x.png in Resources */,
 				2DC49CFD179F9C83008374F2 /* news_head_placeholder@2x.png in Resources */,
 				2DC49D00179F9C83008374F2 /* news_image_placeholder.png in Resources */,
 				2DC49D01179F9C83008374F2 /* news_image_placeholder@2x.png in Resources */,
@@ -3661,6 +3706,7 @@
 				2DC49D35179F9CBE008374F2 /* pyq01@2x.png in Resources */,
 				2DC49D36179F9CBE008374F2 /* QQ.png in Resources */,
 				2DC49D37179F9CBE008374F2 /* QQ@2x.png in Resources */,
+				2D8A31631910DC1600B36D72 /* ytv-3-logo.jpg in Resources */,
 				2DC49D38179F9CBE008374F2 /* QQ01.png in Resources */,
 				2DC49D39179F9CBE008374F2 /* QQ01@2x.png in Resources */,
 				2DC49D3A179F9CBE008374F2 /* qzone.png in Resources */,
@@ -3694,12 +3740,14 @@
 				2DA860AB186430BE003D6328 /* aboutus_qrcode@2x.png in Resources */,
 				2DC49D60179F9D03008374F2 /* status_retry@2x.png in Resources */,
 				2DC49D61179F9D03008374F2 /* 详情页加载图片@2x.png in Resources */,
+				2D8A31641910DC1600B36D72 /* ytv-4-logo.jpg in Resources */,
 				2DC49D72179F9D27008374F2 /* inputField.png in Resources */,
 				2DC49D73179F9D27008374F2 /* inputField@2x.png in Resources */,
 				2DC49D74179F9D27008374F2 /* inputFieldBorder.png in Resources */,
 				2DC49D75179F9D27008374F2 /* inputFieldBorder@2x.png in Resources */,
 				2DC49D76179F9D27008374F2 /* inputFieldPopBtnBackground.png in Resources */,
 				2DC49D77179F9D27008374F2 /* inputFieldPopBtnBackground@2x.png in Resources */,
+				2D8A31591910CC5300B36D72 /* ytv-3@2x.png in Resources */,
 				2DC49D78179F9D27008374F2 /* inputFieldType1.png in Resources */,
 				2DC49D79179F9D27008374F2 /* inputFieldType1@2x.png in Resources */,
 				2DC49D7A179F9D27008374F2 /* inputFieldType1Background.png in Resources */,
@@ -3787,6 +3835,7 @@
 				2DC49E22179FA007008374F2 /* status_icon_success@2x.png in Resources */,
 				2DC49E29179FA007008374F2 /* full_separator_line.png in Resources */,
 				2D9F172917F0323A001132AD /* icon-setting.png in Resources */,
+				2D8A31571910CC5300B36D72 /* ytv-1@2x.png in Resources */,
 				2DC49E2A179FA007008374F2 /* full_separator_line@2x.png in Resources */,
 				2DC49E2B179FA007008374F2 /* leftside_shadow_bg.png in Resources */,
 				2DA860A51864207F003D6328 /* news_type_hint_blue.png in Resources */,
@@ -3832,6 +3881,7 @@
 				2DF9AB9217B48B3700C1C7E6 /* ship.png in Resources */,
 				2DF9AB9417B48B7700C1C7E6 /* livehood_lock@2x.png in Resources */,
 				2DF9AB9617B4905F00C1C7E6 /* livehood_checkbox_unselected@2x.png in Resources */,
+				2D8A31611910DC1600B36D72 /* ytv-1-logo.jpg in Resources */,
 				2DF9AB9817B4908100C1C7E6 /* livehood_checkbox_unselected.png in Resources */,
 				2D4621CA17B8AE9F00D5A750 /* Guide0.png in Resources */,
 				2D4621CB17B8AE9F00D5A750 /* Guide1.png in Resources */,
@@ -3861,6 +3911,7 @@
 				2DA4495017C5A8A800927906 /* icon@2x.png in Resources */,
 				2DA784BC17C6EF9D00171CAA /* image_delete@2x.png in Resources */,
 				2DA2774118978FDB00F32177 /* channel_plus_icon.png in Resources */,
+				2D8A315C1910CC6600B36D72 /* ytv_channel_background@2x.png in Resources */,
 				A74EAF7E17C74D94000E249D /* base_imageholder.png in Resources */,
 				A74EAF8017C75574000E249D /* loading.png in Resources */,
 				2D4FCD5B17CB4950003515BF /* default_adv@2x.png in Resources */,
@@ -3872,6 +3923,7 @@
 				A7335F0C17D71C5600ABFFFC /* time_icon.png in Resources */,
 				A72FC40A17DF0070006782C9 /* commit_btn.png in Resources */,
 				A7821A6217F81D740058B62D /* menu_party_selected.png in Resources */,
+				2D8A315A1910CC5300B36D72 /* ytv-4@2x.png in Resources */,
 				A7821A6317F81D740058B62D /* menu_party_selected@2x.png in Resources */,
 				A7821A6417F81D740058B62D /* menu_party.png in Resources */,
 				A7821A6517F81D740058B62D /* menu_party@2x.png in Resources */,
