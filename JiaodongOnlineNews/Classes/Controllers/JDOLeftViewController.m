@@ -38,6 +38,9 @@
         iconNames = @[@"menu_news",@"menu_party",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood",@"menu_livehood"];
         iconSelectedNames = @[@"menu_news_selected",@"menu_party_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected",@"menu_livehood_selected"];
         //iconTitles = @[@"胶东在线",@"精选图片",@"每日一题",@"便民查询",@"网上民声"];
+        
+        hasNewView = [[UIImageView alloc] initWithFrame:CGRectMake(155.0, 8.0, 26.0, 19.0)];
+        [hasNewView setImage:[UIImage imageNamed:@"menu_party_hasnew"]];
     }
     return self;
 }
@@ -149,14 +152,14 @@
 //        }
         [imageView setTag:Menu_Image_Tag];
         [cell.contentView addSubview:imageView];
-        
         if (indexPath.row == 1) {
-            [hasNewView setHidden:NO];
-            hasNewView = [[UIImageView alloc] initWithFrame:CGRectMake(155.0, 8.0, 26.0, 19.0)];
-            [hasNewView setImage:[UIImage imageNamed:@"menu_party_hasnew"]];
             [cell.contentView addSubview:hasNewView];
         }
-        
+        if (self.myDelegate.hasNewAction) {
+            [hasNewView setHidden:NO];
+        } else {
+            [hasNewView setHidden:YES];
+        }
     }
     
     imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
@@ -194,7 +197,10 @@
 //        lastSelectedCell.backgroundView = nil;
 //    }
     if (indexPath.row == 1) {
-        self.myDelegate.hasNewAction = NO;
+        if (self.myDelegate.hasNewAction) {
+            self.myDelegate.hasNewAction = NO;
+            [[NSUserDefaults standardUserDefaults] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"ServiceActionId"] forKey:@"LocalActionId"];
+        }
         [hasNewView setHidden:YES];
     }
     _lastSelectedRow = indexPath.row;

@@ -100,6 +100,7 @@ NSDate *modifyTime;
         if (self.isAdv) {
             [detailModel removeObjectForKey:@"addtime"];
             [detailModel removeObjectForKey:@"source"];
+            [detailModel removeObjectForKey:@"advs"];
         }
         NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:detailModel]];
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
@@ -128,6 +129,7 @@ NSDate *modifyTime;
                 if (self.isAdv) {
                     [responseObject removeObjectForKey:@"addtime"];
                     [responseObject removeObjectForKey:@"source"];
+                    [detailModel removeObjectForKey:@"advs"];
                 }
                 [self.navigationView setRightBtnCount:[responseObject objectForKey:@"commentCount"]];
                 NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:responseObject]];

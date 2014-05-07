@@ -32,6 +32,7 @@
     self = [super initWithServiceName:PARTY_SERVICE modelClass:@"JDOPartyModel" title:@"精彩活动" params:params needRefreshControl:true];
     if(self){
         [self setIsCacheToMemory:TRUE andCacheFileName:@"PartyListCache"];
+        self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     return self;
 }

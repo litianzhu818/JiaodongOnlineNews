@@ -140,7 +140,7 @@
 
 // 后台勾选“特荐[a]”则认为是轮播，与其他选项是否勾选无关
 - (NSDictionary *) headLineParam{
-    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a",@"advCid":@"42",@"advPosition":@"2",@"advPage":@"1",@"advLimit":@"1"};
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
@@ -171,8 +171,21 @@
     DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
     [config addArrayMapper:mapper];
     // 加载头条
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.headLineParam success:^(JDOArrayModel *dataModel) {
-        NSArray *dataList = (NSArray *)dataModel.data;
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" params:self.headLineParam success:^(JDOArrayModel *dataModel) {
+        NSArray *data = dataModel.data;
+        NSMutableArray *dataList = [[NSMutableArray alloc] init];
+        for (int i = 0; i < data.count; i++) {
+            if (i >= 3) {
+                continue;
+            }
+            if ([[data objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDONewsModel class]];
+                [dataList addObject:[mapper parseDictionary:[data objectAtIndex:i]]];
+            } else {
+                [dataList addObject:[data objectAtIndex:i]];
+            }
+        }
+
         if(dataList != nil && dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -274,8 +287,17 @@
     DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
     [config addArrayMapper:mapper];
     // 刷新头条
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.headLineParam success:^(JDOArrayModel *dataModel) {
-        NSArray *dataList = (NSArray *)dataModel.data;
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" params:self.headLineParam success:^(JDOArrayModel *dataModel) {
+        NSArray *data = dataModel.data;
+        NSMutableArray *dataList = [[NSMutableArray alloc] init];
+        for (int i = 0; i < data.count; i++) {
+            if ([[data objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDONewsModel class]];
+                [dataList addObject:[mapper parseDictionary:[data objectAtIndex:i]]];
+            } else {
+                [dataList addObject:[data objectAtIndex:i]];
+            }
+        }
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];

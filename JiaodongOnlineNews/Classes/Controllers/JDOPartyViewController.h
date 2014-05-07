@@ -10,4 +10,6 @@
 #import "JDOListViewController.h"
 @interface JDOPartyViewController : JDOListViewController< UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic,strong) JDOAppDelegate *myDelegate;
+
 @end

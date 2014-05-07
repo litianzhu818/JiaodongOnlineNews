@@ -185,22 +185,31 @@
         [advView removeFromSuperview];
         [self.deckController.view removeFromSuperview];
         self.window.rootViewController = self.deckController;
-        [self openNewsDetail:@"24001"];
+        [self openNewsDetail:self.advTargetId];
     }
 }
 
 - (void)checkForNewAction
 {
-    self.hasNewAction = YES;
+    NSString *lastid = @"10001";
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LocalActionId"]) {
+        lastid = [[NSUserDefaults standardUserDefaults] objectForKey:@"LocalActionId"];
+    }
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+    [param setObject:lastid forKey:@"lastid"];
     JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
-    [httpclient getPath:FEEDBACK_SERVICE parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [httpclient getPath:CHECK_NEW_ACTION_SERVICE parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = [(NSData *)responseObject objectFromJSONData];
-        id jsonvalue = [json objectForKey:@"status"];
+        id jsonvalue = [json objectForKey:@"data"];
         if ([jsonvalue isKindOfClass:[NSNumber class]]) {
-            int status = [[json objectForKey:@"status"] intValue];
-            if (status == 1) {
+            int status = [[json objectForKey:@"data"] intValue];
+            if (status != [lastid integerValue]) {
                 //活动有更新
                 self.hasNewAction = YES;
+                NSString *serviceid = [[NSString alloc] initWithFormat:@"%d", status];
+                [[NSUserDefaults standardUserDefaults] setObject:serviceid forKey:@"ServiceActionId"];
+            } else {
+                self.hasNewAction = NO;
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

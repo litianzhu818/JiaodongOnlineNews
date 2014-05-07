@@ -107,6 +107,7 @@
 #define NEWS_SPECIAL_SERVICE @"Data/getRelateByAid"
 #define NEWS_DETAIL_SERVICE @"Data/getArticleByAid"
 #define FEEDBACK_SERVICE @"Data/suggestCollection"
+#define CHECK_NEW_ACTION_SERVICE @"Data/getActiveCount/"
 #define POPULARIZE_SERVICE @"Spread/doSpreadReg"
 #define APPID_SERVICE @"Spread/userReg"
 #define ACTIVEREG_SERVICE @"Data/doActiveReg"
