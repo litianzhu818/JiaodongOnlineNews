@@ -108,7 +108,6 @@ NSDate *modifyTime;
         if (self.isAdv) {//广告不显示来源和添加时间
             [detailModel removeObjectForKey:@"addtime"];
             [detailModel removeObjectForKey:@"source"];
-            [detailModel removeObjectForKey:@"advs"];
         }
         NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:detailModel]];
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
@@ -136,9 +135,8 @@ NSDate *modifyTime;
                 }
                 
                 if (self.isAdv) {
-                    [responseObject removeObjectForKey:@"addtime"];
-                    [responseObject removeObjectForKey:@"source"];
-                    [detailModel removeObjectForKey:@"advs"];
+                    [mdic removeObjectForKey:@"addtime"];
+                    [mdic removeObjectForKey:@"source"];
                 }
                 [self.navigationView setRightBtnCount:[responseObject objectForKey:@"commentCount"]];
                 NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:mdic]];

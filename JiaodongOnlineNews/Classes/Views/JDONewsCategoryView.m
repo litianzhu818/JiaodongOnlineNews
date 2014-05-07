@@ -534,8 +534,19 @@
 - (void) galleryImageClicked:(UITapGestureRecognizer *)gesture{
     JDONewsHeadCell *cell = (JDONewsHeadCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     int index = [cell.imageViews indexOfObject:gesture.view];
-    
-    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.headArray objectAtIndex:index]];
+    JDONewsDetailController *detailController;
+    if ([[self.headArray objectAtIndex:index] isKindOfClass:[JDONewsModel class]]) {
+        detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.headArray objectAtIndex:index]];
+    } else {
+        NSDictionary *adv = [[self.headArray objectAtIndex:index] objectAtIndex:0];
+        NSString *newsid = [adv objectForKey:@"murl"];
+        NSString *NewsTitle = [adv objectForKey:@"title"];
+        JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+        newsModel.id = newsid;
+        newsModel.title = NewsTitle;
+        newsModel.summary = @" ";
+        detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel Collect:NO isAdv:YES];
+    }
     JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
     [centerController pushViewController:detailController animated:true];
 }
