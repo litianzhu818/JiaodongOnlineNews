@@ -44,10 +44,6 @@
                 }
             })
             
-            {% if hasJoin %}
-                
-            {% /if %}
-            
             {% if hasVote %}
                 {% for aPoint in points %}
                 setProgress("{{aPoint.pointId}}", "{{aPoint.pointPer}}");
@@ -64,7 +60,7 @@
             
         }
         
-        {% if hasJoin!=0 %}
+        {% if hasJoin %}
         function joinin(){
             bridge.callHandler('joinInParty',{'joinBtnStr':'{{joinBtnStr}}'},function(response){});
         }
