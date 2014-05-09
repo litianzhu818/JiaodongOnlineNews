@@ -16,7 +16,7 @@ typedef enum {
     MenuItemTopic,
     MenuItemConvenience,
     MenuItemLivehood,
-    MenuItemVideo,
+//    MenuItemVideo,
     MenuItemCount
 } MenuItem;
 

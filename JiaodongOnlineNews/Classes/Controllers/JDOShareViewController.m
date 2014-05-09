@@ -148,7 +148,7 @@
             
         }];
     } else {
-        [self.imageView setImage:[UIImage imageNamed:@"icon"]];
+        [self.imageView setImage:[UIImage imageNamed:@"news_image_placeholder"]];
     }
     
 }

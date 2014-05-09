@@ -498,8 +498,10 @@
         if (self.listArray.count > 0&&![[self.listArray objectAtIndex:indexPath.row] isKindOfClass:[JDONewsModel class]]) {
             JDOAdvCell *advcell = [tableView dequeueReusableCellWithIdentifier:advIdentifier];
             if (advcell == nil) {
-                advcell = [[JDOAdvCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:advIdentifier datas:[self.listArray objectAtIndex:indexPath.row]];
+                advcell = [[JDOAdvCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:advIdentifier];
+                ;
             }
+            [advcell setDataArray:[self.listArray objectAtIndex:indexPath.row]];
             return advcell;
         }
         
@@ -645,9 +647,8 @@
             }
         } else {
             JDOAdvCell *advcell = (JDOAdvCell *)[tableView cellForRowAtIndexPath:indexPath];
-            NSLog(@"%d", [advcell getCurrentLayer]);
-            NSString *newsid = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"murl"];
-            NSString *NewsTitle = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"title"];
+            NSString *newsid = [(NSDictionary *)[advcell.datas objectAtIndex:advcell.currentPage] objectForKey:@"murl"];
+            NSString *NewsTitle = [(NSDictionary *)[advcell.datas objectAtIndex:advcell.currentPage] objectForKey:@"title"];
             JDONewsModel *newsModel = [[JDONewsModel alloc] init];
             newsModel.id = newsid;
             newsModel.title = NewsTitle;

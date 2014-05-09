@@ -10,7 +10,7 @@ function adjustImgSize(){
         $(this).before("<img src='img_set_flag.png'  style='position:absolute;right:0;bottom:0;' />");
     }
     if($(this).attr("isadv") == "true") {
-        $(this).before("<img src='adv.png' isadv='true' style='position:absolute;right:0;bottom:0;' />");
+        $(this).before("<img src='adv.png' isadv='true' style='position:absolute;right:1px;bottom:1px;width:25px;height:25px;' />");
     }
 }
 

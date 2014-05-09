@@ -25,8 +25,8 @@
 @end
 
 @implementation JDOLeftViewController{
-    NSMutableArray *iconNames;
-    NSMutableArray *iconSelectedNames;
+    NSArray *iconNames;
+    NSArray *iconSelectedNames;
     //NSArray *iconTitles;
 }
 

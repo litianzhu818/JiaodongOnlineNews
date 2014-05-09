@@ -69,6 +69,8 @@
         _advLabel.text = @"【推广】";
         _advLabel.backgroundColor = [UIColor clearColor];
         _advLabel.textColor = [UIColor whiteColor];
+        _advLabel.shadowColor = [UIColor blackColor];
+        _advLabel.shadowOffset = CGSizeMake(0, 1);
         [self.contentView addSubview:_advLabel];
         
         _pageControl = [[StyledPageControl alloc] initWithFrame:CGRectMake(width-PageControl_Width-Right_Margin, height-Title_Height, PageControl_Width, Title_Height)];
@@ -124,7 +126,7 @@
             NSArray *advs = (NSArray *)[models objectAtIndex:i];
             if( i==self.currentPage ){
                 _titleLabel.text = [(NSDictionary *)[advs objectAtIndex:0] objectForKey:@"title"];
-                [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+                [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Adv_Width-Right_Margin, Title_Height)];
                 [_advLabel setHidden:NO];
             }
             mpic = [(NSDictionary *)[advs objectAtIndex:0] objectForKey:@"mpic"];
@@ -206,7 +208,7 @@
             NSArray *adv = (NSArray *)[self.models objectAtIndex:self.currentPage];
             title = [(NSDictionary *)[adv objectAtIndex:0] objectForKey:@"title"];
             _pageControl.currentPage = [originModels indexOfObject:adv];
-            [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+            [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Adv_Width-Right_Margin, Title_Height)];
             [_advLabel setHidden:NO];
         }
         _titleLabel.text = title;
@@ -232,7 +234,7 @@
         NSArray *adv = (NSArray *)[self.models objectAtIndex:self.currentPage];
         title = [(NSDictionary *)[adv objectAtIndex:0] objectForKey:@"title"];
         _pageControl.currentPage = [originModels indexOfObject:adv];
-        [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+        [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Adv_Width-Right_Margin, Title_Height)];
         [_advLabel setHidden:NO];
     }
     _titleLabel.text = title;

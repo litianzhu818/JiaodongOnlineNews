@@ -9,14 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface JDOAdvCell : UITableViewCell
-{
-    int currentLayer;
-    NSMutableArray *pageViews;
-}
-@property (nonatomic, strong)NSArray *datas;
 
-- (void)setCurrentLayer:(int)current;
-- (int)getCurrentLayer;
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier datas:(NSArray *)datas;
+@property (nonatomic,strong) NSArray *datas;
+@property (nonatomic,assign) int currentPage;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+- (void)setDataArray:(NSArray *)dataArray;
 
 @end

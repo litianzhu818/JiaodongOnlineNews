@@ -50,7 +50,7 @@
 // 新闻
 #define Headline_Height 176.0f
 #define News_Cell_Image_Height 100.0f
-#define Adv_Cell_Height 45.0f
+#define Adv_Cell_Height 60.0f
 #define News_Cell_Height 70.0f
 #define Review_Font_Size 14
 
