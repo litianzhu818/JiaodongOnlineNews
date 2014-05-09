@@ -83,7 +83,7 @@ NSArray *reg_fields;
     
     reg_views = [[NSMutableArray alloc] init];
     self.view.backgroundColor = [UIColor whiteColor];
-    int y = 90;
+    int y = 90-40;
     reg_fields = (NSArray *)[self.partyJoin objectForKey:@"reg_fields"];
     for (NSDictionary *reg_field in reg_fields) {
         if ([(NSString *)[reg_field objectForKey:@"active_required"] isEqualToString:@"1"]) {//必填项，加星号
@@ -102,7 +102,7 @@ NSArray *reg_fields;
         }
         NSString *field_type = (NSString *)[reg_field objectForKey:@"active_field_type"];
         if ([field_type isEqualToString:@"text"]) {//文本
-            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(120, y, 180, 40)];
+            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(120, y, 180, 30)];
             [textField setBorderStyle:UITextBorderStyleNone];
             textField.background = [UIImage imageNamed:@"vio_textfield_back.png"];
             textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
