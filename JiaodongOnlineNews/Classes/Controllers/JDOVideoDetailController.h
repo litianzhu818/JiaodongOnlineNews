@@ -8,10 +8,10 @@
 
 #import "JDONavigationController.h"
 #import "Vitamio.h"
+#import "JDOVideoEPG.h"
 
 @class JDOVideoModel;
 @class JDOToolBar;
-@protocol JDOVideoEPGDelegate;
 
 @interface JDOVideoDetailController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate,VMediaPlayerDelegate,JDOVideoEPGDelegate>
 

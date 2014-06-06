@@ -84,12 +84,14 @@ typedef enum {
 
 - (void)loadView{
     [super loadView];
+    // 先将height固定设置为iPhone4的高度480，在viewDidLoad时候再重新设置回App_Height，目的是为了通过autoresizingMask自动布局天气中的控件，因为只有bounds变化才能引起autoresize起作用
+    self.view.bounds =CGRectMake(0, 0, 320, Is_iOS7?480:460);
     
-    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:self.view.bounds ];
+    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height) ];
     backgroundView.image = [UIImage imageNamed:@"menu_background.png"];
     [self.view addSubview:backgroundView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, Menu_Cell_Height*iconNames.count) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, Menu_Cell_Height*iconNames.count) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -189,6 +191,7 @@ typedef enum {
 #warning 若客户端直接访问天气webservice有问题，可以切换成在服务器端实现
     [self updateWeather];
     [self updateCalendar];
+    self.view.bounds = CGRectMake(0, 0, 320, App_Height);
 }
 
 - (void)viewDidUnload{
@@ -376,6 +379,7 @@ typedef enum {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.backgroundColor = [UIColor clearColor];
         cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.width-Right_Margin-Menu_Item_Width, 0, Menu_Item_Width, Menu_Cell_Height)];
         [imageView setTag:Menu_Image_Tag];

@@ -130,9 +130,9 @@
         case MenuItemParty:
             controller = [[self class] sharedPartyViewController];
             break;
-//        case MenuItemVideo:
-//            controller = [[self class] sharedVideoViewController];
-//            break;
+        case MenuItemVideo:
+            controller = [[self class] sharedVideoViewController];
+            break;
         default:
             break;
     }

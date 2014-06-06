@@ -11,7 +11,7 @@
 @interface JDOJsonClient : JDOWebClient
 
 + (JDOJsonClient *)sharedClient;
-+ (JDOJsonClient *)sharedVideoClient;
++ (JDOJsonClient *)clientWithBaseURL:(NSURL *)url;
 
 - (void)getJSONByServiceName:(NSString*)serviceName modelClass:(NSString *)modelClass params:(NSDictionary *)params success:(LoadDataSuccessBlock)success failure:(LoadDataFailureBlock)failure;
 

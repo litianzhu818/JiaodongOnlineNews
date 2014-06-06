@@ -11,9 +11,11 @@
 #import "JDOVideoLiveList.h"
 #import "JDOVideoModel.h"
 #import "JDOVideoLiveModel.h"
+#import "DCKeyValueObjectMapping.h"
 #import "DCParserConfiguration.h"
-#import "DCArrayMapping.h"
 #import "JDOVideoEPGModel.h"
+#import "JDOVideoEPGCell.h"
+
 
 @interface JDOVideoEPGList () <UIAlertViewDelegate>
 
@@ -116,18 +118,35 @@
         [self setCurrentState:ViewStatusLoading];
     }
     
-    NSDate *date = [NSDate date];
-    NSString *timestamp = [NSString stringWithFormat:@"%f",[date timeIntervalSince1970]];
-    NSString *serviceName = [[self.videoModel.epgApi substringFromIndex:SERVER_VIDEO_URL.length] stringByReplacingOccurrencesOfString:@"{timestamp}" withString:timestamp];
-    [[JDOJsonClient sharedVideoClient] getJSONByServiceName:serviceName modelClass:nil config:[DCParserConfiguration configuration] params:nil success:^(NSDictionary *responseObject) {
+    NSTimeInterval interval = [[self.videoModel currentTime] timeIntervalSince1970];
+    NSString *currentTime = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:interval] intValue]];
+    NSString *epgURL = [self.videoModel.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:currentTime];
+    [[JDOJsonClient clientWithBaseURL:[NSURL URLWithString:epgURL]] getJSONByServiceName:@"" modelClass:nil config:nil params:nil success:^(NSDictionary *responseObject) {
         if(responseObject[@"result"]){
             [self setCurrentState:ViewStatusNormal];
             NSArray *list = responseObject[@"result"][0]; // 结构参考上方注释
             if(list == nil || list.count == 0){
                 _noDataView.hidden = false;
             }else{
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDOVideoEPGModel class] andConfiguration:[DCParserConfiguration configuration]];
+                NSArray *epgModels = [mapper parseArray:list];
+                // 设置节目的状态属性：回放、直播、预告
+                NSDate *currentDate = [self.videoModel currentTime];
+                for (int i=0; i<epgModels.count; i++) {
+                    JDOVideoEPGModel *epgModel = [epgModels objectAtIndex:i];
+                    if([currentDate compare:epgModel.end_time] != NSOrderedAscending){
+                        epgModel.state = JDOVideoStatePlayback;
+                    }else if([currentDate compare:epgModel.start_time] != NSOrderedAscending &&
+                       [currentDate compare:epgModel.end_time] != NSOrderedDescending ){
+                        epgModel.state = JDOVideoStateLive;
+                    }else if([currentDate compare:epgModel.start_time] != NSOrderedDescending){
+                        epgModel.state = JDOVideoStateForecast;
+                    }else{
+                        epgModel.state = JDOVideoStateUnknown;
+                    }
+                }
                 [self.listArray removeAllObjects];
-                [self.listArray addObjectsFromArray:list];
+                [self.listArray addObjectsFromArray:epgModels];
                 [self.tableView reloadData];
             }
         }else{
@@ -154,16 +173,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"Cell";
     
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    JDOVideoEPGCell *cell = (JDOVideoEPGCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        cell = [[JDOVideoEPGCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
     }
     if(self.listArray.count > 0){
-        NSDictionary *epgItem = [self.listArray objectAtIndex:indexPath.row];
-        NSString *startTime = [JDOCommonUtil formatDate:[NSDate dateWithTimeIntervalSince1970:[epgItem[@"start_time"] doubleValue]] withFormatter:DateFormatHM];
-        NSString *endTime = [JDOCommonUtil formatDate:[NSDate dateWithTimeIntervalSince1970:[epgItem[@"end_time"] doubleValue]] withFormatter:DateFormatHM];
-        cell.textLabel.text = epgItem[@"name"];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",startTime,endTime];
+        JDOVideoEPGModel *epgModel = [self.listArray objectAtIndex:indexPath.row];
+        [cell setModel:epgModel];
     }
     return cell;
 }
@@ -173,11 +189,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *epgItem = [self.listArray objectAtIndex:indexPath.row];
-    JDOVideoEPGModel *epgModel = [[JDOVideoEPGModel alloc] init];
-    epgModel.name = epgItem[@"name"];
-    epgModel.startTime = [epgItem[@"start_time"] doubleValue];
-    epgModel.endTime = [epgItem[@"end_time"] doubleValue];
+    JDOVideoEPGModel *epgModel = [self.listArray objectAtIndex:indexPath.row];
     [self.delegate onVideoChanged:epgModel];
     
 //    JDOVideoDetailController *detailController = [[JDOVideoDetailController alloc] initWithModel:videoModel];

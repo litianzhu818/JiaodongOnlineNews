@@ -10,7 +10,6 @@
 #import <objc/runtime.h>
 
 #define Transition_Time 0.3f
-#warning 未加入手势拖动切换视图
 
 @implementation UIView (Transition)
 

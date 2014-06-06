@@ -57,7 +57,7 @@
     [super loadView];
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
-    CGRect frame = CGRectMake(0, 44, 320, App_Height-44);
+    CGRect frame = CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height-((Is_iOS7?20:0)+44));
     _tableView = [[UITableView alloc] initWithFrame:frame];
     _tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
@@ -77,7 +77,7 @@
     
     // 无数据提示
     _noDataView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_no_data"]];
-    _noDataView.frame = CGRectMake(0, 44, 320, App_Height-44);
+    _noDataView.frame = CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height-((Is_iOS7?20:0)+44));
     _noDataView.hidden = true;
     [self.view addSubview:_noDataView];
 }
@@ -104,6 +104,10 @@
     } else {
         self.listArray = [[NSMutableArray alloc] initWithCapacity:Default_Page_Size];
         [self loadDataFromNetwork];
+    }
+    // iOS7下scrollview切换后会自动设置contentOffset = -20;
+    if (Is_iOS7) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
     }
 }
 

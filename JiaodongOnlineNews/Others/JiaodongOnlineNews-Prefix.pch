@@ -35,7 +35,10 @@
 #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #define SDWebImageOption SDWebImageRetryFailed|SDWebImageLowPriority|SDWebImageProgressiveDownload//|SDWebImageCacheMemoryOnly
 #define USE_JSONKIT
-#define App_Height [[UIScreen mainScreen] applicationFrame].size.height
+
+#define Is_iOS7 [[[UIDevice currentDevice] systemVersion] floatValue]>=7.0
+// iOS7以下,状态栏依然隐藏时App_Height=480，状态栏显示时App_Height=460;iOS7以上状态栏为独立的浮动层，App_Height固定为480
+#define App_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0 ? [UIScreen mainScreen].bounds.size.height :[UIScreen mainScreen].applicationFrame.size.height)
 
 // 视图转换
 #define Min_Scale 0.96f
@@ -93,7 +96,6 @@
 // 服务器端接口
 #define SERVER_QUERY_URL [NSString stringWithFormat:@"http://p.jiaodong.net/mobileQuery/V%@",[[[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey] stringByReplacingOccurrencesOfString:@"." withString:@""] substringToIndex:2]]
 #define SERVER_RESOURCE_URL @"http://p.jiaodong.net/jdmsys/"
-#define SERVER_VIDEO_URL @"http://api.av.jiaodong.net:8080/"
 
 #define ADV_SERVICE @"Data/getAdv" // 广告位
 #define IMAGE_SERVICE @"Data/getImages"
@@ -130,4 +132,4 @@
 #define DELVIOLATIONINFO_SERVICE @"Data/delViolationInfo"
 #define SETNEWSPUSH @"Data/bindClientConfig"
 #define GET_CHANNELS @"Data/getChannels" // 新闻频道列表
-#define VIDEO_LIVE @"mcms/api2/mod/live/" // 直播列表
+#define VIDEO_LIVE @"http://api.av.jiaodong.net:8080/mcms/api2/mod/live/" // 直播列表,此地址后期将改为从p.jiaodong.net的后台获取

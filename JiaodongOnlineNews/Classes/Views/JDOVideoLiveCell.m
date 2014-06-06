@@ -8,6 +8,9 @@
 
 #import "JDOVideoLiveCell.h"
 #import "JDOVideoModel.h"
+#import "DCKeyValueObjectMapping.h"
+#import "DCParserConfiguration.h"
+#import "JDOVideoEPGModel.h"
 
 #define Default_Image @"news_image_placeholder.png"
 #define Left_Margin 7.5f
@@ -46,11 +49,7 @@
         
         self.detailTextLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
         self.detailTextLabel.highlightedTextColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.detailTextLabel.backgroundColor = [UIColor clearColor];
-        
-        
-        
-        
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];  
     }
     return self;
 }
@@ -107,15 +106,65 @@
     backgroundView.image = [UIImage imageNamed:@"ytv_channel_background"];
     [itemView addSubview:backgroundView];
     UILabel *epgLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+5, 151-24-5, 136-10, 24) ];
-    epgLabel.font = [UIFont boldSystemFontOfSize:14];
+    epgLabel.font = [UIFont boldSystemFontOfSize:13];
     epgLabel.textColor = [UIColor whiteColor];
     epgLabel.backgroundColor = [UIColor clearColor];
-    epgLabel.text = @"10:30 重播烟台新闻";
+    if ( !JDOIsEmptyString(itemModel.currentProgram) ) {
+        epgLabel.text = itemModel.currentProgram;
+    } else {
+        epgLabel.text = @"加载中...";
+        [self loadCurrentEPG:@{@"epgLabel":epgLabel,@"itemModel":itemModel}];
+    }
     [itemView addSubview:epgLabel];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onItemClick:)];
     [itemView addGestureRecognizer:tap];
     [self.contentView addSubview:itemView];
+}
+
+// 从后台获取当前播放节目的名称
+-(void)loadCurrentEPG:(NSDictionary *)obj{
+    UILabel *epgLabel = obj[@"epgLabel"];
+    JDOVideoModel *itemModel = obj[@"itemModel"];
+    
+    NSTimeInterval interval = [[itemModel currentTime] timeIntervalSince1970];
+    NSString *currentTime = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:interval] intValue]];
+    NSString *epgURL = [itemModel.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:currentTime];
+    
+    [[JDOJsonClient clientWithBaseURL:[NSURL URLWithString:epgURL]] getJSONByServiceName:@"" modelClass:nil config:nil params:nil success:^(NSDictionary *responseObject) {
+        if(responseObject[@"result"]){
+            NSArray *list = responseObject[@"result"][0];
+            if(list == nil || list.count == 0){
+                epgLabel.text = @"无节目单";
+            }else{
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDOVideoEPGModel class] andConfiguration:[DCParserConfiguration configuration]];
+                NSArray *epgModels = [mapper parseArray:list];
+                JDOVideoEPGModel *currentEPG;
+                for (int i=0; i<epgModels.count; i++) {
+                    JDOVideoEPGModel *epgModel = [epgModels objectAtIndex:i];
+                    if( [[itemModel currentTime] compare:epgModel.start_time] == NSOrderedDescending &&
+                       [[itemModel currentTime] compare:epgModel.end_time] == NSOrderedAscending ){
+                        currentEPG = epgModel;
+                        break;
+                    }
+                }
+                if (currentEPG) {
+//                    epgLabel.text = [NSString stringWithFormat:@"%@ %@",[JDOCommonUtil formatDate:currentEPG.start_time withFormatter: DateFormatHM],currentEPG.name ];
+                    epgLabel.text = currentEPG.name; // 页面空间不足，暂时不显示时间
+                    itemModel.currentProgram = currentEPG.name;
+                }else{
+                    epgLabel.text = @"当前无直播节目";
+                    NSLog(@"无直播节目时候的服务器时间:%@",[itemModel currentTime]);
+                }
+            }
+        }else{
+            epgLabel.text = @"无法获取当前节目";
+        }
+        
+    } failure:^(NSString *errorStr) {
+        NSLog(@"加载当前视频节目名称错误：%@", errorStr);
+        epgLabel.text = @"无法获取当前节目";
+    }];
 }
 
 - (void)onItemClick:(UITapGestureRecognizer *)tap{

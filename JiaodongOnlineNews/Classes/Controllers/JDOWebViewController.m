@@ -49,7 +49,7 @@ NSArray *imageUrls;
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
-	self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-44/*_toolbar.height*/)]; // 去掉导航栏和工具栏
+	self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height-44-((Is_iOS7?20:0)+44)/*_toolbar.height*/)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
@@ -71,7 +71,7 @@ NSArray *imageUrls;
     _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
-    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height-((Is_iOS7?20:0)+44))];
     self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
     [self loadWebView];
@@ -81,6 +81,12 @@ NSArray *imageUrls;
     self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
     _blackMask = self.view.blackMask;
     [_blackMask addGestureRecognizer:self.closeReviewGesture];
+    
+    // iOS7会自动调整contentOffset.y = -20; 解决方案来源于 http://stackoverflow.com/questions/18924431/ios-7-navigationcontroller-is-setting-the-contentinset-and-contentoffset-of-m
+    if (Is_iOS7) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
 }
 
 - (void)handleSwipes:(UISwipeGestureRecognizer *)sender
@@ -210,7 +216,8 @@ NSArray *imageUrls;
     [newsDetail setObject:html forKey:@"content"];
     if ([dictionary objectForKey:@"advs"] != nil && [dictionary objectForKey:@"advs"] != [NSNull null]) {
         NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
-        NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"id"];
+        // 该条广告本身的id没有意义，取murl中绑定的对应广告详情的id
+        NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"murl"];
         NSString *advtitle = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"title"];
         [newsDetail setObject:adv_img forKey:@"advimg"];
         [newsDetail setObject:advid forKey:@"advid"];

@@ -140,8 +140,8 @@
 }
 
 - (void)showAdvertiseView:(NSDictionary *)launchOptions{
-    
     advView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, App_Height)];
+    
     // 2秒之后仍未加载完成,则显示已缓存的广告图
     if(advImage == nil){
         advImage = [UIImage imageNamed:@"default_adv"];
@@ -227,11 +227,11 @@
     advView.userInteractionEnabled = NO;
     self.deckController = [self generateControllerStack];
     bool showGuide = ![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce;
-    if( showGuide ){
+//    if( showGuide ){
         self.deckController.view.frame = CGRectMake(0, 0, 320, App_Height);
-    }else{
-        self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
-    }
+//    }else{
+//        self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
+//    }
     [self.window insertSubview:self.deckController.view belowSubview:advView];
     
     [UIView animateWithDuration:adv_main_fadetime animations:^{
@@ -242,8 +242,11 @@
         [self.deckController.view removeFromSuperview];
         self.window.rootViewController = self.deckController;
         // iOS7下调整deckController.view的大小以适合状态栏
-//        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 && !showGuide ) {
-//            self.deckController.view.frame = CGRectOffset(self.deckController.view.frame, 0, 20);
+//        if (Is_iOS7 && !showGuide ) {
+//            CGRect f = self.deckController.view.frame;
+//            f.origin.y += 20;
+//            f.size.height -= 20;
+//            self.deckController.view.frame = f;
 //        }
         
         if (launchOptions != nil){
@@ -340,6 +343,11 @@
     
     splashView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     splashView.image = [UIImage imageNamed:@"Default"];
+    // iOS7以上，在splash页面就显示状态栏。iOS7以下在广告和新手指南显示完成后在显示状态栏
+    if (Is_iOS7){
+        [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
     [self.window addSubview:splashView];
     
     [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];
@@ -629,6 +637,7 @@
      连接微信应用以使用相关功能，此应用需要引用WeChatConnection.framework和微信官方SDK
      http://open.weixin.qq.com上注册应用，并将相关信息填写以下字段
      **/
+    // 应用管理账户tec@jiaodong.net，密码jdjishubu
     [ShareSDK connectWeChatWithAppId:@"wx1b4314c4cfb4239b" wechatCls:[WXApi class]];
 }
 

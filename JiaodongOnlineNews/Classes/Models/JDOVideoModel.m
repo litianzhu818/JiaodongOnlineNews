@@ -10,4 +10,9 @@
 
 @implementation JDOVideoModel
 
+- (NSDate *) currentTime{
+    return [NSDate dateWithTimeInterval:self.interval sinceDate:self.serverTime];
+}
+
+
 @end

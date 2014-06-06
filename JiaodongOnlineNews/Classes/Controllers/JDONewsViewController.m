@@ -173,18 +173,18 @@
 -(void)loadView{
     [super loadView];
     
-    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 44, [self.view bounds].size.width-43.5, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos scrollable:TRUE tagWidth:57];
+    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, [self.view bounds].size.width-43.5, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos scrollable:TRUE tagWidth:57];
     [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_pageControl];
     // 弹出浮动栏目选择面板
     UIButton *channelSetting = [UIButton buttonWithType:UIButtonTypeCustom];
     [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_plus_icon"] forState:UIControlStateNormal];
     [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_plus_highlight"] forState:UIControlStateHighlighted];
-    [channelSetting setFrame:CGRectMake(320-43.5, 44, 43.5, News_Navbar_Height)];
+    [channelSetting setFrame:CGRectMake(320-43.5, (Is_iOS7?20:0)+44, 43.5, News_Navbar_Height)];
     [channelSetting addTarget:self action:@selector(showChannelPane:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:channelSetting];
     
-    _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,44+News_Navbar_Height-1,[self.view bounds].size.width,[self.view bounds].size.height -44- News_Navbar_Height)];
+    _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,(Is_iOS7?20:0)+44+News_Navbar_Height-1,[self.view bounds].size.width,[self.view bounds].size.height - ((Is_iOS7?20:0)+44) - News_Navbar_Height)];
     _scrollView.backgroundColor = [UIColor whiteColor];
     _scrollView.delegate = self;
     _scrollView.dataSource = self;
@@ -197,7 +197,7 @@
 
 - (void)showChannelPane:(UIButton *)sender{
     [SharedAppDelegate.deckController setEnabled:false];
-    settingBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height)];
+    settingBackground = [[UIView alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height)];
     [settingBackground setBackgroundColor:[UIColor blackColor]];
     settingBackground.alpha = 0;
     // 单击阴影部分相当于取消
@@ -207,7 +207,7 @@
     // 计算需要的panel高度，现在固定设置3行的高度
     channelPaneHeight = section2startY*2;
     if (self.channelPane == nil) {
-        self.channelPane = [[UIView alloc] initWithFrame:CGRectMake(0, 44-channelPaneHeight, 320, channelPaneHeight+13.5/*下边框和阴影高度*/)];
+        self.channelPane = [[UIView alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44-channelPaneHeight, 320, channelPaneHeight+13.5/*下边框和阴影高度*/)];
         self.channelPane.backgroundColor = [UIColor clearColor];
         JDOChannelSetting *content = [[JDOChannelSetting alloc] initWithFrame:CGRectMake(0, 0, 320, channelPaneHeight)];
         content.delegate = self;
@@ -218,7 +218,7 @@
     }
     [self.view insertSubview:self.channelPane aboveSubview:settingBackground];
     [UIView animateWithDuration:0.5 animations:^{
-        self.channelPane.frame = CGRectMake(0, 44, 320, channelPaneHeight+13.5);
+        self.channelPane.frame = CGRectMake(0, (Is_iOS7?20:0)+44, 320, channelPaneHeight+13.5);
         settingBackground.alpha = 0.6;
     }];
 }

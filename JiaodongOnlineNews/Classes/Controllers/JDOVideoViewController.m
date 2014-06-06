@@ -33,9 +33,9 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
         _pageInfos = @[
+                       @{@"reuseId":@"AudioLive",@"title":@"电台广播"},
                        @{@"reuseId":@"VideoLive",@"title":@"电视直播"},
-                       @{@"reuseId":@"VideoReplay",@"title":@"节目点播"},
-                       @{@"reuseId":@"AudioLive",@"title":@"电台广播"}
+                       @{@"reuseId":@"VideoReplay",@"title":@"节目点播"}
                        ];
     }
     return self;
@@ -76,18 +76,6 @@
     [super viewDidUnload];
     [self setPageControl:nil];
     [self setScrollView:nil];
-}
-
-//如果有新活动，设置左上角图标提醒
-- (void)viewDidAppear:(BOOL)animated
-{
-    if (self.myDelegate.hasNewAction) {
-        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateNormal];
-        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn_new"] forState:UIControlStateHighlighted];
-    } else {
-        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateNormal];
-        [self.navigationView.leftBtn setImage:[UIImage imageNamed:@"left_menu_btn"] forState:UIControlStateHighlighted];
-    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
