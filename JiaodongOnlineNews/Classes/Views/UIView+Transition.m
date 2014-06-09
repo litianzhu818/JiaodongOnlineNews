@@ -51,9 +51,9 @@ static const char* blackMaskKey = "blackMaskKey";
     
     moveInView.frame = startFrame;
     
-    // iOS7 改变了键盘显隐时的动画，为图方便，所有使用push和pop视图的地方都使用相同的动画
-//    NSUInteger curveType = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 7<<16 : 0;
-    [UIView animateWithDuration:timeInterval animations:^{
+    // iOS7 改变了键盘显隐时的动画，为图方便，所有使用push和pop视图的地方都使用相同的动画，该动画是私有项只能通过掩码7<<16直接设置
+    NSUInteger curveType = Is_iOS7 ? 7<<16 : 0;
+    [UIView animateWithDuration:timeInterval delay:0 options:curveType animations:^{
         moveInView.frame = endFrame;
         self.transform = CGAffineTransformMakeScale(Min_Scale, Min_Scale);
         self.blackMask.alpha = Max_Alpah;
@@ -101,8 +101,8 @@ static const char* blackMaskKey = "blackMaskKey";
     
     self.frame = startFrame;
     
-//    NSUInteger curveType = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 7<<16 : 0;
-    [UIView animateWithDuration:timeInterval animations:^{
+    NSUInteger curveType = Is_iOS7 ? 7<<16 : 0;
+    [UIView animateWithDuration:timeInterval delay:0 options:curveType animations:^{
         self.frame = endFrame;
         presentView.transform = CGAffineTransformIdentity;
         self.blackMask.alpha = 0;
@@ -115,7 +115,7 @@ static const char* blackMaskKey = "blackMaskKey";
 - (UIView *) blackMask{
     UIView  *_blackMask = objc_getAssociatedObject(self, blackMaskKey);
     if( _blackMask == nil){
-        _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , 480)];
+        _blackMask = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320 , App_Height)];
         _blackMask.backgroundColor = [UIColor blackColor];
         objc_setAssociatedObject(self, blackMaskKey, _blackMask, OBJC_ASSOCIATION_RETAIN);
     }
@@ -126,7 +126,7 @@ static const char* blackMaskKey = "blackMaskKey";
     UIImageView  *_shadowView = objc_getAssociatedObject(self, shadowViewKey);
     if( _shadowView == nil){
         _shadowView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"leftside_shadow_bg"]];
-        _shadowView.frame = CGRectMake(-10, 0, 10, 480);
+        _shadowView.frame = CGRectMake(-10, 0, 10, App_Height);
         objc_setAssociatedObject(self, shadowViewKey, _shadowView, OBJC_ASSOCIATION_RETAIN);
     }
     return _shadowView;

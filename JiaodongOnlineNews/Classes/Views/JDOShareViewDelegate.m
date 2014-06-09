@@ -48,9 +48,9 @@ static JDOShareViewDelegate* sharedDelegate;
     UIView *authView = (UIView *)[[viewController.view subviews] lastObject];
     //    NSAssert([authView isKindOfClass:NSClassFromString(@"SSSinaWeiboAuthView")], @"authView不是SSSinaWeiboAuthView");
     if([viewController.view subviews].count >1){    // 有工具栏
-        authView.frame = CGRectMake(0, 44, 320, App_Height-44-40);
+        authView.frame = CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44)-40);
     }else{
-        authView.frame = CGRectMake(0, 44, 320, App_Height-44);
+        authView.frame = CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44));
     }
     
     _backBtn = (UIButton *)[[[[viewController.navigationController.navigationBar items] objectAtIndex:0] leftBarButtonItem] customView];

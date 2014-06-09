@@ -50,7 +50,7 @@
 @synthesize selectedSmallUnit = _selectedSmallUnit;
 
 + (id)showPickerWithTitle:(NSString *)title bigUnitString:(NSString *)bigUnitString bigUnitMax:(NSInteger)bigUnitMax selectedBigUnit:(NSInteger)selectedBigUnit smallUnitString:(NSString*)smallUnitString smallUnitMax:(NSInteger)smallUnitMax selectedSmallUnit:(NSInteger)selectedSmallUnit target:(id)target action:(SEL)action origin:(id)origin {
-   ActionSheetDistancePicker *picker = [[ActionSheetDistancePicker alloc] initWithTitle:title bigUnitString:bigUnitString bigUnitMax:bigUnitMax selectedBigUnit:selectedBigUnit smallUnitString:smallUnitString smallUnitMax:smallUnitMax selectedSmallUnit:selectedSmallUnit target:target action:action origin:origin];
+    ActionSheetDistancePicker *picker = [[ActionSheetDistancePicker alloc] initWithTitle:title bigUnitString:bigUnitString bigUnitMax:bigUnitMax selectedBigUnit:selectedBigUnit smallUnitString:smallUnitString smallUnitMax:smallUnitMax selectedSmallUnit:selectedSmallUnit target:target action:action origin:origin];
     [picker showActionSheetPicker];
     return picker;
 }
@@ -112,11 +112,11 @@
     DistancePickerView *picker = (DistancePickerView *)self.pickerView;
     for (int i = 0; i < self.bigUnitDigits; ++i)
         bigUnits += [picker selectedRowInComponent:i] * (int)pow((double)10, (double)(self.bigUnitDigits - (i + 1)));
-
-    for (int i = self.bigUnitDigits; i < self.bigUnitDigits + self.smallUnitDigits; ++i) 
+    
+    for (int i = self.bigUnitDigits; i < self.bigUnitDigits + self.smallUnitDigits; ++i)
         smallUnits += [picker selectedRowInComponent:i] * (int)pow((double)10, (double)((picker.numberOfComponents - i - 1)));
-
-        //sending three objects, so can't use performSelector:
+    
+    //sending three objects, so can't use performSelector:
     if ([target respondsToSelector:action])
         objc_msgSend(target, action, [NSNumber numberWithInt:bigUnits], [NSNumber numberWithInt:smallUnits], origin);
     else
@@ -137,12 +137,12 @@
         return 10;
     }
     if (component == self.bigUnitDigits)
-        return self.smallUnitMax / (int)pow((double)10, (double)(self.smallUnitDigits - 1)) + 1; 
+        return self.smallUnitMax / (int)pow((double)10, (double)(self.smallUnitDigits - 1)) + 1;
     return 10;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-     return [NSString stringWithFormat:@"%i", row];
+    return [NSString stringWithFormat:@"%i", row];
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {

@@ -81,12 +81,6 @@ NSArray *imageUrls;
     self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
     _blackMask = self.view.blackMask;
     [_blackMask addGestureRecognizer:self.closeReviewGesture];
-    
-    // iOS7会自动调整contentOffset.y = -20; 解决方案来源于 http://stackoverflow.com/questions/18924431/ios-7-navigationcontroller-is-setting-the-contentinset-and-contentoffset-of-m
-    if (Is_iOS7) {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
-    
 }
 
 - (void)handleSwipes:(UISwipeGestureRecognizer *)sender

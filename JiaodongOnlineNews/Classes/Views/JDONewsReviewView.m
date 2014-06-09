@@ -120,10 +120,10 @@
         shareViewDelegate = [[JDOShareViewDelegate alloc] initWithPresentView:nil backBlock:^{
 //            [self.target writeReview];
 #warning 偶尔会在返回评论界面时，无法关闭输入界面(点blackMask部分没有反应)
-            // 立刻执行会造成输入框与键盘脱离，0.5是经过实验得到的比较合适的延时
-            [(NSObject *)self.target performSelector:@selector(writeReview) withObject:nil afterDelay:0.5];
+            // 立刻执行会造成输入框与键盘脱离，iOS7以上还会造成主界面偏移，0.5是经过实验得到的比较合适的延时
+            [(NSObject *)self.target performSelector:@selector(writeReview) withObject:nil afterDelay:Is_iOS7?0.8:0.5];
         } completeBlock:^{
-            [(NSObject *)self.target performSelector:@selector(writeReview) withObject:nil afterDelay:0.5];
+            [(NSObject *)self.target performSelector:@selector(writeReview) withObject:nil afterDelay:Is_iOS7?0.8:0.5];
         }];
         
         // 在这里设置object参数无效,但在controller的viewDidLoad里可以,原因不明,暂时使用nil
@@ -230,18 +230,21 @@
 //- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView;
 
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if (Is_iOS7) { // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
+        if (range.location >= Review_Content_MaxLength){
+            return false;
+        }
+    }
     return YES;
 } 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView{
     // 计算剩余可输入字数
     int remain = Review_Content_MaxLength-_textView.text.length;
     [_remainWordNum setText:[NSString stringWithFormat:@"还有%d字可以输入",remain<0 ? 0:remain]];
-    if (remain<0) {
-//        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-//            // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
-//        }else{
-            _textView.text = [_textView.text substringWithRange:[_textView.text rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, Review_Content_MaxLength)] ];
-//        }
+    // 使用-1是因为，在还差2个字到上限的时候输入中文，输入两个字母再删除一个，之后若再输入一个字母，系统会自动添加上一个空格，这样会造成文本总长度比上限大1。导致对编辑的内容进行substring，而iOS7中不允许对用户正在输入的内容进行裁剪，直接出异常
+    if (remain<-1) {
+        // 在这里substring是为了避免复制粘贴进来的内容直接超过最大限制。并且如果超过最大长度，shouldChangeTextInRange:中的location越界会造成删除也无法进行
+         _textView.text = [_textView.text substringWithRange:[_textView.text rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, Review_Content_MaxLength)] ];
     }
 }
 

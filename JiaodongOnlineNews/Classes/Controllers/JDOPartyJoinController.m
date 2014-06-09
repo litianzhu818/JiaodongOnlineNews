@@ -83,7 +83,7 @@ NSArray *reg_fields;
     
     reg_views = [[NSMutableArray alloc] init];
     self.view.backgroundColor = [UIColor whiteColor];
-    int y = 90-40;
+    int y = Is_iOS7?70:50;
     reg_fields = (NSArray *)[self.partyJoin objectForKey:@"reg_fields"];
     for (NSDictionary *reg_field in reg_fields) {
         if ([(NSString *)[reg_field objectForKey:@"active_required"] isEqualToString:@"1"]) {//必填项，加星号

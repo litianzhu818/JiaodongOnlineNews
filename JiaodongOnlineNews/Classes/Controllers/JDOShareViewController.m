@@ -52,6 +52,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
     [self.ShareBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;
@@ -276,7 +277,7 @@
     [ShareSDK shareContent:content
                       type:shareType
                authOptions:JDOGetOauthOptions(nil)
-             statusBarTips:YES
+             statusBarTips:Is_iOS7?false:true
                     result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
                         if (state == SSResponseStateSuccess){
                             NSLog(@"success");
@@ -357,27 +358,19 @@
     if(textView == self.textView2){
         int textCount = [textView.text  length];
         int remaind = Review_Content_MaxLength - textCount - [_titleLabel.text length];
-        if (remaind >= 0) {
-            self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
-        } else {
-            self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",0];
-//            if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-//                // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
-//            }else{
-                _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength - [_titleLabel.text length])];
-//            }
-            
+        self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind<0 ? 0:remaind];
+        if (remaind <-1) {  // 原因参见JDONewsReviewView
+            _textView2.text = [_textView2.text substringWithRange:NSMakeRange(0, Review_Content_MaxLength - [_titleLabel.text length])];
         }
     }
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-//    if([text length] == 0){
-//        return YES;
-//    }
-//    if([textView.text length] + range.length >= 135){
-//        return NO;
-//    }
+    if (Is_iOS7) { // iOS7 文本输入到最大值的时候再输入汉字状态的拼音会闪退
+        if (range.location >= Review_Content_MaxLength - [_titleLabel.text length]){
+            return false;
+        }
+    }
     return YES;
 }
 @end

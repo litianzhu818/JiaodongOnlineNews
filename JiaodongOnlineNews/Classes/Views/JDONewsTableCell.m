@@ -62,6 +62,8 @@
         [self.typeHint setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.typeHint setEnabled:true];
         [self.contentView addSubview:self.typeHint];
+        // 在标签与新闻摘要叠加时，把标签放在上面
+        [self.contentView bringSubviewToFront:self.typeHint];
     }
     return self;
 }

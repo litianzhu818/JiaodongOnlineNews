@@ -28,6 +28,10 @@
 #import "AbstractActionSheetPicker.h"
 #import <objc/message.h>
 
+BOOL OSAtLeast(NSString* v) {
+    return [[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending;
+}
+
 @interface AbstractActionSheetPicker()
 
 @property (nonatomic, strong) UIBarButtonItem *barButtonItem;
@@ -112,7 +116,7 @@
     return nil;
 }
 
-- (void)notifyTarget:(id)target didSucceedWithAction:(SEL)successAction origin:(id)origin {    
+- (void)notifyTarget:(id)target didSucceedWithAction:(SEL)successAction origin:(id)origin {
     NSAssert(NO, @"This is an abstract class, you must use a subclass of AbstractActionSheetPicker (like ActionSheetStringPicker)");
 }
 
@@ -128,10 +132,21 @@
 #pragma mark - Actions
 
 - (void)showActionSheetPicker {
-    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.viewSize.width, 260)];    
-    UIToolbar *pickerToolbar = [self createPickerToolbarWithTitle:self.title];
-    [pickerToolbar setBarStyle:UIBarStyleBlackTranslucent];
-    [masterView addSubview:pickerToolbar];
+    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.viewSize.width, 260)];
+    self.toolbar = [self createPickerToolbarWithTitle:self.title];
+    [masterView addSubview: self.toolbar];
+    
+    //ios7 picker draws a darkened alpha-only region on the first and last 8 pixels horizontally, but blurs the rest of its background.  To make the whole popup appear to be edge-to-edge, we have to add blurring to the remaining left and right edges.
+    if (OSAtLeast(@"7.0")) {
+        CGRect f = CGRectMake(0,self.toolbar.frame.origin.y, 8, masterView.frame.size.height - self.toolbar.frame.origin.y);
+        UIToolbar* leftEdge = [[UIToolbar alloc] initWithFrame: f];
+        f.origin.x = masterView.frame.size.width - 8;
+        UIToolbar* rightEdge = [[UIToolbar alloc] initWithFrame: f];
+        leftEdge.barTintColor = rightEdge.barTintColor = self.toolbar.barTintColor;
+        [masterView insertSubview: leftEdge atIndex: 0];
+        [masterView insertSubview: rightEdge atIndex: 0];
+    }
+    
     self.pickerView = [self configuredPickerView];
     NSAssert(_pickerView != NULL, @"Picker view failed to instantiate, perhaps you have invalid component data.");
     [masterView addSubview:_pickerView];
@@ -139,7 +154,7 @@
 }
 
 - (IBAction)actionPickerDone:(id)sender {
-    [self notifyTarget:self.target didSucceedWithAction:self.successAction origin:[self storedOrigin]];    
+    [self notifyTarget:self.target didSucceedWithAction:self.successAction origin:[self storedOrigin]];
     [self dismissPicker];
 }
 
@@ -152,11 +167,11 @@
 #if __IPHONE_4_1 <= __IPHONE_OS_VERSION_MAX_ALLOWED
     if (self.actionSheet)
 #else
-    if (self.actionSheet && [self.actionSheet isVisible])
+        if (self.actionSheet && [self.actionSheet isVisible])
 #endif
-        [_actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    else if (self.popOverController && self.popOverController.popoverVisible)
-        [_popOverController dismissPopoverAnimated:YES];
+            [_actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+        else if (self.popOverController && self.popOverController.popoverVisible)
+            [_popOverController dismissPopoverAnimated:YES];
     self.actionSheet = nil;
     self.popOverController = nil;
     self.selfReference = nil;
@@ -195,12 +210,12 @@
 - (UIToolbar *)createPickerToolbarWithTitle:(NSString *)title  {
     CGRect frame = CGRectMake(0, 0, self.viewSize.width, 44);
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:frame];
-    pickerToolbar.barStyle = UIBarStyleBlackOpaque;
+    pickerToolbar.barStyle = OSAtLeast(@"7.0") ? UIBarStyleDefault : UIBarStyleBlackTranslucent;
     NSMutableArray *barItems = [[NSMutableArray alloc] init];
     NSInteger index = 0;
     for (NSDictionary *buttonDetails in self.customButtons) {
         NSString *buttonTitle = [buttonDetails objectForKey:@"buttonTitle"];
-      //NSInteger buttonValue = [[buttonDetails objectForKey:@"buttonValue"] intValue];
+        //NSInteger buttonValue = [[buttonDetails objectForKey:@"buttonValue"] intValue];
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(customButtonPressed:)];
         button.tag = index;
         [barItems addObject:button];
@@ -214,7 +229,7 @@
     [barItems addObject:flexSpace];
     if (title){
         UIBarButtonItem *labelButton = [self createToolbarLabelWithTitle:title];
-        [barItems addObject:labelButton];    
+        [barItems addObject:labelButton];
         [barItems addObject:flexSpace];
     }
     UIBarButtonItem *doneButton = [self createButtonWithType:UIBarButtonSystemItemDone target:self action:@selector(actionPickerDone:)];
@@ -225,17 +240,23 @@
 
 - (UIBarButtonItem *)createToolbarLabelWithTitle:(NSString *)aTitle {
     UILabel *toolBarItemlabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 180,30)];
-    [toolBarItemlabel setTextAlignment:UITextAlignmentCenter];    
-    [toolBarItemlabel setTextColor:[UIColor whiteColor]];    
-    [toolBarItemlabel setFont:[UIFont boldSystemFontOfSize:16]];    
-    [toolBarItemlabel setBackgroundColor:[UIColor clearColor]];    
-    toolBarItemlabel.text = aTitle;    
+    [toolBarItemlabel setTextAlignment:NSTextAlignmentCenter];
+    [toolBarItemlabel setTextColor: OSAtLeast(@"7.0") ? [UIColor blackColor] : [UIColor whiteColor]];
+    [toolBarItemlabel setFont:[UIFont boldSystemFontOfSize:16]];
+    [toolBarItemlabel setBackgroundColor:[UIColor clearColor]];
+    toolBarItemlabel.text = aTitle;
     UIBarButtonItem *buttonLabel = [[UIBarButtonItem alloc]initWithCustomView:toolBarItemlabel];
     return buttonLabel;
 }
 
 - (UIBarButtonItem *)createButtonWithType:(UIBarButtonSystemItem)type target:(id)target action:(SEL)buttonAction {
-    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:type target:target action:buttonAction];
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:type target:target action:buttonAction];
+    
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
+        [barButton setTintColor: [[UIApplication sharedApplication] keyWindow].tintColor];
+    
+    return barButton;
 }
 
 #pragma mark - Utilities and Accessors
@@ -320,8 +341,8 @@
         [popover presentPopoverFromBarButtonItem:_barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         return;
     }
-    else if ((self.containerView) && NO == CGRectIsEmpty(self.presentFromRect)) {
-        [popover presentPopoverFromRect:_presentFromRect inView:_containerView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    else if ((self.containerView)) {
+        [popover presentPopoverFromRect:_containerView.bounds inView:_containerView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         return;
     }
     // Unfortunately, things go to hell whenever you try to present a popover from a table view cell.  These are failsafes.

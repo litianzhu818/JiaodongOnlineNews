@@ -52,7 +52,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
-    tp.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+    self.mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
 
     [searchbutton.titleLabel setShadowColor:[UIColor blackColor]];
     [searchbutton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
@@ -74,13 +74,13 @@
     [checkBox1 setTitleColor:Light_Blue_Color];
     [checkBox1 setCheckAlignment:M13CheckboxAlignmentLeft];
     checkBox1.frame = CGRectMake(13, CGRectGetMaxY(ChassisNum.frame)+12, checkBox1.frame.size.width, checkBox1.frame.size.height);
-    [tp addSubview:checkBox1];
+    [self.mainView addSubview:checkBox1];
     
     checkBox2 = [[M13Checkbox alloc] initWithTitle:@"违章自动提醒" andHeight:18];
     [checkBox2 setTitleColor:Light_Blue_Color];
     [checkBox2 setCheckAlignment:M13CheckboxAlignmentLeft];
     checkBox2.frame = CGRectMake(320-13-checkBox2.frame.size.width, CGRectGetMaxY(ChassisNum.frame)+12, checkBox2.frame.size.width, checkBox2.frame.size.height);
-    [tp addSubview:checkBox2];
+    [self.mainView addSubview:checkBox2];
     
     // 默认选中两个复选框
     [checkBox1 setCheckState:M13CheckboxStateChecked];
@@ -88,7 +88,7 @@
     [checkBox1 addTarget:self action:@selector(checkBoxChanged:) forControlEvents:UIControlEventValueChanged];
     [checkBox2 addTarget:self action:@selector(checkBoxChanged:) forControlEvents:UIControlEventValueChanged];
     
-    [tp setScrollEnabled:NO];
+    [self.mainView setScrollEnabled:NO];
     
     [result setBounces:NO];
     [result setDataSource:self];
@@ -165,7 +165,7 @@
             [tmp appendString:[NSString stringWithFormat:@"%d", selectedIndex + 1]];
             CarTypeString = tmp;
         } else {
-            CarTypeString = [NSString stringWithFormat:@"%d", selectedIndex + 1];
+            CarTypeString = [[NSString stringWithFormat:@"%d", selectedIndex + 1] mutableCopy];
         }
     } cancelBlock:^(ActionSheetStringPicker *picker) {
         

@@ -39,7 +39,7 @@
         self.reuseId = @"27";
         self.channelid = @"27";
         self.currentPage = 1;
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.height - 44) style:UITableViewStylePlain];
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44)) style:UITableViewStylePlain];
         //self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
@@ -56,7 +56,7 @@
             [blockSelf loadMore];
         }];
         
-        self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+        self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44))];
         self.statusView.delegate = self;
         [self.view addSubview:self.statusView];
         
@@ -366,7 +366,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning

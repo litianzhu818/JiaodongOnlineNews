@@ -49,8 +49,8 @@
     [super loadView];
     
     if( self.type == JDOReviewTypeNews ){
-        self.tableView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
-        self.noDataView.frame = CGRectMake(0, 44, 320, App_Height-44-44);
+        self.tableView.frame = CGRectMake(0, Is_iOS7?64:44, 320, App_Height-44-(Is_iOS7?64:44));
+        self.noDataView.frame = CGRectMake(0, Is_iOS7?64:44, 320, App_Height-44-(Is_iOS7?64:44));
         
         // 添加评论栏
         NSArray *toolbarBtnConfig = @[ [NSNumber numberWithInt:ToolBarInputField], [NSNumber numberWithInt:ToolBarButtonReview] ];

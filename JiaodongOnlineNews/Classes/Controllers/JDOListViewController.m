@@ -105,10 +105,6 @@
         self.listArray = [[NSMutableArray alloc] initWithCapacity:Default_Page_Size];
         [self loadDataFromNetwork];
     }
-    // iOS7下scrollview切换后会自动设置contentOffset = -20;
-    if (Is_iOS7) {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
 }
 
 -(void)viewWillAppear:(BOOL)animated {

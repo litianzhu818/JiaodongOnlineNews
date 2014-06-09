@@ -125,9 +125,6 @@
         self.listArray = [[NSMutableArray alloc] initWithCapacity:TopicList_Page_Size];
         [self loadDataFromNetwork];
     }
-    if (Is_iOS7) {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
