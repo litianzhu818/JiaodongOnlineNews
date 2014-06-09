@@ -32,6 +32,7 @@
     self = [super initWithServiceName:PARTY_SERVICE modelClass:@"JDOPartyModel" title:@"精彩活动" params:params needRefreshControl:true];
     if(self){
         [self setIsCacheToMemory:TRUE andCacheFileName:@"PartyListCache"];
+        self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     return self;
 }
@@ -40,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.rowHeight = 350.0f;
+//	self.tableView.rowHeight = 350.0f;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -216,18 +217,21 @@
 }
 
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if(self.listArray.count == 0){
-//        return 0;
-//    }else{
-//        JDOPartyModel *questionModel = [self.listArray objectAtIndex:indexPath.row];
-//        return [self cellHeight:questionModel];
-//    }
-//}
-//
-//- (CGFloat) cellHeight:(NSDictionary *) model {
-//    float titieHeight = NISizeOfStringWithLabelProperties([model objectForKey:@"title"], CGSizeMake(300, MAXFLOAT), [UIFont systemFontOfSize:18], UILineBreakModeWordWrap, 0).height;
-//    return 360+titieHeight;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.listArray.count == 0){
+        return 0;
+    }else{
+        NSDictionary *model = [self.listArray objectAtIndex:indexPath.row];
+        float height = 320.0f;
+        
+        if( !JDOIsEmptyString(model[@"active_starttime"]) &&  !JDOIsEmptyString(model[@"active_endtime"])) {
+            height += 23;
+        }
+        if( !JDOIsEmptyString(model[@"active_address"])){
+            height += 23;
+        }
+        return height;
+    }
+}
 
 @end

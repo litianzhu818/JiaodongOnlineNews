@@ -15,6 +15,7 @@
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) NSMutableArray *imageViews;
 @property (nonatomic,strong) UILabel *titleLabel;
+@property (nonatomic,strong) UILabel *advLabel;
 @property (nonatomic,strong) StyledPageControl *pageControl;
 @property (nonatomic,strong) UIImageView *titleBackground;
 @property (nonatomic,assign) int currentPage;

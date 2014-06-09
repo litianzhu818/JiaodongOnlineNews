@@ -58,8 +58,8 @@ NSDate *modifyTime;
         [self.navigationView setTitle:@"广告详情"];
     } else {
         [self.navigationView setTitle:@"新闻详情"];
-        [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
     }
+    [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
 }
 
 - (void) showReviewList{
@@ -83,7 +83,7 @@ NSDate *modifyTime;
     if(self.isAdv){
         return @{@"aid":self.newsModel.id};
     } else {
-        return @{@"aid":self.newsModel.id,@"advCid":@"41",@"advLimit":@"1"};
+        return @{@"aid":self.newsModel.id,@"advCid":@"39",@"advLimit":@"1"};
     }
 }
 
@@ -137,6 +137,8 @@ NSDate *modifyTime;
                 if (self.isAdv) {
                     [mdic removeObjectForKey:@"addtime"];
                     [mdic removeObjectForKey:@"source"];
+                    self.newsModel.title = @"推广";
+                    self.newsModel.summary = [responseObject objectForKey:@"title"];
                 }
                 [self.navigationView setRightBtnCount:[responseObject objectForKey:@"commentCount"]];
                 NSString *mergedHTML = [JDONewsDetailModel mergeToHTMLTemplateFromDictionary:[self replaceUrlAndAsyncLoadImage:mdic]];

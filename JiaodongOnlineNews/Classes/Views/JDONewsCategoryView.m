@@ -135,12 +135,12 @@
 
 // 不勾选“特荐[a]”则认为是列表，与其他选项是否勾选无关
 - (NSDictionary *) newsListParam{
-    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a",@"advCid":@"40",@"advPosition":@"3",@"advPage":@"1",@"advLimit":@"4"};
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:self.currentPage],@"pageSize":@NewsList_Page_Size,@"natype":@"a",@"advCid":self.info.channel,@"advPosition":@"3",@"advPage":@"1",@"advLimit":@"4",@"adv_atype":@"c"};
 }
 
 // 后台勾选“特荐[a]”则认为是轮播，与其他选项是否勾选无关
 - (NSDictionary *) headLineParam{
-    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a"};
+    return @{@"channelid":self.info.channel,@"p":[NSNumber numberWithInt:1],@"pageSize":@NewsHead_Page_Size,@"atype":@"a",@"advCid":self.info.channel,@"advPosition":@"2",@"advPage":@"1",@"advLimit":@"1",@"adv_atype":@"h"};
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
@@ -148,7 +148,6 @@
         NSLog(@"kind:%@,old:%@,new:%@",change[NSKeyValueChangeKindKey],change[NSKeyValueChangeOldKey],change[NSKeyValueChangeNewKey]);
     }
 }
-
 
 - (void)loadDataFromNetwork{
     __block bool headlineFinished = false;
@@ -171,8 +170,21 @@
     DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
     [config addArrayMapper:mapper];
     // 加载头条
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.headLineParam success:^(JDOArrayModel *dataModel) {
-        NSArray *dataList = (NSArray *)dataModel.data;
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" params:self.headLineParam success:^(JDOArrayModel *dataModel) {
+        NSArray *data = dataModel.data;
+        NSMutableArray *dataList = [[NSMutableArray alloc] init];
+        for (int i = 0; i < data.count; i++) {
+            if (i >= 3) {
+                continue;
+            }
+            if ([[data objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDONewsModel class]];
+                [dataList addObject:[mapper parseDictionary:[data objectAtIndex:i]]];
+            } else {
+                [dataList addObject:[data objectAtIndex:i]];
+            }
+        }
+
         if(dataList != nil && dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -274,8 +286,20 @@
     DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDONewsModel class] forAttribute:@"data" onClass:[JDOArrayModel class]];
     [config addArrayMapper:mapper];
     // 刷新头条
-    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" config:config params:self.headLineParam success:^(JDOArrayModel *dataModel) {
-        NSArray *dataList = (NSArray *)dataModel.data;
+    [[JDOJsonClient sharedClient] getJSONByServiceName:NEWS_SERVICE modelClass:@"JDOArrayModel" params:self.headLineParam success:^(JDOArrayModel *dataModel) {
+        NSArray *data = dataModel.data;
+        NSMutableArray *dataList = [[NSMutableArray alloc] init];
+        for (int i = 0; i < data.count; i++) {
+            if (i >= 3) {
+                continue;
+            }
+            if ([[data objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDONewsModel class]];
+                [dataList addObject:[mapper parseDictionary:[data objectAtIndex:i]]];
+            } else {
+                [dataList addObject:[data objectAtIndex:i]];
+            }
+        }
         if(dataList.count >0){
             [self.headArray removeAllObjects];
             [self.headArray addObjectsFromArray:dataList];
@@ -386,7 +410,7 @@
 
 - (void) loadMore{
     if(![Reachability isEnableNetwork]){
-        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self];
+        [JDOCommonUtil showHintHUD:No_Network_Connection inView:self withSlidingMode:WBNoticeViewSlidingModeUp];
         [self.tableView.infiniteScrollingView stopAnimating];
         return ;
     }
@@ -435,7 +459,7 @@
         }
     } failure:^(NSString *errorStr) {
         [self.tableView.infiniteScrollingView stopAnimating];
-        [JDOCommonUtil showHintHUD:errorStr inView:self];
+        [JDOCommonUtil showHintHUD:errorStr inView:self withSlidingMode:WBNoticeViewSlidingModeUp];
     }];
 
 }
@@ -474,8 +498,10 @@
         if (self.listArray.count > 0&&![[self.listArray objectAtIndex:indexPath.row] isKindOfClass:[JDONewsModel class]]) {
             JDOAdvCell *advcell = [tableView dequeueReusableCellWithIdentifier:advIdentifier];
             if (advcell == nil) {
-                advcell = [[JDOAdvCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:advIdentifier datas:[self.listArray objectAtIndex:indexPath.row]];
+                advcell = [[JDOAdvCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:advIdentifier];
+                ;
             }
+            [advcell setDataArray:[self.listArray objectAtIndex:indexPath.row]];
             return advcell;
         }
         
@@ -512,8 +538,19 @@
 - (void) galleryImageClicked:(UITapGestureRecognizer *)gesture{
     JDONewsHeadCell *cell = (JDONewsHeadCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     int index = [cell.imageViews indexOfObject:gesture.view];
-    
-    JDONewsDetailController *detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.headArray objectAtIndex:index]];
+    JDONewsDetailController *detailController;
+    if ([[self.headArray objectAtIndex:index] isKindOfClass:[JDONewsModel class]]) {
+        detailController = [[JDONewsDetailController alloc] initWithNewsModel:[self.headArray objectAtIndex:index]];
+    } else {
+        NSDictionary *adv = [[self.headArray objectAtIndex:index] objectAtIndex:0];
+        NSString *newsid = [adv objectForKey:@"murl"];
+        NSString *NewsTitle = [adv objectForKey:@"title"];
+        JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+        newsModel.id = newsid;
+        newsModel.title = NewsTitle;
+        newsModel.summary = @" ";
+        detailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel Collect:NO isAdv:YES];
+    }
     JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
     [centerController pushViewController:detailController animated:true];
 }
@@ -610,9 +647,8 @@
             }
         } else {
             JDOAdvCell *advcell = (JDOAdvCell *)[tableView cellForRowAtIndexPath:indexPath];
-            NSLog(@"%d", [advcell getCurrentLayer]);
-            NSString *newsid = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"murl"];
-            NSString *NewsTitle = [(NSDictionary *)[advcell.datas objectAtIndex:[advcell getCurrentLayer]] objectForKey:@"title"];
+            NSString *newsid = [(NSDictionary *)[advcell.datas objectAtIndex:advcell.currentPage] objectForKey:@"murl"];
+            NSString *NewsTitle = [(NSDictionary *)[advcell.datas objectAtIndex:advcell.currentPage] objectForKey:@"title"];
             JDONewsModel *newsModel = [[JDONewsModel alloc] init];
             newsModel.id = newsid;
             newsModel.title = NewsTitle;
@@ -621,7 +657,6 @@
             JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
             [centerController pushViewController:detailController animated:true];
             [tableView deselectRowAtIndexPath:indexPath animated:true];
-            [advcell setCurrentLayer:0];
         }
     }
 }

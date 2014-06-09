@@ -61,7 +61,7 @@ NSArray *imageUrls;
     [self.leftSwipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.webView addGestureRecognizer:self.leftSwipeGestureRecognizer];
     
-    [self.view addSubview:self.webView];
+    [self.view insertSubview:self.webView belowSubview:self.navigationView];
     
     if (self.isAdv) {
         _toolbar = [[JDOToolBar alloc] initWithModel:self.model parentController:self typeConfig:[self setupToolBarBtnConfigWithAdv] widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
@@ -208,7 +208,7 @@ NSArray *imageUrls;
     }
     NSMutableDictionary *newsDetail = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
     [newsDetail setObject:html forKey:@"content"];
-    if ([dictionary objectForKey:@"advs"] != nil) {
+    if ([dictionary objectForKey:@"advs"] != nil && [dictionary objectForKey:@"advs"] != [NSNull null]) {
         NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
         NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"murl"];
         NSString *advtitle = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"title"];

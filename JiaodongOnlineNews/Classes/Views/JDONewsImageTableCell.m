@@ -12,9 +12,9 @@
 #define Default_Image @"news_image_placeholder.png"
 #define Left_Margin 7.5f
 #define Right_Margin 7.5f
-#define Top_Margin 7.5f
-#define Padding 7.5f
-#define Bottom_Margin 7.0f
+#define Top_Margin 5.0f
+#define Padding 13.5f
+#define Bottom_Margin 10.0f
 
 @interface JDONewsImageTableCell ()
 @property (nonatomic,strong) UIImageView *imageView1;
@@ -63,16 +63,16 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.typeHint.frame = CGRectMake(self.frame.size.width - 28/*图标宽度*/ - Right_Margin-Padding, Top_Margin, 28, 14);
+    self.typeHint.frame = CGRectMake(self.frame.size.width - 28/*图标宽度*/ - Right_Margin, Top_Margin, 28, 14);
     CGRect frame = self.textLabel.frame;
     float labelWdith = self.frame.size.width - Left_Margin - Padding - self.typeHint.frame.size.width - Right_Margin;
-    self.textLabel.frame = CGRectMake(Left_Margin+Padding,Top_Margin-1/*对齐*/,labelWdith,CGRectGetHeight(frame));
+    self.textLabel.frame = CGRectMake(Left_Margin,Top_Margin-3/*对齐*/,labelWdith,CGRectGetHeight(frame));
     
-    CGFloat imageWidth = (self.frame.size.width-4*Padding-Left_Margin-Right_Margin)/3;
+    CGFloat imageWidth = (self.frame.size.width-2*Padding-Left_Margin-Right_Margin)/3;
     CGFloat imageHeight = self.frame.size.height-CGRectGetHeight(self.textLabel.frame)-Top_Margin-Bottom_Margin;
-    _imageView1.frame = CGRectMake(Left_Margin+Padding, Top_Margin+CGRectGetHeight(self.textLabel.frame), imageWidth, imageHeight);
-    _imageView2.frame = CGRectMake(Left_Margin+2*Padding+imageWidth, Top_Margin+CGRectGetHeight(self.textLabel.frame), imageWidth, imageHeight);
-    _imageView3.frame = CGRectMake(Left_Margin+3*Padding+2*imageWidth, Top_Margin+CGRectGetHeight(self.textLabel.frame), imageWidth, imageHeight);
+    _imageView1.frame = CGRectMake(Left_Margin, Top_Margin+CGRectGetHeight(self.textLabel.frame)/*与label的间距通过上移label-3实现*/, imageWidth, imageHeight);
+    _imageView2.frame = CGRectMake(Left_Margin+Padding+imageWidth, Top_Margin+CGRectGetHeight(self.textLabel.frame), imageWidth, imageHeight);
+    _imageView3.frame = CGRectMake(Left_Margin+2*Padding+2*imageWidth, Top_Margin+CGRectGetHeight(self.textLabel.frame), imageWidth, imageHeight);
 }
 - (void)setModel:(JDONewsModel *)newsModel{
     __block UIImageView *blockImageView = self.imageView;

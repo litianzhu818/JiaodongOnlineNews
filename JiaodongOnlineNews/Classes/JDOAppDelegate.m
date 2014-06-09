@@ -109,6 +109,7 @@
             
             // 图片加载成功后才保存服务器版本号
             [userDefault setObject:advServerURL forKey:@"adv_url"];
+            [userDefault setObject:[jsonObject valueForKey:@"targetid"] forKey:@"adv_targetid"];
             [userDefault synchronize];
             // 图片缓存到磁盘
             [imgData writeToFile:NIPathForDocumentsResource(advertise_file_name) options:NSDataWritingAtomic error:&error];
@@ -144,16 +145,21 @@
     // 2秒之后仍未加载完成,则显示已缓存的广告图
     if(advImage == nil){
         advImage = [UIImage imageNamed:@"default_adv"];
-        /*
+        
         NSFileManager * fm = [NSFileManager defaultManager];
         NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(advertise_file_name)];
         if(imgData){
             advImage = [UIImage imageWithData:imgData];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"adv_targetid"]) {
+                self.advTargetId = [[NSUserDefaults standardUserDefaults] objectForKey:@"adv_targetid"];
+                advView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(advViewClicked)];
+                [advView addGestureRecognizer:singleTap];
+            }
         }else{
             // 本地缓存尚不存在,加载默认广告图
             advImage = [UIImage imageNamed:@"default_adv"];
         }
-         */
     } else {
         advView.userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(advViewClicked)];
@@ -177,7 +183,7 @@
 
 - (void)advViewClicked
 {
-    if (self.advTargetId&&![self.advTargetId isEqualToString:@""]) {
+    if (self.advTargetId&&![self.advTargetId isEqualToString:@"0"]) {
         [JDOAppDelegate cancelPreviousPerformRequestsWithTarget:self selector:@selector(navigateToMainView:) object:self.launchOptions];
         
         self.deckController = [self generateControllerStack];
@@ -185,22 +191,31 @@
         [advView removeFromSuperview];
         [self.deckController.view removeFromSuperview];
         self.window.rootViewController = self.deckController;
-        [self openNewsDetail:@"24001"];
+        [self openNewsDetail:self.advTargetId];
     }
 }
 
 - (void)checkForNewAction
 {
-    self.hasNewAction = YES;
+    NSString *lastid = @"10001";
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LocalActionId"]) {
+        lastid = [[NSUserDefaults standardUserDefaults] objectForKey:@"LocalActionId"];
+    }
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+    [param setObject:lastid forKey:@"lastid"];
     JDOHttpClient *httpclient = [JDOHttpClient sharedClient];
-    [httpclient getPath:FEEDBACK_SERVICE parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [httpclient getPath:CHECK_NEW_ACTION_SERVICE parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = [(NSData *)responseObject objectFromJSONData];
-        id jsonvalue = [json objectForKey:@"status"];
+        id jsonvalue = [json objectForKey:@"data"];
         if ([jsonvalue isKindOfClass:[NSNumber class]]) {
-            int status = [[json objectForKey:@"status"] intValue];
-            if (status == 1) {
+            int status = [[json objectForKey:@"data"] intValue];
+            if (status != [lastid integerValue]) {
                 //活动有更新
                 self.hasNewAction = YES;
+                NSString *serviceid = [[NSString alloc] initWithFormat:@"%d", status];
+                [[NSUserDefaults standardUserDefaults] setObject:serviceid forKey:@"ServiceActionId"];
+            } else {
+                self.hasNewAction = NO;
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

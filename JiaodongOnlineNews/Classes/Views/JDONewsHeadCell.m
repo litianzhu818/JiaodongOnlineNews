@@ -17,6 +17,8 @@
 #define Right_Margin 7.5f
 #define PageControl_Width 40.0f
 
+#define Adv_Width 70.0f
+
 @implementation JDONewsHeadCell {
     NSArray *originModels;
     NSArray *originImages;
@@ -61,6 +63,16 @@
         _titleLabel.shadowOffset = CGSizeMake(0, 1);
         [self.contentView addSubview:_titleLabel];
         
+        _advLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, height-Title_Height, Adv_Width, Title_Height)];
+        _advLabel.font = [UIFont systemFontOfSize:16];
+        _advLabel.textAlignment = UITextAlignmentCenter;
+        _advLabel.text = @"【推广】";
+        _advLabel.backgroundColor = [UIColor clearColor];
+        _advLabel.textColor = [UIColor whiteColor];
+        _advLabel.shadowColor = [UIColor blackColor];
+        _advLabel.shadowOffset = CGSizeMake(0, 1);
+        [self.contentView addSubview:_advLabel];
+        
         _pageControl = [[StyledPageControl alloc] initWithFrame:CGRectMake(width-PageControl_Width-Right_Margin, height-Title_Height, PageControl_Width, Title_Height)];
         _pageControl.backgroundColor = [UIColor clearColor];
         _pageControl.coreNormalColor = [UIColor colorWithHex:@"A1A1A1"];
@@ -101,13 +113,28 @@
         [self.imageViews addObject:imageView];
         [_scrollView addSubview:imageView];
         
-        JDONewsModel *newsModel = (JDONewsModel *)[models objectAtIndex:i];
-        if( i==self.currentPage ){
-            _titleLabel.text = newsModel.title;
+        NSString *mpic;
+        if([[models objectAtIndex:i] isKindOfClass:[JDONewsModel class]]) {
+            JDONewsModel *newsModel = (JDONewsModel *)[models objectAtIndex:i];
+            if( i==self.currentPage ){
+                _titleLabel.text = newsModel.title;
+                [_titleLabel setFrame:CGRectMake(Left_Margin, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+                [_advLabel setHidden:YES];
+            }
+            mpic = newsModel.mpic;
+        } else {
+            NSArray *advs = (NSArray *)[models objectAtIndex:i];
+            if( i==self.currentPage ){
+                _titleLabel.text = [(NSDictionary *)[advs objectAtIndex:0] objectForKey:@"title"];
+                [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Adv_Width-Right_Margin, Title_Height)];
+                [_advLabel setHidden:NO];
+            }
+            mpic = [(NSDictionary *)[advs objectAtIndex:0] objectForKey:@"mpic"];
         }
+        
             
         __block UIImageView *blockImageView = imageView;
-        [imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+        [imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
             if(!cached){    // 非缓存加载时使用渐变动画
                 CATransition *transition = [CATransition animation];
                 transition.duration = 0.3;
@@ -168,9 +195,23 @@
     if ([myTimer isValid]) {
         float pageWidth = CGRectGetWidth(self.bounds);
         self.currentPage = _scrollView.contentOffset.x / pageWidth;
-        JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self.currentPage];
-        _pageControl.currentPage = [originModels indexOfObject:newsModel];
-        _titleLabel.text = newsModel.title;
+        NSString *title;
+        float width = CGRectGetWidth(self.bounds);
+        float height = CGRectGetHeight(self.bounds);
+        if ([[self.models objectAtIndex:self.currentPage] isKindOfClass:[JDONewsModel class]]) {
+            JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self.currentPage];
+            title = newsModel.title;
+            _pageControl.currentPage = [originModels indexOfObject:newsModel];
+            [_titleLabel setFrame:CGRectMake(Left_Margin, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+            [_advLabel setHidden:YES];
+        } else {
+            NSArray *adv = (NSArray *)[self.models objectAtIndex:self.currentPage];
+            title = [(NSDictionary *)[adv objectAtIndex:0] objectForKey:@"title"];
+            _pageControl.currentPage = [originModels indexOfObject:adv];
+            [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Adv_Width-Right_Margin, Title_Height)];
+            [_advLabel setHidden:NO];
+        }
+        _titleLabel.text = title;
     }
 }
 
@@ -180,9 +221,23 @@
 //    self.currentPage = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     float pageWidth = CGRectGetWidth(self.bounds);
     self.currentPage = _scrollView.contentOffset.x / pageWidth;
-    JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self.currentPage];
-    _pageControl.currentPage = [originModels indexOfObject:newsModel];
-    _titleLabel.text = newsModel.title;
+    NSString *title;
+    float width = CGRectGetWidth(self.bounds);
+    float height = CGRectGetHeight(self.bounds);
+    if ([[self.models objectAtIndex:self.currentPage] isKindOfClass:[JDONewsModel class]]) {
+        JDONewsModel *newsModel = (JDONewsModel *)[self.models objectAtIndex:self.currentPage];
+        title = newsModel.title;
+        _pageControl.currentPage = [originModels indexOfObject:newsModel];
+        [_titleLabel setFrame:CGRectMake(Left_Margin, height-Title_Height, width-PageControl_Width-Left_Margin-Right_Margin, Title_Height)];
+        [_advLabel setHidden:YES];
+    } else {
+        NSArray *adv = (NSArray *)[self.models objectAtIndex:self.currentPage];
+        title = [(NSDictionary *)[adv objectAtIndex:0] objectForKey:@"title"];
+        _pageControl.currentPage = [originModels indexOfObject:adv];
+        [_titleLabel setFrame:CGRectMake(Adv_Width, height-Title_Height, width-PageControl_Width-Adv_Width-Right_Margin, Title_Height)];
+        [_advLabel setHidden:NO];
+    }
+    _titleLabel.text = title;
     
     int page = [[[JDOCenterViewController sharedNewsViewController] pageControl] currentPage];
     if(self.currentPage == 1) {
