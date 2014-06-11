@@ -54,8 +54,10 @@
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     self.mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
 
-    [searchbutton.titleLabel setShadowColor:[UIColor blackColor]];
-    [searchbutton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+    [searchbutton setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
+    [searchbutton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [searchbutton.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
     
     [CarNum addTarget:self action:@selector(changeToUpperCase:) forControlEvents:UIControlEventEditingDidEnd];
     

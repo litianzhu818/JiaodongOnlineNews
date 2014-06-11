@@ -36,7 +36,7 @@
     // Make and add the title label
     self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0 + (self.contentInset.left), 8.0 + (self.contentInset.top), viewWidth - 70.0 - (self.contentInset.right+self.contentInset.left) , 16.0)];
     self.titleLabel.textColor = [UIColor blackColor];
-    self.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    self.titleLabel.shadowOffset = Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1);
     self.titleLabel.shadowColor = [UIColor whiteColor];
     self.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
     self.titleLabel.backgroundColor = [UIColor clearColor];

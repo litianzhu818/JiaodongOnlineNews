@@ -38,7 +38,7 @@
     if (self) {
         self.models = models;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
         self.textLabel.font = [UIFont boldSystemFontOfSize:16];
         self.detailTextLabel.font = [UIFont systemFontOfSize:13];
         self.detailTextLabel.numberOfLines = 2;
@@ -62,14 +62,14 @@
 - (void)setContentByIndex:(NSInteger) index{
     int modelIndex = 2*index;
     JDOVideoModel *leftItemModel = (JDOVideoModel *)self.models[modelIndex];
-    self.leftItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 25, 146, 151)];
+    self.leftItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 146, 151)];
     self.leftItemView.tag = modelIndex; // 利用tag传递变量，在接收手势时知道是哪个项目被点击的
     [self fillItemView:self.leftItemView withModel:leftItemModel];
     
     modelIndex = 2*index+1;
     if( self.models.count > modelIndex ){
         JDOVideoModel *rightItemModel = (JDOVideoModel *)self.models[modelIndex];
-        self.rightItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10+146+8, 25, 146, 151)];
+        self.rightItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10+146+8, 10, 146, 151)];
         self.rightItemView.tag = modelIndex;
         [self fillItemView:self.rightItemView withModel:rightItemModel];
     }

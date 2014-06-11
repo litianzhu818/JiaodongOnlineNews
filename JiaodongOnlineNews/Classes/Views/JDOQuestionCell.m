@@ -33,6 +33,7 @@
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.backgroundColor = [UIColor clearColor];
         self.isMine = NO;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.textLabel.font = [UIFont systemFontOfSize:Dept_Font_Size];

@@ -69,7 +69,7 @@
                             <rect key="frame" x="13" y="215" width="294" height="43"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                            <state key="normal" title="查  询" backgroundImage="vio_search.png">
+                            <state key="normal" title="查  询">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
@@ -124,7 +124,6 @@
         <image name="vio_lineshadow.png" width="600" height="12"/>
         <image name="vio_logo.png" width="111" height="60"/>
         <image name="vio_noresult.png" width="600" height="380"/>
-        <image name="vio_search.png" width="297" height="42"/>
         <image name="vio_textfield_back.png" width="300" height="70"/>
     </resources>
 </document>

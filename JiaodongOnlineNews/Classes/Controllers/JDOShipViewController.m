@@ -77,7 +77,8 @@
     [self.view addSubview:endtime];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20.0, y+140.0, 280, 40)];
-    [button setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+    [button setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(submit) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"查 询" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

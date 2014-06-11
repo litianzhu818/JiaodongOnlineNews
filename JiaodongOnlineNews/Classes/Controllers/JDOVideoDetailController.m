@@ -101,7 +101,7 @@
     // 内容
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
     
-    _mainView.frame = CGRectMake(0, 44, 320, App_Height-44);
+    _mainView.frame = CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44));
     _mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
 	self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:

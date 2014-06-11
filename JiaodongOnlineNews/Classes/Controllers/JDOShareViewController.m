@@ -53,6 +53,8 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+    [self.ShareBtn setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
     [self.ShareBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;

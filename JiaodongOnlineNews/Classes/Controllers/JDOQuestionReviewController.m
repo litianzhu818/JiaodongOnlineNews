@@ -37,7 +37,7 @@
     // 内容
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
     
-    _mainView = [[TPKeyboardAvoidingScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    _mainView = [[TPKeyboardAvoidingScrollView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44))];
     _mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     [self.view addSubview:_mainView];
     
@@ -85,12 +85,14 @@
     [self.mainView addSubview:_contentInput];
     
     UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
     [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [submitBtn setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
+    [submitBtn setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
     [submitBtn setTitle:@"提交留言" forState:UIControlStateNormal];
     [submitBtn addTarget:self action:@selector(submitReview) forControlEvents:UIControlEventTouchUpInside];
-    [submitBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
-    [submitBtn.titleLabel setShadowColor:[UIColor blackColor]];
+    [submitBtn setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [submitBtn.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
+    
     submitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     submitBtn.frame = CGRectMake(10, CGRectGetMaxY(_contentInput.frame)+10, 300, 43);
     [self.mainView addSubview:submitBtn];
@@ -105,7 +107,7 @@
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToQuestionDetail)];
-    [self.navigationView setTitle:@"问题评论"];
+    [self.navigationView setTitle:@"发表评论"];
 }
 
 - (void) backToQuestionDetail{

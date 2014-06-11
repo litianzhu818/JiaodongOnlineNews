@@ -140,11 +140,12 @@ NSArray *reg_fields;
         }
     }
     UIButton *submit = [[UIButton alloc] initWithFrame:CGRectMake(20, y, 280, 50)];
-    [submit setBackgroundImage:[UIImage imageNamed:@"vio_search"] forState:UIControlStateNormal];
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+    [submit setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
     [submit setTitle:@"提 交" forState:UIControlStateNormal];
     submit.userInteractionEnabled = YES;
-    [submit.titleLabel setShadowColor:[UIColor blackColor]];
-    [submit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    [submit setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [submit.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
     [submit addTarget:self action:@selector(submitClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:submit];
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];

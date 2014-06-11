@@ -41,13 +41,14 @@
         [self.tpView addSubview:contentInputMask];
         [self.tpView addSubview:self.content];
         UIButton *commit = [[UIButton alloc] initWithFrame:CGRectMake(10, self.content.bottom + 15, 300, 43)];
-        [commit setBackgroundImage:[UIImage imageNamed:@"vio_search"] forState:UIControlStateNormal];
+        NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+        [commit setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
         [commit setTitle:@"提 交" forState:UIControlStateNormal];
         [commit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [commit.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
         [commit addTarget:self action:@selector(onCommitClick) forControlEvents:UIControlEventTouchUpInside];
-        [commit.titleLabel setShadowColor:[UIColor blackColor]];
-        [commit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+        [commit setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [commit.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
         [self.tpView addSubview:commit];
     }
     return self;

@@ -13,8 +13,7 @@
 #import "JDOReadDB.h"
 #import "JDOChannelSetting.h"
 #import "JDOLeftViewController.h"
-
-#define News_Navbar_Height 35.0f
+#define Navbar_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0?36.0f:34.5f)
 
 @interface JDONewsViewController() <JDOChannelSettingDelegate>
 
@@ -173,18 +172,20 @@
 -(void)loadView{
     [super loadView];
     
-    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, [self.view bounds].size.width-43.5, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:_pageInfos scrollable:TRUE tagWidth:57];
+    NSString *background = Is_iOS7?@"news_navbar_background~iOS7":@"news_navbar_background";
+    NSString *slider = Is_iOS7?@"news_navbar_selected~iOS7":@"news_navbar_selected";
+    _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, [self.view bounds].size.width-43.5, Navbar_Height) background:background slider:slider pages:_pageInfos scrollable:TRUE tagWidth:57];
     [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_pageControl];
     // 弹出浮动栏目选择面板
     UIButton *channelSetting = [UIButton buttonWithType:UIButtonTypeCustom];
-    [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_plus_icon"] forState:UIControlStateNormal];
-    [channelSetting setBackgroundImage:[UIImage imageNamed:@"channel_plus_highlight"] forState:UIControlStateHighlighted];
-    [channelSetting setFrame:CGRectMake(320-43.5, (Is_iOS7?20:0)+44, 43.5, News_Navbar_Height)];
+    [channelSetting setBackgroundImage:[UIImage imageNamed:Is_iOS7?@"channel_plus_icon~iOS7":@"channel_plus_icon"] forState:UIControlStateNormal];
+    [channelSetting setBackgroundImage:[UIImage imageNamed:Is_iOS7?@"channel_plus_highlight~iOS7":@"channel_plus_highlight"] forState:UIControlStateHighlighted];
+    [channelSetting setFrame:CGRectMake(320-43.5, (Is_iOS7?20:0)+44, 43.5, Navbar_Height)];
     [channelSetting addTarget:self action:@selector(showChannelPane:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:channelSetting];
     
-    _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,(Is_iOS7?20:0)+44+News_Navbar_Height-1,[self.view bounds].size.width,[self.view bounds].size.height - ((Is_iOS7?20:0)+44) - News_Navbar_Height)];
+    _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,(Is_iOS7?20:0)+44+Navbar_Height-1,[self.view bounds].size.width,[self.view bounds].size.height - ((Is_iOS7?20:0)+44) - Navbar_Height)];
     _scrollView.backgroundColor = [UIColor whiteColor];
     _scrollView.delegate = self;
     _scrollView.dataSource = self;

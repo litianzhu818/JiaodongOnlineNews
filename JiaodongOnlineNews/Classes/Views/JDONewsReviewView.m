@@ -77,11 +77,12 @@
         [submitBtn addTarget:target action:@selector(submitReview:) forControlEvents:UIControlEventTouchUpInside];
         [submitBtn setTitle:@"发表" forState:UIControlStateNormal];
         [submitBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-        submitBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+        submitBtn.titleLabel.shadowOffset = Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1);
         submitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
         [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [submitBtn setBackgroundImage:[UIImage imageNamed:@"inputSendButton"] forState:UIControlStateNormal];
-        [submitBtn setBackgroundImage:[UIImage imageNamed:@"inputSendButton"] forState:UIControlStateSelected];
+        NSString *btnBackground = Is_iOS7?@"input_btn~iOS7":@"input_btn";
+        [submitBtn setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
+        [submitBtn setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateSelected];
         [self addSubview:submitBtn];
         
         _remainWordNum = [[UILabel alloc] initWithFrame:CGRectMake(320-Review_Right_Margin-SubmitBtn_Width+2, 7, SubmitBtn_Width, 30)];

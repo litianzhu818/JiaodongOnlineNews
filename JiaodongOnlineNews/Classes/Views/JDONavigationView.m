@@ -88,7 +88,7 @@
     titleLabel.font = [UIFont boldSystemFontOfSize:22];
     titleLabel.text = title;
     titleLabel.shadowColor = [UIColor blackColor];
-    titleLabel.shadowOffset = CGSizeMake(0, -1);
+    titleLabel.shadowOffset = Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1);
     [self addSubview:titleLabel];
 }
 
