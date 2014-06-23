@@ -49,7 +49,7 @@ NSArray *imageUrls;
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
-	self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-44/*_toolbar.height*/)]; // 去掉导航栏和工具栏
+	self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height-44-((Is_iOS7?20:0)+44)/*_toolbar.height*/)]; // 去掉导航栏和工具栏
     [self.webView makeTransparentAndRemoveShadow];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = true;
@@ -71,7 +71,7 @@ NSArray *imageUrls;
     _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
-    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height-((Is_iOS7?20:0)+44))];
     self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
     [self loadWebView];

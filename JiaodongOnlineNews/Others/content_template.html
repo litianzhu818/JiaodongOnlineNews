@@ -88,18 +88,24 @@
         var choice;
         function vote(){
             choice = this.id;
+//            alert('{{vote_addr}},{{id}},'+choice);
             $.post("{{vote_addr}}", { aid: "{{id}}", pointId: choice },
                    voteForResult, "json");
         }
-        function voteForResult(result){
-            $("#voteCounts").text(result.voteCounts+ "人参与投票");
-            for(var i = 0 ; i < result.points.length; ++i){
-                setProgress(result.points[i].pointId, result.points[i].pointPer);
+        function voteForResult(result){ // result结构改为V11接口格式
+            if(result.status == 1){
+                var data = result.data;
+                $("#voteCounts").text(data.voteCounts+ "人参与投票");
+                for(var i = 0 ; i < data.points.length; ++i){
+                    setProgress(data.points[i].pointId, data.points[i].pointPer);
+                }
+                showResult();
+                $("#"+choice).css({"background-color": "#eaeaea"});
+                $("#"+choice).before($("<img src='gou.png' class='win'/>"));
+                $(".vount span").hide();
+            }else{
+                alert(result.info);
             }
-            showResult();
-            $("#"+choice).css({"background-color": "#eaeaea"});
-            $("#"+choice).before($("<img src='gou.png' class='win'/>"));
-            $(".vount span").hide();
         }
         {% /if %}
         

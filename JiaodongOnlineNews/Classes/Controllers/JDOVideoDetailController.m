@@ -36,6 +36,7 @@
     long               mDuration;
     long               mCurPostion;
     NSTimer            *mSyncSeekTimer;
+    BOOL               isCtrlHide;
 }
 
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
@@ -49,16 +50,17 @@
 @property (nonatomic, assign) IBOutlet UIButton *reset;
 @property (nonatomic, assign) IBOutlet VSegmentSlider *progressSld;
 @property (nonatomic, assign) IBOutlet UILabel  *curPosLbl;
-@property (nonatomic, assign) IBOutlet UILabel  *durationLbl;
 @property (nonatomic, assign) IBOutlet UILabel  *bubbleMsgLbl;
 @property (nonatomic, assign) IBOutlet UILabel  *downloadRate;
 @property (nonatomic, assign) IBOutlet UIView  	*activityCarrier;
 @property (nonatomic, assign) IBOutlet UIView  	*backView;
 @property (nonatomic, assign) IBOutlet UIView  	*carrier;
+@property (strong, nonatomic) IBOutlet UIImageView *controlBackground;
 
 @property (nonatomic, copy)   NSURL *videoURL;
 @property (nonatomic, retain) UIActivityIndicatorView *activityView;
 @property (nonatomic, assign) BOOL progressDragging;
+
 
 @end
 
@@ -99,7 +101,7 @@
     // 内容
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
     
-    _mainView.frame = CGRectMake(0, 44, 320, App_Height-44);
+    _mainView.frame = CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44));
     _mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
 	self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
@@ -110,15 +112,20 @@
 								   initWithTarget:self
 								   action:@selector(progressSliderTapped:)];
     [self.progressSld addGestureRecognizer:gr];
-//    [self.progressSld setThumbImage:[UIImage imageNamed:@"pb-seek-bar-btn"] forState:UIControlStateNormal];
-//    [self.progressSld setMinimumTrackImage:[UIImage imageNamed:@"pb-seek-bar-fr"] forState:UIControlStateNormal];
-//    [self.progressSld setMaximumTrackImage:[UIImage imageNamed:@"pb-seek-bar-bg"] forState:UIControlStateNormal];
+    [self.progressSld setThumbImage:[UIImage imageNamed:@"video_seekbar_btn"] forState:UIControlStateNormal];
+    [self.progressSld setMinimumTrackImage:[UIImage imageNamed:@"video_seekbar_front"] forState:UIControlStateNormal];
+    [self.progressSld setMaximumTrackImage:[UIImage imageNamed:@"video_seekbar_back"] forState:UIControlStateNormal];
+    //
+    self.progressSld.hidden = true;
+    self.curPosLbl.hidden = true;
     
 	if (!mMPayer) {
 		mMPayer = [VMediaPlayer sharedInstance];
 		[mMPayer setupPlayerWithCarrierView:self.carrier withDelegate:self];
 		[self setupObservers];
 	}
+    UITapGestureRecognizer *ctrlSwitchTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchCtrlState)];
+    [self.carrier addGestureRecognizer:ctrlSwitchTap];
     
     // 工具栏输入框
 //    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonCollect]];
@@ -137,7 +144,7 @@
 //    
 //    [self loadDataFromNetwork];
     
-    JDOVideoEPG *epg = [[JDOVideoEPG alloc] initWithFrame:CGRectMake(0, 257, 320, App_Height-257) model:self.videoModel delegate:self];
+    JDOVideoEPG *epg = [[JDOVideoEPG alloc] initWithFrame:CGRectMake(0, 241, 320, CGRectGetHeight(_mainView.bounds)-241) model:self.videoModel delegate:self];
     [_mainView addSubview:epg];
     
 }
@@ -155,7 +162,7 @@
 	[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 	[self becomeFirstResponder];
     
-	[self currButtonAction:nil];
+    [self quicklyPlayMovie:[self playCtrlGetCurrMediaURL] title:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -220,10 +227,10 @@
 			[mMPayer pause];
 			break;
 		case UIEventSubtypeRemoteControlPreviousTrack:
-			[self prevButtonAction:nil];
+
 			break;
 		case UIEventSubtypeRemoteControlNextTrack:
-			[self nextButtonAction:nil];
+
 			break;
 		default:
 			break;
@@ -304,18 +311,25 @@
 
 - (void)mediaPlayer:(VMediaPlayer *)player didPrepared:(id)arg
 {
-    //	[player setVideoFillMode:VMVideoFillMode100];
-    
-	mDuration = [player getDuration];
+    [player setVideoFillMode:VMVideoFillModeFit];
     [player start];
     
 	[self setBtnEnableStatus:YES];
 	[self stopActivity];
-    mSyncSeekTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/3
-                                                      target:self
-                                                    selector:@selector(syncUIStatus)
-                                                    userInfo:nil
-                                                     repeats:YES];
+    if ( !isCtrlHide ) { // 若control栏是显示状态，则加载完成2秒后自动隐藏
+        [self performSelector:@selector(switchCtrlState) withObject:nil afterDelay:2.0];
+    }
+    
+    mDuration = [player getDuration];
+    if (mDuration == 0) { // 取不到总时长，则认为是直播流，不显示播放时间和进度条
+        self.progressSld.hidden = true;
+        self.curPosLbl.hidden = true;
+    }else{
+        self.progressSld.hidden = false;
+        self.curPosLbl.hidden = false;
+        mSyncSeekTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/3 target:self selector:@selector(syncSliderUIStatus) userInfo:nil repeats:YES];
+    }
+    
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player playbackComplete:(id)arg
@@ -331,23 +345,35 @@
 	[self setBtnEnableStatus:YES];
 }
 
+- (void)mediaPlayer:(VMediaPlayer *)player info:(id)arg{
+    NSLog(@"NAL 1RRE &&&& VMediaPlayer Info: %@", arg);
+}
+
+- (void)mediaPlayer:(VMediaPlayer *)player decodingSchemeChanged:(id)arg{
+    NSLog(@"切换解码方案，从%@切换到%@", arg[0],arg[1]);
+}
+
 #pragma mark VMediaPlayerDelegate Implement / Optional
 
 - (void)mediaPlayer:(VMediaPlayer *)player setupManagerPreference:(id)arg
 {
-	player.decodingSchemeHint = VMDecodingSchemeSoftware;
-	player.autoSwitchDecodingScheme = NO;
+    // 烟台手机台m3u8格式的历史节目视频,不同的解码格式有如下特点:
+    // 策略                              seek(进度)      buffer(缓冲)    getFrame(帧图片)
+    // VMDecodingSchemeQuickTime           Y                N                N
+    // VMDecodingSchemeHardware            N                Y                N
+    // VMDecodingSchemeSoftware            N                Y                Y
+	player.decodingSchemeHint = VMDecodingSchemeQuickTime;
+	player.autoSwitchDecodingScheme = true;
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player setupPlayerPreference:(id)arg
 {
 	// Set buffer size, default is 1024KB(1*1024*1024).
-    //	[player setBufferSize:256*1024];
 	[player setBufferSize:512*1024];
-    //	[player setAdaptiveStream:YES];
+    [player setAdaptiveStream:YES]; // 改善对流媒体支持，支持HLS自适应码率，需要手动开启
     
 	[player setVideoQuality:VMVideoQualityHigh];    // VMVideoQualityLow(默认) ,VMVideoQualityMedium ,VMVideoQualityHigh
-    // 开启缓存时候，第二次播放直播流会无法播放，未解决
+    // 开启缓存时候，第二次播放直播流会无法播放，貌似是因为缓存文件.vit被lock无法再次写入造成
 //    [player setUseCache:true];
 //	[player setCacheDirectory:[self getCacheRootDirectory]];
 }
@@ -355,6 +381,10 @@
 - (void)mediaPlayer:(VMediaPlayer *)player seekComplete:(id)arg
 {
     NSLog(@"NAL 1HBT &&&&&&&&&&&&&&&&...seekComplete....&&&&&&&&&&&&&&&&&");
+    if (![Utilities isLocalMedia:self.videoURL] && player.decodingSchemeUsing == VMDecodingSchemeQuickTime) {
+		[self stopActivity];
+	}
+    self.progressDragging = NO;
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player notSeekable:(id)arg
@@ -423,7 +453,7 @@
 - (void)mediaPlayer:(VMediaPlayer *)player cacheUpdate:(id)arg
 {
 	NSArray *segs = (NSArray *)arg;
-    //	NSLog(@"NAL .... media cacheUpdate, %d, %@", segs.count, segs);
+    NSLog(@"NAL .... media cacheUpdate, %d, %@", segs.count, segs);
 	if (mDuration > 0) {
 		NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
 		for (int i = 0; i < segs.count; i++) {
@@ -436,7 +466,7 @@
 
 - (void)mediaPlayer:(VMediaPlayer *)player cacheSpeed:(id)arg
 {
-    //	NSLog(@"NAL .... media cacheSpeed: %dKB/s", [(NSNumber *)arg intValue]);
+    NSLog(@"NAL .... media cacheSpeed: %dKB/s", [(NSNumber *)arg intValue]);
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player cacheComplete:(id)arg
@@ -448,11 +478,10 @@
 
 #pragma mark - Convention Methods
 
--(void)quicklyPlayMovie:(NSURL*)url title:(NSString*)title seekToPos:(long)pos
+-(void)quicklyPlayMovie:(NSURL*)url title:(NSString*)title
 {
 	[UIApplication sharedApplication].idleTimerDisabled = YES;// 禁止系统自动关闭屏幕
     //	[self setBtnEnableStatus:NO];
-    
     [mMPayer setDataSource:url header:nil];
     
     //	NSMutableArray *keys = [NSMutableArray arrayWithCapacity:0];
@@ -463,12 +492,8 @@
     
     [mMPayer prepareAsync];
 	[self startActivityWithMsg:@"正在加载..."];
-}
-
--(void)quicklyReplayMovie:(NSURL*)fileURL title:(NSString*)title seekToPos:(long)pos
-{
-    [self quicklyStopMovie];
-    [self quicklyPlayMovie:fileURL title:title seekToPos:pos];
+    isCtrlHide = true;
+    [self switchCtrlState];
 }
 
 -(void)quicklyStopMovie
@@ -478,8 +503,7 @@
 	mSyncSeekTimer = nil;
 	self.progressSld.value = 0.0;
 	self.progressSld.segments = nil;
-	self.curPosLbl.text = @"00:00:00";
-	self.durationLbl.text = @"00:00:00";
+	self.curPosLbl.text = [self getCurrentProgressLabel:0]; //@"00:00:00";
 	self.downloadRate.text = nil;
 	mDuration = 0;
 	mCurPostion = 0;
@@ -504,40 +528,6 @@
 	} else {
 		[mMPayer start];
 		[self.startPause setTitle:@"Pause" forState:UIControlStateNormal];
-	}
-}
-
--(void)currButtonAction:(id)sender{
-	NSString *title = nil;
-	long lastPos = 0;
-    
-    NSURL *url = [self playCtrlGetCurrMediaTitle:&title lastPlayPos:&lastPos];
-	if (url) {
-		[self quicklyPlayMovie:url title:title seekToPos:lastPos];
-	} else {
-		NSLog(@"WARN: No previous media url found!");
-	}
-}
-
--(IBAction)prevButtonAction:(id)sender{
-	NSString *title = nil;
-	long lastPos = 0;
-	NSURL *url = [self playCtrlGetPrevMediaTitle:&title lastPlayPos:&lastPos];
-	if (url) {
-		[self quicklyReplayMovie:url title:title seekToPos:lastPos];
-	} else {
-		NSLog(@"WARN: No previous media url found!");
-	}
-}
-
--(IBAction)nextButtonAction:(id)sender{
-	NSString *title = nil;
-	long lastPos = 0;
-	NSURL *url = [self playCtrlGetNextMediaTitle:&title lastPlayPos:&lastPos];
-	if (url) {
-		[self quicklyReplayMovie:url title:title seekToPos:lastPos];
-	} else {
-		NSLog(@"WARN: No previous media url found!");
 	}
 }
 
@@ -575,7 +565,6 @@
 -(IBAction)progressSliderDownAction:(id)sender
 {
 	self.progressDragging = YES;
-	NSLog(@"NAL 4HBT &&&&&&&&&&&&&&&&.......&&&&&&&&&&&&&&&&&");
 	NSLog(@"NAL 1DOW &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Touch Down");
 }
 
@@ -583,14 +572,14 @@
 {
 	UISlider *sld = (UISlider *)sender;
 	NSLog(@"NAL 1BVC &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& seek = %ld", (long)(sld.value * mDuration));
-	[self startActivityWithMsg:@"Buffering"];
+	[self startActivityWithMsg:@"加载中..."];
 	[mMPayer seekTo:(long)(sld.value * mDuration)];
 }
 
 -(IBAction)dragProgressSliderAction:(id)sender
 {
 	UISlider *sld = (UISlider *)sender;
-	self.curPosLbl.text = [Utilities timeToHumanString:(long)(sld.value * mDuration)];
+	self.curPosLbl.text = [self getCurrentProgressLabel:(long)(sld.value * mDuration)];
 }
 
 -(void)progressSliderTapped:(UIGestureRecognizer *)g
@@ -604,22 +593,26 @@
     CGFloat value = s.minimumValue + delta;
     [s setValue:value animated:YES];
     long seek = percentage * mDuration;
-	self.curPosLbl.text = [Utilities timeToHumanString:seek];
+	self.curPosLbl.text = [self getCurrentProgressLabel:seek];
 	NSLog(@"NAL 2BVC &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& seek = %ld", seek);
-	[self startActivityWithMsg:@"Buffering"];
+	[self startActivityWithMsg:@"加载中..."];
     [mMPayer seekTo:seek];
 }
 
 #pragma mark - Sync UI Status
 
--(void)syncUIStatus
+-(void)syncSliderUIStatus
 {
 	if (!self.progressDragging) {
 		mCurPostion  = [mMPayer getCurrentPosition];
 		[self.progressSld setValue:(float)mCurPostion/mDuration];
-		self.curPosLbl.text = [Utilities timeToHumanString:mCurPostion];
-		self.durationLbl.text = [Utilities timeToHumanString:mDuration];
+        NSLog(@"进度条:%g",(float)mCurPostion/mDuration);
+		self.curPosLbl.text = [self getCurrentProgressLabel:mCurPostion];
 	}
+}
+
+-(NSString *) getCurrentProgressLabel:(long) currentPostion{
+    return [NSString stringWithFormat:@"%@/%@",[Utilities timeToHumanString:currentPostion],[Utilities timeToHumanString:mDuration]];
 }
 
 
@@ -645,6 +638,23 @@
 	self.prevBtn.enabled = enable;
 	self.nextBtn.enabled = enable;
 	self.modeBtn.enabled = enable;
+}
+
+-(void)switchCtrlState{
+    isCtrlHide = !isCtrlHide;
+    if ( isCtrlHide ) {
+        [UIView animateWithDuration:0.5f animations:^{
+            self.controlBackground.alpha = 0;
+            self.progressSld.alpha = 0;
+            self.curPosLbl.alpha = 0;
+        }];
+    }else{
+        [UIView animateWithDuration:1.0f animations:^{
+            self.controlBackground.alpha = 1;
+            self.progressSld.alpha = 1;
+            self.curPosLbl.alpha = 1;
+        }];
+    }
 }
 
 - (void)setupObservers
@@ -695,21 +705,40 @@
 	return cache;
 }
 
-- (NSURL *)playCtrlGetCurrMediaTitle:(NSString **)title lastPlayPos:(long *)lastPlayPos{
-	return [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+- (NSURL *)playCtrlGetCurrMediaURL{
+
+    NSURL *url=[NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    NSString *m3u8 = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+//    NSLog(@"m3u8 content:%@",m3u8);
+    return url;
+    
+    // 以下为测试地址
+//    return [NSURL URLWithString:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"sohu.m3u8"]];
+//    return [NSURL URLWithString:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"ytv.m3u8"]];
+//	return [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    return [NSURL URLWithString:@"http://hot.vrs.sohu.com/ipad1407291_4596271359934_4618512.m3u8"];
+//    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1400430735000,1400430855000,120000"];// YTV-1糖果剧
+//    return [NSURL URLWithString:@"http://cibn1.vdnplus.com/channels/tvie/CCTV-1/m3u8:sd/1400433840000,1400435880000,2040000"];// CCTV-1动物世界
 //    return [NSURL URLWithString:@"http://vod.av.jiaodong.net/vod_storage/vol1/2014/03/19/5328fce906a83/01b70087af0c11e3a5fa848f69e075fe.mp4"];
 //    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1398129434000,1398129438000,5000"];
 }
 
 - (void) onVideoChanged:(JDOVideoEPGModel *)epgModel{
-    long lastPos = 0;
-    long startTime = [NSNumber numberWithDouble:epgModel.startTime].longValue;
-    long endTime = [NSNumber numberWithDouble:epgModel.endTime].longValue;
-    NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@/%ld000,%ld000,5000",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url;
+    if(epgModel.state == JDOVideoStatePlayback){
+        long startTime = [NSNumber numberWithDouble:[epgModel.start_time timeIntervalSince1970]].longValue;
+        long endTime = [NSNumber numberWithDouble:[epgModel.end_time timeIntervalSince1970]].longValue;
+        url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@/%ld000,%ld000,5000",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    }else if(epgModel.state == JDOVideoStateLive){
+        url = [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    }else if(epgModel.state == JDOVideoStateForecast){
+        NSLog(@"预报的节目不可以播放");
+    }else{
+        NSLog(@"节目状态未知");
+    }
 	if (url) {
-		[self quicklyReplayMovie:url title:epgModel.name seekToPos:lastPos];
-	} else {
-		NSLog(@"WARN: No previous media url found!");
+		[self quicklyStopMovie];
+        [self quicklyPlayMovie:url title:epgModel.name];
 	}
 }
 

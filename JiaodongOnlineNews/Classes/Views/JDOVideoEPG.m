@@ -12,8 +12,7 @@
 #import "NIPagingScrollView.h"
 #import "JDOVideoLiveList.h"
 #import "JDOVideoEPGList.h"
-
-#define News_Navbar_Height 35.0f
+#define Navbar_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0?36.0f:34.5f)
 
 @implementation JDOVideoEPG{
     NSArray *pageInfos; // 页面基本信息
@@ -33,12 +32,14 @@
             @{@"reuseId":@"3",@"title":@"明天"},
             @{@"reuseId":@"4",@"title":@"后天"}
         ];
-        _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, News_Navbar_Height) background:@"news_navbar_background" slider:@"news_navbar_selected" pages:pageInfos];
+        NSString *background = Is_iOS7?@"news_navbar_background~iOS7":@"news_navbar_background";
+        NSString *slider = Is_iOS7?@"news_navbar_selected~iOS7":@"news_navbar_selected";
+        _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, Navbar_Height) background:background slider:slider pages:pageInfos];
         [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
         [_pageControl setTitleFontSize:16];
         [self addSubview:_pageControl];
         
-        _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,News_Navbar_Height-1,self.bounds.size.width,self.bounds.size.height)];
+        _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,Navbar_Height-1,self.bounds.size.width,self.bounds.size.height)];
         _scrollView.backgroundColor = [UIColor whiteColor];
         _scrollView.delegate = self;
         _scrollView.dataSource = self;

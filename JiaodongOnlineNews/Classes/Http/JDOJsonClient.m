@@ -21,13 +21,8 @@
     return _sharedClient;
 }
 
-+ (JDOJsonClient *)sharedVideoClient {
-    static JDOJsonClient *_sharedClient = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _sharedClient = [[JDOJsonClient alloc] initWithBaseURL:[NSURL URLWithString:SERVER_VIDEO_URL]];
-    });
-    return _sharedClient;
++ (JDOJsonClient *)clientWithBaseURL:(NSURL *)url {
+    return [[self alloc] initWithBaseURL:url];
 }
 
 - (id)initWithBaseURL:(NSURL *)url {

@@ -47,14 +47,12 @@
 
 - (void)loadView{
     [super loadView];
-    // 先将height固定设置为iPhone4的高度480，在viewDidLoad时候再重新设置回App_Height，目的是为了通过autoresizingMask自动布局天气中的控件，因为只有bounds变化才能引起autoresize起作用
-    self.view.bounds =CGRectMake(0, 0, 320, 460);
     
     UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height) ];
     backgroundView.image = [UIImage imageNamed:@"menu_background.png"];
     [self.view addSubview:backgroundView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, Menu_Cell_Height*MenuItemCount) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, Menu_Cell_Height*MenuItemCount) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -79,8 +77,6 @@
     IIViewDeckController *deckController = [SharedAppDelegate deckController];
     _controllerStack = [[NSMutableArray alloc] init];
     [_controllerStack addObject:deckController];
-    self.view.bounds = CGRectMake(0, 0, 320, App_Height);
-
 }
 
 - (void) pushViewController:(JDONavigationController *)controller{
@@ -144,12 +140,15 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
-        // 因为图片大小不一致,调整frame以对齐
-//        if (indexPath.row == MenuItemParty || indexPath.row == MenuItemLivehood) {
-//            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+1, 0, 115, Menu_Cell_Height)];
-//        }else{
+        cell.backgroundColor = [UIColor clearColor];
+        // 因为图片大小不一致,调整frame以对齐，"活动"往右一像素，"电视"往左一像素
+        if (indexPath.row == MenuItemParty ) {
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+1, 0, 115, Menu_Cell_Height)];
+        }else if(indexPath.row == MenuItemVideo ) {
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin-1, 0, 115, Menu_Cell_Height)];
+        }else{
             imageView = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin, 0, 115, Menu_Cell_Height)];
-//        }
+        }
         [imageView setTag:Menu_Image_Tag];
         [cell.contentView addSubview:imageView];
         if (indexPath.row == 1) {
@@ -196,7 +195,7 @@
 //        lastSelectedCell.imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:lastSelectedRow]];
 //        lastSelectedCell.backgroundView = nil;
 //    }
-    if (indexPath.row == 1) {
+    if (indexPath.row == MenuItemParty) {
         if (self.myDelegate.hasNewAction) {
             self.myDelegate.hasNewAction = NO;
             [[NSUserDefaults standardUserDefaults] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"ServiceActionId"] forKey:@"LocalActionId"];

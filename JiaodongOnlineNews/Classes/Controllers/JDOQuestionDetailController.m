@@ -91,7 +91,7 @@
     // 内容
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];// 与html的body背景色相同
     
-    _mainView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44-44)];
+    _mainView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height-44-(Is_iOS7?64:44))];
     _mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
     [self.view addSubview:_mainView];
@@ -103,7 +103,7 @@
     _toolbar.reviewType = JDOReviewTypeLivehood;
     [self.view addSubview:_toolbar];
     
-    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44))];
     self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
     
@@ -200,8 +200,9 @@
     }else{  // 没有二次提问则允许追问
         if(!JDOIsEmptyString(detailModel.reply)){
             UIButton *continueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
             [continueBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [continueBtn setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
+            [continueBtn setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
             [continueBtn setTitle:@"追加提问" forState:UIControlStateNormal];
             [continueBtn addTarget:self action:@selector(continueAsk) forControlEvents:UIControlEventTouchUpInside];
             continueBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];

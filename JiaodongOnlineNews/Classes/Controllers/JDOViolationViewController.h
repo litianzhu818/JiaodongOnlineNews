@@ -19,7 +19,6 @@
     IBOutlet UITextField *CarNum;
     IBOutlet UIButton *CarType;
     IBOutlet UITextField *ChassisNum;
-    IBOutlet TPKeyboardAvoidingScrollView *tp;
     IBOutlet UITableView *result;
     IBOutlet UIImageView *defaultback;
     IBOutlet UIImageView *resultline;
@@ -52,6 +51,7 @@
 - (BOOL)readCarMessage;
 - (void)cleanData;
 
+@property (nonatomic,strong) IBOutlet TPKeyboardAvoidingScrollView *mainView;
 @property (nonatomic,strong) NSDictionary *info;
 - (id)initWithInfo:(NSDictionary *)info;
 

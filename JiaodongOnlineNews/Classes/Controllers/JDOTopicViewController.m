@@ -62,7 +62,7 @@
 -(void)loadView{
     [super loadView];
     
-    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, (Is_iOS7?20:0)+44, 320, App_Height-((Is_iOS7?20:0)+44))];
     self.statusView.delegate = self;
     [self.view addSubview:self.statusView];
 }
@@ -235,7 +235,7 @@
     static NSString *pageId = @"pageId";
     JDOTopicCell *topicCell = (JDOTopicCell *)[scrollView dequeueReusablePageWithIdentifier:pageId];
     if(!topicCell) {
-        topicCell = [[JDOTopicCell alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height-44)]; // 290*384
+        topicCell = [[JDOTopicCell alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height-((Is_iOS7?20:0)+44))]; // 290*384
         topicCell.reuseIdentifier = pageId;
     }
     

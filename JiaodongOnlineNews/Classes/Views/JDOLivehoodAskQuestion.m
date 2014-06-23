@@ -179,10 +179,11 @@
         
         nextLineY += Line_Height+Line_Padding;
         UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [submitBtn.titleLabel setShadowColor:[UIColor blackColor]];
-        [submitBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+        NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+        [submitBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+        [submitBtn.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
         [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [submitBtn setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
+        [submitBtn setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
         [submitBtn setTitle:@"提交问题" forState:UIControlStateNormal];
         [submitBtn addTarget:self action:@selector(submitQuestion) forControlEvents:UIControlEventTouchUpInside];
         submitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];

@@ -27,7 +27,7 @@
 - (void) addLabel:(NSString *)labeltext forComponent:(NSUInteger)component forLongestString:(NSString *)longestString {
     [labels setObject:labeltext forKey:[NSNumber numberWithInt:component]];
     
-    NSString *keyName = [NSString stringWithFormat:@"%@_%@", @"longestString", [NSNumber numberWithInt:component]]; 
+    NSString *keyName = [NSString stringWithFormat:@"%@_%@", @"longestString", [NSNumber numberWithInt:component]];
     
     if(!longestString) {
         longestString = labeltext;
@@ -43,11 +43,11 @@
     // Update label if it doesn’t match current label
     if (![theLabel.text isEqualToString:labeltext]) {
         
-        NSString *keyName = [NSString stringWithFormat:@"%@_%@", @"longestString", [NSNumber numberWithInt:component]]; 
+        NSString *keyName = [NSString stringWithFormat:@"%@_%@", @"longestString", [NSNumber numberWithInt:component]];
         NSString *longestString = [labels objectForKey:keyName];
         
         // Update label array with our new string value
-        [self addLabel:labeltext forComponent:component forLongestString:longestString];        
+        [self addLabel:labeltext forComponent:component forLongestString:longestString];
         
         // change label during fade out/in
         [UIView beginAnimations:nil context:NULL];
@@ -61,7 +61,7 @@
     
 }
 
-/** 
+/**
  Adds the labels to the view, below the selection indicator glass.
  The labels are aligned to the right side of the wheel.
  The delegate is responsible for providing enough width for both the value and the label.
@@ -73,7 +73,7 @@
     
     UIFont *labelfont = [UIFont boldSystemFontOfSize:20];
     
-    // find the width of all the wheels combined 
+    // find the width of all the wheels combined
     CGFloat widthofwheels = 0;
     for (int i=0; i<self.numberOfComponents; i++) {
         widthofwheels += [self rowSizeForComponent:i].width;
@@ -88,18 +88,18 @@
         // find the right side of the wheel
         rightsideofwheel += [self rowSizeForComponent:component].width;
         
-        // get the text for the label. 
+        // get the text for the label.
         // move on to the next if there is no label for this wheel.
         NSString *text = [labels objectForKey:[NSNumber numberWithInt:component]];
         if (text) {
             
             // set up the frame for the label using our longestString length
-            NSString *keyName = [NSString stringWithFormat:@"%@_%@", @"longestString", [NSNumber numberWithInt:component]]; 
+            NSString *keyName = [NSString stringWithFormat:@"%@_%@", @"longestString", [NSNumber numberWithInt:component]];
             NSString *longestString = [labels objectForKey:keyName];
             CGRect frame;
             frame.size = [longestString sizeWithFont:labelfont];
             
-            // center it vertically 
+            // center it vertically
             frame.origin.y = (self.frame.size.height / 2) - (frame.size.height / 2) - 0.5;
             
             // align it to the right side of the wheel, with a margin.
@@ -125,18 +125,34 @@
             label.tag = component + 1;
             
             if(addlabelView) {
-                /* 
+                /*
                  and now for the tricky bit: adding the label to the view.
-                 kind of a hack to be honest, might stop working if Apple decides to 
+                 kind of a hack to be honest, might stop working if Apple decides to
                  change the inner workings of the UIPickerView.
-                 */     
-                if (self.showsSelectionIndicator) { 
+                 */
+                if (self.showsSelectionIndicator) {
                     // if this is the last wheel, add label as the third view from the top
-                    if (component==self.numberOfComponents-1) 
-                        [self insertSubview:label atIndex:[self.subviews count]-3];
+                    if (component==self.numberOfComponents-1)
+                        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+                            UIView * o = [[self.subviews[0] subviews] objectAtIndex:([[self.subviews[0] subviews] count] - 1) ];
+                            UIView *subview = [[o subviews] objectAtIndex:2];
+                            UIView * view = [[subview.subviews objectAtIndex:0] subviews][1];
+                            [self insertSubview:label aboveSubview:view];
+                        }
+                        else {
+                            [self insertSubview:label atIndex:[self.subviews count]-3];
+                        }
                     // otherwise add label as the 5th, 10th, 15th etc view from the top
-                    else
-                        [self insertSubview:label aboveSubview:[self.subviews objectAtIndex:5*(component+1)]];
+                        else
+                        {
+                            if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+                                [self insertSubview:label aboveSubview:[[self.subviews[0] subviews] objectAtIndex:component]];
+                            }
+                            else {
+                                [self insertSubview:label aboveSubview:[self.subviews objectAtIndex:5*(component+1)]];
+                            }
+                            
+                        }
                 } else
                     // there is no selection indicator, so just add it to the top
                     [self addSubview:label];

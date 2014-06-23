@@ -275,7 +275,7 @@
 }
 
 - (void) showSuccessNotice:(NSString *)content{
-#warning 为了跳过导航视图的高度,加载内容的webView视图上,结构上更好的办法对parentController设置协议
+#warning 为了跳过导航视图的高度,加在内容的webView视图上,结构上更好的办法对parentController设置协议
     if ([self.parentController respondsToSelector:@selector(webView)]){
         [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(webView)]];
     }else if ([self.parentController respondsToSelector:@selector(tableView)]){
@@ -315,7 +315,7 @@
     [ShareSDK oneKeyShareContent:publishContent
                        shareList:selectedClients
                      authOptions:JDOGetOauthOptions(nil)
-                   statusBarTips:YES
+                   statusBarTips:Is_iOS7?false:true
                           result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
                               if(error){
                                   NSLog(@"平台:%@,错误代码:%d,描述:%@",[ShareSDK getClientNameWithType:type], [error errorCode],[error errorDescription]);
@@ -454,14 +454,14 @@
     if(self.isCollected){
         if([self.collectDB deleteById:self.model.id]){
             self.collected = false;
-            _collectPopTipView.message = @"  取消收藏!  ";
+            _collectPopTipView.message = @" 取消收藏   ";
             [sender setSelected:FALSE];
         }
         
     }else{
         if([self.collectDB save:self.model]){
             self.collected = true;
-            _collectPopTipView.message = @"  收藏成功!  ";
+            _collectPopTipView.message = @" 收藏成功   ";
             [sender setSelected:TRUE];
         }
     }

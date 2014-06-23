@@ -13,9 +13,9 @@
 
 - (id)init
 {
-    self = [self initWithFrame:CGRectMake(0, 0, 320, 93.0/2)];
+    self = [self initWithFrame:CGRectMake(0, 0, 320, (Is_iOS7 ? 128.0f : 93.0f) /2)];
     UIImageView *background = [[UIImageView alloc] initWithFrame:self.frame];
-    background.image = [UIImage imageNamed:@"top_navigation_background"];
+    background.image = [UIImage imageNamed:Is_iOS7 ? @"top_navigation_background~iOS7" : @"top_navigation_background"];
     [self addSubview:background];
     return self;
 }
@@ -24,13 +24,13 @@
     if(self.leftBtn ){
         [self.leftBtn removeFromSuperview];
     }
-    self.leftBtn = [self getButtonWithFrame:CGRectMake(0, 0, 44, 44) image:image highlightImage:highlightImage];
+    self.leftBtn = [self getButtonWithFrame:CGRectMake(0, Is_iOS7?20:0, 44, 44) image:image highlightImage:highlightImage];
     [self addSubview:self.leftBtn];
     
     // 有按钮有才增加分割线,为了简便目前通过图片名判断,最好再加一个标志字段
     if(![image isEqualToString:@"top_navigation_back_black"]){
         UIImageView *separatorLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
-        separatorLine.frame = CGRectMake(44, 1, 1, 42);
+        separatorLine.frame = CGRectMake(44, Is_iOS7?21:1, 1, 42);
         [self addSubview:separatorLine];
     }
 }
@@ -38,12 +38,12 @@
     if(self.rightBtn ){
         [self.rightBtn removeFromSuperview];
     }
-    self.rightBtn = [self getButtonWithFrame:CGRectMake(320-44, 0, 44, 44) image:image highlightImage:highlightImage];
+    self.rightBtn = [self getButtonWithFrame:CGRectMake(320-44, Is_iOS7?20:0, 44, 44) image:image highlightImage:highlightImage];
     [self addSubview:self.rightBtn];
     
     // 有按钮有才增加分割线
     separatorLineRight = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_navigation_separator"]];
-    separatorLineRight.frame = CGRectMake(320-44, 1, 1, 42);
+    separatorLineRight.frame = CGRectMake(320-44, Is_iOS7?21:1, 1, 42);
     [self addSubview:separatorLineRight];
 }
 
@@ -81,14 +81,14 @@
 }
 
 - (void) setTitle:(NSString *)title{
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, 320-44*2, 44)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, Is_iOS7?20:0, 320-44*2, 44)];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:22];
     titleLabel.text = title;
     titleLabel.shadowColor = [UIColor blackColor];
-    titleLabel.shadowOffset = CGSizeMake(0, -1);
+    titleLabel.shadowOffset = Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1);
     [self addSubview:titleLabel];
 }
 

@@ -40,7 +40,7 @@
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        
+        self.backgroundColor = [UIColor clearColor];
         _background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"party_bound"]];
         [self.contentView addSubview:_background];
     

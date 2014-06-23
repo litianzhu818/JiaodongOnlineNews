@@ -35,6 +35,9 @@
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
+        // iOS7将cell默认的背景色由透明改为白色，若要cell的背景色与table一致，需在cell中再设置一遍相同颜色，或者将cell的背景色设置为clearColor，解决方案来源 http://stackoverflow.com/questions/18753411/uitableview-clear-background
+        // contentView.backgroundColor默认是clearColor
+        self.backgroundColor = [UIColor clearColor];
         self.textLabel.font = [UIFont boldSystemFontOfSize:16];
         self.textLabel.adjustsFontSizeToFitWidth = true;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000

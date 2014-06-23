@@ -46,12 +46,12 @@
         
         // 左侧滚动阴影
         leftShadow = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15.5, self.frame.size.height)];
-        leftShadow.image = [UIImage imageNamed:@"channel_left_edge"];
+        leftShadow.image = [UIImage imageNamed:Is_iOS7?@"channel_left_edge~iOS7":@"channel_left_edge"];
         leftShadow.hidden = true;
         [self addSubview:leftShadow];
         // 右侧滚动阴影
         rightShadow = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width-5.5+1, 0, 5.5, self.frame.size.height)];
-        rightShadow.image = [UIImage imageNamed:@"channel_right_edge"];
+        rightShadow.image = [UIImage imageNamed:Is_iOS7?@"channel_right_edge~iOS7":@"channel_right_edge"];
         rightShadow.hidden = true;
         [self addSubview:rightShadow];
         

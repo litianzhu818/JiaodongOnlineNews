@@ -42,6 +42,10 @@
 {
     [super viewDidLoad];
     [self.toolbar removeFromSuperview];
+    // 重设webView的大小，加上toolbar的高度
+    CGRect f = self.webView.frame;
+    f.size.height += 44;
+    self.webView.frame = f;
 }
 
 -(void)viewDidUnload{

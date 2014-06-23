@@ -38,7 +38,7 @@
     float titleYOrigin = 18.0;
     self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0 + (self.contentInset.left), titleYOrigin + (self.contentInset.top), viewWidth - 70.0 - (self.contentInset.right+self.contentInset.left) , 16.0)];
     self.titleLabel.textColor = [UIColor whiteColor];
-    self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    self.titleLabel.shadowOffset = Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1);
     self.titleLabel.shadowColor = [UIColor blackColor];
     self.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
     self.titleLabel.backgroundColor = [UIColor clearColor];

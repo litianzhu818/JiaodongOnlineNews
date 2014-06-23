@@ -38,13 +38,14 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
+    float y = Is_iOS7?20:0;
     
-    UILabel *beglabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 50.0, 80.0, 35.0)];
+    UILabel *beglabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, y+50.0, 80.0, 35.0)];
     [beglabel setBackgroundColor:[UIColor clearColor]];
     [beglabel setText:@"起始时间："];
     [beglabel setFont:[UIFont systemFontOfSize:15.0]];
     [beglabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
-    UILabel *endlabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 95.0, 80.0, 35.0)];
+    UILabel *endlabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, y+95.0, 80.0, 35.0)];
     [endlabel setBackgroundColor:[UIColor clearColor]];
     [endlabel setText:@"结束时间："];
     [endlabel setFont:[UIFont systemFontOfSize:15.0]];
@@ -53,7 +54,7 @@
     [self.view addSubview:beglabel];
     [self.view addSubview:endlabel];
     
-    begtime = [[UITextField alloc] initWithFrame:CGRectMake(110.0, 50.0, 140.0, 35.0)];
+    begtime = [[UITextField alloc] initWithFrame:CGRectMake(110.0, y+50.0, 190.0, 35.0)];
     [begtime setFont:[UIFont systemFontOfSize:15.0]];
     [begtime setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"inputFidldBorder"]]];
     begtime.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
@@ -63,7 +64,7 @@
     [begtime addTarget:self action:@selector(selectBegDate:) forControlEvents:UIControlEventTouchDown];
     [begtime setText:[dateFormatter stringFromDate:self.beg_date]];
     
-    endtime = [[UITextField alloc] initWithFrame:CGRectMake(110.0, 95.0, 140.0, 35.0)];
+    endtime = [[UITextField alloc] initWithFrame:CGRectMake(110.0, y+95.0, 190.0, 35.0)];
     [endtime setFont:[UIFont systemFontOfSize:15.0]];
     endtime.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
     endtime.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -75,8 +76,9 @@
     [self.view addSubview:begtime];
     [self.view addSubview:endtime];
     
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20.0, 140.0, 280, 40)];
-    [button setBackgroundImage:[UIImage imageNamed:@"livehood_continue_button"] forState:UIControlStateNormal];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20.0, y+140.0, 280, 40)];
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+    [button setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(submit) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"查 询" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -84,7 +86,7 @@
     
     [self.view addSubview:button];
 
-    table = [[UITableView alloc] initWithFrame:CGRectMake(20, 190, 280, App_Height - 200)];
+    table = [[UITableView alloc] initWithFrame:CGRectMake(20, y+190, 280, App_Height - 200)];
     [table setDelegate:self];
     [table setDataSource:self];
     [table setBounces:NO];
@@ -108,6 +110,7 @@
     [actionSheetPicker showActionSheetPicker];
 }
 
+#warning 日期范围应该限制在7天以内，选的时间段太长会导致数据加载量大，界面卡死
 - (void)beg_dateWasSelected:(NSDate *)selectedDate {
     self.beg_date = selectedDate;
     NSString *destDateString = [dateFormatter stringFromDate:self.beg_date];
@@ -116,7 +119,7 @@
 
 - (void)end_dateWasSelected:(NSDate *)selectedDate {
     self.end_date = selectedDate;
-    NSString *destDateString = [dateFormatter stringFromDate:self.beg_date];
+    NSString *destDateString = [dateFormatter stringFromDate:self.end_date];
     endtime.text = destDateString;
 }
 

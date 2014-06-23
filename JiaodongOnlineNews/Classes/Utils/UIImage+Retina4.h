@@ -1,9 +1,9 @@
 //
 //  UIImage+Retina4.h
-//  JiaodongOnlineNews
+//  Voimon
 //
-//  Created by zhang yi on 13-8-13.
-//  Copyright (c) 2013年 胶东在线. All rights reserved.
+//  Created by Xu Shawn on 4/24/13.
+//  Copyright (c) 2013 BraveSoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -39,7 +39,7 @@
 //    self.titleLabel.layer.borderWidth = 1;
 //    self.titleLabel.layer.borderColor = [UIColor greenColor].CGColor;
     self.titleLabel.textColor = [UIColor whiteColor];
-    self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    self.titleLabel.shadowOffset = Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1);
     self.titleLabel.shadowColor = [UIColor blackColor];
     self.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
     self.titleLabel.backgroundColor = [UIColor clearColor];

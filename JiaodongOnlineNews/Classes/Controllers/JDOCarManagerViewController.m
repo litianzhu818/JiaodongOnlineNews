@@ -62,11 +62,11 @@
 - (void)viewDidLoad
 {
     
-    nodate = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height - 44)];
+    nodate = [[UIImageView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height - (Is_iOS7?64:44))];
     nodate.image = [UIImage imageNamed:@"status_no_data"];
     
     [self.view setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
-    self.listview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height - 44)];
+    self.listview = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height - (Is_iOS7?64:44))];
     self.listview.rowHeight = 44.0f;
     self.listview.bounces = false;
     self.listview.backgroundColor = [UIColor colorWithHex:Main_Background_Color];

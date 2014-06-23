@@ -75,40 +75,27 @@
     _imageView3.frame = CGRectMake(Left_Margin+2*Padding+2*imageWidth, Top_Margin+CGRectGetHeight(self.textLabel.frame), imageWidth, imageHeight);
 }
 - (void)setModel:(JDONewsModel *)newsModel{
-    __block UIImageView *blockImageView = self.imageView;
-    [_imageView1 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[((NSDictionary *)[newsModel.g_pics objectAtIndex:0]) objectForKey:@"picurl"]]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-        if(!cached){    // 非缓存加载时使用渐变动画
-            CATransition *transition = [CATransition animation];
-            transition.duration = 0.3;
-            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            transition.type = kCATransitionFade;
-            [blockImageView.layer addAnimation:transition forKey:nil];
+    NSArray *imageViews = @[_imageView1,_imageView2,_imageView3];
+    for (int i=0; i<imageViews.count; i++) {
+        UIImageView *iv = [imageViews objectAtIndex:i];
+        NSString *imgUrl = [((NSDictionary *)[newsModel.g_pics objectAtIndex:i]) objectForKey:@"picurl"];
+        if (imgUrl) {
+            __block UIImageView *blockImageView = iv;
+            [iv setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:imgUrl]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
+                if(!cached){    // 非缓存加载时使用渐变动画
+                    CATransition *transition = [CATransition animation];
+                    transition.duration = 0.3;
+                    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                    transition.type = kCATransitionFade;
+                    [blockImageView.layer addAnimation:transition forKey:nil];
+                }
+            } failure:^(NSError *error) {
+                
+            }];
+        }else{  // 版本升级后，从缓存读取的数据可能g_pics内容为nil
+            [iv setImage:[UIImage imageNamed:Default_Image]];
         }
-    } failure:^(NSError *error) {
-        
-    }];
-    [_imageView2 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[((NSDictionary *)[newsModel.g_pics objectAtIndex:1]) objectForKey:@"picurl"]]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-        if(!cached){    // 非缓存加载时使用渐变动画
-            CATransition *transition = [CATransition animation];
-            transition.duration = 0.3;
-            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            transition.type = kCATransitionFade;
-            [blockImageView.layer addAnimation:transition forKey:nil];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
-    [_imageView3 setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[((NSDictionary *)[newsModel.g_pics objectAtIndex:2]) objectForKey:@"picurl"]]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-        if(!cached){    // 非缓存加载时使用渐变动画
-            CATransition *transition = [CATransition animation];
-            transition.duration = 0.3;
-            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            transition.type = kCATransitionFade;
-            [blockImageView.layer addAnimation:transition forKey:nil];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
+    }
     self.textLabel.text = newsModel.title;
     if([newsModel read]){
         self.textLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];

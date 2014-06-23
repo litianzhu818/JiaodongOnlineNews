@@ -41,6 +41,11 @@
     [self setScrollEnabled:originalValue];
 }
 
+- (void)setScrollable:(BOOL)isScrollable
+{
+    [super setScrollEnabled:isScrollable];
+}
+
 -(void)setContentOffset:(CGPoint)s
 {
 	if(self.tracking || self.decelerating){
@@ -52,16 +57,20 @@
         self.contentInset = insets;
         
 	} else {
-
+        
 		float bottomOffset = (self.contentSize.height - self.frame.size.height + self.contentInset.bottom);
-		if(s.y < bottomOffset && self.scrollEnabled){            
+		if(s.y < bottomOffset && self.scrollEnabled){
             UIEdgeInsets insets = self.contentInset;
             insets.bottom = 8;
             insets.top = 0;
-            self.contentInset = insets;            
+            self.contentInset = insets;
         }
 	}
-    	
+    
+    // Fix "overscrolling" bug
+    if (s.y > self.contentSize.height - self.frame.size.height && !self.decelerating && !self.tracking && !self.dragging)
+        s = CGPointMake(s.x, self.contentSize.height - self.frame.size.height);
+    
 	[super setContentOffset:s];
 }
 
@@ -71,7 +80,7 @@
 	
 	if(s.bottom>8) insets.bottom = 0;
 	insets.top = 0;
-
+    
 	[super setContentInset:insets];
 }
 
@@ -89,79 +98,29 @@
     [super setContentSize:contentSize];
 }
 
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    if (self.displayPlaceHolder && self.placeholder && self.placeholderColor)
+    {
+        if ([self respondsToSelector:@selector(snapshotViewAfterScreenUpdates:)])
+        {
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.alignment = self.textAlignment;
+            [self.placeholder drawInRect:CGRectMake(5, 8 + self.contentInset.top, self.frame.size.width-self.contentInset.left, self.frame.size.height- self.contentInset.top) withAttributes:@{NSFontAttributeName:self.font, NSForegroundColorAttributeName:self.placeholderColor, NSParagraphStyleAttributeName:paragraphStyle}];
+        }
+        else {
+            [self.placeholderColor set];
+            [self.placeholder drawInRect:CGRectMake(8.0f, 8.0f, self.frame.size.width - 16.0f, self.frame.size.height - 16.0f) withFont:self.font];
+        }
+    }
+}
 
-// 以下是从SSView中复制过来的
-
-- (void)setPlaceholder:(NSString *)string {
-	if ([string isEqual:_placeholder]) {
-		return;
-	}
+-(void)setPlaceholder:(NSString *)placeholder
+{
+	_placeholder = placeholder;
 	
-	_placeholder = string;
 	[self setNeedsDisplay];
 }
-
-#pragma mark - NSObject
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:self];
-}
-
-
-#pragma mark - UIView
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-	if ((self = [super initWithCoder:aDecoder])) {
-		[self _initialize];
-	}
-	return self;
-}
-
-
-- (id)initWithFrame:(CGRect)frame {
-	if ((self = [super initWithFrame:frame])) {
-		[self _initialize];
-	}
-	return self;
-}
-
-
-- (void)drawRect:(CGRect)rect {
-	[super drawRect:rect];
-    
-	if (self.text.length == 0 && self.placeholder) {
-		// Inset the rect
-		rect = UIEdgeInsetsInsetRect(rect, self.contentInset);
-        
-		// TODO: This is hacky. Not sure why 8 is the magic number
-		if (self.contentInset.left == 0.0f) {
-			rect.origin.x += 8.0f;
-		}
-		rect.origin.y += 8.0f;
-        
-		// Draw the text
-		[_placeholderTextColor set];
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
-		[_placeholder drawInRect:rect withFont:self.font lineBreakMode:NSLineBreakByTruncatingTail alignment:self.textAlignment];
-#else
-		[_placeholder drawInRect:rect withFont:self.font lineBreakMode:UILineBreakModeTailTruncation alignment:self.textAlignment];
-#endif
-	}
-}
-
-
-#pragma mark - Private
-
-- (void)_initialize {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_textChanged:) name:UITextViewTextDidChangeNotification object:self];
-	
-	self.placeholderTextColor = [UIColor colorWithWhite:0.702f alpha:1.0f];
-}
-
-
-- (void)_textChanged:(NSNotification *)notification {
-	[self setNeedsDisplay];
-}
-
 
 @end

@@ -36,7 +36,7 @@
 
 - (void)loadView {
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
-    self.launcherView = [[NILauncherView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
+    self.launcherView = [[NILauncherView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44))];
     self.launcherView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
     
     [self.view addSubview:self.launcherView];
@@ -56,6 +56,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (Is_iOS7) {
+        self.automaticallyAdjustsScrollViewInsets = false;
+    }
     
     self.navigationView = [[JDONavigationView alloc] init];
     [self setupNavigationView];

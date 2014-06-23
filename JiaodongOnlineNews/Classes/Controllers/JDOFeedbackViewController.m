@@ -133,6 +133,8 @@
     [systeminfo setText:info];
     [tpkey addSubview:systeminfo];
     
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+    [commit setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
     [commit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
     [namelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [tellabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];

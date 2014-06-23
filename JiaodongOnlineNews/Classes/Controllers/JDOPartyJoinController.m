@@ -83,7 +83,7 @@ NSArray *reg_fields;
     
     reg_views = [[NSMutableArray alloc] init];
     self.view.backgroundColor = [UIColor whiteColor];
-    int y = 90;
+    int y = Is_iOS7?70:50;
     reg_fields = (NSArray *)[self.partyJoin objectForKey:@"reg_fields"];
     for (NSDictionary *reg_field in reg_fields) {
         if ([(NSString *)[reg_field objectForKey:@"active_required"] isEqualToString:@"1"]) {//必填项，加星号
@@ -102,7 +102,7 @@ NSArray *reg_fields;
         }
         NSString *field_type = (NSString *)[reg_field objectForKey:@"active_field_type"];
         if ([field_type isEqualToString:@"text"]) {//文本
-            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(120, y, 180, 40)];
+            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(120, y, 180, 30)];
             [textField setBorderStyle:UITextBorderStyleNone];
             textField.background = [UIImage imageNamed:@"vio_textfield_back.png"];
             textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -140,11 +140,12 @@ NSArray *reg_fields;
         }
     }
     UIButton *submit = [[UIButton alloc] initWithFrame:CGRectMake(20, y, 280, 50)];
-    [submit setBackgroundImage:[UIImage imageNamed:@"vio_search"] forState:UIControlStateNormal];
+    NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
+    [submit setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
     [submit setTitle:@"提 交" forState:UIControlStateNormal];
     submit.userInteractionEnabled = YES;
-    [submit.titleLabel setShadowColor:[UIColor blackColor]];
-    [submit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    [submit setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [submit.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
     [submit addTarget:self action:@selector(submitClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:submit];
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
