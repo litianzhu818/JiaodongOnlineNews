@@ -76,6 +76,8 @@
 		2D6316271782D6D300248FD6 /* HGPageScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D6316211782D6D300248FD6 /* HGPageScrollView.xib */; };
 		2D6316281782D6D300248FD6 /* HGPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316231782D6D300248FD6 /* HGPageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2D6316291782D6D300248FD6 /* HGPageImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6316251782D6D300248FD6 /* HGPageImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2D7548A6195CF04B000CE442 /* menu_background~iOS7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7548A4195CF04B000CE442 /* menu_background~iOS7@2x.png */; };
+		2D7548A7195CF04B000CE442 /* menu_row_selected~iOS7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7548A5195CF04B000CE442 /* menu_row_selected~iOS7@2x.png */; };
 		2D86D59617584E420000AA6A /* JDONewsCategoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */; };
 		2D86D59F175872FE0000AA6A /* JDONewsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D59E175872FE0000AA6A /* JDONewsModel.m */; };
 		2D86D5A5175885E50000AA6A /* JDONewsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D86D5A4175885E50000AA6A /* JDONewsTableCell.m */; };
@@ -890,6 +892,8 @@
 		2D6316231782D6D300248FD6 /* HGPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGPageView.m; sourceTree = "<group>"; };
 		2D6316241782D6D300248FD6 /* HGPageImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGPageImageView.h; sourceTree = "<group>"; };
 		2D6316251782D6D300248FD6 /* HGPageImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGPageImageView.m; sourceTree = "<group>"; };
+		2D7548A4195CF04B000CE442 /* menu_background~iOS7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_background~iOS7@2x.png"; sourceTree = "<group>"; };
+		2D7548A5195CF04B000CE442 /* menu_row_selected~iOS7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_row_selected~iOS7@2x.png"; sourceTree = "<group>"; };
 		2D86D59417584E420000AA6A /* JDONewsCategoryInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsCategoryInfo.h; sourceTree = "<group>"; };
 		2D86D59517584E420000AA6A /* JDONewsCategoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDONewsCategoryInfo.m; sourceTree = "<group>"; };
 		2D86D59D175872FE0000AA6A /* JDONewsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JDONewsModel.h; sourceTree = "<group>"; };
@@ -2238,6 +2242,8 @@
 				2DC49C63179F9C07008374F2 /* menu_about@2x.png */,
 				2DC49C64179F9C07008374F2 /* menu_background.png */,
 				2DC49C65179F9C07008374F2 /* menu_background@2x.png */,
+				2D7548A4195CF04B000CE442 /* menu_background~iOS7@2x.png */,
+				2D7548A5195CF04B000CE442 /* menu_row_selected~iOS7@2x.png */,
 				2DC49C66179F9C07008374F2 /* menu_bind.png */,
 				2DC49C67179F9C07008374F2 /* menu_bind@2x.png */,
 				2DC49C68179F9C07008374F2 /* menu_collect_selected.png */,
@@ -3676,6 +3682,7 @@
 				2D97A9501785547800CEEE82 /* vote.css in Resources */,
 				2DAE4009179935FE00AE4C34 /* icon.png in Resources */,
 				2DB36917179F9522000D231E /* Checkmark.png in Resources */,
+				2D7548A7195CF04B000CE442 /* menu_row_selected~iOS7@2x.png in Resources */,
 				2DB36918179F9522000D231E /* Checkmark@2x.png in Resources */,
 				2DC49BD2179F9AC9008374F2 /* bus.png in Resources */,
 				2DC49BD3179F9AC9008374F2 /* bus@2x.png in Resources */,
@@ -3912,6 +3919,7 @@
 				2DA09851187108460082A2B6 /* popularize_icon@2x.png in Resources */,
 				2DC49DC2179F9D67008374F2 /* toolbar_white_background@2x.png in Resources */,
 				2DC49DC3179F9D67008374F2 /* 跟帖@2x.png in Resources */,
+				2D7548A6195CF04B000CE442 /* menu_background~iOS7@2x.png in Resources */,
 				2DC49DCA179F9D8F008374F2 /* topic_border.png in Resources */,
 				2DC49DCB179F9D8F008374F2 /* topic_border@2x.png in Resources */,
 				2DA860A9186421FD003D6328 /* Default@2x.png in Resources */,
@@ -4534,7 +4542,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D1F78944-C495-4E39-9902-64162C42E018";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "34F7811A-C5A3-4641-9D9D-D20B5162E5D3";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -4601,7 +4609,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6A34D962-06ED-49B5-93BD-32C3E4E0DFFB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "34F7811A-C5A3-4641-9D9D-D20B5162E5D3";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;

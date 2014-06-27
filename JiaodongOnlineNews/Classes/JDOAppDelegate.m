@@ -183,6 +183,7 @@
 
 - (void)advViewClicked
 {
+//    self.advTargetId = @"29030";
     if (self.advTargetId&&![self.advTargetId isEqualToString:@"0"]) {
         [JDOAppDelegate cancelPreviousPerformRequestsWithTarget:self selector:@selector(navigateToMainView:) object:self.launchOptions];
         
@@ -227,11 +228,11 @@
     advView.userInteractionEnabled = NO;
     self.deckController = [self generateControllerStack];
     bool showGuide = ![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce;
-//    if( showGuide ){
+    if( !showGuide && !(Is_iOS7)){
+        self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
+    }else{
         self.deckController.view.frame = CGRectMake(0, 0, 320, App_Height);
-//    }else{
-//        self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
-//    }
+    }
     [self.window insertSubview:self.deckController.view belowSubview:advView];
     
     [UIView animateWithDuration:adv_main_fadetime animations:^{
@@ -241,13 +242,6 @@
         [advView removeFromSuperview];
         [self.deckController.view removeFromSuperview];
         self.window.rootViewController = self.deckController;
-        // iOS7下调整deckController.view的大小以适合状态栏
-//        if (Is_iOS7 && !showGuide ) {
-//            CGRect f = self.deckController.view.frame;
-//            f.origin.y += 20;
-//            f.size.height -= 20;
-//            self.deckController.view.frame = f;
-//        }
         
         if (launchOptions != nil){
         // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
@@ -344,11 +338,6 @@
     
     splashView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     splashView.image = [UIImage imageNamed:@"Default"];
-    // iOS7以上，在splash页面就显示状态栏。iOS7以下在广告和新手指南显示完成后在显示状态栏
-    if (Is_iOS7){
-        [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    }
     [self.window addSubview:splashView];
     
     [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];

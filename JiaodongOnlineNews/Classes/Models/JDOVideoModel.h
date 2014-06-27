@@ -8,6 +8,9 @@
 
 @interface JDOVideoModel : NSObject
 
+@property (nonatomic,strong) NSString *id;
+@property (nonatomic,assign) int type;
+@property (nonatomic,strong) NSString *logo;
 @property (nonatomic,strong) NSString *icon;
 @property (nonatomic,strong) NSString *name;
 @property (nonatomic,strong) NSString *liveUrl;

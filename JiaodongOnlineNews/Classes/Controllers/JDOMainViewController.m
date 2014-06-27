@@ -47,8 +47,9 @@
         [_introductionView showInView:self.view animateDuration:0.0];
         
     }else{
+        // 不进入介绍页，则在此时显示状态栏，进入介绍页则在介绍关闭后显示状态栏
         [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+        [[UIApplication sharedApplication] setStatusBarStyle:Is_iOS7?UIStatusBarStyleLightContent:UIStatusBarStyleBlackOpaque];
         // 本应用安装到iPad时,状态栏方向有可能与应用朝向不一直(横向iPad时启动应用,则状态栏一直保留在横向)，故在此强制设置
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:false];
     }
@@ -78,23 +79,29 @@
     [userDefault synchronize];
     
     [_introductionView removeFromSuperview];
+    // 介绍页关闭后再显示状态栏
     [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    [[UIApplication sharedApplication] setStatusBarStyle:Is_iOS7?UIStatusBarStyleLightContent:UIStatusBarStyleBlackOpaque];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:false];
     
-    self.view.frame = CGRectMake(0, 20, 320, App_Height);
+    if (!(Is_iOS7)) {
+        self.view.frame = CGRectMake(0, 20, 320, App_Height);
+    }
     
     // 指南页显示完毕后自动打开左菜单并添加指南界面
     [self openLeftViewAnimated:false];
     
-    UIImageView *introduceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Introduce_Left"]];
-    introduceView.userInteractionEnabled = true;
-    introduceView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7f];
-    [introduceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(introduceViewClicked:)]];
-    introduceView.alpha = 0;
-    [self.view addSubview:introduceView];
+    UIView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
+    backgroundView.userInteractionEnabled = true;
+    backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7f];
+    [backgroundView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(introduceViewClicked:)]];
+    backgroundView.alpha = 0;
+    UIImageView *introduceView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, [UIScreen mainScreen].applicationFrame.size.height)];
+    introduceView.image = [UIImage imageNamed:@"Introduce_Left"];
+    [backgroundView addSubview:introduceView];
+    [self.view addSubview:backgroundView];
     [UIView animateWithDuration:0.4 animations:^{
-        introduceView.alpha = 1;
+        backgroundView.alpha = 1;
     }];
 }
 

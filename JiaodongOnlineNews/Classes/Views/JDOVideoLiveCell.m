@@ -38,7 +38,7 @@
     if (self) {
         self.models = models;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.backgroundColor = [UIColor clearColor];
         self.textLabel.font = [UIFont boldSystemFontOfSize:16];
         self.detailTextLabel.font = [UIFont systemFontOfSize:13];
         self.detailTextLabel.numberOfLines = 2;

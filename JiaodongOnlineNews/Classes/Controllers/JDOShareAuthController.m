@@ -55,13 +55,14 @@
 - (void)loadView{
     [super loadView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.width, App_Height-44)
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, self.view.width, App_Height-(Is_iOS7?64:44))
                                               style:UITableViewStylePlain];
-    _tableView.rowHeight = (App_Height-44.0f)/8;
+    _tableView.rowHeight = (App_Height-(Is_iOS7?64:44))/8;
     _tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.scrollEnabled = false;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
 }
 
@@ -76,7 +77,7 @@
 }
 
 - (void) onBackBtnClick{
-    [(JDORightViewController *)self.stackViewController popViewController];
+    [self.stackContainer popViewController:0];
 }
 
 - (void)authSwitchChangeHandler:(UISwitch *)sender{
@@ -142,6 +143,7 @@
         cell = [[AGShareCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:TARGET_CELL_ID] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"news_content_background"]];
         
 //        MBSwitch *switchCtrl = [[MBSwitch alloc] initWithFrame:CGRectMake(0, 0, 53, 31)];
 //        [switchCtrl setTintColor:[UIColor grayColor]];

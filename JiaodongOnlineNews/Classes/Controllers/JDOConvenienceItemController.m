@@ -100,7 +100,7 @@
 - (void)backToParent
 {
     if ([self.navTitle isEqualToString:@"烟台天气"]) {
-        [(JDOLeftViewController *)self.stackViewController popViewController];
+        [self.stackContainer popViewController:0];
     } else {
         JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
         [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count -2] animated:true];

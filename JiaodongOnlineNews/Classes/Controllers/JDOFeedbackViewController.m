@@ -135,7 +135,8 @@
     
     NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
     [commit setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
-    [commit.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    [commit setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [commit.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
     [namelabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [tellabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
     [emaillabel setTextColor:[UIColor colorWithHex:Light_Blue_Color]];
@@ -157,7 +158,7 @@
 
 - (void)onBackBtnClick{
     [self hiddenKeyBoard];
-    [(JDORightViewController *)self.stackViewController popViewController];
+    [self.stackContainer popViewController:0];
 }
 /*
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

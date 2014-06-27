@@ -7,11 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+@class JDONavigationController;
+
+@protocol JDOHasControllerStack <NSObject>
+
+@required
+@property (nonatomic,strong) NSMutableArray *controllerStack;
+- (void) pushViewController:(JDONavigationController *)controller direction:(int) direction;
+- (void) popViewController:(int)direction;
+
+@end
 
 @interface JDONavigationController : UIViewController <JDONavigationView>
 
 @property (strong,nonatomic) JDONavigationView *navigationView;
-@property (strong,nonatomic) UIViewController *stackViewController; /* 类似UINavigationController 在rightViewController多级导航中使用 */
+@property (strong,nonatomic) id<JDOHasControllerStack> stackContainer; /* 类似UINavigationController 在rightViewController多级导航中使用 */
 
 - (void) setupNavigationView;
 

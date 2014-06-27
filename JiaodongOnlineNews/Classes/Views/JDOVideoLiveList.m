@@ -15,6 +15,9 @@
 #import "JDOVideoLiveModel.h"
 #import "DCParserConfiguration.h"
 #import "DCArrayMapping.h"
+#import "DCCustomParser.h"
+#import "DCKeyValueObjectMapping.h"
+#import "JDODataModel.h"
 
 @interface JDOVideoLiveList ()
 
@@ -129,12 +132,20 @@
     // 有可能再翻页之后再进行搜索,所以需要将页码置为1
 
     DCParserConfiguration *config = [DCParserConfiguration configuration];
-    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[JDOVideoModel class] forAttribute:@"list" onClass:[JDOVideoLiveModel class]];
-    [config addArrayMapper:mapper];
+    DCCustomParser *customParser = [[DCCustomParser alloc] initWithBlockParser:^id(NSDictionary *dictionary, NSString *attributeName, __unsafe_unretained Class destinationClass, id value) {
+        DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDOVideoLiveModel class]];
+        return [mapper parseDictionary:value];
+    } forAttributeName:@"_data" onDestinationClass:[JDODataModel class]];
+    [config addCustomParsersObject:customParser];
     
-    [[JDOJsonClient clientWithBaseURL:[NSURL URLWithString:VIDEO_LIVE]] getJSONByServiceName:@"" modelClass:@"JDOVideoLiveModel" config:config params:nil  success:^(JDOVideoLiveModel *liveModel) {
-        [self setCurrentState:ViewStatusNormal];
-        [self dataLoadFinished:liveModel];
+    [[JDOJsonClient sharedClient] getJSONByServiceName:VIDEO_LIVE modelClass:@"JDODataModel" config:config params:nil  success:^(JDODataModel *dataModel) {
+        if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
+            [self dataLoadFinished:(JDOVideoLiveModel *)dataModel.data];
+            [self setCurrentState:ViewStatusNormal];
+        }else{
+            // 服务器端有错误
+            [self setCurrentState:ViewStatusRetry];
+        }
     } failure:^(NSString *errorStr) {
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
@@ -172,67 +183,65 @@
     // 如直播的地址来源包括其他的请求返回的数据，则需要考虑合并list
     self.noDataView.hidden = true;
     [self.listArray removeAllObjects];
+    
+    DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDOVideoModel class]];
     for (int i=0; i<dataList.count; i++) {
-        JDOVideoModel *model = dataList[i];
-        model.serverTime = liveModel.serverTime;
-        if ([model.name isEqualToString:@"ytv-1"] || [model.name isEqualToString:@"ytv-2"]
-            || [model.name isEqualToString:@"ytv-3"] || [model.name isEqualToString:@"ytv-4"]){
-            [self.listArray addObject:model];
-        }
-    }
-    // 若接口返回的数据项目中，把ytv-1这一类的名字改了，则使用默认值构建model
-    // 这样即使播放地址也变了，起码频道列表这个页面能正常显示
-    if (self.listArray.count == 0) {
-        JDOVideoModel *model = [[JDOVideoModel alloc] init];
-        model.name = @"ytv-1";
-        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k";
-        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/167/0/{timestamp}";
-        model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
-        model = [[JDOVideoModel alloc] init];
-        model.name = @"ytv-2";
-        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/video_yt2/m3u8:500k";
-        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/168/0/{timestamp}";
-        model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
-        model = [[JDOVideoModel alloc] init];
-        model.name = @"ytv-3";
-        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/xnpd_yt3/m3u8:500k";
-        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/134/0/{timestamp}";
-        model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
-        model = [[JDOVideoModel alloc] init];
-        model.name = @"ytv-4";
-        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/xnpd_yt4/m3u8:500K";
-        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/153/0/{timestamp}";
-        model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
-    }else{  // 添加测试频道
-        JDOVideoModel *model = [[JDOVideoModel alloc] init];
-        model.name = @"cctv-1";
-        model.liveUrl = @"http://cibn1.vdnplus.com/channels/tvie/CCTV-1/m3u8:sd";
-        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/91/0/{timestamp}";
-        model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
-        model = [[JDOVideoModel alloc] init];
-        model.name = @"cctv-2";
-        model.liveUrl = @"http://cibn1.vdnplus.com/channels/tvie/CCTV-2/m3u8:sd";
-        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/92/0/{timestamp}";
-        model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
-        model = [[JDOVideoModel alloc] init];
-        model.name = @"东方卫视";
-        model.liveUrl = @"http://cibn1.vdnplus.com/channels/tvie/df-ws/m3u8:sd";
-        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/110/0/{timestamp}";
-        model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
-        model = [[JDOVideoModel alloc] init];
-        model.name = @"山东卫视";
-        model.liveUrl = @"http://cibn3.vdnplus.com/channels/tvie/sd-ws/m3u8:sd";
-        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/60/0/{timestamp}";
+        JDOVideoModel *model = [mapper parseDictionary:dataList[i]];
         model.serverTime = liveModel.serverTime;
         [self.listArray addObject:model];
     }
+
+//    if (self.listArray.count == 0) {
+//        JDOVideoModel *model = [[JDOVideoModel alloc] init];
+//        model.name = @"ytv-1";
+//        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k";
+//        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/167/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//        model = [[JDOVideoModel alloc] init];
+//        model.name = @"ytv-2";
+//        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/video_yt2/m3u8:500k";
+//        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/168/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//        model = [[JDOVideoModel alloc] init];
+//        model.name = @"ytv-3";
+//        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/xnpd_yt3/m3u8:500k";
+//        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/134/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//        model = [[JDOVideoModel alloc] init];
+//        model.name = @"ytv-4";
+//        model.liveUrl = @"http://live1.av.jiaodong.net/channels/yttv/xnpd_yt4/m3u8:500K";
+//        model.epgApi = @"http://api.av.jiaodong.net:8080/api/getEPGByChannelTime/153/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//    }else{  // 添加测试频道
+//        JDOVideoModel *model = [[JDOVideoModel alloc] init];
+//        model.name = @"cctv-1";
+//        model.liveUrl = @"http://cibn1.vdnplus.com/channels/tvie/CCTV-1/m3u8:sd";
+//        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/91/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//        model = [[JDOVideoModel alloc] init];
+//        model.name = @"cctv-2";
+//        model.liveUrl = @"http://cibn1.vdnplus.com/channels/tvie/CCTV-2/m3u8:sd";
+//        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/92/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//        model = [[JDOVideoModel alloc] init];
+//        model.name = @"东方卫视";
+//        model.liveUrl = @"http://cibn1.vdnplus.com/channels/tvie/df-ws/m3u8:sd";
+//        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/110/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//        model = [[JDOVideoModel alloc] init];
+//        model.name = @"山东卫视";
+//        model.liveUrl = @"http://cibn3.vdnplus.com/channels/tvie/sd-ws/m3u8:sd";
+//        model.epgApi = @"http://api.vdnplus.com/api/getEPGByChannelTime/60/0/{timestamp}";
+//        model.serverTime = liveModel.serverTime;
+//        [self.listArray addObject:model];
+//    }
     
     [self.tableView reloadData];
     [self updateLastRefreshTime];
