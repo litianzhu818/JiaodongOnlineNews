@@ -18,6 +18,7 @@
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *listArray;
 @property (nonatomic,strong) JDOVideoModel *videoModel;
+@property (nonatomic,assign) int selectedRow;
 
 @property (nonatomic,assign) id<JDOVideoEPGDelegate> delegate;
 

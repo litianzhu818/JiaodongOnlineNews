@@ -167,6 +167,10 @@
             }
             [btn addTarget:self action:@selector(onDownload:) forControlEvents:UIControlEventTouchUpInside];
             break;
+        case ToolBarButtonVideoEpg:
+            iconName = @"epg.png";
+            iconHighlightName = @"epg_clicked.png";
+            [btn addTarget:self action:@selector(onVideoEpg:) forControlEvents:UIControlEventTouchUpInside];
         default:
             break;
     }
@@ -482,6 +486,12 @@
                 [self.downloadTarget addObserver:self selector:@selector(onDownloadObjectFinished)];
             }
         }
+    }
+}
+
+- (void) onVideoEpg:(UIButton *)sender{
+    if(self.videoTarget){
+        [self.videoTarget onEpgClicked];
     }
 }
 

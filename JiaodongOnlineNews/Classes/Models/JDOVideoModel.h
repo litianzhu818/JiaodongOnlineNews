@@ -5,8 +5,9 @@
 //  Created by zhang yi on 14-4-18.
 //  Copyright (c) 2014年 胶东在线. All rights reserved.
 //
+#import "JDOToolbarModel.h"
 
-@interface JDOVideoModel : NSObject
+@interface JDOVideoModel : NSObject <JDOToolbarModel>
 
 @property (nonatomic,strong) NSString *id;
 @property (nonatomic,assign) int type;
@@ -22,5 +23,7 @@
 @property (nonatomic,strong) NSString *currentProgram;
 
 - (NSDate *) currentTime;
+
+// 以下属性为实现JDOToolbarModel的评论和分享所需要
 
 @end

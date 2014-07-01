@@ -10,6 +10,8 @@
 #import "JDOVideoModel.h"
 #import "JDOVideoEPGModel.h"
 
+#define Navbar_Height (Is_iOS7?36.0f:34.5f)
+
 @class JDOPageControl;
 @class NIPagingScrollView;
 

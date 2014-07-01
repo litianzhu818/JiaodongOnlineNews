@@ -79,6 +79,6 @@
         </view>
     </objects>
     <resources>
-        <image name="video_player_background.png" width="640" height="86"/>
+        <image name="video_player_background.png" width="320" height="43"/>
     </resources>
 </document>

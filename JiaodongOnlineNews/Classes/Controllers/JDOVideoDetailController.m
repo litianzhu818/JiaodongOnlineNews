@@ -19,6 +19,7 @@
 #import "Utilities.h"
 #import "VSegmentSlider.h"
 #import "JDOVideoEPG.h"
+#import "JDOVideoEPGList.h"
 
 #define Dept_Label_Tag 101
 #define Title_Label_Tag 102
@@ -37,6 +38,7 @@
     long               mCurPostion;
     NSTimer            *mSyncSeekTimer;
     BOOL               isCtrlHide;
+    BOOL               isEpgFold;
 }
 
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
@@ -127,32 +129,60 @@
     UITapGestureRecognizer *ctrlSwitchTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchCtrlState)];
     [self.carrier addGestureRecognizer:ctrlSwitchTap];
     
-    // 工具栏输入框
-//    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonCollect]];
-//    
-//    _toolbar = [[JDOToolBar alloc] initWithModel:self.videoModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];// 背景有透明渐变,高度是56不是44
-//    _toolbar.reviewType = JDOReviewTypeLivehood;
-//    [self.view addSubview:_toolbar];
-    
 //    self.statusView = [[JDOStatusView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44)];
 //    self.statusView.delegate = self;
 //    [self.view addSubview:self.statusView];
-//    
-//    self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
-//    _blackMask = self.view.blackMask;
-//    [_blackMask addGestureRecognizer:self.closeReviewGesture];
-//    
 //    [self loadDataFromNetwork];
     
-    JDOVideoEPG *epg = [[JDOVideoEPG alloc] initWithFrame:CGRectMake(0, 241, 320, CGRectGetHeight(_mainView.bounds)-241) model:self.videoModel delegate:self];
-    [_mainView addSubview:epg];
     
+    // 播放界面的节目单只显示当天的
+    _epg = [[JDOVideoEPG alloc] initWithFrame:CGRectMake(0, 241-Navbar_Height, 320, CGRectGetHeight(_mainView.bounds)-241+Navbar_Height-44/*工具栏*/) model:self.videoModel delegate:self];
+    _epg.scrollView.pagingScrollView.scrollEnabled = false; // 弹出节目单之前禁用横向滚动
+    isEpgFold = true;
+    [_mainView addSubview:_epg];
+    [_mainView sendSubviewToBack:_epg];
+    
+//    JDOVideoEPGList *todayEpg = [[JDOVideoEPGList alloc] initWithFrame:CGRectMake(0, 241, 320, CGRectGetHeight(_mainView.bounds)-241-44/*工具栏*/) identifier:nil];
+//    todayEpg.videoModel = self.videoModel;
+//    todayEpg.delegate = self;
+//    todayEpg.tableView.scrollsToTop = true;
+//    [todayEpg loadDataFromNetwork];
+//    [_mainView addSubview:todayEpg];
+    
+    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonVideoEpg],[NSNumber numberWithInt:ToolBarButtonShare]];
+    _toolbar = [[JDOToolBar alloc] initWithModel:self.videoModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];
+    _toolbar.videoTarget = self;
+    _toolbar.shareTarget = self;
+    [self.view addSubview:_toolbar];
+    
+    self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
+    self.blackMask = [self.view blackMask];
+    [_blackMask addGestureRecognizer:self.closeReviewGesture];
+    
+    // 加载视频
+    [self quicklyPlayMovie:[self playCtrlGetCurrMediaURL] title:nil];
+}
+
+- (void) onEpgClicked{
+#warning 若评论窗口打开，则先关闭评论视图
+    if(isEpgFold){
+        _epg.scrollView.pagingScrollView.scrollEnabled = true;
+        [_mainView bringSubviewToFront:_epg];
+    }else{
+        _epg.scrollView.pagingScrollView.scrollEnabled = false;
+        [_mainView sendSubviewToBack:_epg];
+    }
+    isEpgFold = !isEpgFold;
+}
+
+- (BOOL) onSharedClicked{
+    return true;
 }
 
 -(void)viewDidUnload{
     [super viewDidUnload];
+    [mMPayer unSetupPlayer];
     [self setToolbar:nil];
-    
     [_blackMask removeGestureRecognizer:self.closeReviewGesture];
 }
 
@@ -161,8 +191,6 @@
 //	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 	[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 	[self becomeFirstResponder];
-    
-    [self quicklyPlayMovie:[self playCtrlGetCurrMediaURL] title:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -174,7 +202,6 @@
 
 - (void)dealloc{
 	[self unSetupObservers];
-    [mMPayer unSetupPlayer];
 }
 
 - (BOOL)shouldAutorotate{
@@ -190,11 +217,11 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)to duration:(NSTimeInterval)duration{
-	if (UIInterfaceOrientationIsLandscape(to)) {
-		self.backView.frame = self.view.bounds;
-	} else {
-		self.backView.frame = kBackviewDefaultRect;
-	}
+//	if (UIInterfaceOrientationIsLandscape(to)) {
+//		self.backView.frame = self.view.bounds;
+//	} else {
+//		self.backView.frame = kBackviewDefaultRect;
+//	}
 	NSLog(@"NAL 1HUI &&&&&&&&& frame=%@", NSStringFromCGRect(self.carrier.frame));
 }
 
@@ -264,6 +291,7 @@
 
 - (void) backToViewList{
     [self quicklyStopMovie];
+    [mMPayer unSetupPlayer];
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];
 }
@@ -374,8 +402,8 @@
     
 	[player setVideoQuality:VMVideoQualityHigh];    // VMVideoQualityLow(默认) ,VMVideoQualityMedium ,VMVideoQualityHigh
     // 开启缓存时候，第二次播放直播流会无法播放，貌似是因为缓存文件.vit被lock无法再次写入造成
-//    [player setUseCache:true];
-//	[player setCacheDirectory:[self getCacheRootDirectory]];
+    [player setUseCache:true];
+	[player setCacheDirectory:[self getCacheRootDirectory]];
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player seekComplete:(id)arg
@@ -732,7 +760,7 @@
     }else if(epgModel.state == JDOVideoStateLive){
         url = [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }else if(epgModel.state == JDOVideoStateForecast){
-        NSLog(@"预报的节目不可以播放");
+        // 预报节目不可播放
     }else{
         NSLog(@"节目状态未知");
     }

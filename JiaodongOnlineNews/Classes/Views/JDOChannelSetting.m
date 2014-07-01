@@ -21,7 +21,7 @@
 - (id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor colorWithHex:@"F0F0F0"];
+        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
         
         UIImageView *section0 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 34.5)];
         section0.image = [UIImage imageNamed:@"channel_section0"];

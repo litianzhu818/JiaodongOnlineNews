@@ -79,7 +79,7 @@ NSArray *imageUrls;
     _toolbar.bridge = _bridge;
     
     self.closeReviewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.toolbar action:@selector(hideReviewView)];
-    _blackMask = self.view.blackMask;
+    _blackMask = [self.view blackMask];
     [_blackMask addGestureRecognizer:self.closeReviewGesture];
 }
 

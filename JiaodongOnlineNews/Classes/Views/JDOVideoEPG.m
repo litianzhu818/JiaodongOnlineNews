@@ -12,7 +12,6 @@
 #import "NIPagingScrollView.h"
 #import "JDOVideoLiveList.h"
 #import "JDOVideoEPGList.h"
-#define Navbar_Height (Is_iOS7?36.0f:34.5f)
 
 @implementation JDOVideoEPG{
     NSArray *pageInfos; // 页面基本信息

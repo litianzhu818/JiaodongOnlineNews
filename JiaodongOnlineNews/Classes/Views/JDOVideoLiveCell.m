@@ -62,14 +62,14 @@
 - (void)setContentByIndex:(NSInteger) index{
     int modelIndex = 2*index;
     JDOVideoModel *leftItemModel = (JDOVideoModel *)self.models[modelIndex];
-    self.leftItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 146, 151)];
+    self.leftItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 145, 151)];
     self.leftItemView.tag = modelIndex; // 利用tag传递变量，在接收手势时知道是哪个项目被点击的
     [self fillItemView:self.leftItemView withModel:leftItemModel];
     
     modelIndex = 2*index+1;
     if( self.models.count > modelIndex ){
         JDOVideoModel *rightItemModel = (JDOVideoModel *)self.models[modelIndex];
-        self.rightItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10+146+8, 10, 146, 151)];
+        self.rightItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10+145+10, 15, 145, 151)];
         self.rightItemView.tag = modelIndex;
         [self fillItemView:self.rightItemView withModel:rightItemModel];
     }
@@ -96,16 +96,53 @@
 
 - (void) fillItemView:(UIImageView *)itemView withModel:(JDOVideoModel *)itemModel  {
     itemView.userInteractionEnabled = true;
-    itemView.image = [UIImage imageNamed:itemModel.name];
+    itemView.image = [UIImage imageNamed:@"video_channel_background"];
     
-    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-116-5, 136, 116)];
-    logoView.image = [UIImage imageNamed:[itemModel.name stringByAppendingString:@"-logo.jpg"] ];
+    // 大图icon
+    UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-116-5, 145-2*5, 116)];
+    __block UIImageView *blockIconView = iconView;
+    [iconView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:itemModel.icon]] success:^(UIImage *image, BOOL cached) {
+        if(!cached){    // 非缓存加载时使用渐变动画
+            CATransition *transition = [CATransition animation];
+            transition.duration = 0.3;
+            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            transition.type = kCATransitionFade;
+            [blockIconView.layer addAnimation:transition forKey:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+    [itemView addSubview:iconView];
+    
+    // 频道名称
+    UILabel *channelLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 151-116-5-26, 70, 24) ];
+    channelLabel.font = [UIFont boldSystemFontOfSize:17];
+    channelLabel.textColor = [UIColor colorWithHex:@"696969"];
+    channelLabel.backgroundColor = [UIColor clearColor];
+    channelLabel.text = itemModel.name;
+    [itemView addSubview:channelLabel];
+    
+    // 台标
+    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(70+10, 151-116-5-26, 55, 24)];
+    __block UIImageView *blockLogoView = logoView;
+    [logoView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:itemModel.logo]] success:^(UIImage *image, BOOL cached) {
+        if(!cached){    // 非缓存加载时使用渐变动画
+            CATransition *transition = [CATransition animation];
+            transition.duration = 0.3;
+            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            transition.type = kCATransitionFade;
+            [blockLogoView.layer addAnimation:transition forKey:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
     [itemView addSubview:logoView];
     
-    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-24-5, 136, 24)];
-    backgroundView.image = [UIImage imageNamed:@"ytv_channel_background"];
+    // 当前节目
+    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-24-5, CGRectGetWidth(iconView.frame), 24)];
+    backgroundView.image = [UIImage imageNamed:@"video_epg_background"];
     [itemView addSubview:backgroundView];
-    UILabel *epgLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+5, 151-24-5, 136-10, 24) ];
+    UILabel *epgLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+5, 151-24-5, CGRectGetWidth(iconView.frame)-10, 24) ];
     epgLabel.font = [UIFont boldSystemFontOfSize:13];
     epgLabel.textColor = [UIColor whiteColor];
     epgLabel.backgroundColor = [UIColor clearColor];

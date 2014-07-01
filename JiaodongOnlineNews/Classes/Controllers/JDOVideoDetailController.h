@@ -9,15 +9,19 @@
 #import "JDONavigationController.h"
 #import "Vitamio.h"
 #import "JDOVideoEPG.h"
+#import "JDOToolBar.h"
 
 @class JDOVideoModel;
 @class JDOToolBar;
+@protocol JDOShareTargetDelegate;
+@protocol JDOVideoTargetDelegate;
 
-@interface JDOVideoDetailController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate,VMediaPlayerDelegate,JDOVideoEPGDelegate>
+@interface JDOVideoDetailController : JDONavigationController<JDOStatusView,JDOStatusViewDelegate,VMediaPlayerDelegate,JDOVideoEPGDelegate,JDOShareTargetDelegate,JDOVideoTargetDelegate>
 
 @property (strong,nonatomic) JDOStatusView *statusView;
 @property (nonatomic,assign) ViewStatusType status;
 @property (nonatomic,strong) JDOToolBar *toolbar;
+@property (nonatomic,strong) JDOVideoEPG *epg;
 
 @property (nonatomic,strong) JDOVideoModel *videoModel;
 
