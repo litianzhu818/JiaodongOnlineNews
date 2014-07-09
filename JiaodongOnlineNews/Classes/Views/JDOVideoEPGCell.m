@@ -56,10 +56,12 @@
 - (void)onClick:(UITapGestureRecognizer *) tap{
     
     if (self.epgModel.state == JDOVideoStatePlayback || self.epgModel.state == JDOVideoStateLive) {
-        self.background.alpha = 1;
-        self.list.selectedRow = self.indexPath.row;
-        [self.list.tableView reloadData];
-        [self.list.delegate onVideoChanged:self.epgModel];
+        self.list.videoEpg.selectedIndexPath = [NSIndexPath indexPathForRow:self.row inSection:self.list.videoEpg.scrollView.centerPageIndex];
+        
+        [self.list.videoEpg changeSelectedRowState];
+#warning 视频切换在这里有一定的概率报错,self的引用错误
+        [self.list.delegate onVideoChanged:self.epgModel withDayEpg:self.list.listArray];
+        
     }else if(self.epgModel.state == JDOVideoStateForecast){
         if (self.epgModel.clock) {   // 取消闹钟
             NSArray *localNotifications = [UIApplication sharedApplication].scheduledLocalNotifications;
@@ -76,7 +78,7 @@
             UILocalNotification *notification=[[UILocalNotification alloc] init];
             if (notification!=nil) {
                 NSDate *alertTime = [NSDate dateWithTimeInterval:-10*60 sinceDate:self.epgModel.start_time]; //提前10分钟提醒
-                alertTime = [NSDate dateWithTimeInterval:10 sinceDate:[NSDate date]];   // 测试用
+//                alertTime = [NSDate dateWithTimeInterval:10 sinceDate:[NSDate date]];   // 测试用
                 notification.fireDate = alertTime;
                 notification.repeatInterval = 0;
                 notification.timeZone = [NSTimeZone defaultTimeZone];
@@ -108,9 +110,9 @@
         [HUD hide:true afterDelay:1.0f];
         
         if(self.epgModel.clock){ // 订过闹钟(有未执行的本地通知)
-            self.imageView.image = [UIImage imageNamed:@"video_player_fullscreen"];
+            self.imageView.image = [UIImage imageNamed:@"video_player_clock_selected"];
         }else{
-            self.imageView.image = [UIImage imageNamed:@"video_player_stop"];
+            self.imageView.image = [UIImage imageNamed:@"video_player_clock"];
         }
     }
 }
@@ -134,7 +136,7 @@
 
 - (void)setModel:(JDOVideoEPGModel *)epgModel atIndexPath:(NSIndexPath *)indexPath{
     self.epgModel = epgModel;
-    self.indexPath = indexPath;
+    self.row = indexPath.row;
 //    __block UIImageView *blockImageView = self.imageView;
     
 //    [self.imageView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:newsModel.mpic]] placeholderImage:[UIImage imageNamed:Default_Image] noImage:[JDOCommonUtil ifNoImage] options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
@@ -165,7 +167,7 @@
             self.detailTextLabel.textColor = [UIColor colorWithRed:20.0f/255 green:120.0f/255 blue:190.0f/255 alpha:1.0f];
             self.background.alpha = 0;
         }
-        self.imageView.image = [UIImage imageNamed:@"video_player_play"];
+        self.imageView.image = [UIImage imageNamed:@"video_epg_play"];
     }else if(epgModel.state == JDOVideoStatePlayback){
         if(self.list.selectedRow == indexPath.row){ // 选中行使用白色文字
             self.textLabel.textColor = [UIColor whiteColor];
@@ -176,7 +178,7 @@
             self.detailTextLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
             self.background.alpha = 0;
         }
-        self.imageView.image = [UIImage imageNamed:@"video_player_play"];
+        self.imageView.image = [UIImage imageNamed:@"video_epg_play"];
     }else if(epgModel.state == JDOVideoStateForecast){
         // 预告的节目不可能有选中状态
         self.textLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
@@ -184,9 +186,9 @@
         self.background.alpha = 0;
         
         if(epgModel.clock){ // 订过闹钟(有未执行的本地通知)
-            self.imageView.image = [UIImage imageNamed:@"video_player_fullscreen"];
+            self.imageView.image = [UIImage imageNamed:@"video_epg_clock_selected"];
         }else{
-            self.imageView.image = [UIImage imageNamed:@"video_player_stop"];
+            self.imageView.image = [UIImage imageNamed:@"video_epg_clock"];
         }
     }
 }

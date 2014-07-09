@@ -19,6 +19,8 @@
 #import "DCKeyValueObjectMapping.h"
 #import "JDODataModel.h"
 
+#define Auto_Refresh_Interval 15.0f
+
 @interface JDOVideoLiveList ()
 
 @property (nonatomic,strong) NSDate *lastUpdateTime;
@@ -29,6 +31,7 @@
 @implementation JDOVideoLiveList{
     MBProgressHUD *HUD;
     NSDate *HUDShowTime;
+    NSTimer *timer;
 }
 
 - (id)initWithFrame:(CGRect)frame identifier:(NSString *)reuseId{
@@ -129,7 +132,6 @@
     }else{  // 从网络加载数据，切换到loading状态
         [self setCurrentState:ViewStatusLoading];
     }
-    // 有可能再翻页之后再进行搜索,所以需要将页码置为1
 
     DCParserConfiguration *config = [DCParserConfiguration configuration];
     DCCustomParser *customParser = [[DCCustomParser alloc] initWithBlockParser:^id(NSDictionary *dictionary, NSString *attributeName, __unsafe_unretained Class destinationClass, id value) {
@@ -142,6 +144,8 @@
         if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
             [self dataLoadFinished:(JDOVideoLiveModel *)dataModel.data];
             [self setCurrentState:ViewStatusNormal];
+            // 设置每过5分钟自动刷新一次
+//            timer = [NSTimer scheduledTimerWithTimeInterval:Auto_Refresh_Interval target:self selector:@selector(autoRefresh:) userInfo:nil repeats:true];
         }else{
             // 服务器端有错误
             [self setCurrentState:ViewStatusRetry];
@@ -150,6 +154,13 @@
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
     }];
+}
+
+- (void) autoRefresh:(NSTimer *)timer{
+    if(![Reachability isEnableNetwork]){
+        return ;
+    }
+    [self.tableView reloadData];
 }
 
 - (void) refresh{
@@ -170,6 +181,8 @@
         if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
             [self.tableView.pullToRefreshView stopAnimating];
             [self dataLoadFinished:(JDOVideoLiveModel *)dataModel.data];
+            [timer invalidate];
+//            timer = [NSTimer scheduledTimerWithTimeInterval:Auto_Refresh_Interval target:self selector:@selector(autoRefresh:) userInfo:nil repeats:true];
         }else{
             [self.tableView.pullToRefreshView stopAnimating];
             [JDOCommonUtil showHintHUD:dataModel.info inView:self];
@@ -186,9 +199,6 @@
         self.noDataView.hidden = false;
         return;
     }
-    // 从dataList中过查找ytv-1至ytv-4这四套视频节目，删除其他的节目
-    // 若接口改变返回的不足4套，则有几套就在前端显示相应的数目
-    // 如直播的地址来源包括其他的请求返回的数据，则需要考虑合并list
     self.noDataView.hidden = true;
     [self.listArray removeAllObjects];
     
@@ -196,8 +206,11 @@
     for (int i=0; i<dataList.count; i++) {
         JDOVideoModel *model = [mapper parseDictionary:dataList[i]];
         model.serverTime = liveModel.serverTime;
-        [self.listArray addObject:model];
+        if(model.type == 1){    // 电视节目
+            [self.listArray addObject:model];
+        }
     }
+    // 填充
     
     [self.tableView reloadData];
     [self updateLastRefreshTime];
@@ -214,21 +227,17 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(self.listArray.count == 0){
-        return 1;
-    }
     return (self.listArray.count+1)/2; // 一行显示2个项目
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *identifier = @"Cell";
+    // cell禁止重用，因为每次加载会导致重新截取关键帧和计算当前节目单，严重影响性能
+    NSString *identifier = [NSString stringWithFormat:@"%d",indexPath.row];
     
     JDOVideoLiveCell *cell = (JDOVideoLiveCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
         cell = [[JDOVideoLiveCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier models:self.listArray];
         cell.delegate = self;
-    }
-    if(self.listArray.count > 0){
         [cell setContentByIndex:indexPath.row];
     }
     return cell;

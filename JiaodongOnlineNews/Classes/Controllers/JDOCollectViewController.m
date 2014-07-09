@@ -9,7 +9,6 @@
 #import "JDOCollectViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDOCollectNewsView.h"
 #import "JDOCollectImageView.h"

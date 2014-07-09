@@ -11,6 +11,7 @@
 #import "DCKeyValueObjectMapping.h"
 #import "DCParserConfiguration.h"
 #import "JDOVideoEPGModel.h"
+#import "VMediaExtracter.h"
 
 #define Default_Image @"news_image_placeholder.png"
 #define Left_Margin 7.5f
@@ -32,6 +33,15 @@
     UITableViewCellStateMask _currentState;
 }
 
+- (dispatch_queue_t) sharedQueue{
+    static dispatch_queue_t queue = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        queue = dispatch_queue_create("com.jiaodong.video", DISPATCH_QUEUE_SERIAL);
+    });
+    return queue;
+}
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier models:(NSArray *)models
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -49,7 +59,7 @@
         
         self.detailTextLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
         self.detailTextLabel.highlightedTextColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.detailTextLabel.backgroundColor = [UIColor clearColor];  
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -100,30 +110,49 @@
     
     // 大图icon
     UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-116-5, 145-2*5, 116)];
-    __block UIImageView *blockIconView = iconView;
-    [iconView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:itemModel.icon]] success:^(UIImage *image, BOOL cached) {
-        if(!cached){    // 非缓存加载时使用渐变动画
-            CATransition *transition = [CATransition animation];
-            transition.duration = 0.3;
-            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            transition.type = kCATransitionFade;
-            [blockIconView.layer addAnimation:transition forKey:nil];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
     [itemView addSubview:iconView];
     
+    // 从直播流读取关键帧填充大图
+    dispatch_queue_t queue = [self sharedQueue];
+    dispatch_async(queue, ^{
+        VMediaExtracter *extracter = [VMediaExtracter sharedInstance];
+        [extracter reset];
+        [extracter setDataSource:[itemModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        UIImage *image = [extracter getFrameAtTime:0];
+        
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.3;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionFade;
+        
+        if (image != NULL) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                iconView.image = image;
+                [iconView.layer addAnimation:transition forKey:nil];
+            });
+        }else{
+            __block UIImageView *blockIconView = iconView;
+            [iconView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:itemModel.icon]] success:^(UIImage *image, BOOL cached) {
+                if(!cached){
+                    [blockIconView.layer addAnimation:transition forKey:nil];
+                }
+            } failure:^(NSError *error) {
+                
+            }];
+        }
+    });
+    
     // 频道名称
-    UILabel *channelLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 151-116-5-26, 70, 24) ];
-    channelLabel.font = [UIFont boldSystemFontOfSize:17];
-    channelLabel.textColor = [UIColor colorWithHex:@"696969"];
-    channelLabel.backgroundColor = [UIColor clearColor];
-    channelLabel.text = itemModel.name;
-    [itemView addSubview:channelLabel];
+//    UILabel *channelLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 151-116-5-26, 70, 24) ];
+//    channelLabel.font = [UIFont boldSystemFontOfSize:17];
+//    channelLabel.textColor = [UIColor colorWithHex:@"696969"];
+//    channelLabel.backgroundColor = [UIColor clearColor];
+//    channelLabel.text = itemModel.name;
+//    [itemView addSubview:channelLabel];
     
     // 台标
-    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(70+10, 151-116-5-26, 55, 24)];
+//    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(70+10, 151-116-5-26, 55, 24)];
+    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 145, 30)];
     __block UIImageView *blockLogoView = logoView;
     [logoView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:itemModel.logo]] success:^(UIImage *image, BOOL cached) {
         if(!cached){    // 非缓存加载时使用渐变动画
@@ -157,6 +186,14 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onItemClick:)];
     [itemView addGestureRecognizer:tap];
     [self.contentView addSubview:itemView];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    JDOVideoModel *model = (JDOVideoModel *)object;
+    if ([keyPath isEqualToString:@"currentProgram"]) {
+        
+    }else if([keyPath isEqualToString:@"currentFrame"]) {
+        
+    }
 }
 
 // 从后台获取当前播放节目的名称

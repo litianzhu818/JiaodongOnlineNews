@@ -9,7 +9,6 @@
 #import "JDOVideoViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDOVideoLiveList.h"
 #define Navbar_Height (Is_iOS7?36.0f:34.5f)
@@ -91,7 +90,8 @@
 #pragma mark - PagingScrollView delegate
 
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {
-    return _pageInfos.count;
+//    return _pageInfos.count;
+    return 1;
 }
 
 - (UIView<NIPagingScrollViewPage> *)pagingScrollView:(NIPagingScrollView *)pagingScrollView
@@ -113,16 +113,18 @@
             return aPage;
         }
         case 1:{
-            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            aPage.tableView.scrollsToTop = false;
-            [aPage loadDataFromNetwork];
-            return aPage;
+//            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+//            aPage.tableView.scrollsToTop = false;
+//            [aPage loadDataFromNetwork];
+//            return aPage;
+            return nil;
         }
         case 2:{
-            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            aPage.tableView.scrollsToTop = false;
-            [aPage loadDataFromNetwork];
-            return aPage;
+//            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+//            aPage.tableView.scrollsToTop = false;
+//            [aPage loadDataFromNetwork];
+//            return aPage;
+            return nil;
         }
         default:
             return nil;

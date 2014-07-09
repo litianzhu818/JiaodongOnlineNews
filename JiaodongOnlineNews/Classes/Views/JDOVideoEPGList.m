@@ -28,12 +28,18 @@
     NSDate *HUDShowTime;
 }
 
-- (id)initWithFrame:(CGRect)frame identifier:(NSString *)reuseId{
+- (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info inEpg:(JDOVideoEPG *)epg{
     if (self = [super init]) {
         self.frame = frame;
-        self.reuseIdentifier = reuseId;
+        self.pageInfo = info;
+        self.reuseIdentifier = info[@"reuseId"];
+        self.videoEpg = epg;
+        self.videoModel = epg.videoModel;
+        self.delegate = epg.delegate;
+        
         self.listArray = [[NSMutableArray alloc] init];
         self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.selectedRow = -1;
         
         CGRect tableFrame = self.bounds;
         tableFrame.size.height = tableFrame.size.height;
@@ -45,6 +51,7 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;  // 分割线用背景图片实现
         self.tableView.rowHeight = News_Cell_Height;
         self.tableView.allowsSelection = false; // 通过背景视图设置选中效果
+        self.tableView.scrollsToTop = true;
         [self addSubview:self.tableView];
         
         self.statusView = [[JDOStatusView alloc] initWithFrame:self.bounds];
@@ -119,15 +126,29 @@
         [self setCurrentState:ViewStatusLoading];
     }
     
-    NSTimeInterval interval = [[self.videoModel currentTime] timeIntervalSince1970];
-    NSString *currentTime = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:interval] intValue]];
-    NSString *epgURL = [self.videoModel.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:currentTime];
+    NSString *whichDay = self.pageInfo[@"title"];
+    int deltaDay = 0;
+    if ([whichDay isEqualToString:@"前天"]) {
+        deltaDay = -2;
+    }else if ([whichDay isEqualToString:@"昨天"]) {
+        deltaDay = -1;
+    }else if ([whichDay isEqualToString:@"明天"]) {
+        deltaDay = 1;
+    }else if ([whichDay isEqualToString:@"后天"]) {
+        deltaDay = 2;
+    }
+    
+    NSTimeInterval currnetTime = [[self.videoModel currentTime] timeIntervalSince1970];
+    NSTimeInterval epgTime = currnetTime + deltaDay*24*60*60;
+    NSString *timestamp = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:epgTime] intValue]];
+    NSString *epgURL = [self.videoModel.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:timestamp];
     [[JDOJsonClient clientWithBaseURL:[NSURL URLWithString:epgURL]] getJSONByServiceName:@"" modelClass:nil config:nil params:nil success:^(NSDictionary *responseObject) {
         if(responseObject[@"result"]){
             [self setCurrentState:ViewStatusNormal];
             NSArray *list = responseObject[@"result"][0]; // 结构参考上方注释
             if(list == nil || list.count == 0){
                 _noDataView.hidden = false;
+#warning 以1小时为间隔，全部显示精彩节目
             }else{
                 DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDOVideoEPGModel class] andConfiguration:[DCParserConfiguration configuration]];
                 NSArray *epgModels = [mapper parseArray:list];
@@ -154,7 +175,9 @@
                 [self.listArray addObjectsFromArray:epgModels];
                 [self.tableView reloadData];
                 // 滚动到当前直播节目
-                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedRow inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+                if(self.selectedRow!=-1){
+                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedRow inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+                }
                 [self.tableView reloadData];
             }
         }else{
@@ -226,5 +249,6 @@
 //    [centerController pushViewController:detailController animated:true];
 //    [tableView deselectRowAtIndexPath:indexPath animated:false];
 }
+
 
 @end

@@ -79,7 +79,9 @@ typedef enum {
 @property (strong,nonatomic) id<JDOVideoTargetDelegate> videoTarget;
 
 @property (nonatomic,assign) JDOReviewType reviewType;
-@property (nonatomic,strong) JDOCollectDB* collectDB;
+@property (nonatomic,strong) JDOCollectDB *collectDB;
+
+@property (nonatomic,strong) NSMutableDictionary *btns;
 
 - (id)initWithModel:(id<JDOToolbarModel>)model parentController:(UIViewController *)parentController typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
 

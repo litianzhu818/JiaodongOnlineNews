@@ -12,9 +12,9 @@
 
 @interface JDOVideoEPGCell : UITableViewCell
 
-@property (nonatomic,assign) JDOVideoEPGList *list;
+@property (nonatomic,strong) JDOVideoEPGList *list;
 @property (nonatomic,strong) JDOVideoEPGModel *epgModel;
-@property (nonatomic,strong) NSIndexPath *indexPath;
+@property (nonatomic,assign) int row;
 
 @property (nonatomic,strong) UIImageView *background;
 

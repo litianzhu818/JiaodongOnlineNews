@@ -20,6 +20,7 @@
 #import "InsetsTextField.h"
 #import "UIDevice+IdentifierAddition.h"
 #import <AdSupport/AdSupport.h>
+#import "VMediaPlayer.h"
 
 @interface JDOSettingViewController ()
 
@@ -234,6 +235,7 @@ BOOL downloadItemClickable = TRUE;
             [JDOCommonUtil deleteJDOCacheDirectory];    // 文件缓存
             [JDOCommonUtil createJDOCacheDirectory];
             [JDOCommonUtil deleteURLCacheDirectory];    // URL在sqlite的缓存(cache.db)
+            [[VMediaPlayer sharedInstance] clearCache]; // 清除视频缓存
             HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_success"]];
             HUD.mode = MBProgressHUDModeCustomView;
             HUD.labelText = @"清除缓存完成";

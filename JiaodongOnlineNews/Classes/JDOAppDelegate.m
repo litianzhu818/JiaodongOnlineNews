@@ -35,7 +35,7 @@
 #import "JDOMainViewController.h"
 #import "JDOViolationViewController.h"
 #import <Crashlytics/Crashlytics.h>
-#import "MTA.h"
+//#import "MTA.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "JDOVideoViewController.h"
 #import "JDOVideoDetailController.h"
@@ -308,7 +308,7 @@
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
     //腾讯统计
-    [MTA startWithAppkey:@"I8DAWBQ14Z3Q"];
+//    [MTA startWithAppkey:@"I8DAWBQ14Z3Q"];
     
     //友盟统计
 #warning 开发阶段关闭友盟统计

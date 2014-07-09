@@ -9,7 +9,6 @@
 #import "JDOLivehoodViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDOLivehoodDeptList.h"
 #import "JDOLivehoodQuestionList.h"

@@ -6,7 +6,6 @@
 #import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDONewsCategoryView.h"
 #import "JDONewsCategoryInfo.h"

@@ -58,6 +58,7 @@
         self.widthConfig = widthConfig;
         self.theme = theme;
         self.frameHeight = frame.size.height;
+        self.btns = [[NSMutableDictionary alloc] initWithCapacity:10];
         
         _isKeyboardShowing = false;
         _reviewType = JDOReviewTypeNews;
@@ -108,6 +109,7 @@
         xPosition += frameWidth;
         
         ToolBarControlType btnType = [(NSNumber *)[_typeConfig objectAtIndex:i] intValue];
+        [self.btns setObject:btn forKey:[NSNumber numberWithInt:btnType]];
         if( btnType == ToolBarInputField ){ // 工具栏包含输入框的情况
             [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateNormal];
             [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateHighlighted];
