@@ -1,12 +1,12 @@
 //
-//  JDOVideoDetailController.m
+//  JDOAudioPlayController.m
 //  JiaodongOnlineNews
 //
-//  Created by zhang yi on 14-4-19.
+//  Created by zhang yi on 14-7-11.
 //  Copyright (c) 2014年 胶东在线. All rights reserved.
 //
 
-#import "JDOVideoDetailController.h"
+#import "JDOAudioPlayController.h"
 #import "JDOVideoModel.h"
 #import "JDOToolBar.h"
 #import "JDOReviewListController.h"
@@ -22,7 +22,7 @@
 #import "JDOVideoEPGList.h"
 #import <math.h>
 
-#define Player_Height 241
+#define Player_Height 43
 
 #define Dept_Label_Tag 101
 #define Title_Label_Tag 102
@@ -34,32 +34,28 @@
 #define kBackviewDefaultRect		CGRectMake(0, 47, 280, 180)
 
 
-@interface JDOVideoDetailController ()
+@interface JDOAudioPlayController ()
 {
     VMediaPlayer       *mMPayer;
     long               mDuration;
     long               mCurPostion;
     NSTimer            *mSyncSeekTimer;
-    BOOL               isCtrlHide;
-    BOOL               isPlayerUnsetup;
 }
 
 @property (strong, nonatomic) UITapGestureRecognizer *closeReviewGesture;
 @property (strong, nonatomic) UIView *blackMask;
 
-@property (nonatomic, strong) IBOutlet UIView *mainView;
-@property (nonatomic, assign) IBOutlet UIButton *startPause;
-@property (nonatomic, assign) IBOutlet UIButton *fullHalf;
-@property (nonatomic, assign) IBOutlet VSegmentSlider *progressSld;
-@property (nonatomic, assign) IBOutlet UILabel  *curPosLbl;
-@property (nonatomic, assign) IBOutlet UILabel  *bubbleMsgLbl;
-@property (nonatomic, assign) IBOutlet UILabel  *downloadRate;
-@property (nonatomic, assign) IBOutlet UIView  	*activityCarrier;
-@property (nonatomic, assign) IBOutlet UIView  	*carrier;
-@property (strong, nonatomic) IBOutlet UIImageView *controlBackground;
+@property (nonatomic, strong) UIButton *startPause;
+@property (nonatomic, strong) VSegmentSlider *progressSld;
+@property (nonatomic, strong) UILabel  *curPosLbl;
+@property (nonatomic, strong) UILabel  *bubbleMsgLbl;
+@property (nonatomic, strong) UILabel  *downloadRate;
+@property (nonatomic, strong) UIView  	*activityCarrier;
+@property (nonatomic, strong) UIImageView  	*backView;
+@property (nonatomic, strong) UIView  	*carrier;
 
 @property (nonatomic, copy)   NSURL *videoURL;
-@property (nonatomic, retain) UIActivityIndicatorView *activityView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, assign) BOOL progressDragging;
 
 @property (nonatomic, strong) JDOVideoEPGModel *currentEpgModel;
@@ -67,7 +63,7 @@
 
 @end
 
-@implementation JDOVideoDetailController
+@implementation JDOAudioPlayController
 
 - (id)initWithModel:(JDOVideoModel *)videoModel{
     self = [super init];
@@ -91,62 +87,82 @@
     
     self.statusView.status = status;
     if(status == ViewStatusNormal){
-        self.mainView.hidden = false;
+        self.backView.hidden = false;
+        self.audioEpg.hidden = false;
         self.toolbar.hidden = false;
     }else{
-        self.mainView.hidden = true;
+        self.backView.hidden = true;
+        self.audioEpg.hidden = true;
         self.toolbar.hidden = true;
     }
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
-    _mainView.frame = CGRectMake(0, 0, 320, (Is_iOS7?64:44)+Player_Height);
-    _mainView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
-    self.backView.frame = CGRectMake(0, Is_iOS7?64:44, 320, Player_Height);
+    _backView = [[UIImageView alloc] initWithFrame:CGRectMake(0, App_Height-44-Player_Height, 320, Player_Height)];
+    _backView.image = [UIImage imageNamed:@"video_player_background"];
+    _backView.userInteractionEnabled = true;
+    [self.view addSubview:_backView];
     
-    [self.navigationView removeFromSuperview];
-    [_mainView addSubview:self.navigationView];
+//    _activityCarrier = [[UIView alloc] initWithFrame:CGRectMake(10, 5, Player_Height-10, Player_Height-10)];
+//    [self.view addSubview:_activityCarrier];
     
-	self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
-						  UIActivityIndicatorViewStyleWhiteLarge];
-	[self.activityCarrier addSubview:self.activityView];
+	_activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
+                         UIActivityIndicatorViewStyleWhite];
+    _activityView.frame = CGRectMake(320-10-30, 8, Player_Height-10, Player_Height-10);
+	[self.backView addSubview:self.activityView];
+    
+    _progressSld = [[VSegmentSlider alloc] initWithFrame:CGRectMake(-2, -7, 324, 29)];
+    [_progressSld addTarget:self action:@selector(progressSliderUpAction:) forControlEvents:UIControlEventTouchCancel];
+    [_progressSld addTarget:self action:@selector(progressSliderUpAction:) forControlEvents:UIControlEventTouchUpInside];
+    [_progressSld addTarget:self action:@selector(progressSliderDownAction:) forControlEvents:UIControlEventTouchDown];
+    [_progressSld addTarget:self action:@selector(dragProgressSliderAction:) forControlEvents:UIControlEventValueChanged];
+    [self.backView addSubview:self.progressSld];
     
 	UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc]
-								   initWithTarget:self
-								   action:@selector(progressSliderTapped:)];
-//    self.progressSld.frame = CGRectMake(-20, 190, 360, 29); // 滑块有渐变透明，实际比可视大小大很多,设置更大的宽度来隐藏渐变部分
+                                  initWithTarget:self
+                                  action:@selector(progressSliderTapped:)];
     [self.progressSld addGestureRecognizer:gr];
     [self.progressSld setThumbImage:[UIImage imageNamed:@"video_seekbar_btn"] forState:UIControlStateNormal];
     [self.progressSld setMinimumTrackImage:[UIImage imageNamed:@"video_seekbar_front"] forState:UIControlStateNormal];
     [self.progressSld setMaximumTrackImage:[UIImage imageNamed:@"video_seekbar_back"] forState:UIControlStateNormal];
-    //
     self.progressSld.hidden = true;
-//    self.curPosLbl.hidden = true;
+    
+    _startPause = [UIButton buttonWithType:UIButtonTypeCustom];
+    _startPause.frame = CGRectMake(151, 14, 22, 22);
+    [_startPause addTarget:self action:@selector(startPauseButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [_startPause setImage:[UIImage imageNamed:@"video_player_play" ] forState:UIControlStateNormal];
+    [_startPause setImage:[UIImage imageNamed:@"video_player_stop" ] forState:UIControlStateSelected];
+    [self.backView addSubview:self.startPause];
+    
+    _curPosLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 14, 109, 21)];
+    _curPosLbl.textColor = [UIColor whiteColor];
+    _curPosLbl.font = [UIFont systemFontOfSize:12];
+    [self.backView addSubview:self.curPosLbl];
+    
+    _downloadRate = [[UILabel alloc] initWithFrame:CGRectMake(218, 14, 52, 21)];
+    _downloadRate.textColor = [UIColor whiteColor];
+    _downloadRate.font = [UIFont systemFontOfSize:12];
+    [self.backView addSubview:self.downloadRate];
     
 	if (!mMPayer) {
 		mMPayer = [VMediaPlayer sharedInstance];
-		[mMPayer setupPlayerWithCarrierView:self.carrier withDelegate:self];
+		[mMPayer setupPlayerWithCarrierView:self.backView withDelegate:self];
 		[self setupObservers];
-        isPlayerUnsetup = false;
 	}
-    UITapGestureRecognizer *ctrlSwitchTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchCtrlState)];
-    [self.carrier addGestureRecognizer:ctrlSwitchTap];
-    self.controlBackground.userInteractionEnabled = true; // 启用工具栏的事件，避免在工具栏点击时事件向下传递导致关闭工具栏
     
-    CGRect frame1 = CGRectMake(0, (Is_iOS7?64:44)+Player_Height, 320, App_Height-(Is_iOS7?64:44)-Player_Height-44/*工具栏*/);
-    CGRect frame2 = CGRectMake(0, (Is_iOS7?64:44)+Player_Height-Navbar_Height, 320, App_Height-(Is_iOS7?64:44)-110/*播放器*/-44);
-    _epg = [[JDOVideoEPG alloc] initWithFoldFrame:frame1 fullFrame:frame2 model:self.videoModel delegate:self];
-    [self.view addSubview:_epg];
+    CGRect fullFrame = CGRectMake(0, (Is_iOS7?64:44), 320, App_Height-(Is_iOS7?64:44)-Player_Height-44/*工具栏*//*进度条上方透明*/);
+    self.audioEpg = [[JDOVideoEPG alloc] initWithFoldFrame:CGRectZero fullFrame:fullFrame model:self.videoModel delegate:self fold:true];
+    [self.view addSubview:self.audioEpg];
+    [self.view sendSubviewToBack:self.audioEpg];
     
     
-    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonVideoEpg],[NSNumber numberWithInt:ToolBarButtonShare]];
+    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonShare]];
     // 使用专门定义的一条新闻id作为评论的入口
-    self.videoModel.id = @"31317";
+    self.videoModel.id = @"31318";
     _toolbar = [[JDOToolBar alloc] initWithModel:self.videoModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];
-    _toolbar.videoTarget = self;
     _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
@@ -158,44 +174,6 @@
     [self quicklyPlayMovie:[self getCurrMediaURL] title:nil];
 }
 
-- (void) onEpgClicked{
-    UIView *epgMask = [self.mainView blackMask];
-    if (epgMask.gestureRecognizers.count == 0) {
-        [epgMask addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onEpgClicked)]];
-    }
-    
-    if(self.epg.isFold){
-        [self.epg switchFoldState];
-        
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonReview]] setEnabled:false];
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonShare]] setEnabled:false];
-        epgMask.alpha = 0;
-        [self.view insertSubview:epgMask aboveSubview:self.mainView];
-
-        [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            CGRect f = _epg.frame;
-            f.origin.y = (Is_iOS7?64:44)+110;
-            _epg.frame = f;
-            self.mainView.transform = CGAffineTransformMakeScale(Min_Scale, Min_Scale);
-            epgMask.alpha = Max_Alpah;
-        } completion:^(BOOL finished) {
-
-        }];
-    }else{
-        
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonReview]] setEnabled:true];
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonShare]] setEnabled:true];
-        
-        [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _epg.frame = _epg.fullFrame;
-            self.mainView.transform = CGAffineTransformIdentity;
-            epgMask.alpha = 0;
-        } completion:^(BOOL finished) {
-            [epgMask removeFromSuperview];
-            [self.epg switchFoldState];
-        }];
-    }
-}
 
 - (BOOL) onSharedClicked{
     return true;
@@ -204,7 +182,6 @@
 -(void)viewDidUnload{
     [super viewDidUnload];
     [mMPayer unSetupPlayer];
-    isPlayerUnsetup = true;
     [self setToolbar:nil];
     [_blackMask removeGestureRecognizer:self.closeReviewGesture];
 }
@@ -223,31 +200,6 @@
 	[self unSetupObservers];
 }
 
-- (BOOL)shouldAutorotate{
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations{
-	return UIInterfaceOrientationMaskAll;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
-	return YES;
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)to duration:(NSTimeInterval)duration{
-//	if (UIInterfaceOrientationIsLandscape(to)) {
-//		self.backView.frame = self.view.bounds;
-//	} else {
-//		self.backView.frame = kBackviewDefaultRect;
-//	}
-	NSLog(@"NAL 1HUI &&&&&&&&& frame=%@", NSStringFromCGRect(self.carrier.frame));
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-	NSLog(@"NAL 2HUI &&&&&&&&& frame=%@", NSStringFromCGRect(self.carrier.frame));
-}
-
 
 #pragma mark - Respond to the Remote Control Events
 
@@ -258,25 +210,19 @@
 
 - (void)applicationDidEnterForeground:(NSNotification *)notification
 {
-    if (isPlayerUnsetup) {
-        return;
-    }
-	[mMPayer setVideoShown:YES];
-    if (![mMPayer isPlaying]) {
-		[mMPayer start];
-		self.startPause.selected = true;
-	}
+//	[mMPayer setVideoShown:YES];
+//    if (![mMPayer isPlaying]) {
+//		[mMPayer start];
+//		self.startPause.selected = true;
+//	}
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (isPlayerUnsetup) {
-        return;
-    }
-    if ([mMPayer isPlaying]) {
-		[mMPayer pause];
-		[mMPayer setVideoShown:NO];
-    }
+//    if ([mMPayer isPlaying]) {
+//		[mMPayer pause];
+//		[mMPayer setVideoShown:NO];
+//    }
 }
 
 #pragma mark - Navigation
@@ -290,7 +236,6 @@
 - (void) backToViewList{
     [self quicklyStopMovie];
     [mMPayer unSetupPlayer];
-    isPlayerUnsetup = true;
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
     [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:centerViewController.viewControllers.count-2] animated:true];
 }
@@ -303,9 +248,7 @@
 }
 
 - (void)loadDataFromNetwork{
-//    [self setCurrentState:ViewStatusLoading];
     [self setCurrentState:ViewStatusNormal];
-
 }
 
 
@@ -313,18 +256,6 @@
 
 - (void)mediaPlayer:(VMediaPlayer *)player didPrepared:(id)arg
 {
-    // 使用static的样例代码
-//    static emVMVideoFillMode modes[] = {
-//		VMVideoFillModeFit,
-//		VMVideoFillMode100, // 原始大小
-//		VMVideoFillModeCrop,
-//		VMVideoFillModeStretch,
-//	};
-//	static int curModeIdx = 0;
-//    
-//	curModeIdx = (curModeIdx + 1) % (int)(sizeof(modes)/sizeof(modes[0]));
-//	[mMPayer setVideoFillMode:modes[curModeIdx]];
-    
     [player setVideoFillMode:VMVideoFillModeStretch];
     [player start];
     
@@ -335,26 +266,21 @@
     mDuration = [player getDuration];
     if (mDuration == 0) { // 取不到总时长，则认为是直播流，不显示播放时间和进度条
         self.progressSld.hidden = true;
-//        self.curPosLbl.hidden = true;
-        self.curPosLbl.text = @"实时直播";
+        self.curPosLbl.text = @"实时广播";
     }else{
         self.progressSld.hidden = false;
         self.curPosLbl.hidden = false;
         mSyncSeekTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/3 target:self selector:@selector(syncSliderUIStatus) userInfo:nil repeats:YES];
     }
-    
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player playbackComplete:(id)arg
 {
 	[self quicklyStopMovie];
-    NSURL *url = [self getNextMediaUrl];
-    [self quicklyPlayMovie:url title:nil];
-    if (url) {  // 移动列表选中的状态至下一行
-        self.epg.selectedIndexPath = [NSIndexPath indexPathForRow:self.epg.selectedIndexPath.row+1 inSection:self.epg.selectedIndexPath.section];
-        [self.epg changeSelectedRowState];
-    }
-    
+    [self quicklyPlayMovie:[self getNextMediaUrl] title:nil];
+    // 移动列表选中的状态至下一行
+    self.audioEpg.selectedIndexPath = [NSIndexPath indexPathForRow:self.audioEpg.selectedIndexPath.row+1 inSection:self.audioEpg.selectedIndexPath.section];
+    [self.audioEpg changeSelectedRowState];
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player error:(id)arg
@@ -388,7 +314,6 @@
 
 - (void)mediaPlayer:(VMediaPlayer *)player setupPlayerPreference:(id)arg
 {
-	// Set buffer size, default is 1024KB(1*1024*1024).
 	[player setBufferSize:512*1024];
     [player setAdaptiveStream:YES]; // 改善对流媒体支持，支持HLS自适应码率，需要手动开启
     
@@ -500,26 +425,14 @@
 
 -(void)quicklyPlayMovie:(NSURL*)url title:(NSString*)title
 {
-    if (url == nil) {
-        return;
-    }
 	[UIApplication sharedApplication].idleTimerDisabled = YES;// 禁止系统自动关闭屏幕
     [self setBtnEnableStatus:NO];
     self.startPause.selected = false;   // 暂停状态，显示播放按钮
-    self.fullHalf.selected = false;  // 半屏状态，显示全屏按钮
     
     [mMPayer setDataSource:url header:nil];
     
-//    NSMutableArray *keys = [NSMutableArray arrayWithCapacity:0];
-//    NSMutableArray *vals = [NSMutableArray arrayWithCapacity:0];
-//    keys[0] = @"-rtmp_live";
-//    vals[0] = @"-1";
-//    [mMPayer setOptionsWithKeys:keys withValues:vals];
-    
     [mMPayer prepareAsync];
 	[self startActivityWithMsg:@"正在加载..."];
-    isCtrlHide = true;
-    [self switchCtrlState];
 }
 
 -(void)quicklyStopMovie
@@ -540,12 +453,12 @@
 
 #pragma mark - UI Actions
 
--(IBAction)goBackButtonAction:(id)sender
+-(void)goBackButtonAction:(id)sender
 {
 	[self quicklyStopMovie];
 }
 
--(IBAction)startPauseButtonAction:(id)sender
+-(void)startPauseButtonAction:(id)sender
 {
 	BOOL isPlaying = [mMPayer isPlaying];
 	if (isPlaying) {
@@ -555,55 +468,21 @@
 		[mMPayer start];
 		self.startPause.selected = true;
 	}
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchCtrlState) object:nil];
-    [self performSelector:@selector(switchCtrlState) withObject:nil afterDelay:5.0f];
 }
 
--(IBAction)fullHalfButtonAction:(id)sender{
-    if (!self.fullHalf.selected) {  // 当前半屏状态，切换到全屏状态
-        [self.backView removeFromSuperview];
-        [self.view addSubview:self.backView];
-        
-        [[UIApplication sharedApplication] setStatusBarHidden:true withAnimation:UIStatusBarAnimationFade];
-        [UIView animateWithDuration:.5f animations:^{
-            CGAffineTransform transform = CGAffineTransformMakeTranslation(0, App_Height/2-self.backView.center.y);
-            transform = CGAffineTransformRotate(transform, M_PI_2);
-            transform = CGAffineTransformScale(transform, App_Height/self.backView.bounds.size.width, 320/self.backView.bounds.size.height);
-            self.backView.transform = transform;
-        } completion:^(BOOL finished) {
-
-        }];
-    } else {
-        [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
-        [UIView animateWithDuration:.5f animations:^{
-            self.backView.transform = CGAffineTransformIdentity;
-        } completion:^(BOOL finished) {
-            [self.backView removeFromSuperview];
-            [self.mainView insertSubview:self.backView belowSubview:self.navigationView];
-        }];
-    }
-    NSLog(@"NAL 1NBV &&&& backview.frame=%@", NSStringFromCGRect(self.backView.frame));
-    self.fullHalf.selected = !self.fullHalf.selected;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchCtrlState) object:nil];
-    [self performSelector:@selector(switchCtrlState) withObject:nil afterDelay:5.0f];
-	
-}
-
--(IBAction)progressSliderDownAction:(id)sender
+-(void)progressSliderDownAction:(id)sender
 {
 	self.progressDragging = YES;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchCtrlState) object:nil];
 }
 
--(IBAction)progressSliderUpAction:(id)sender
+-(void)progressSliderUpAction:(id)sender
 {
 	UISlider *sld = (UISlider *)sender;
 	[self startActivityWithMsg:@"加载中..."];
 	[mMPayer seekTo:(long)(sld.value * mDuration)];
-    [self performSelector:@selector(switchCtrlState) withObject:nil afterDelay:5.0f];
 }
 
--(IBAction)dragProgressSliderAction:(id)sender
+-(void)dragProgressSliderAction:(id)sender
 {
 	UISlider *sld = (UISlider *)sender;
 	self.curPosLbl.text = [self getCurrentProgressLabel:(long)(sld.value * mDuration)];
@@ -623,9 +502,6 @@
 	self.curPosLbl.text = [self getCurrentProgressLabel:seek];
 	[self startActivityWithMsg:@"加载中..."];
     [mMPayer seekTo:seek];
-    // 做任何工具栏的操作都重新进行自动隐藏的计时
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchCtrlState) object:nil];
-    [self performSelector:@selector(switchCtrlState) withObject:nil afterDelay:5.0f];
 }
 
 #pragma mark - Sync UI Status
@@ -663,25 +539,6 @@
 -(void)setBtnEnableStatus:(BOOL)enable
 {
 	self.startPause.enabled = enable;
-	self.fullHalf.enabled = enable;
-}
-
--(void)switchCtrlState{
-    isCtrlHide = !isCtrlHide;
-    
-    [UIView animateWithDuration:1.0f animations:^{
-        self.controlBackground.alpha = isCtrlHide?0:1;
-        self.progressSld.alpha = isCtrlHide?0:1;
-        self.curPosLbl.alpha = isCtrlHide?0:1;
-        self.startPause.alpha = isCtrlHide?0:1;
-        self.fullHalf.alpha = isCtrlHide?0:1;
-        self.downloadRate.alpha = isCtrlHide?0:1;
-    }];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchCtrlState) object:nil];
-    if ( !isCtrlHide ) {
-        // 每次显示工具栏后都在n秒后自动隐藏
-        [self performSelector:@selector(switchCtrlState) withObject:nil afterDelay:5.0f];
-    }
 }
 
 - (void)setupObservers
@@ -705,7 +562,7 @@
 
 - (void)showVideoLoadingError
 {
-	NSString *sError = @"视频无法播放";
+	NSString *sError = @"音频无法播放";
 	NSString *sReason = @"加载错误";
 	NSDictionary *errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
 							   sError, NSLocalizedDescriptionKey,
@@ -733,20 +590,8 @@
 }
 
 - (NSURL *)getCurrMediaURL{
-
     NSURL *url=[NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-//    NSString *m3u8 = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-//    NSLog(@"m3u8 content:%@",m3u8);
     return url;
-    
-    // 以下为测试地址
-//    return [NSURL URLWithString:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"sohu.m3u8"]];
-//    return [NSURL URLWithString:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"ytv.m3u8"]];
-//    return [NSURL URLWithString:@"http://hot.vrs.sohu.com/ipad1407291_4596271359934_4618512.m3u8"];
-//    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1400430735000,1400430855000,120000"];// YTV-1糖果剧
-//    return [NSURL URLWithString:@"http://cibn1.vdnplus.com/channels/tvie/CCTV-1/m3u8:sd/1400433840000,1400435880000,2040000"];// CCTV-1动物世界
-//    return [NSURL URLWithString:@"http://vod.av.jiaodong.net/vod_storage/vol1/2014/03/19/5328fce906a83/01b70087af0c11e3a5fa848f69e075fe.mp4"];
-//    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1398129434000,1398129438000,5000"];
 }
 
 - (void) onVideoChanged:(JDOVideoEPGModel *)epgModel withDayEpg:(NSArray *)epgList{
@@ -771,19 +616,14 @@
 }
 
 - (NSURL *)getNextMediaUrl{
-    BOOL isLast = true;
     for (int i = 0; i<self.currentEpgList.count-1; i++) {
         JDOVideoEPGModel *epg = self.currentEpgList[i];
         if (self.currentEpgModel == epg) {
             self.currentEpgModel = self.currentEpgList[i+1];
-            isLast = false;
             break;
         }
     }
-    // 若找不到则说明播放的是当天的最后一档节目
-    if (isLast) {
-        return nil;
-    }
+    // 若找不到则说明播放的是当天的最后一档节目，那么重复播放当前节目
     
 #warning 未考虑在播放的时候节目单已经过期的情况，即当前播放的节目已经不是节目单正在播放指向的那一个
     NSURL *url;

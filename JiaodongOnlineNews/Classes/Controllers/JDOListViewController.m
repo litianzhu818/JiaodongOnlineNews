@@ -18,7 +18,6 @@
 
 @interface JDOListViewController ()
 @property (nonatomic,strong) NSDate *lastUpdateTime;
-@property (nonatomic,assign) BOOL needRefreshControl;
 @end
 
 @implementation JDOListViewController

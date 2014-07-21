@@ -19,7 +19,8 @@
 #import "DCKeyValueObjectMapping.h"
 #import "JDODataModel.h"
 
-#define Auto_Refresh_Interval 15.0f
+#define Auto_Refresh_Interval 300.0f
+#define TV_Type 1
 
 @interface JDOVideoLiveList ()
 
@@ -31,6 +32,7 @@
 @implementation JDOVideoLiveList{
     MBProgressHUD *HUD;
     NSDate *HUDShowTime;
+    NSMutableArray *refreshFlgs;
     NSTimer *timer;
 }
 
@@ -38,20 +40,17 @@
     if (self = [super init]) {
         self.frame = frame;
         self.listArray = [[NSMutableArray alloc] init];
-        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.backgroundColor = [UIColor colorWithHex:@"e6e6e6"];
         
         self.reuseIdentifier = reuseId;
         
-        CGRect tableFrame = self.bounds;
-        tableFrame.size.height = tableFrame.size.height;
-        self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
+        self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
-        self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;  // 分割线用背景图片实现
-        self.tableView.rowHeight = News_Cell_Height;
-        self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.tableView.rowHeight = 7.5/*padding*/+151;
+        self.tableView.backgroundColor = [UIColor colorWithHex:@"e6e6e6"];
         [self addSubview:self.tableView];
         
         __block JDOVideoLiveList *blockSelf = self;
@@ -91,6 +90,10 @@
 
 - (void) onNoNetworkClicked:(JDOStatusView *) statusView{
     [self loadDataFromNetwork];
+}
+
+- (void) dealloc{
+    [timer invalidate];
 }
 
 /*{
@@ -144,8 +147,6 @@
         if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
             [self dataLoadFinished:(JDOVideoLiveModel *)dataModel.data];
             [self setCurrentState:ViewStatusNormal];
-            // 设置每过5分钟自动刷新一次
-//            timer = [NSTimer scheduledTimerWithTimeInterval:Auto_Refresh_Interval target:self selector:@selector(autoRefresh:) userInfo:nil repeats:true];
         }else{
             // 服务器端有错误
             [self setCurrentState:ViewStatusRetry];
@@ -158,7 +159,19 @@
 
 - (void) autoRefresh:(NSTimer *)timer{
     if(![Reachability isEnableNetwork]){
-        return ;
+        return;
+    }
+    // 应用不在前台时不刷新
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
+        return;
+    }
+    for (int i=0; i<self.listArray.count; i++) {
+        JDOVideoModel *model = self.listArray[i];
+        [self fetchContent:model];
+    }
+    refreshFlgs = [NSMutableArray array];
+    for (int i=0; i<(self.listArray.count+1)/2; i++) {
+        [refreshFlgs addObject:@(true)];
     }
     [self.tableView reloadData];
 }
@@ -181,8 +194,6 @@
         if(dataModel != nil && [dataModel.status intValue] ==1 && dataModel.data != nil){
             [self.tableView.pullToRefreshView stopAnimating];
             [self dataLoadFinished:(JDOVideoLiveModel *)dataModel.data];
-            [timer invalidate];
-//            timer = [NSTimer scheduledTimerWithTimeInterval:Auto_Refresh_Interval target:self selector:@selector(autoRefresh:) userInfo:nil repeats:true];
         }else{
             [self.tableView.pullToRefreshView stopAnimating];
             [JDOCommonUtil showHintHUD:dataModel.info inView:self];
@@ -200,20 +211,123 @@
         return;
     }
     self.noDataView.hidden = true;
+    // 移除所有的KVO观察者
+    [self.listArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        JDOVideoModel *model = (JDOVideoModel *)obj;
+        if (model.observer) {
+            [model removeObserver:model.observer forKeyPath:@"currentProgram"];
+            [model removeObserver:model.observer forKeyPath:@"currentFrame"];
+            model.observer = nil;
+        }
+    }];
     [self.listArray removeAllObjects];
     
     DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass:[JDOVideoModel class]];
     for (int i=0; i<dataList.count; i++) {
         JDOVideoModel *model = [mapper parseDictionary:dataList[i]];
         model.serverTime = liveModel.serverTime;
-        if(model.type == 1){    // 电视节目
+        if(model.type == TV_Type){    // 电视节目
             [self.listArray addObject:model];
+            
+            [self fetchContent:model];
         }
     }
-    // 填充
     
+    // 只有手动刷新时才对cell重新计算内容，这个数组是为了区别cellForRowAtIndexPath是滚动列表触发还是刷新触发，只有刷新的时候才触发且只触发一次
+    refreshFlgs = [NSMutableArray array];
+    for (int i=0; i<(self.listArray.count+1)/2; i++) {
+        [refreshFlgs addObject:@(true)];
+    }
     [self.tableView reloadData];
     [self updateLastRefreshTime];
+    
+    // 设置每过5分钟自动刷新一次
+    [timer invalidate];
+    timer = [NSTimer scheduledTimerWithTimeInterval:Auto_Refresh_Interval target:self selector:@selector(autoRefresh:) userInfo:nil repeats:true];
+}
+
+- (void) fetchContent:(JDOVideoModel *)model{
+    // 烟台3、4套节目在3G下不可用，因为外地ip限制，可以先通过http请求判断返回结果是不是403来区分，在success的回调里面再获取关键帧
+    [[JDOHttpClient sharedClient] requestURL:[model.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // 从直播流读取关键帧填充大图
+        dispatch_queue_t queue = [self sharedQueue];
+        dispatch_async(queue, ^{
+            VMediaExtracter *extracter = [VMediaExtracter sharedInstance];
+            [extracter reset];
+            [extracter setDataSource:[model.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            UIImage *frame = [extracter getFrameAtTime:0];
+            JDOVideoFrame *videoFrame = [[JDOVideoFrame alloc] init];
+            if (frame == nil) { // 无法获取关键帧
+                NSLog(@"无法获取视频关键帧");
+                videoFrame.success = false;
+                videoFrame.frameImage = [UIImage imageNamed:@"video_list_fail"];
+            }else{
+                videoFrame.success = true;
+                videoFrame.frameImage = frame;
+            }
+            model.currentFrame = videoFrame;
+        });
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        JDOVideoFrame *videoFrame = [[JDOVideoFrame alloc] init];
+        if (operation.response.statusCode == 403) {  // 服务器禁止访问
+            NSLog(@"非本地ip，服务器禁止访问");
+            videoFrame.success = false;
+            videoFrame.frameImage = [UIImage imageNamed:@"video_list_invalid"];
+        }else{
+            videoFrame.success = false;
+            videoFrame.frameImage = [UIImage imageNamed:@"video_list_fail"];
+        }
+        model.currentFrame = videoFrame;
+    }];
+    
+    // 从后台获取当前播放节目的名称
+    NSTimeInterval interval = [[model currentTime] timeIntervalSince1970];
+    NSString *currentTime = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:interval] intValue]];
+    NSString *epgURL = [model.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:currentTime];
+    
+    [[JDOJsonClient clientWithBaseURL:[NSURL URLWithString:epgURL]] getJSONByServiceName:@"" modelClass:nil config:nil params:nil success:^(NSDictionary *responseObject) {
+        if(responseObject[@"result"]){
+            NSArray *list = responseObject[@"result"][0];
+            if(list == nil || list.count == 0){
+                model.currentProgram = @"精彩节目";
+                NSLog(@"%@:服务器获取节目单数据为空",model.name);
+            }else{
+                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDOVideoEPGModel class] andConfiguration:[DCParserConfiguration configuration]];
+                NSArray *epgModels = [mapper parseArray:list];
+                JDOVideoEPGModel *currentEPG;
+                for (int i=0; i<epgModels.count; i++) {
+                    JDOVideoEPGModel *epgModel = [epgModels objectAtIndex:i];
+                    if( [[model currentTime] compare:epgModel.start_time] == NSOrderedDescending &&
+                       [[model currentTime] compare:epgModel.end_time] == NSOrderedAscending ){
+                        currentEPG = epgModel;
+                        break;
+                    }
+                }
+                if (currentEPG) {
+                    model.currentProgram = currentEPG.name; // 页面空间不足，暂时不显示时间
+                }else{
+                    model.currentProgram = @"精彩节目";
+                    NSLog(@"%@:当前时间没有节目单，服务器时间:%@",model.name,[model currentTime]);
+                }
+            }
+        }else{
+            model.currentProgram = @"精彩节目";
+            NSLog(@"%@:服务器节目单数据格式返回不正确",model.name);
+        }
+        
+    } failure:^(NSString *errorStr) {
+        model.currentProgram = @"精彩节目";
+        NSLog(@"%@:加载当前视频节目名称错误：%@",model.name, errorStr);
+    }];
+}
+
+- (dispatch_queue_t) sharedQueue{
+    static dispatch_queue_t queue = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        queue = dispatch_queue_create("com.jiaodong.video.frame", DISPATCH_QUEUE_SERIAL);
+    });
+    return queue;
 }
 
 - (void) updateLastRefreshTime{
@@ -237,14 +351,14 @@
     JDOVideoLiveCell *cell = (JDOVideoLiveCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
         cell = [[JDOVideoLiveCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier models:self.listArray];
-        cell.delegate = self;
-        [cell setContentByIndex:indexPath.row];
+        [cell setDelegate:self];
     }
-    return cell;
-}
+    if ([refreshFlgs[indexPath.row] boolValue]) {
+        [cell setContentAtIndex:indexPath.row];
+        refreshFlgs[indexPath.row] = @(false);
+    }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 15/*padding*/+151;
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -252,12 +366,11 @@
 }
 
 
-- (void) onLiveChannelClick:(NSInteger)index{
-    JDOVideoModel *videoModel = [self.listArray objectAtIndex:index];
+- (void) onLiveChannelClick:(JDOVideoModel *)model{
     // 用点击进入某个直播页面的当前时间减去初始化(刷新)的完成时间，可以得到在此页面停留的时间，用查询服务器时返回的时间加上该停留时间即为用户点击频道时的服务器当前时间，依据此时间查询当前正在直播的项目不会造成误差
-    videoModel.interval = [[NSDate date] timeIntervalSinceDate:self.lastUpdateTime];
+    model.interval = [[NSDate date] timeIntervalSinceDate:self.lastUpdateTime];
     
-    JDOVideoDetailController *detailController = [[JDOVideoDetailController alloc] initWithModel:videoModel];
+    JDOVideoDetailController *detailController = [[JDOVideoDetailController alloc] initWithModel:model];
     JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
     [centerController pushViewController:detailController animated:true];
 }

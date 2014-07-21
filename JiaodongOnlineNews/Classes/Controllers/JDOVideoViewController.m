@@ -11,6 +11,9 @@
 #import "JDOPageControl.h"
 #import "NIPagingScrollView.h"
 #import "JDOVideoLiveList.h"
+#import "JDOAudioLiveList.h"
+#import "JDOOnDemondList.h"
+
 #define Navbar_Height (Is_iOS7?36.0f:34.5f)
 
 @interface JDOVideoViewController()
@@ -90,8 +93,7 @@
 #pragma mark - PagingScrollView delegate
 
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {
-//    return _pageInfos.count;
-    return 1;
+    return _pageInfos.count;
 }
 
 - (UIView<NIPagingScrollViewPage> *)pagingScrollView:(NIPagingScrollView *)pagingScrollView
@@ -107,24 +109,22 @@
     
     switch (pageIndex) {
         case 0:{
-            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            aPage.tableView.scrollsToTop = true;
-            [aPage loadDataFromNetwork];
-            return aPage;
+            JDOAudioLiveList *audio = [[JDOAudioLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+            audio.tableView.scrollsToTop = true;
+            [audio loadDataFromNetwork];
+            return audio;
         }
         case 1:{
-//            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-//            aPage.tableView.scrollsToTop = false;
-//            [aPage loadDataFromNetwork];
-//            return aPage;
-            return nil;
+            JDOVideoLiveList *video = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+            video.tableView.scrollsToTop = true;
+            [video loadDataFromNetwork];
+            return video;
         }
         case 2:{
-//            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-//            aPage.tableView.scrollsToTop = false;
-//            [aPage loadDataFromNetwork];
-//            return aPage;
-            return nil;
+            JDOOnDemondList *onDemand = [[JDOOnDemondList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+            onDemand.tableView.scrollsToTop = false;
+            [onDemand loadDataFromNetwork];
+            return onDemand;
         }
         default:
             return nil;

@@ -56,12 +56,12 @@
 //- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds{
 //    
 //}
-- (CGRect)trackRectForBounds:(CGRect)bounds{
-    return CGRectMake(0, 0, 320, 4.5);
-}
-- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value{
-    return CGRectMake(0, 0, 34, 34.5);
-}
+//- (CGRect)trackRectForBounds:(CGRect)bounds{
+//    return CGRectMake(0, 0, 320, 4.5);
+//}
+//- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value{
+//    return CGRectMake(0, 0, 34, 34.5);
+//}
 
 
 @end

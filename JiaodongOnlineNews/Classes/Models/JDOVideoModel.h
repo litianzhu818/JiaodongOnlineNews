@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 胶东在线. All rights reserved.
 //
 #import "JDOToolbarModel.h"
+#import "JDOVideoFrame.h"
 
 @interface JDOVideoModel : NSObject <JDOToolbarModel>
 
@@ -17,11 +18,18 @@
 @property (nonatomic,strong) NSString *liveUrl;
 @property (nonatomic,strong) NSString *epgApi;
 
+@property (nonatomic,strong) NSString *title;
+@property (nonatomic,strong) NSString *summary;
+@property (nonatomic,strong) NSString *imageurl;
+@property (nonatomic,strong) NSString *reviewService;
+@property (nonatomic,strong) NSString *tinyurl;
+
 @property (nonatomic,strong) NSDate *serverTime;   // 请求直播频道列表时返回的服务器时间
 @property (nonatomic,assign) NSTimeInterval interval;  // 可能在列表界面逗留一段时间后才点击某个频道，故点击频道时的服务器时间应该等于请求返回的服务器时间serverTime+在列表页面的停留时间interval
 
 @property (nonatomic,strong) NSString *currentProgram;
-@property (nonatomic,strong) UIImage *currentFrame;
+@property (nonatomic,strong) JDOVideoFrame *currentFrame;
+@property (nonatomic,strong) NSObject *observer;
 
 - (NSDate *) currentTime;
 

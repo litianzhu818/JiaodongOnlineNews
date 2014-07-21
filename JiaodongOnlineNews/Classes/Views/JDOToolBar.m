@@ -286,6 +286,10 @@
         [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(webView)]];
     }else if ([self.parentController respondsToSelector:@selector(tableView)]){
         [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(tableView)]];
+    }else if ([self.parentController respondsToSelector:@selector(audioEpg)]){
+        [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(audioEpg)]];
+    }else if ([self.parentController respondsToSelector:@selector(backView)]){
+        [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(backView)]];
     }else{
         [JDOCommonUtil showSuccessHUD:content inView:self.parentController.view];
     }

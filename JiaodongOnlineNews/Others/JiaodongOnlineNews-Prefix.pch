@@ -134,3 +134,4 @@
 #define GET_CHANNELS @"Data/getChannels" // 新闻频道列表
 //#define VIDEO_LIVE @"http://api.av.jiaodong.net:8080/mcms/api2/mod/live/" // 直播列表,改为从p.jiaodong.net的后台获取
 #define VIDEO_LIVE @"Tv/getTvapi"
+#define VIDEO_CHANNEL @"http://api.av.jiaodong.net:8080/mcms/api2/mod/vod"

@@ -1,13 +1,12 @@
 //
-//  JDOVideoDetailController.m
+//  JDOOnDemandPlayController.m
 //  JiaodongOnlineNews
 //
-//  Created by zhang yi on 14-4-19.
+//  Created by zhang yi on 14-7-18.
 //  Copyright (c) 2014年 胶东在线. All rights reserved.
 //
 
-#import "JDOVideoDetailController.h"
-#import "JDOVideoModel.h"
+#import "JDOOnDemandPlayController.h"
 #import "JDOToolBar.h"
 #import "JDOReviewListController.h"
 #import "FXLabel.h"
@@ -15,12 +14,12 @@
 #import "DCParserConfiguration.h"
 #import "DCCustomParser.h"
 #import "DCKeyValueObjectMapping.h"
-
+#import "JDOVideoOnDemandModel.h"
 #import "Utilities.h"
 #import "VSegmentSlider.h"
-#import "JDOVideoEPG.h"
-#import "JDOVideoEPGList.h"
 #import <math.h>
+#import "JDOOnDemandEPGList.h"
+#import "JDOVideoEPGModel.h"
 
 #define Player_Height 241
 
@@ -34,13 +33,14 @@
 #define kBackviewDefaultRect		CGRectMake(0, 47, 280, 180)
 
 
-@interface JDOVideoDetailController ()
+@interface JDOOnDemandPlayController ()
 {
     VMediaPlayer       *mMPayer;
     long               mDuration;
     long               mCurPostion;
     NSTimer            *mSyncSeekTimer;
     BOOL               isCtrlHide;
+    int                currentIndex;
     BOOL               isPlayerUnsetup;
 }
 
@@ -62,18 +62,17 @@
 @property (nonatomic, retain) UIActivityIndicatorView *activityView;
 @property (nonatomic, assign) BOOL progressDragging;
 
-@property (nonatomic, strong) JDOVideoEPGModel *currentEpgModel;
-@property (nonatomic, strong) NSArray *currentEpgList;
+@property (nonatomic, strong) JDOOnDemandEPGList *epg;
 
 @end
 
-@implementation JDOVideoDetailController
+@implementation JDOOnDemandPlayController
 
-- (id)initWithModel:(JDOVideoModel *)videoModel{
+- (id)initWithModels:(NSArray *)models{
     self = [super init];
     if (self) {
-        self.videoModel = videoModel;
-        self.videoURL = [NSURL URLWithString:[videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        self.models = models;
+        self.videoURL = [NSURL URLWithString:[[(JDOVideoOnDemandModel *)models[0] mp4]   stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     return self;
 }
@@ -111,20 +110,17 @@
     [_mainView addSubview:self.navigationView];
     
 	self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
-						  UIActivityIndicatorViewStyleWhiteLarge];
+                         UIActivityIndicatorViewStyleWhiteLarge];
 	[self.activityCarrier addSubview:self.activityView];
     
 	UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc]
-								   initWithTarget:self
-								   action:@selector(progressSliderTapped:)];
-//    self.progressSld.frame = CGRectMake(-20, 190, 360, 29); // 滑块有渐变透明，实际比可视大小大很多,设置更大的宽度来隐藏渐变部分
+                                  initWithTarget:self
+                                  action:@selector(progressSliderTapped:)];
     [self.progressSld addGestureRecognizer:gr];
     [self.progressSld setThumbImage:[UIImage imageNamed:@"video_seekbar_btn"] forState:UIControlStateNormal];
     [self.progressSld setMinimumTrackImage:[UIImage imageNamed:@"video_seekbar_front"] forState:UIControlStateNormal];
     [self.progressSld setMaximumTrackImage:[UIImage imageNamed:@"video_seekbar_back"] forState:UIControlStateNormal];
-    //
     self.progressSld.hidden = true;
-//    self.curPosLbl.hidden = true;
     
 	if (!mMPayer) {
 		mMPayer = [VMediaPlayer sharedInstance];
@@ -137,16 +133,15 @@
     self.controlBackground.userInteractionEnabled = true; // 启用工具栏的事件，避免在工具栏点击时事件向下传递导致关闭工具栏
     
     CGRect frame1 = CGRectMake(0, (Is_iOS7?64:44)+Player_Height, 320, App_Height-(Is_iOS7?64:44)-Player_Height-44/*工具栏*/);
-    CGRect frame2 = CGRectMake(0, (Is_iOS7?64:44)+Player_Height-Navbar_Height, 320, App_Height-(Is_iOS7?64:44)-110/*播放器*/-44);
-    _epg = [[JDOVideoEPG alloc] initWithFoldFrame:frame1 fullFrame:frame2 model:self.videoModel delegate:self];
-    [self.view addSubview:_epg];
+    self.epg = [[JDOOnDemandEPGList alloc] initWithFrame:frame1 models:self.models];
+    self.epg.player = self;
+    [self.view addSubview:self.epg];
     
-    
-    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonVideoEpg],[NSNumber numberWithInt:ToolBarButtonShare]];
+    NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonShare]];
     // 使用专门定义的一条新闻id作为评论的入口
-    self.videoModel.id = @"31317";
-    _toolbar = [[JDOToolBar alloc] initWithModel:self.videoModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];
-    _toolbar.videoTarget = self;
+    JDOVideoOnDemandModel *aModel = self.models[0];
+    aModel.id = @"31320";
+    _toolbar = [[JDOToolBar alloc] initWithModel:aModel parentController:self typeConfig:toolbarBtnConfig widthConfig:nil frame:CGRectMake(0, App_Height-56.0, 320, 56.0) theme:ToolBarThemeWhite];
     _toolbar.shareTarget = self;
     [self.view addSubview:_toolbar];
     
@@ -156,45 +151,6 @@
     
     // 加载视频
     [self quicklyPlayMovie:[self getCurrMediaURL] title:nil];
-}
-
-- (void) onEpgClicked{
-    UIView *epgMask = [self.mainView blackMask];
-    if (epgMask.gestureRecognizers.count == 0) {
-        [epgMask addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onEpgClicked)]];
-    }
-    
-    if(self.epg.isFold){
-        [self.epg switchFoldState];
-        
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonReview]] setEnabled:false];
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonShare]] setEnabled:false];
-        epgMask.alpha = 0;
-        [self.view insertSubview:epgMask aboveSubview:self.mainView];
-
-        [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            CGRect f = _epg.frame;
-            f.origin.y = (Is_iOS7?64:44)+110;
-            _epg.frame = f;
-            self.mainView.transform = CGAffineTransformMakeScale(Min_Scale, Min_Scale);
-            epgMask.alpha = Max_Alpah;
-        } completion:^(BOOL finished) {
-
-        }];
-    }else{
-        
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonReview]] setEnabled:true];
-        [(UIButton *)[self.toolbar.btns objectForKey:[NSNumber numberWithInt:ToolBarButtonShare]] setEnabled:true];
-        
-        [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _epg.frame = _epg.fullFrame;
-            self.mainView.transform = CGAffineTransformIdentity;
-            epgMask.alpha = 0;
-        } completion:^(BOOL finished) {
-            [epgMask removeFromSuperview];
-            [self.epg switchFoldState];
-        }];
-    }
 }
 
 - (BOOL) onSharedClicked{
@@ -236,11 +192,11 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)to duration:(NSTimeInterval)duration{
-//	if (UIInterfaceOrientationIsLandscape(to)) {
-//		self.backView.frame = self.view.bounds;
-//	} else {
-//		self.backView.frame = kBackviewDefaultRect;
-//	}
+    //	if (UIInterfaceOrientationIsLandscape(to)) {
+    //		self.backView.frame = self.view.bounds;
+    //	} else {
+    //		self.backView.frame = kBackviewDefaultRect;
+    //	}
 	NSLog(@"NAL 1HUI &&&&&&&&& frame=%@", NSStringFromCGRect(self.carrier.frame));
 }
 
@@ -283,7 +239,7 @@
 
 - (void) setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(backToViewList)];
-    [self.navigationView setTitle:self.videoModel.name];
+    [self.navigationView setTitle:[(JDOVideoOnDemandModel *)self.models[0] categoryname]];
     [self.navigationView addRightButtonImage:@"top_navigation_review" highlightImage:@"top_navigation_review" target:self action:@selector(showReviewList)];
 }
 
@@ -297,15 +253,13 @@
 
 - (void) showReviewList{
     JDOCenterViewController *centerViewController = (JDOCenterViewController *)self.navigationController;
-    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeNews params:@{@"aid":self.videoModel.id,@"deviceId":JDOGetUUID()}];
-    reviewController.model = self.videoModel;
+    JDOReviewListController *reviewController = [[JDOReviewListController alloc] initWithType:JDOReviewTypeNews params:@{@"aid":[self.models[0] id],@"deviceId":JDOGetUUID()}];
+    reviewController.model = self.models[0];
     [centerViewController pushViewController:reviewController animated:true];
 }
 
 - (void)loadDataFromNetwork{
-//    [self setCurrentState:ViewStatusLoading];
     [self setCurrentState:ViewStatusNormal];
-
 }
 
 
@@ -314,16 +268,16 @@
 - (void)mediaPlayer:(VMediaPlayer *)player didPrepared:(id)arg
 {
     // 使用static的样例代码
-//    static emVMVideoFillMode modes[] = {
-//		VMVideoFillModeFit,
-//		VMVideoFillMode100, // 原始大小
-//		VMVideoFillModeCrop,
-//		VMVideoFillModeStretch,
-//	};
-//	static int curModeIdx = 0;
-//    
-//	curModeIdx = (curModeIdx + 1) % (int)(sizeof(modes)/sizeof(modes[0]));
-//	[mMPayer setVideoFillMode:modes[curModeIdx]];
+    //    static emVMVideoFillMode modes[] = {
+    //		VMVideoFillModeFit,
+    //		VMVideoFillMode100, // 原始大小
+    //		VMVideoFillModeCrop,
+    //		VMVideoFillModeStretch,
+    //	};
+    //	static int curModeIdx = 0;
+    //
+    //	curModeIdx = (curModeIdx + 1) % (int)(sizeof(modes)/sizeof(modes[0]));
+    //	[mMPayer setVideoFillMode:modes[curModeIdx]];
     
     [player setVideoFillMode:VMVideoFillModeStretch];
     [player start];
@@ -335,7 +289,7 @@
     mDuration = [player getDuration];
     if (mDuration == 0) { // 取不到总时长，则认为是直播流，不显示播放时间和进度条
         self.progressSld.hidden = true;
-//        self.curPosLbl.hidden = true;
+        //        self.curPosLbl.hidden = true;
         self.curPosLbl.text = @"实时直播";
     }else{
         self.progressSld.hidden = false;
@@ -350,11 +304,11 @@
 	[self quicklyStopMovie];
     NSURL *url = [self getNextMediaUrl];
     [self quicklyPlayMovie:url title:nil];
-    if (url) {  // 移动列表选中的状态至下一行
-        self.epg.selectedIndexPath = [NSIndexPath indexPathForRow:self.epg.selectedIndexPath.row+1 inSection:self.epg.selectedIndexPath.section];
-        [self.epg changeSelectedRowState];
+    // 移动列表选中的状态至下一行
+    if (url) {
+        self.epg.selectedRow += 1;
+        [self.epg.tableView reloadData];
     }
-    
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player error:(id)arg
@@ -510,11 +464,11 @@
     
     [mMPayer setDataSource:url header:nil];
     
-//    NSMutableArray *keys = [NSMutableArray arrayWithCapacity:0];
-//    NSMutableArray *vals = [NSMutableArray arrayWithCapacity:0];
-//    keys[0] = @"-rtmp_live";
-//    vals[0] = @"-1";
-//    [mMPayer setOptionsWithKeys:keys withValues:vals];
+    //    NSMutableArray *keys = [NSMutableArray arrayWithCapacity:0];
+    //    NSMutableArray *vals = [NSMutableArray arrayWithCapacity:0];
+    //    keys[0] = @"-rtmp_live";
+    //    vals[0] = @"-1";
+    //    [mMPayer setOptionsWithKeys:keys withValues:vals];
     
     [mMPayer prepareAsync];
 	[self startActivityWithMsg:@"正在加载..."];
@@ -571,7 +525,7 @@
             transform = CGAffineTransformScale(transform, App_Height/self.backView.bounds.size.width, 320/self.backView.bounds.size.height);
             self.backView.transform = transform;
         } completion:^(BOOL finished) {
-
+            
         }];
     } else {
         [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
@@ -732,68 +686,29 @@
 	return cache;
 }
 
-- (NSURL *)getCurrMediaURL{
-
-    NSURL *url=[NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-//    NSString *m3u8 = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-//    NSLog(@"m3u8 content:%@",m3u8);
-    return url;
-    
-    // 以下为测试地址
-//    return [NSURL URLWithString:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"sohu.m3u8"]];
-//    return [NSURL URLWithString:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"ytv.m3u8"]];
-//    return [NSURL URLWithString:@"http://hot.vrs.sohu.com/ipad1407291_4596271359934_4618512.m3u8"];
-//    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1400430735000,1400430855000,120000"];// YTV-1糖果剧
-//    return [NSURL URLWithString:@"http://cibn1.vdnplus.com/channels/tvie/CCTV-1/m3u8:sd/1400433840000,1400435880000,2040000"];// CCTV-1动物世界
-//    return [NSURL URLWithString:@"http://vod.av.jiaodong.net/vod_storage/vol1/2014/03/19/5328fce906a83/01b70087af0c11e3a5fa848f69e075fe.mp4"];
-//    return [NSURL URLWithString:@"http://live1.av.jiaodong.net/channels/yttv/video_yt1/m3u8:500k/1398129434000,1398129438000,5000"];
-}
-
-- (void) onVideoChanged:(JDOVideoEPGModel *)epgModel withDayEpg:(NSArray *)epgList{
-    self.currentEpgModel = epgModel;
-    self.currentEpgList = epgList;
-    NSURL *url;
-    if(epgModel.state == JDOVideoStatePlayback){
-        long startTime = [NSNumber numberWithDouble:[epgModel.start_time timeIntervalSince1970]].longValue;
-        long endTime = [NSNumber numberWithDouble:[epgModel.end_time timeIntervalSince1970]].longValue;
-        url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@/%ld000,%ld000,5000",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }else if(epgModel.state == JDOVideoStateLive){
-        url = [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }else if(epgModel.state == JDOVideoStateForecast){
-        // 预报节目不可播放
-    }else{
-        NSLog(@"节目状态未知");
-    }
+- (void) onVideoChanged:(JDOVideoOnDemandModel *)epgModel index:(int)row{
+    currentIndex = row;
+    NSURL *url = [NSURL URLWithString:[epgModel.mp4 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	if (url) {
 		[self quicklyStopMovie];
-        [self quicklyPlayMovie:url title:epgModel.name];
+        [self quicklyPlayMovie:url title:nil];
 	}
 }
 
+- (NSURL *)getCurrMediaURL{
+    currentIndex = 0;
+    NSString *mp4 = [(JDOVideoOnDemandModel *)self.models[currentIndex] mp4];
+    NSURL *url=[NSURL URLWithString:[mp4 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    return url;
+}
+
 - (NSURL *)getNextMediaUrl{
-    BOOL isLast = true;
-    for (int i = 0; i<self.currentEpgList.count-1; i++) {
-        JDOVideoEPGModel *epg = self.currentEpgList[i];
-        if (self.currentEpgModel == epg) {
-            self.currentEpgModel = self.currentEpgList[i+1];
-            isLast = false;
-            break;
-        }
-    }
-    // 若找不到则说明播放的是当天的最后一档节目
-    if (isLast) {
+    if (currentIndex == self.models.count-1) {
         return nil;
     }
-    
-#warning 未考虑在播放的时候节目单已经过期的情况，即当前播放的节目已经不是节目单正在播放指向的那一个
-    NSURL *url;
-    if(self.currentEpgModel.state == JDOVideoStatePlayback){
-        long startTime = [NSNumber numberWithDouble:[self.currentEpgModel.start_time timeIntervalSince1970]].longValue;
-        long endTime = [NSNumber numberWithDouble:[self.currentEpgModel.end_time timeIntervalSince1970]].longValue;
-        url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@/%ld000,%ld000,5000",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }else if(self.currentEpgModel.state == JDOVideoStateLive){
-        url = [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }
+    currentIndex++;
+    NSString *mp4 = [(JDOVideoOnDemandModel *)self.models[currentIndex] mp4];
+    NSURL *url=[NSURL URLWithString:[mp4 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	return url;
 }
 

@@ -96,4 +96,23 @@
     }];
 }
 
+- (void)requestURL:(NSString *)url
+          success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+          failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+	NSMutableDictionary *defaultHeaders = [NSMutableDictionary dictionary];
+	
+    [defaultHeaders setValue:[NSString stringWithFormat:@"%@, en-us;q=0.8", [[NSLocale preferredLanguages] componentsJoinedByString:@", "]] forKey:@"Accept-Language"];
+    [defaultHeaders setValue:[NSString stringWithFormat:@"JDONA (%@; iOS %@; Scale/%0.2f)", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] ? [[UIScreen mainScreen] scale] : 1.0f)] forKey:@"User-Agent"];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:defaultHeaders];
+    [request setHTTPShouldUsePipelining:YES];
+    request.timeoutInterval = 15.0;
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    
+	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    [self enqueueHTTPRequestOperation:operation];
+}
+
 @end

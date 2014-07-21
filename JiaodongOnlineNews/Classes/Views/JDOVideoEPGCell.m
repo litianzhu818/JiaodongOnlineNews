@@ -24,8 +24,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.textLabel.font = [UIFont boldSystemFontOfSize:16];
-        self.detailTextLabel.font = [UIFont boldSystemFontOfSize:16];
+        self.textLabel.font = [UIFont boldSystemFontOfSize:15];
+        self.detailTextLabel.font = [UIFont boldSystemFontOfSize:15];
         self.detailTextLabel.numberOfLines = 2;
         
         self.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -110,9 +110,9 @@
         [HUD hide:true afterDelay:1.0f];
         
         if(self.epgModel.clock){ // 订过闹钟(有未执行的本地通知)
-            self.imageView.image = [UIImage imageNamed:@"video_player_clock_selected"];
+            self.imageView.image = [UIImage imageNamed:@"video_epg_clock_selected"];
         }else{
-            self.imageView.image = [UIImage imageNamed:@"video_player_clock"];
+            self.imageView.image = [UIImage imageNamed:@"video_epg_clock"];
         }
     }
 }

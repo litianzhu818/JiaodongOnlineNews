@@ -34,6 +34,7 @@
 @property (nonatomic,strong) NSIndexPath *selectedIndexPath;
 
 - (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate;
+- (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate fold:(BOOL) isFold;
 - (void)changeSelectedRowState;
 - (void)switchFoldState;
 

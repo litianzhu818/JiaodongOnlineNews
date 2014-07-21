@@ -265,20 +265,24 @@ static bool isShowingHint;
     [[NSFileManager defaultManager] removeItemAtPath:URLCachePath error:nil];
 }
 
++ (void) deleteMeidaCacheDirectory{
+    NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"MediasCaches"];
+    [[NSFileManager defaultManager] removeItemAtPath:URLCachePath error:nil];
+}
+
 + (int) getDiskCacheFileCount{
     int count = [[SDImageCache sharedImageCache] getDiskCount];
     
     NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
     NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
     
-    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:JDOCachePath];
-    for (NSString *fileName in fileEnumerator){
-        count += 1;
-    }
+    NSDirectoryEnumerator *fileEnumerator;
+    fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:JDOCachePath];
+    count += fileEnumerator.allObjects.count;
+
     fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
-    for (NSString *fileName in fileEnumerator){
-        count += 1;
-    }
+    count += fileEnumerator.allObjects.count;
+    
     return count;
 }
 
@@ -287,14 +291,13 @@ static bool isShowingHint;
     
     NSString *JDOCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"JDOCache"];
     NSString *URLCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"com.jiaodong.JiaodongOnlineNews"];
+    NSString *MediaCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"MediasCaches"];
+    NSString *VitamioCachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"VitamioStreamCache"];
     
     size += [self recursiveDirectory:JDOCachePath];
-    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:URLCachePath];
-    for (NSString *fileName in fileEnumerator){
-        NSString *filePath = [URLCachePath stringByAppendingPathComponent:fileName];
-        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
-        size += [attrs fileSize];
-    }
+    size += [self recursiveDirectory:URLCachePath];
+    size += [self recursiveDirectory:MediaCachePath];
+    size += [self recursiveDirectory:VitamioCachePath];
     return size;
 }
 

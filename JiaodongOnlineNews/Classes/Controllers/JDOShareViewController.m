@@ -140,7 +140,7 @@
     self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
     NSURL *url;
     if ([self.model imageurl]) {
-        if ([[self.model imageurl] hasPrefix:SERVER_RESOURCE_URL]) {
+        if ([[self.model imageurl] hasPrefix:@"http://"]) {
             url = [NSURL URLWithString:[self.model imageurl]];
         } else {
             url = [NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]];

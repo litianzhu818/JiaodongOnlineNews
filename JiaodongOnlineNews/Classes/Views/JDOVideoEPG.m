@@ -23,18 +23,22 @@
 }
 
 - (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate{
+    return [self initWithFoldFrame:frame1 fullFrame:frame2 model:videoModel delegate:delegate fold:false];
+}
+
+- (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate fold:(BOOL) isFold{
     if (self = [super init]) {
         self.foldFrame = frame1;
         self.fullFrame = frame2;
         self.videoModel = videoModel;
         self.delegate = delegate;
         pageInfos = @[
-            @{@"reuseId":@"0",@"title":@"前天"},
-            @{@"reuseId":@"1",@"title":@"昨天"},
-            @{@"reuseId":@"2",@"title":@"今天"},
-            @{@"reuseId":@"3",@"title":@"明天"},
-            @{@"reuseId":@"4",@"title":@"后天"}
-        ];
+                      @{@"reuseId":@"0",@"title":@"前天"},
+                      @{@"reuseId":@"1",@"title":@"昨天"},
+                      @{@"reuseId":@"2",@"title":@"今天"},
+                      @{@"reuseId":@"3",@"title":@"明天"},
+                      @{@"reuseId":@"4",@"title":@"后天"}
+                      ];
         NSString *background = Is_iOS7?@"news_navbar_background~iOS7":@"news_navbar_background";
         NSString *slider = Is_iOS7?@"news_navbar_selected~iOS7":@"news_navbar_selected";
         _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, 320, Navbar_Height) background:background slider:slider pages:pageInfos];
@@ -52,13 +56,14 @@
         _scrollView.pagingScrollView.scrollsToTop = false;
         [self addSubview:_scrollView];
         
-        self.isFold = false;
+        self.isFold = isFold;
         [self switchFoldState];
         
         // 默认显示第三项(今天)的内容
         [_pageControl setCurrentPage:2 animated:false];
         [_scrollView reloadData];
         [_scrollView moveToPageAtIndex:2 animated:false];
+        self.selectedIndexPath = [NSIndexPath indexPathForRow:-1 inSection:2];
         
         [self changeCenterPageStatus];
     }
@@ -97,6 +102,10 @@
         page = [[JDOVideoEPGList alloc] initWithFrame:_scrollView.bounds info:itemInfo inEpg:self];
         [page loadDataFromNetwork];
     }
+    page.statusView.noNetWorkView.contentMode = self.isFold?UIViewContentModeBottom:UIViewContentModeScaleAspectFit;
+    page.statusView.logoView.contentMode = self.isFold?UIViewContentModeBottom:UIViewContentModeScaleAspectFit;
+    page.statusView.retryView.contentMode = self.isFold?UIViewContentModeBottom:UIViewContentModeScaleAspectFit;
+    
     
     // 同步多个scrollView list中的单行选中互斥状态
     if(self.selectedIndexPath.section == pageIndex){

@@ -1,24 +1,14 @@
 //
-//  JDOVideoLiveCell.h
+//  JDOOnDemandCell.h
 //  JiaodongOnlineNews
 //
-//  Created by zhang yi on 14-4-18.
+//  Created by zhang yi on 14-7-15.
 //  Copyright (c) 2014年 胶东在线. All rights reserved.
 //
 
-@class JDOVideoModel;
-
-@protocol JDOVideoLiveDelegate <NSObject>
-
-@required
-- (void) onLiveChannelClick:(JDOVideoModel *)model;
-
-@end
-
-@interface JDOVideoLiveCell : UITableViewCell
+@interface JDOOnDemandCell : UITableViewCell
 
 @property (nonatomic,strong) NSArray* models;
-@property (nonatomic,assign) id<JDOVideoLiveDelegate> delegate;
 
 - (void)setContentAtIndex:(NSInteger) index;
 
