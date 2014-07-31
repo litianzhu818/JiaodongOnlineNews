@@ -80,6 +80,10 @@ static JDOShareViewDelegate* sharedDelegate;
     }
 }
 
+- (void)view:(UIViewController *)viewController autorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation shareType:(ShareType)shareType{
+    
+}
+
 - (void) backToParent{
     viewClosedByBack = true;
     if(_presentView){

@@ -134,9 +134,9 @@
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
         return;
     }
-    for (int i=0; i<self.listArray.count; i++) {
-        JDOVideoModel *model = self.listArray[i];
-    }
+//    for (int i=0; i<self.listArray.count; i++) {
+//        JDOVideoModel *model = self.listArray[i];
+//    }
     refreshFlgs = [NSMutableArray array];
     for (int i=0; i<self.listArray.count+1; i++) {
         [refreshFlgs addObject:@(true)];

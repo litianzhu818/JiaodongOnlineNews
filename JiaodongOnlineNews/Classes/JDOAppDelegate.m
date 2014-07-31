@@ -297,8 +297,6 @@
     
     // 注册ShareSDK相关服务
     [ShareSDK registerApp:ShareSDK_Key];
-//    [ShareSDK convertUrlEnabled:NO];
-//    [ShareSDK statEnabled:true];
     [ShareSDK allowExchangeDataEnabled:true];
     // 单点登陆受开发平台的客户端版本限制，并且可能造成其他问题(QZone经常需要操作2次才能绑定成功,应用最底层背景色显示桌面背景)，暂时不使用
 //    [ShareSDK ssoEnabled:false];    // 禁用SSO,默认为true
@@ -613,7 +611,7 @@
                           redirectUri:@"http://m.jiaodong.net"];
     
     // http://dev.renren.com上注册人人网开放平台应用，并将相关信息填写到以下字段
-    // 应用管理账户383926109@qq.com
+    // 应用管理账户383926109@qq.com / 111111
     [ShareSDK connectRenRenWithAppId:@"237155"
                               appKey:@"09e10e9f7d9e4ec39eff747ca04add2c"
                            appSecret:@"3cafeac0896b4e8d908f885fbffc23a9"

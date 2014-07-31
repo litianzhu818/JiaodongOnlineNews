@@ -22,11 +22,21 @@ typedef enum {
 
 @class JDONewsViewController;
 @class JDOImageViewController;
+@class JDOConvenienceController;
+@class JDOTopicViewController;
+@class JDOLivehoodViewController;
+@class JDOPartyViewController;
+@class JDOVideoViewController;
 
 @interface JDOCenterViewController : MLNavigationController <IIViewDeckControllerDelegate,UIGestureRecognizerDelegate>
 
 + (JDONewsViewController *) sharedNewsViewController;
 + (JDOImageViewController *) sharedImageViewController;
++ (JDOConvenienceController *) sharedConvenienceController;
++ (JDOTopicViewController *) sharedTopicViewController;
++ (JDOLivehoodViewController *) sharedLivehoodViewController;
++ (JDOPartyViewController *) sharedPartyViewController;
++ (JDOVideoViewController *) sharedVideoViewController;
 
 - (void) setRootViewControllerType:(MenuItem) menuItem;
 

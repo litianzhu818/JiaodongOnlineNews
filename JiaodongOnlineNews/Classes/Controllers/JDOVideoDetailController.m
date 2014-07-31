@@ -137,7 +137,7 @@
     self.controlBackground.userInteractionEnabled = true; // 启用工具栏的事件，避免在工具栏点击时事件向下传递导致关闭工具栏
     
     CGRect frame1 = CGRectMake(0, (Is_iOS7?64:44)+Player_Height, 320, App_Height-(Is_iOS7?64:44)-Player_Height-44/*工具栏*/);
-    CGRect frame2 = CGRectMake(0, (Is_iOS7?64:44)+Player_Height-Navbar_Height, 320, App_Height-(Is_iOS7?64:44)-110/*播放器*/-44);
+    CGRect frame2 = CGRectMake(0, (Is_iOS7?64:44)+Player_Height-Navbar_Height, 320, App_Height-(Is_iOS7?64:44)-70/*播放器*/-44);
     _epg = [[JDOVideoEPG alloc] initWithFoldFrame:frame1 fullFrame:frame2 model:self.videoModel delegate:self];
     [self.view addSubview:_epg];
     
@@ -174,7 +174,7 @@
 
         [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             CGRect f = _epg.frame;
-            f.origin.y = (Is_iOS7?64:44)+110;
+            f.origin.y = (Is_iOS7?64:44)+70;
             _epg.frame = f;
             self.mainView.transform = CGAffineTransformMakeScale(Min_Scale, Min_Scale);
             epgMask.alpha = Max_Alpah;
@@ -325,7 +325,8 @@
 //	curModeIdx = (curModeIdx + 1) % (int)(sizeof(modes)/sizeof(modes[0]));
 //	[mMPayer setVideoFillMode:modes[curModeIdx]];
     
-    [player setVideoFillMode:VMVideoFillModeStretch];
+    // 考虑到iphone5全屏的情况，还是使用fit模式更合适
+    [player setVideoFillMode:VMVideoFillModeFit];
     [player start];
     
 	[self setBtnEnableStatus:YES];

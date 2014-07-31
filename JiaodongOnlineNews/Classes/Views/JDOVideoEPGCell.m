@@ -24,6 +24,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        
         self.textLabel.font = [UIFont boldSystemFontOfSize:15];
         self.detailTextLabel.font = [UIFont boldSystemFontOfSize:15];
         self.detailTextLabel.numberOfLines = 2;
@@ -161,7 +163,7 @@
         if(self.list.selectedRow == indexPath.row){ // 选中行使用白色文字
             self.textLabel.textColor = [UIColor whiteColor];
             self.detailTextLabel.textColor = [UIColor whiteColor];
-            self.background.alpha = 1;
+            self.background.alpha = 0.7;
         }else{
             self.textLabel.textColor = [UIColor colorWithRed:20.0f/255 green:120.0f/255 blue:190.0f/255 alpha:1.0f];
             self.detailTextLabel.textColor = [UIColor colorWithRed:20.0f/255 green:120.0f/255 blue:190.0f/255 alpha:1.0f];
@@ -172,17 +174,17 @@
         if(self.list.selectedRow == indexPath.row){ // 选中行使用白色文字
             self.textLabel.textColor = [UIColor whiteColor];
             self.detailTextLabel.textColor = [UIColor whiteColor];
-            self.background.alpha = 1;
+            self.background.alpha = 0.7;
         }else{
-            self.textLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
-            self.detailTextLabel.textColor = [UIColor colorWithHex:Black_Color_Type2];
+            self.textLabel.textColor = self.playbackColor;
+            self.detailTextLabel.textColor = self.playbackColor;
             self.background.alpha = 0;
         }
         self.imageView.image = [UIImage imageNamed:@"video_epg_play"];
     }else if(epgModel.state == JDOVideoStateForecast){
         // 预告的节目不可能有选中状态
-        self.textLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
-        self.detailTextLabel.textColor = [UIColor colorWithHex:Gray_Color_Type2];
+        self.textLabel.textColor = self.forecastColor;
+        self.detailTextLabel.textColor = self.forecastColor;
         self.background.alpha = 0;
         
         if(epgModel.clock){ // 订过闹钟(有未执行的本地通知)

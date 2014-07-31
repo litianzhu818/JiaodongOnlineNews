@@ -167,7 +167,23 @@
     }
     if (indexPath.row < [_shareTypeArray count]){
         NSMutableDictionary *item = [_shareTypeArray objectAtIndex:indexPath.row];
-        cell.imageView.image = [ShareSDK getClientIconWithType:[[item objectForKey:@"type"] integerValue]];
+//        cell.imageView.image = [ShareSDK getClientIconWithType:[[item objectForKey:@"type"] integerValue]];
+        switch ([[item objectForKey:@"type"] integerValue]) {
+            case ShareTypeSinaWeibo:
+                cell.imageView.image = [UIImage imageNamed:@"sina"];
+                break;
+            case ShareTypeTencentWeibo:
+                cell.imageView.image = [UIImage imageNamed:@"tencent"];
+                break;
+            case ShareTypeQQSpace:
+                cell.imageView.image = [UIImage imageNamed:@"qzone"];
+                break;
+            case ShareTypeRenren:
+                cell.imageView.image = [UIImage imageNamed:@"renren"];
+                break;
+            default:
+                break;
+        }
         
         UISwitch *accessoryView =  (UISwitch *)cell.accessoryView;
         accessoryView.on = [ShareSDK hasAuthorizedWithType:[[item objectForKey:@"type"] integerValue]];

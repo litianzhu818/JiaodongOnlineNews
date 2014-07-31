@@ -153,10 +153,10 @@
 		[self setupObservers];
 	}
     
-    CGRect fullFrame = CGRectMake(0, (Is_iOS7?64:44), 320, App_Height-(Is_iOS7?64:44)-Player_Height-44/*工具栏*//*进度条上方透明*/);
+    CGRect fullFrame = CGRectMake(0, (Is_iOS7?64:44), 320, App_Height-(Is_iOS7?64:44)-Player_Height-44+6/*工具栏*//*进度条上方透明*/);
     self.audioEpg = [[JDOVideoEPG alloc] initWithFoldFrame:CGRectZero fullFrame:fullFrame model:self.videoModel delegate:self fold:true];
-    [self.view addSubview:self.audioEpg];
-    [self.view sendSubviewToBack:self.audioEpg];
+    [self.audioEpg setBackground:@"audio_play_background"];
+    [self.view insertSubview:self.audioEpg belowSubview:self.backView];
     
     
     NSArray *toolbarBtnConfig = @[[NSNumber numberWithInt:ToolBarButtonReview],[NSNumber numberWithInt:ToolBarButtonShare]];

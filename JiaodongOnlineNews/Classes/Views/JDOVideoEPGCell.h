@@ -15,6 +15,8 @@
 @property (nonatomic,strong) JDOVideoEPGList *list;
 @property (nonatomic,strong) JDOVideoEPGModel *epgModel;
 @property (nonatomic,assign) int row;
+@property (nonatomic,strong) UIColor *playbackColor;
+@property (nonatomic,strong) UIColor *forecastColor;
 
 @property (nonatomic,strong) UIImageView *background;
 

@@ -31,6 +31,7 @@
 #import "JDONavigationController.h"
 #import "MBProgressHUD.h"
 #import "UIImage+Retina4.h"
+#import "UIViewController+Rotation.h"
 
 #define SharedAppDelegate ((JDOAppDelegate *)[[UIApplication sharedApplication] delegate])
 #define SDWebImageOption SDWebImageRetryFailed|SDWebImageLowPriority|SDWebImageProgressiveDownload//|SDWebImageCacheMemoryOnly

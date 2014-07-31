@@ -58,6 +58,7 @@
         
         self.isFold = isFold;
         [self switchFoldState];
+        self.hasBackground = false;
         
         // 默认显示第三项(今天)的内容
         [_pageControl setCurrentPage:2 animated:false];
@@ -69,6 +70,12 @@
     }
     return self;
 }
+
+- (void)setBackground:(NSString *)imageName{
+    self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:imageName]];
+    self.hasBackground = true;
+}
+
 
 - (void)switchFoldState{
     self.isFold = !self.isFold;

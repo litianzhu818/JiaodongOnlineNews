@@ -38,7 +38,7 @@
         self.delegate = epg.delegate;
         
         self.listArray = [[NSMutableArray alloc] init];
-        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.backgroundColor = [UIColor clearColor];
         self.selectedRow = -1;
         
         self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
@@ -242,16 +242,27 @@
     JDOVideoEPGCell *cell = (JDOVideoEPGCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
         cell = [[JDOVideoEPGCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        if (self.videoEpg.hasBackground) {
+            cell.playbackColor = [UIColor colorWithHex:@"ffffff"];
+            cell.forecastColor = [UIColor colorWithHex:@"b4b4b4"];
+        }else{
+            cell.playbackColor = [UIColor colorWithHex:Black_Color_Type2];
+            cell.forecastColor = [UIColor colorWithHex:Gray_Color_Type2];
+        }
     }
     if(self.listArray.count > 0){
         JDOVideoEPGModel *epgModel = [self.listArray objectAtIndex:indexPath.row];
         cell.list = self;
         [cell setModel:epgModel atIndexPath:indexPath];
 
-        if (indexPath.row%2 == 0) {
-            cell.contentView.backgroundColor = [UIColor colorWithHex:@"F5F5F5"];
+        if (self.videoEpg.hasBackground) {  // 广播的epg有背景，则不使用隔行变色
+            cell.contentView.backgroundColor = [UIColor clearColor];
         }else{
-            cell.contentView.backgroundColor = [UIColor whiteColor];
+            if (indexPath.row%2 == 0) {
+                cell.contentView.backgroundColor = [UIColor colorWithHex:@"F5F5F5"];
+            }else{
+                cell.contentView.backgroundColor = [UIColor whiteColor];
+            }
         }
     }
     return cell;

@@ -32,11 +32,13 @@
 @property (nonatomic,assign) CGRect foldFrame;
 @property (nonatomic,assign) CGRect fullFrame;
 @property (nonatomic,strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic,assign) BOOL hasBackground;
 
 - (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate;
 - (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate fold:(BOOL) isFold;
 - (void)changeSelectedRowState;
 - (void)switchFoldState;
+- (void)setBackground:(NSString *)imageName;
 
 @end
 

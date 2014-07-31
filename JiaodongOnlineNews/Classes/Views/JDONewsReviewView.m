@@ -208,7 +208,24 @@
     
     if (indexPath.row < [_shareTypeArray count]){
         NSDictionary *item = [_shareTypeArray objectAtIndex:indexPath.row];
-        UIImage *icon = [ShareSDK getClientIconWithType:[[item objectForKey:@"type"] integerValue]];
+//        UIImage *icon = [ShareSDK getClientIconWithType:[[item objectForKey:@"type"] integerValue]];
+        UIImage *icon;
+        switch ([[item objectForKey:@"type"] integerValue]) {
+            case ShareTypeSinaWeibo:
+                icon = [UIImage imageNamed:@"sina"];
+                break;
+            case ShareTypeTencentWeibo:
+                icon = [UIImage imageNamed:@"tencent"];
+                break;
+            case ShareTypeQQSpace:
+                icon = [UIImage imageNamed:@"qzone"];
+                break;
+            case ShareTypeRenren:
+                icon = [UIImage imageNamed:@"renren"];
+                break;
+            default:
+                break;
+        }
         itemView.iconImageView.image = icon;
         
 // 可以根据未授权,已授权未选中,已选中区分为三种状态表示

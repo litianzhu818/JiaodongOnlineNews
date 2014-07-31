@@ -19,7 +19,7 @@
 #import "DCKeyValueObjectMapping.h"
 #import "JDODataModel.h"
 
-#define Auto_Refresh_Interval 300.0f
+#define Auto_Refresh_Interval 600.0f
 #define TV_Type 1
 
 @interface JDOVideoLiveList ()
@@ -241,7 +241,7 @@
     [self.tableView reloadData];
     [self updateLastRefreshTime];
     
-    // 设置每过5分钟自动刷新一次
+    // 设置每过10分钟自动刷新一次
     [timer invalidate];
     timer = [NSTimer scheduledTimerWithTimeInterval:Auto_Refresh_Interval target:self selector:@selector(autoRefresh:) userInfo:nil repeats:true];
 }

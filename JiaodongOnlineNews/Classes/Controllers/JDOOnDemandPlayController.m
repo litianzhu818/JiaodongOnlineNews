@@ -279,7 +279,7 @@
     //	curModeIdx = (curModeIdx + 1) % (int)(sizeof(modes)/sizeof(modes[0]));
     //	[mMPayer setVideoFillMode:modes[curModeIdx]];
     
-    [player setVideoFillMode:VMVideoFillModeStretch];
+    [player setVideoFillMode:VMVideoFillModeFit];
     [player start];
     
 	[self setBtnEnableStatus:YES];

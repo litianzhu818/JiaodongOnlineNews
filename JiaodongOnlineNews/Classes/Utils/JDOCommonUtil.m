@@ -414,10 +414,10 @@ static bool isShowingHint;
                            [@{@"title":@"腾讯微博",@"type":[NSNumber numberWithInteger:ShareTypeTencentWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
                            [@{@"title":@"QQ空间",@"type":[NSNumber numberWithInteger:ShareTypeQQSpace],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
                            [@{@"title":@"人人网",@"type":[NSNumber numberWithInteger:ShareTypeRenren],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
-                           [@{@"title":@"网易微博",@"type":[NSNumber numberWithInteger:ShareType163Weibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
-                           [@{@"title":@"搜狐微博",@"type":[NSNumber numberWithInteger:ShareTypeSohuWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
-                           [@{@"title":@"开心网",@"type":[NSNumber numberWithInteger:ShareTypeKaixin],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
-                           [@{@"title":@"豆瓣社区",@"type":[NSNumber numberWithInteger:ShareTypeDouBan],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+//                           [@{@"title":@"网易微博",@"type":[NSNumber numberWithInteger:ShareType163Weibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+//                           [@{@"title":@"搜狐微博",@"type":[NSNumber numberWithInteger:ShareTypeSohuWeibo],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+//                           [@{@"title":@"开心网",@"type":[NSNumber numberWithInteger:ShareTypeKaixin],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
+//                           [@{@"title":@"豆瓣社区",@"type":[NSNumber numberWithInteger:ShareTypeDouBan],@"selected":[NSNumber numberWithBool:NO]} mutableCopy],
                            nil];
     });
     return shareTypeArray;
@@ -530,8 +530,8 @@ id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){
                                                           viewDelegate:_delegate
                                                authManagerViewDelegate:_delegate];
     //在授权页面中添加关注官方微博
-    [authOptions setFollowAccounts:@{
-        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jdnewsapp"],
-        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jdnewsapp"]}];
+//    [authOptions setFollowAccounts:@{
+//        SHARE_TYPE_NUMBER(ShareTypeSinaWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jdnewsapp"],
+//        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jdnewsapp"]}];
     return authOptions;
 }
