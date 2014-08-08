@@ -8,11 +8,13 @@
 
 #import "JDOVideoEPG.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDOVideoLiveList.h"
 #import "JDOVideoEPGList.h"
-#define Navbar_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0?36.0f:34.5f)
+
+@interface JDOVideoEPG()
+
+@end
 
 @implementation JDOVideoEPG{
     NSArray *pageInfos; // 页面基本信息
@@ -20,26 +22,31 @@
     int lastCenterPageIndex;
 }
 
-- (id)initWithFrame:(CGRect)frame model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate{
-    if (self = [super initWithFrame:frame]) {
-        self.frame = frame;
+- (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate{
+    return [self initWithFoldFrame:frame1 fullFrame:frame2 model:videoModel delegate:delegate fold:false];
+}
+
+- (id)initWithFoldFrame:(CGRect)frame1 fullFrame:(CGRect)frame2 model:(JDOVideoModel *)videoModel delegate:(id<JDOVideoEPGDelegate>)delegate fold:(BOOL) isFold{
+    if (self = [super init]) {
+        self.foldFrame = frame1;
+        self.fullFrame = frame2;
         self.videoModel = videoModel;
         self.delegate = delegate;
         pageInfos = @[
-            @{@"reuseId":@"0",@"title":@"前天"},
-            @{@"reuseId":@"1",@"title":@"昨天"},
-            @{@"reuseId":@"2",@"title":@"今天"},
-            @{@"reuseId":@"3",@"title":@"明天"},
-            @{@"reuseId":@"4",@"title":@"后天"}
-        ];
+                      @{@"reuseId":@"0",@"title":@"前天"},
+                      @{@"reuseId":@"1",@"title":@"昨天"},
+                      @{@"reuseId":@"2",@"title":@"今天"},
+                      @{@"reuseId":@"3",@"title":@"明天"},
+                      @{@"reuseId":@"4",@"title":@"后天"}
+                      ];
         NSString *background = Is_iOS7?@"news_navbar_background~iOS7":@"news_navbar_background";
         NSString *slider = Is_iOS7?@"news_navbar_selected~iOS7":@"news_navbar_selected";
-        _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, Navbar_Height) background:background slider:slider pages:pageInfos];
+        _pageControl = [[JDOPageControl alloc] initWithFrame:CGRectMake(0, 0, 320, Navbar_Height) background:background slider:slider pages:pageInfos];
         [_pageControl addTarget:self action:@selector(onPageChangedByPageControl:) forControlEvents:UIControlEventValueChanged];
         [_pageControl setTitleFontSize:16];
         [self addSubview:_pageControl];
         
-        _scrollView = [[NIPagingScrollView alloc] initWithFrame:CGRectMake(0,Navbar_Height-1,self.bounds.size.width,self.bounds.size.height)];
+        _scrollView = [[NIPagingScrollView alloc] init];
         _scrollView.backgroundColor = [UIColor whiteColor];
         _scrollView.delegate = self;
         _scrollView.dataSource = self;
@@ -49,14 +56,33 @@
         _scrollView.pagingScrollView.scrollsToTop = false;
         [self addSubview:_scrollView];
         
+        self.isFold = isFold;
+        [self switchFoldState];
+        
         // 默认显示第三项(今天)的内容
         [_pageControl setCurrentPage:2 animated:false];
         [_scrollView reloadData];
         [_scrollView moveToPageAtIndex:2 animated:false];
+        self.selectedIndexPath = [NSIndexPath indexPathForRow:-1 inSection:2];
         
         [self changeCenterPageStatus];
     }
     return self;
+}
+
+- (void)switchFoldState{
+    self.isFold = !self.isFold;
+    if (self.isFold) {
+        self.scrollView.pagingScrollView.scrollEnabled = false;
+        self.frame = self.foldFrame;
+        self.pageControl.alpha = 0;
+        self.scrollView.frame = CGRectMake(0,-1,self.bounds.size.width,CGRectGetHeight(self.frame));
+    }else{
+        self.scrollView.pagingScrollView.scrollEnabled = true;
+        self.frame = self.fullFrame;
+        self.pageControl.alpha = 1;
+        self.scrollView.frame = CGRectMake(0,Navbar_Height-1,self.bounds.size.width,CGRectGetHeight(self.frame)-Navbar_Height);
+    }
 }
 
 #pragma mark - PagingScrollView delegate
@@ -70,31 +96,36 @@
     
     NSDictionary *itemInfo = [pageInfos objectAtIndex:pageIndex];
     
-    NIPageView *page = (NIPageView *)[pagingScrollView dequeueReusablePageWithIdentifier:[itemInfo objectForKey:@"reuseId"] ];
+    JDOVideoEPGList *page = (JDOVideoEPGList *)[pagingScrollView dequeueReusablePageWithIdentifier:[itemInfo objectForKey:@"reuseId"] ];
     
-    if(page != nil){
-        return page;
+    if(page == nil){
+        page = [[JDOVideoEPGList alloc] initWithFrame:_scrollView.bounds info:itemInfo inEpg:self];
+        [page loadDataFromNetwork];
     }
+    page.statusView.noNetWorkView.contentMode = self.isFold?UIViewContentModeBottom:UIViewContentModeScaleAspectFit;
+    page.statusView.logoView.contentMode = self.isFold?UIViewContentModeBottom:UIViewContentModeScaleAspectFit;
+    page.statusView.retryView.contentMode = self.isFold?UIViewContentModeBottom:UIViewContentModeScaleAspectFit;
     
-    JDOVideoEPGList *aPage = [[JDOVideoEPGList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-    aPage.videoModel = self.videoModel;
-    aPage.delegate = self.delegate;
-    aPage.tableView.scrollsToTop = true;
-    [aPage loadDataFromNetwork];
-    return aPage;
+    
+    // 同步多个scrollView list中的单行选中互斥状态
+    if(self.selectedIndexPath.section == pageIndex){
+        page.selectedRow = self.selectedIndexPath.row;
+    }else{
+        page.selectedRow = -1;
+    }
+    [page.tableView reloadData];
+    
+    return page;
+
 }
 
 - (void)pagingScrollViewWillChangePages:(NIPagingScrollView *)pagingScrollView{
-    if ([pagingScrollView.centerPageView respondsToSelector:@selector(tableView)]) {
-        [[(id)pagingScrollView.centerPageView tableView] setScrollsToTop:false];
-    }
+    [((JDOVideoEPGList *)pagingScrollView.centerPageView).tableView setScrollsToTop:false];
 }
 
 - (void)pagingScrollViewDidChangePages:(NIPagingScrollView *)pagingScrollView{
     _pageControl.lastPageIndex = pagingScrollView.centerPageIndex;
-    if ([pagingScrollView.centerPageView respondsToSelector:@selector(tableView)]) {
-        [[(id)pagingScrollView.centerPageView tableView] setScrollsToTop:true];
-    }
+    [((JDOVideoEPGList *)pagingScrollView.centerPageView).tableView setScrollsToTop:true];
 }
 
 #pragma mark - ScrollView delegate
@@ -144,6 +175,18 @@
     lastCenterPageIndex = _scrollView.centerPageIndex;
     UIView<NIPagingScrollViewPage> *page = _scrollView.centerPageView;
     NSAssert(page != nil, @"scroll view 中的页面不能为nil");
+}
+
+// 同步多个scrollView list中的单行选中互斥状态
+- (void)changeSelectedRowState{
+    for (JDOVideoEPGList *page in self.scrollView.visiblePages) {
+        if(self.selectedIndexPath.section == page.pageIndex){
+            page.selectedRow = self.selectedIndexPath.row;
+        }else{
+            page.selectedRow = -1;
+        }
+        [page.tableView reloadData];
+    }
 }
 
 @end

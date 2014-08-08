@@ -6,14 +6,13 @@
 #import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDONewsCategoryView.h"
 #import "JDONewsCategoryInfo.h"
 #import "JDOReadDB.h"
 #import "JDOChannelSetting.h"
 #import "JDOLeftViewController.h"
-#define Navbar_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0?36.0f:34.5f)
+#define Navbar_Height (Is_iOS7?36.0f:34.5f)
 
 @interface JDONewsViewController() <JDOChannelSettingDelegate>
 

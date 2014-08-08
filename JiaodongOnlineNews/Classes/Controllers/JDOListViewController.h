@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSString *cacheFileName;
 
 @property (strong,nonatomic) UIImageView *noDataView;
+@property (nonatomic,assign) BOOL needRefreshControl;
 
 - (id)initWithServiceName:(NSString*)serviceName modelClass:(NSString*)modelClass title:(NSString*)title params:(NSMutableDictionary *)listParam needRefreshControl:(BOOL)needRefreshControl;
 - (void)loadDataFromNetwork;

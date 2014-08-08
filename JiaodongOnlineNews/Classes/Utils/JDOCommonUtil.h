@@ -49,6 +49,7 @@ typedef enum{
 + (NSString *) createJDOCacheDirectory;
 + (void) deleteJDOCacheDirectory;
 + (void) deleteURLCacheDirectory;
++ (void) deleteMeidaCacheDirectory;
 + (int) getDiskCacheFileCount;
 + (int) getDiskCacheFileSize;
 

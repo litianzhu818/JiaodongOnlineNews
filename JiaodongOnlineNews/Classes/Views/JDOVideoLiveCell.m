@@ -11,8 +11,8 @@
 #import "DCKeyValueObjectMapping.h"
 #import "DCParserConfiguration.h"
 #import "JDOVideoEPGModel.h"
+#import "VMediaExtracter.h"
 
-#define Default_Image @"news_image_placeholder.png"
 #define Left_Margin 7.5f
 #define Right_Margin 7.5f
 #define Top_Margin 7.5f
@@ -23,13 +23,12 @@
 
 @interface JDOVideoLiveCell ()
 
-@property (nonatomic,strong) UIImageView *leftItemView;
-@property (nonatomic,strong) UIImageView *rightItemView;
+@property (nonatomic,assign) int rowIndex;
 
 @end
 
 @implementation JDOVideoLiveCell{
-    UITableViewCellStateMask _currentState;
+
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier models:(NSArray *)models
@@ -38,137 +37,146 @@
     if (self) {
         self.models = models;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
-        self.textLabel.font = [UIFont boldSystemFontOfSize:16];
-        self.detailTextLabel.font = [UIFont systemFontOfSize:13];
-        self.detailTextLabel.numberOfLines = 2;
+        self.backgroundColor = [UIColor clearColor];
+
+        UIImageView *leftItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 7.5, 145, 151)];
+        leftItemView.tag = 1001;
+        [self initItemView:leftItemView];
+        [self.contentView addSubview:leftItemView];
         
-        self.textLabel.textColor = [UIColor colorWithHex:Black_Color_Type1];
-        self.textLabel.highlightedTextColor = [UIColor colorWithHex:Black_Color_Type1];
-        self.textLabel.backgroundColor = [UIColor clearColor];
-        
-        self.detailTextLabel.textColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.detailTextLabel.highlightedTextColor = [UIColor colorWithHex:Gray_Color_Type1];
-        self.detailTextLabel.backgroundColor = [UIColor clearColor];  
+        UIImageView *rightItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10+145+10, 7.5, 145, 151)];
+        rightItemView.tag = 1002;
+        [self initItemView:rightItemView];
+        [self.contentView addSubview:rightItemView];
     }
     return self;
 }
 
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-}
-
-- (void)setContentByIndex:(NSInteger) index{
+- (void)setContentAtIndex:(NSInteger) index{
+    self.rowIndex = index;
+    UIImageView *leftItemView = (UIImageView *)[self.contentView viewWithTag:1001];
+    UIImageView *rightItemView = (UIImageView *)[self.contentView viewWithTag:1002];
+    
     int modelIndex = 2*index;
     JDOVideoModel *leftItemModel = (JDOVideoModel *)self.models[modelIndex];
-    self.leftItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 146, 151)];
-    self.leftItemView.tag = modelIndex; // 利用tag传递变量，在接收手势时知道是哪个项目被点击的
-    [self fillItemView:self.leftItemView withModel:leftItemModel];
+    [self fillItemView:leftItemView withModel:leftItemModel];
     
     modelIndex = 2*index+1;
     if( self.models.count > modelIndex ){
+        rightItemView.hidden = false;
         JDOVideoModel *rightItemModel = (JDOVideoModel *)self.models[modelIndex];
-        self.rightItemView = [[UIImageView alloc] initWithFrame:CGRectMake(10+146+8, 10, 146, 151)];
-        self.rightItemView.tag = modelIndex;
-        [self fillItemView:self.rightItemView withModel:rightItemModel];
+        [self fillItemView:rightItemView withModel:rightItemModel];
+    }else{
+        rightItemView.hidden = true;
     }
-    
-//    __block UIImageView *blockImageView = self.imageView;
-//    // 电台的图标地址中有中文“台标”,需要先转编码
-//    [self.imageView setImageWithURL:[NSURL URLWithString:[videoModel.icon stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage imageNamed:Default_Image]  options:SDWebImageOption success:^(UIImage *image, BOOL cached) {
-//        if(!cached){    // 非缓存加载时使用渐变动画
-//            CATransition *transition = [CATransition animation];
-//            transition.duration = 0.3;
-//            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//            transition.type = kCATransitionFade;
-//            [blockImageView.layer addAnimation:transition forKey:nil];
-//        }
-//    } failure:^(NSError *error) {
-//        NSLog(@"%@",error.debugDescription);
-//    }];
-    
-//    self.detailTextLabel.text = videoModel.liveUrl;
-//    self.textLabel.textColor = [UIColor colorWithHex:Black_Color_Type1];
-//    self.textLabel.highlightedTextColor = [UIColor colorWithHex:Black_Color_Type1];
-    
 }
 
-- (void) fillItemView:(UIImageView *)itemView withModel:(JDOVideoModel *)itemModel  {
-    itemView.userInteractionEnabled = true;
-    itemView.image = [UIImage imageNamed:itemModel.name];
+- (void) fillItemView:(UIImageView *)itemView withModel:(JDOVideoModel *)itemModel {
+    itemModel.observer = self;
+ 
+    UIImageView *logoView = (UIImageView *)[itemView viewWithTag:101];
+    __block UIImageView *blockLogoView = logoView;
+    [logoView setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:itemModel.logo]] success:^(UIImage *image, BOOL cached) {
+        if(!cached){    // 非缓存加载时使用渐变动画
+            [blockLogoView.layer addAnimation:[self createNewTransition] forKey:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
     
-    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-116-5, 136, 116)];
-    logoView.image = [UIImage imageNamed:[itemModel.name stringByAppendingString:@"-logo.jpg"] ];
+    UIImageView *frameView = (UIImageView *)[itemView viewWithTag:102];
+    if (itemModel.currentFrame != nil) {    // 关键帧已经加载完成，比如初始化时不可见的行，在显示的时候可能已经加载完
+        frameView.image = itemModel.currentFrame.frameImage;
+        [frameView.layer addAnimation:[self createNewTransition] forKey:nil];
+    }
+    [itemModel addObserver:self forKeyPath:@"currentFrame" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    
+    UILabel *epgLabel = (UILabel *)[itemView viewWithTag:103];
+    if (itemModel.currentProgram != nil) {
+        epgLabel.text = itemModel.currentProgram;
+    }
+    [itemModel addObserver:self forKeyPath:@"currentProgram" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+
+}
+
+- (void) initItemView:(UIImageView *)itemView {
+    itemView.userInteractionEnabled = true;
+    itemView.image = [UIImage imageNamed:@"video_channel_background"];
+    
+    // 频道logo
+    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 145, 30)];
+    logoView.tag = 101;
     [itemView addSubview:logoView];
     
-    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-24-5, 136, 24)];
-    backgroundView.image = [UIImage imageNamed:@"ytv_channel_background"];
+    // 当前视频第一帧
+    UIImageView *frameView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-116-5, 145-2*5, 116)];
+    frameView.tag = 102;
+    [itemView addSubview:frameView];
+    
+    // 当前节目
+    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 151-24-5, CGRectGetWidth(frameView.frame), 24)];
+    backgroundView.image = [UIImage imageNamed:@"video_epg_background"];
     [itemView addSubview:backgroundView];
-    UILabel *epgLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+5, 151-24-5, 136-10, 24) ];
+    
+    UILabel *epgLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+5, 151-24-5, CGRectGetWidth(frameView.frame)-10, 24) ];
+    epgLabel.tag = 103;
+    epgLabel.text = @"加载中...";
     epgLabel.font = [UIFont boldSystemFontOfSize:13];
     epgLabel.textColor = [UIColor whiteColor];
     epgLabel.backgroundColor = [UIColor clearColor];
-    if ( !JDOIsEmptyString(itemModel.currentProgram) ) {
-        epgLabel.text = itemModel.currentProgram;
-    } else {
-        epgLabel.text = @"加载中...";
-        [self loadCurrentEPG:@{@"epgLabel":epgLabel,@"itemModel":itemModel}];
-    }
     [itemView addSubview:epgLabel];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onItemClick:)];
     [itemView addGestureRecognizer:tap];
-    [self.contentView addSubview:itemView];
+    
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    JDOVideoModel *model = (JDOVideoModel *)object;
+    UIImageView *itemView;
+    int modelIndex = [self.models indexOfObject:model];
+    if (modelIndex%2 == 0){
+        itemView = (UIImageView *)[self.contentView viewWithTag:1001];
+    }else{
+        itemView = (UIImageView *)[self.contentView viewWithTag:1002];
+    }
+    
+    if ([keyPath isEqualToString:@"currentProgram"]) {
+        UILabel *epgLabel = (UILabel *)[itemView viewWithTag:103];
+        NSString *currentProgram = change[NSKeyValueChangeNewKey];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            epgLabel.text = currentProgram;
+        });
+    }else if([keyPath isEqualToString:@"currentFrame"]) {
+        UIImageView *frameView = (UIImageView *)[itemView viewWithTag:102];
+        JDOVideoFrame *currentFrame = change[NSKeyValueChangeNewKey];
+        dispatch_async(dispatch_get_main_queue(), ^{    // 不在主线程执行会卡住UI，导致全部加载完成后才会刷新和操作
+            frameView.image = currentFrame.frameImage;
+            [frameView.layer addAnimation:[self createNewTransition] forKey:nil];
+        });
+    }
 }
 
-// 从后台获取当前播放节目的名称
--(void)loadCurrentEPG:(NSDictionary *)obj{
-    UILabel *epgLabel = obj[@"epgLabel"];
-    JDOVideoModel *itemModel = obj[@"itemModel"];
-    
-    NSTimeInterval interval = [[itemModel currentTime] timeIntervalSince1970];
-    NSString *currentTime = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:interval] intValue]];
-    NSString *epgURL = [itemModel.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:currentTime];
-    
-    [[JDOJsonClient clientWithBaseURL:[NSURL URLWithString:epgURL]] getJSONByServiceName:@"" modelClass:nil config:nil params:nil success:^(NSDictionary *responseObject) {
-        if(responseObject[@"result"]){
-            NSArray *list = responseObject[@"result"][0];
-            if(list == nil || list.count == 0){
-                epgLabel.text = @"无节目单";
-            }else{
-                DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDOVideoEPGModel class] andConfiguration:[DCParserConfiguration configuration]];
-                NSArray *epgModels = [mapper parseArray:list];
-                JDOVideoEPGModel *currentEPG;
-                for (int i=0; i<epgModels.count; i++) {
-                    JDOVideoEPGModel *epgModel = [epgModels objectAtIndex:i];
-                    if( [[itemModel currentTime] compare:epgModel.start_time] == NSOrderedDescending &&
-                       [[itemModel currentTime] compare:epgModel.end_time] == NSOrderedAscending ){
-                        currentEPG = epgModel;
-                        break;
-                    }
-                }
-                if (currentEPG) {
-//                    epgLabel.text = [NSString stringWithFormat:@"%@ %@",[JDOCommonUtil formatDate:currentEPG.start_time withFormatter: DateFormatHM],currentEPG.name ];
-                    epgLabel.text = currentEPG.name; // 页面空间不足，暂时不显示时间
-                    itemModel.currentProgram = currentEPG.name;
-                }else{
-                    epgLabel.text = @"当前无直播节目";
-                    NSLog(@"无直播节目时候的服务器时间:%@",[itemModel currentTime]);
-                }
-            }
-        }else{
-            epgLabel.text = @"无法获取当前节目";
-        }
-        
-    } failure:^(NSString *errorStr) {
-        NSLog(@"加载当前视频节目名称错误：%@", errorStr);
-        epgLabel.text = @"无法获取当前节目";
-    }];
+- (CATransition *)createNewTransition{
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionFade;
+    return transition;
 }
 
-- (void)onItemClick:(UITapGestureRecognizer *)tap{
-    [self.delegate onLiveChannelClick:tap.view.tag];
+- (void)onItemClick:(UITapGestureRecognizer *)gesture{
+    int modelIndex = 0;
+    if (gesture.view.tag == 1001){  // 左侧item
+        modelIndex = self.rowIndex*2;
+    }else if(gesture.view.tag == 1002){
+        modelIndex = self.rowIndex*2+1;
+    }
+    JDOVideoModel *model = self.models[modelIndex];
+    if (model.currentFrame == nil || !model.currentFrame.success ) {
+        return;
+    }
+    [self.delegate onLiveChannelClick:model];
 }
 
 @end

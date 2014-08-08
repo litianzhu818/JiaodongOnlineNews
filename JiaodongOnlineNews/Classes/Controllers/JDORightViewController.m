@@ -54,7 +54,6 @@ typedef enum {
 @property (strong) JDOWeatherForcast *forcast;
 
 @property (nonatomic,strong) UIView *blackMask;
-@property (nonatomic,strong) NSMutableArray *controllerStack;
 
 @end
 
@@ -88,7 +87,7 @@ typedef enum {
     self.view.bounds =CGRectMake(0, 0, 320, Is_iOS7?480:460);
     
     UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height) ];
-    backgroundView.image = [UIImage imageNamed:@"menu_background.png"];
+    backgroundView.image = [UIImage imageNamed:Is_iOS7?@"menu_background~iOS7":@"menu_background"];
     [self.view addSubview:backgroundView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, Menu_Cell_Height*iconNames.count) style:UITableViewStylePlain];
@@ -185,8 +184,8 @@ typedef enum {
     [super viewDidLoad];
     
     IIViewDeckController *deckController = [SharedAppDelegate deckController];
-    _controllerStack = [[NSMutableArray alloc] init];
-    [_controllerStack addObject:deckController];
+    self.controllerStack = [[NSMutableArray alloc] init];
+    [self.controllerStack addObject:deckController];
 #warning 天气增加"更新时间"字段,提供两个按钮分别显示预报和详情,预报可以用Flip+Scrollview
 #warning 若客户端直接访问天气webservice有问题，可以切换成在服务器端实现
     [self updateWeather];
@@ -339,18 +338,26 @@ typedef enum {
 }
 
 - (void) pushViewController:(JDONavigationController *)controller{
-    controller.stackViewController = self;
-    [((UIViewController *)[_controllerStack lastObject]).view pushView:controller.view startFrame:Transition_Window_Right endFrame:Transition_Window_Center complete:^{
+    [self pushViewController:controller direction:0];
+}
+
+- (void) pushViewController:(JDONavigationController *)controller direction:(int) direction{
+    controller.stackContainer = self;
+    [((UIViewController *)[self.controllerStack lastObject]).view pushView:controller.view startFrame:Is_iOS7? (direction==0?Transition_View_Right:Transition_View_Bottom):(direction==0?Transition_Window_Right:Transition_Window_Bottom) endFrame:Is_iOS7?Transition_View_Center:Transition_Window_Center complete:^{
         
     }];
-    [_controllerStack addObject:controller];
+    [self.controllerStack addObject:controller];
 }
 
 - (void) popViewController{
-    JDONavigationController *_lastController = [_controllerStack lastObject];
-    _lastController.stackViewController = nil;
-    [_controllerStack removeLastObject];
-    [_lastController.view popView:((UIViewController *)[_controllerStack lastObject]).view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:^{
+    [self popViewController:0];
+}
+
+- (void) popViewController:(int) direction{
+    JDONavigationController *_lastController = [self.controllerStack lastObject];
+    _lastController.stackContainer = nil;
+    [self.controllerStack removeLastObject];
+    [_lastController.view popView:((UIViewController *)[self.controllerStack lastObject]).view startFrame:Is_iOS7?Transition_View_Center:Transition_Window_Center endFrame:Is_iOS7?(direction==0?Transition_View_Right:Transition_View_Bottom):(direction==0?Transition_Window_Right:Transition_Window_Bottom) complete:^{
         
     }];
 }
@@ -380,7 +387,7 @@ typedef enum {
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.backgroundColor = [UIColor clearColor];
-        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
+        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:Is_iOS7?@"menu_row_selected~iOS7":@"menu_row_selected"]];
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.width-Right_Margin-Menu_Item_Width, 0, Menu_Item_Width, Menu_Cell_Height)];
         [imageView setTag:Menu_Image_Tag];
         [cell.contentView addSubview:imageView];
@@ -442,10 +449,11 @@ typedef enum {
             if( _collectController == nil){
                 _collectController = [[JDOCollectViewController alloc] init];
             }
-            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
-                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_collectController orientation:JDOTransitionFromBottom animated:false];
-            } completion:^(IIViewDeckController *controller, BOOL success) {
-            }];
+//            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
+//                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_collectController orientation:JDOTransitionFromBottom animated:false];
+//            } completion:^(IIViewDeckController *controller, BOOL success) {
+//            }];
+            [self pushViewController:_collectController];
             break;}
 //        case RightMenuItemfeedback:
 //            if( _feedbackController == nil){
@@ -459,11 +467,11 @@ typedef enum {
             if( _aboutUsController == nil){
                 _aboutUsController = [[JDOAboutUsViewController alloc] init];
             }
-            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
-                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_aboutUsController orientation:JDOTransitionFromBottom animated:false];
-            } completion:^(IIViewDeckController *controller, BOOL success) {
-            }];
-            //[self pushViewController:_aboutUsController];
+//            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
+//                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_aboutUsController orientation:JDOTransitionFromBottom animated:false];
+//            } completion:^(IIViewDeckController *controller, BOOL success) {
+//            }];
+            [self pushViewController:_aboutUsController];
             break;}
         case RightMenuItemBind:
             if( _shareAuthController == nil){

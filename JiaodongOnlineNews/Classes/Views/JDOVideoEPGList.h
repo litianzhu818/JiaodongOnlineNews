@@ -18,11 +18,12 @@
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *listArray;
 @property (nonatomic,strong) JDOVideoModel *videoModel;
-
+@property (nonatomic,assign) int selectedRow;
+@property (nonatomic,assign) JDOVideoEPG *videoEpg;
 @property (nonatomic,assign) id<JDOVideoEPGDelegate> delegate;
+@property (nonatomic,strong) NSDictionary *pageInfo;
 
-- (id)initWithFrame:(CGRect)frame identifier:(NSString *)reuseId;
-
+- (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info inEpg:(JDOVideoEPG *)epg;
 - (void)loadDataFromNetwork;
 
 @end

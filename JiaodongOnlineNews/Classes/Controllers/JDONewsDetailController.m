@@ -157,14 +157,17 @@ NSDate *modifyTime;
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
     [super webViewDidFinishLoad:webView];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Introduce_NewsDetail"] || Debug_Guide_Introduce) {
-        UIImageView *introduceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Introduce_NewsDetail"]];
-        introduceView.userInteractionEnabled = true;
-        introduceView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8f];
-        [introduceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(introduceViewClicked:)]];
-        introduceView.alpha = 0;
-        [self.view addSubview:introduceView];
+        UIView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height)];
+        backgroundView.userInteractionEnabled = true;
+        backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7f];
+        [backgroundView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(introduceViewClicked:)]];
+        backgroundView.alpha = 0;
+        UIImageView *introduceView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, [UIScreen mainScreen].applicationFrame.size.height)];
+        introduceView.image = [UIImage imageNamed:@"Introduce_NewsDetail"];
+        [backgroundView addSubview:introduceView];
+        [self.view addSubview:backgroundView];
         [UIView animateWithDuration:0.4 animations:^{
-            introduceView.alpha = 1;
+            backgroundView.alpha = 1;
         }];
     }
 }

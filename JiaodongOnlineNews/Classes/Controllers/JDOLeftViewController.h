@@ -15,7 +15,7 @@
 @property (nonatomic,strong) JDOAppDelegate *myDelegate;
 
 - (void) transitionToAlpha:(float) alpha Scale:(float) scale;
-- (void) pushViewController:(JDONavigationController *)controller;
-- (void) popViewController;
+//- (void) pushViewController:(JDONavigationController *)controller;
+//- (void) popViewController;
 
 @end

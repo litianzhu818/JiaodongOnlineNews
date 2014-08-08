@@ -49,7 +49,7 @@
     [super loadView];
     
     UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height) ];
-    backgroundView.image = [UIImage imageNamed:@"menu_background.png"];
+    backgroundView.image = [UIImage imageNamed:Is_iOS7?@"menu_background~iOS7":@"menu_background"];
     [self.view addSubview:backgroundView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, Menu_Cell_Height*MenuItemCount) style:UITableViewStylePlain];
@@ -79,22 +79,23 @@
     [_controllerStack addObject:deckController];
 }
 
-- (void) pushViewController:(JDONavigationController *)controller{
-    controller.stackViewController = self;
-    [((UIViewController *)[_controllerStack lastObject]).view pushView:controller.view startFrame:Transition_Window_Right endFrame:Transition_Window_Center complete:^{
-        
-    }];
-    [_controllerStack addObject:controller];
-}
-
-- (void) popViewController{
-    JDONavigationController *_lastController = [_controllerStack lastObject];
-    _lastController.stackViewController = nil;
-    [_controllerStack removeLastObject];
-    [_lastController.view popView:((UIViewController *)[_controllerStack lastObject]).view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:^{
-        
-    }];
-}
+// 之前天气放在左菜单下面，为了打开天气详情增加的这两个方法，现在转移到右菜单中
+//- (void) pushViewController:(JDONavigationController *)controller{
+//    controller.stackViewController = self;
+//    [((UIViewController *)[_controllerStack lastObject]).view pushView:controller.view startFrame:Transition_Window_Right endFrame:Transition_Window_Center complete:^{
+//        
+//    }];
+//    [_controllerStack addObject:controller];
+//}
+//
+//- (void) popViewController{
+//    JDONavigationController *_lastController = [_controllerStack lastObject];
+//    _lastController.stackViewController = nil;
+//    [_controllerStack removeLastObject];
+//    [_lastController.view popView:((UIViewController *)[_controllerStack lastObject]).view startFrame:Transition_Window_Center endFrame:Transition_Window_Right complete:^{
+//        
+//    }];
+//}
 
 - (void)viewWillAppear:(BOOL)animated{
     //    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:false scrollPosition:UITableViewScrollPositionNone];
@@ -164,7 +165,7 @@
     imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
     if(indexPath.row == _lastSelectedRow){
         imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected.png"]];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:Is_iOS7?@"menu_row_selected~iOS7": @"menu_row_selected"]];
         //        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
     }else{
         imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];

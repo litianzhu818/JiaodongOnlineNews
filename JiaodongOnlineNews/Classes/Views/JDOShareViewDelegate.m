@@ -59,13 +59,13 @@ static JDOShareViewDelegate* sharedDelegate;
     [navigationView setTitle:[ShareSDK getClientNameWithType:shareType]];
 
     if(_presentView){
-        _cloneView = [[UIView alloc] initWithFrame:Transition_Window_Center];
+        _cloneView = [[UIView alloc] initWithFrame:Is_iOS7?Transition_View_Center:Transition_Window_Center];
         for(UIView *subView in [viewController.view subviews]){
             [subView removeFromSuperview];
             [_cloneView addSubview:subView];
         }
         [_cloneView addSubview:navigationView];
-        [_presentView pushView:_cloneView startFrame:Transition_Window_Bottom endFrame:Transition_Window_Center complete:nil];
+        [_presentView pushView:_cloneView startFrame:Is_iOS7?Transition_View_Bottom:Transition_Window_Bottom endFrame:Is_iOS7?Transition_View_Center:Transition_Window_Center complete:nil];
     }else{
         [viewController.view addSubview:navigationView];
     }
@@ -74,7 +74,7 @@ static JDOShareViewDelegate* sharedDelegate;
 - (void)viewOnWillDismiss:(UIViewController *)viewController shareType:(ShareType)shareType{
     if(viewClosedByBack == false){ //授权完成返回
         if(_presentView){
-            [_cloneView popView:_presentView startFrame:Transition_Window_Center endFrame:Transition_Window_Bottom complete:nil];
+            [_cloneView popView:_presentView startFrame:Is_iOS7?Transition_View_Center:Transition_Window_Center endFrame:Is_iOS7?Transition_View_Bottom:Transition_Window_Bottom complete:nil];
         }
         if(_completeBlock) _completeBlock();
     }
@@ -83,7 +83,7 @@ static JDOShareViewDelegate* sharedDelegate;
 - (void) backToParent{
     viewClosedByBack = true;
     if(_presentView){
-        [_cloneView popView:_presentView startFrame:Transition_Window_Center endFrame:Transition_Window_Bottom complete:^{
+        [_cloneView popView:_presentView startFrame:Is_iOS7?Transition_View_Center:Transition_Window_Center endFrame:Is_iOS7?Transition_View_Bottom:Transition_Window_Bottom complete:^{
             [_backBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
         }];
     }else{

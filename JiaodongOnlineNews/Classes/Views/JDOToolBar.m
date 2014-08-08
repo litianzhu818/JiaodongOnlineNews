@@ -58,6 +58,7 @@
         self.widthConfig = widthConfig;
         self.theme = theme;
         self.frameHeight = frame.size.height;
+        self.btns = [[NSMutableDictionary alloc] initWithCapacity:10];
         
         _isKeyboardShowing = false;
         _reviewType = JDOReviewTypeNews;
@@ -108,6 +109,7 @@
         xPosition += frameWidth;
         
         ToolBarControlType btnType = [(NSNumber *)[_typeConfig objectAtIndex:i] intValue];
+        [self.btns setObject:btn forKey:[NSNumber numberWithInt:btnType]];
         if( btnType == ToolBarInputField ){ // 工具栏包含输入框的情况
             [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateNormal];
             [btn setBackgroundImage:[UIImage imageNamed:@"inputFieldBorder"] forState:UIControlStateHighlighted];
@@ -167,6 +169,10 @@
             }
             [btn addTarget:self action:@selector(onDownload:) forControlEvents:UIControlEventTouchUpInside];
             break;
+        case ToolBarButtonVideoEpg:
+            iconName = @"epg.png";
+            iconHighlightName = @"epg_clicked.png";
+            [btn addTarget:self action:@selector(onVideoEpg:) forControlEvents:UIControlEventTouchUpInside];
         default:
             break;
     }
@@ -280,6 +286,10 @@
         [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(webView)]];
     }else if ([self.parentController respondsToSelector:@selector(tableView)]){
         [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(tableView)]];
+    }else if ([self.parentController respondsToSelector:@selector(audioEpg)]){
+        [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(audioEpg)]];
+    }else if ([self.parentController respondsToSelector:@selector(backView)]){
+        [JDOCommonUtil showSuccessHUD:content inView:[self.parentController performSelector:@selector(backView)]];
     }else{
         [JDOCommonUtil showSuccessHUD:content inView:self.parentController.view];
     }
@@ -482,6 +492,12 @@
                 [self.downloadTarget addObserver:self selector:@selector(onDownloadObjectFinished)];
             }
         }
+    }
+}
+
+- (void) onVideoEpg:(UIButton *)sender{
+    if(self.videoTarget){
+        [self.videoTarget onEpgClicked];
     }
 }
 

@@ -9,10 +9,12 @@
 #import "JDOVideoViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDOVideoLiveList.h"
-#define Navbar_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0?36.0f:34.5f)
+#import "JDOAudioLiveList.h"
+#import "JDOOnDemondList.h"
+
+#define Navbar_Height (Is_iOS7?36.0f:34.5f)
 
 @interface JDOVideoViewController()
 
@@ -107,22 +109,22 @@
     
     switch (pageIndex) {
         case 0:{
-            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            aPage.tableView.scrollsToTop = true;
-            [aPage loadDataFromNetwork];
-            return aPage;
+            JDOAudioLiveList *audio = [[JDOAudioLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+            audio.tableView.scrollsToTop = true;
+            [audio loadDataFromNetwork];
+            return audio;
         }
         case 1:{
-            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            aPage.tableView.scrollsToTop = false;
-            [aPage loadDataFromNetwork];
-            return aPage;
+            JDOVideoLiveList *video = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+            video.tableView.scrollsToTop = true;
+            [video loadDataFromNetwork];
+            return video;
         }
         case 2:{
-            JDOVideoLiveList *aPage = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            aPage.tableView.scrollsToTop = false;
-            [aPage loadDataFromNetwork];
-            return aPage;
+            JDOOnDemondList *onDemand = [[JDOOnDemondList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
+            onDemand.tableView.scrollsToTop = false;
+            [onDemand loadDataFromNetwork];
+            return onDemand;
         }
         default:
             return nil;

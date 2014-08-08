@@ -35,9 +35,10 @@
 #import "JDOMainViewController.h"
 #import "JDOViolationViewController.h"
 #import <Crashlytics/Crashlytics.h>
-#import "MTA.h"
+//#import "MTA.h"
 #import "UIDevice+IdentifierAddition.h"
-//#import "iOSHierarchyViewer.h"
+#import "JDOVideoViewController.h"
+#import "JDOVideoDetailController.h"
 
 #define splash_stay_time 1.0 //1.0
 #define advertise_stay_time 2.0
@@ -68,6 +69,7 @@
     MBProgressHUD *HUD;
     int bindErrorCount;
     __strong NSDictionary *violationInfo;
+    __strong NSDictionary *videoInfo;
 }
 
 - (void)asyncLoadAdvertise{   // 异步加载广告页
@@ -183,6 +185,7 @@
 
 - (void)advViewClicked
 {
+//    self.advTargetId = @"29030";
     if (self.advTargetId&&![self.advTargetId isEqualToString:@"0"]) {
         [JDOAppDelegate cancelPreviousPerformRequestsWithTarget:self selector:@selector(navigateToMainView:) object:self.launchOptions];
         
@@ -227,11 +230,11 @@
     advView.userInteractionEnabled = NO;
     self.deckController = [self generateControllerStack];
     bool showGuide = ![[NSUserDefaults standardUserDefaults] boolForKey:@"JDO_Guide"] || Debug_Guide_Introduce;
-//    if( showGuide ){
+    if( !showGuide && !(Is_iOS7)){
+        self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
+    }else{
         self.deckController.view.frame = CGRectMake(0, 0, 320, App_Height);
-//    }else{
-//        self.deckController.view.frame = CGRectMake(0, 20, 320, App_Height);
-//    }
+    }
     [self.window insertSubview:self.deckController.view belowSubview:advView];
     
     [UIView animateWithDuration:adv_main_fadetime animations:^{
@@ -241,25 +244,24 @@
         [advView removeFromSuperview];
         [self.deckController.view removeFromSuperview];
         self.window.rootViewController = self.deckController;
-        // iOS7下调整deckController.view的大小以适合状态栏
-//        if (Is_iOS7 && !showGuide ) {
-//            CGRect f = self.deckController.view.frame;
-//            f.origin.y += 20;
-//            f.size.height -= 20;
-//            self.deckController.view.frame = f;
-//        }
         
+        // 只有从通知启动应用才会进入该分支，若应用处于在后台运行状态则不会进入
         if (launchOptions != nil){
-        // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
-            NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-            if (dictionary != nil){
-                NSString *newsId = [dictionary objectForKey:@"newsid"];
-                NSString *hphm = [dictionary objectForKey:@"hphm"];
+            // 应用由推送消息引导进入的时候，需要在加载完成后显示对应的信息
+            NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+            if (remoteNotification != nil){
+                NSString *newsId = [remoteNotification objectForKey:@"newsid"];
+                NSString *hphm = [remoteNotification objectForKey:@"hphm"];
                 if ( newsId != nil ) {
                     [self openNewsDetail:newsId];    // 打开新闻详情对应界面
                 }else if ( hphm != nil ) {
-                    [self openViolation:dictionary];    // 打开违章查询对应界面
+                    [self openViolation:remoteNotification];    // 打开违章查询对应界面
                 }
+            }
+            // 本地通知用来打开订闹钟的视频节目
+            UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+            if (localNotification != nil) {
+                [self openVideo:localNotification.userInfo];
             }
         }
     }];
@@ -306,7 +308,7 @@
 //    [ShareSDK addNotificationWithName:SSN_USER_INFO_UPDATE target:self action:@selector(userInfoUpdateHandler:)];
     
     //腾讯统计
-    [MTA startWithAppkey:@"I8DAWBQ14Z3Q"];
+//    [MTA startWithAppkey:@"I8DAWBQ14Z3Q"];
     
     //友盟统计
 #warning 开发阶段关闭友盟统计
@@ -344,11 +346,6 @@
     
     splashView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     splashView.image = [UIImage imageNamed:@"Default"];
-    // iOS7以上，在splash页面就显示状态栏。iOS7以下在广告和新手指南显示完成后在显示状态栏
-    if (Is_iOS7){
-        [[UIApplication sharedApplication] setStatusBarHidden:false withAnimation:UIStatusBarAnimationFade];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    }
     [self.window addSubview:splashView];
     
     [self performSelector:@selector(showAdvertiseView:) withObject:launchOptions afterDelay:splash_stay_time];
@@ -365,7 +362,7 @@
      */
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert| UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
     
-    [self clearNotifications];
+    [self clearRemoteNotifications];
     
     [Crashlytics startWithAPIKey:Crashlytics_Key];
 
@@ -402,13 +399,14 @@
     return YES;
 }
 
-- (void) clearNotifications{
+- (void) clearRemoteNotifications{
     // 清除通知栏本应用的所有通知
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:1];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    NSArray* scheduledNotifications = [NSArray arrayWithArray:[UIApplication sharedApplication].scheduledLocalNotifications];
-    [UIApplication sharedApplication].scheduledLocalNotifications = scheduledNotifications;
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+#warning 因本地通知作为闹钟使用，不能在应用启动时清除所有本地通知，未测试这段代码注释掉以后，启动应用是否还能清除角标
+//    NSArray* scheduledNotifications = [NSArray arrayWithArray:[UIApplication sharedApplication].scheduledLocalNotifications];
+//    [UIApplication sharedApplication].scheduledLocalNotifications = scheduledNotifications;
+//    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 - (void)clearImageCache{
@@ -686,7 +684,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    [self clearNotifications];
+    [self clearRemoteNotifications];
 #warning 若页面停留在新闻图片等可刷新模块，应根据超时参考值判断是否自动刷新
     // 测试页面层级，iOS7下不可用
 //    [iOSHierarchyViewer start];
@@ -743,14 +741,21 @@
             [self openViolation:userInfo];    // 打开违章查询对应界面
         }
     }
-    [self clearNotifications];
+    [self clearRemoteNotifications];
     [BPush handleNotification:userInfo]; // 可选,百度后台统计用
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if ( buttonIndex != alertView.cancelButtonIndex) {   // 查看违章
-        [self openViolation:violationInfo]; 
+    if([alertView.title isEqualToString:@"违章提醒"]){
+        if ( buttonIndex != alertView.cancelButtonIndex) {   // 查看违章
+            [self openViolation:violationInfo];
+        }
+    }else if([alertView.title isEqualToString:@"开播提醒"]){
+        if ( buttonIndex != alertView.cancelButtonIndex) {   // 播放视频
+            [self openVideo:videoInfo];
+        }
     }
+    
 }
 
 //- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex; 
@@ -770,7 +775,6 @@
     [leftController.tableView reloadData];
 }
 
-// 
 - (void) openNewsDetail:(NSString *) newsId{
     JDONewsModel *newsModel = [[JDONewsModel alloc] init];
     newsModel.id = newsId;
@@ -880,6 +884,62 @@
             }
         }
     }
+}
+
+// 当程序在前台或者在后台运行时通知到达，则会执行didReceiveRemoteNotification和didReceiveLocalNotification的回调，所以要在其中先判断程序状态：在前台时通过alert提醒，点击确定按钮后做相应处理；在后台时通过滑动切换进来则直接做相应处理。
+// 当程序非运行态时通知到达，则会执行didFinishLaunchingWithOptions的回调
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    if (application.applicationState == UIApplicationStateActive) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"开播提醒" message:notification.alertBody delegate:self cancelButtonTitle:@"关闭" otherButtonTitles:@"查看", nil];
+        videoInfo = notification.userInfo;
+        [alert show];
+    }else{
+        [self openVideo:notification.userInfo];
+    }
+    [self clearLocalNotification:notification];
+}
+
+#warning 未考虑设置、收藏等全覆盖在deckController之上的视图在显示状态的情况
+- (void) openVideo:(NSDictionary *)info {   //@"channel_name",@"video_name",@"start_time",@"live_url"
+    [self.deckController closeLeftViewAnimated:false];
+    [self.deckController closeRightViewAnimated:false];
+    
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[self.deckController centerController];
+    if ([centerController.viewControllers[0] isKindOfClass:[JDOVideoViewController class]]) {
+        #warning 当前已经在视频频道,未实现若当前在视频列表页则在打开订阅频道，非订阅频道则切换频道等功能点
+        return;
+    }
+    [centerController setRootViewControllerType:MenuItemVideo];
+
+    
+    JDOVideoModel *videoModel = [[JDOVideoModel alloc] init];
+    videoModel.name = info[@"channel_name"];
+    videoModel.liveUrl = info[@"live_url"];
+    videoModel.epgApi = info[@"epg_api"];
+    videoModel.interval = 0;
+    // serverTime从客户端取不一定准确，保险的办法是重新请求一遍/Tv/getTvapi来获取
+    NSError *error;
+    NSString *url = [NSString stringWithFormat:@"%@/%@",SERVER_QUERY_URL,VIDEO_LIVE];
+    NSData *videoData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url] options:NSDataReadingUncached error:&error];
+    if(error != nil){
+        NSLog(@"获取视频服务器时间错误:%@",error);
+        videoModel.serverTime = [NSDate date];
+    }else{
+        NSDictionary *videoJson = [[videoData objectFromJSONData] objectForKey:@"data"];
+        videoModel.serverTime = [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)videoJson[@"serverTime"] doubleValue]];
+    }
+    
+    JDOVideoDetailController *detailController = [[JDOVideoDetailController alloc] initWithModel:videoModel];
+    [centerController pushViewController:detailController animated:true];
+    
+    // 同步左菜单选中状态
+    JDOLeftViewController *leftController = (JDOLeftViewController *)[self.deckController leftController];
+    leftController.lastSelectedRow = (int)MenuItemVideo;
+    [leftController.tableView reloadData];
+}
+
+- (void) clearLocalNotification:(UILocalNotification *) notification{
+    // 本地通知在触发后自动从scheduledLocalNotifications中清除，不需要手动处理
 }
 
 @end

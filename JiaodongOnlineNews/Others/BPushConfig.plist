@@ -7,6 +7,6 @@
 	<key>API_KEY</key>
 	<string>scfYji2YuzGwb4H4IPaIbSPa</string>
 	<key>DEBUG</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

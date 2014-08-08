@@ -28,28 +28,33 @@
     NSDate *HUDShowTime;
 }
 
-- (id)initWithFrame:(CGRect)frame identifier:(NSString *)reuseId{
+- (id)initWithFrame:(CGRect)frame info:(NSDictionary *)info inEpg:(JDOVideoEPG *)epg{
     if (self = [super init]) {
         self.frame = frame;
-        self.reuseIdentifier = reuseId;
+        self.pageInfo = info;
+        self.reuseIdentifier = info[@"reuseId"];
+        self.videoEpg = epg;
+        self.videoModel = epg.videoModel;
+        self.delegate = epg.delegate;
+        
         self.listArray = [[NSMutableArray alloc] init];
         self.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+        self.selectedRow = -1;
         
-        CGRect tableFrame = self.bounds;
-        tableFrame.size.height = tableFrame.size.height;
-        self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
+        self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;  // 分割线用背景图片实现
         self.tableView.rowHeight = News_Cell_Height;
+        self.tableView.allowsSelection = false; // 通过背景视图设置选中效果
+        self.tableView.scrollsToTop = true;
         [self addSubview:self.tableView];
         
         self.statusView = [[JDOStatusView alloc] initWithFrame:self.bounds];
         self.statusView.delegate = self;
         [self addSubview:self.statusView];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deptChanged:) name:kDeptChangedNotification object:nil];
         
         // 无数据提示
         _noDataView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_no_data"]];
@@ -118,37 +123,35 @@
         [self setCurrentState:ViewStatusLoading];
     }
     
-    NSTimeInterval interval = [[self.videoModel currentTime] timeIntervalSince1970];
-    NSString *currentTime = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:interval] intValue]];
-    NSString *epgURL = [self.videoModel.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:currentTime];
+    NSString *whichDay = self.pageInfo[@"title"];
+    int deltaDay = 0;
+    if ([whichDay isEqualToString:@"前天"]) {
+        deltaDay = -2;
+    }else if ([whichDay isEqualToString:@"昨天"]) {
+        deltaDay = -1;
+    }else if ([whichDay isEqualToString:@"明天"]) {
+        deltaDay = 1;
+    }else if ([whichDay isEqualToString:@"后天"]) {
+        deltaDay = 2;
+    }
+    
+    NSTimeInterval currnetTime = [[self.videoModel currentTime] timeIntervalSince1970];
+    NSTimeInterval epgTime = currnetTime + deltaDay*24*60*60;
+    NSString *timestamp = [NSString stringWithFormat:@"%d",[[NSNumber numberWithDouble:epgTime] intValue]];
+    NSString *epgURL = [self.videoModel.epgApi stringByReplacingOccurrencesOfString:@"{timestamp}" withString:timestamp];
     [[JDOJsonClient clientWithBaseURL:[NSURL URLWithString:epgURL]] getJSONByServiceName:@"" modelClass:nil config:nil params:nil success:^(NSDictionary *responseObject) {
         if(responseObject[@"result"]){
             [self setCurrentState:ViewStatusNormal];
             NSArray *list = responseObject[@"result"][0]; // 结构参考上方注释
+            NSArray *epgModels;
             if(list == nil || list.count == 0){
-                _noDataView.hidden = false;
+                // 以1小时为间隔，全部显示"精彩节目"
+                epgModels = [NSArray arrayWithArray:[self generateEpgList:epgTime]];
             }else{
                 DCKeyValueObjectMapping *mapper = [DCKeyValueObjectMapping mapperForClass: [JDOVideoEPGModel class] andConfiguration:[DCParserConfiguration configuration]];
-                NSArray *epgModels = [mapper parseArray:list];
-                // 设置节目的状态属性：回放、直播、预告
-                NSDate *currentDate = [self.videoModel currentTime];
-                for (int i=0; i<epgModels.count; i++) {
-                    JDOVideoEPGModel *epgModel = [epgModels objectAtIndex:i];
-                    if([currentDate compare:epgModel.end_time] != NSOrderedAscending){
-                        epgModel.state = JDOVideoStatePlayback;
-                    }else if([currentDate compare:epgModel.start_time] != NSOrderedAscending &&
-                       [currentDate compare:epgModel.end_time] != NSOrderedDescending ){
-                        epgModel.state = JDOVideoStateLive;
-                    }else if([currentDate compare:epgModel.start_time] != NSOrderedDescending){
-                        epgModel.state = JDOVideoStateForecast;
-                    }else{
-                        epgModel.state = JDOVideoStateUnknown;
-                    }
-                }
-                [self.listArray removeAllObjects];
-                [self.listArray addObjectsFromArray:epgModels];
-                [self.tableView reloadData];
+                epgModels = [mapper parseArray:list];
             }
+            [self setEpgState:epgModels];
         }else{
             _noDataView.hidden = false;
         }
@@ -157,6 +160,69 @@
         NSLog(@"错误内容--%@", errorStr);
         [self setCurrentState:ViewStatusRetry];
     }];
+}
+
+- (NSMutableArray *) generateEpgList:(NSTimeInterval) epgTime{
+    JDOVideoEPGModel *epgModel;
+    NSMutableArray *temp = [NSMutableArray arrayWithCapacity:24];
+    NSDate *nowInSomeDay = [NSDate dateWithTimeIntervalSince1970:epgTime]; // 5天的当前时间
+    NSCalendar *calendar = [NSCalendar currentCalendar];    // +8zone日历
+    NSCalendarUnit flg = NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond;
+    NSDateComponents *hms = [calendar components:flg fromDate:nowInSomeDay];
+    [hms setHour:0];    [hms setMinute:0];  [hms setSecond:0];
+    NSDate *startInSomeDay = [calendar dateFromComponents:hms];
+    for (int i=0; i<24; i++) {
+        epgModel = [[JDOVideoEPGModel alloc] init];
+        epgModel.name = @"精彩节目";
+        epgModel.start_time = [NSDate dateWithTimeInterval:i*3600 sinceDate:startInSomeDay];
+        epgModel.end_time = [NSDate dateWithTimeInterval:(i+1)*3600 sinceDate:startInSomeDay];
+        [temp addObject:epgModel];
+    }
+    return temp;
+}
+
+- (void) setEpgState:(NSArray *)epgModels{
+    // 设置节目的状态属性：回放、直播、预告
+    NSDate *currentDate = [self.videoModel currentTime];
+    for (int i=0; i<epgModels.count; i++) {
+        JDOVideoEPGModel *epgModel = [epgModels objectAtIndex:i];
+        epgModel.videoMoel = self.videoModel; // 在订闹钟的信息处使用
+        if([currentDate compare:epgModel.end_time] != NSOrderedAscending){
+            epgModel.state = JDOVideoStatePlayback;
+        }else if([currentDate compare:epgModel.start_time] != NSOrderedAscending &&
+                 [currentDate compare:epgModel.end_time] != NSOrderedDescending ){
+            epgModel.state = JDOVideoStateLive;
+            self.selectedRow = i;
+            self.videoEpg.selectedIndexPath = [NSIndexPath indexPathForRow:i inSection:self.videoEpg.selectedIndexPath.section];
+        }else if([currentDate compare:epgModel.start_time] != NSOrderedDescending){
+            epgModel.state = JDOVideoStateForecast;
+            // 预报的节目根据本地通知中的数据，同步闹钟状态
+            [self checkClockState:epgModel];
+        }else{
+            epgModel.state = JDOVideoStateUnknown;
+        }
+    }
+    [self.listArray removeAllObjects];
+    [self.listArray addObjectsFromArray:epgModels];
+    [self.tableView reloadData];
+    // 滚动到当前直播节目
+    if(self.selectedRow!=-1){
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedRow inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:false];
+    }
+    [self.tableView reloadData];
+}
+
+- (void) checkClockState:(JDOVideoEPGModel *) epgModel{
+    epgModel.clock = false;
+    NSArray *localNotifications = [UIApplication sharedApplication].scheduledLocalNotifications;
+    for (int i=0; i<localNotifications.count; i++) {
+        UILocalNotification *noti = [localNotifications objectAtIndex:i];
+        NSString *startTime = [JDOCommonUtil formatDate:epgModel.start_time withFormatter:DateFormatYMDHM];
+        
+        if ([[[noti userInfo] objectForKey:@"channel_name"] isEqualToString:epgModel.videoMoel.name] && [[[noti userInfo] objectForKey:@"video_name"] isEqualToString:epgModel.name] && [[[noti userInfo] objectForKey:@"start_time"] isEqualToString:startTime]) {
+            epgModel.clock = true;
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -179,23 +245,32 @@
     }
     if(self.listArray.count > 0){
         JDOVideoEPGModel *epgModel = [self.listArray objectAtIndex:indexPath.row];
-        [cell setModel:epgModel];
+        cell.list = self;
+        [cell setModel:epgModel atIndexPath:indexPath];
+
+        if (indexPath.row%2 == 0) {
+            cell.contentView.backgroundColor = [UIColor colorWithHex:@"F5F5F5"];
+        }else{
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+        }
     }
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
+    return 45;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    JDOVideoEPGModel *epgModel = [self.listArray objectAtIndex:indexPath.row];
-    [self.delegate onVideoChanged:epgModel];
+    // 将点击行切换视频修改为点击右侧按钮进行相应的操作
+//    JDOVideoEPGModel *epgModel = [self.listArray objectAtIndex:indexPath.row];
+//    [self.delegate onVideoChanged:epgModel];
     
 //    JDOVideoDetailController *detailController = [[JDOVideoDetailController alloc] initWithModel:videoModel];
 //    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
 //    [centerController pushViewController:detailController animated:true];
 //    [tableView deselectRowAtIndexPath:indexPath animated:false];
 }
+
 
 @end

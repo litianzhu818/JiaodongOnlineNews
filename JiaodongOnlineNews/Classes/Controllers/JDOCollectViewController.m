@@ -9,14 +9,13 @@
 #import "JDOCollectViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOPageControl.h"
-#import "Math.h"
 #import "NIPagingScrollView.h"
 #import "JDOCollectNewsView.h"
 #import "JDOCollectImageView.h"
 #import "JDOCollectTopicView.h"
 #import "JDOCollectQuestionView.h"
 #import "JDOCollectDB.h"
-#define Navbar_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0?36.0f:34.5f)
+#define Navbar_Height (Is_iOS7?36.0f:34.5f)
 
 @interface JDOCollectViewController()
 
@@ -96,8 +95,9 @@
     UITableView* tableview = [((JDOCollectView*)[_scrollView centerPageView]) tableView];
     [tableview setEditing:NO animated:YES];
     [self setRightBtnEditing:tableview.editing];
-    JDOCenterViewController *centerViewController = (JDOCenterViewController *)SharedAppDelegate.deckController.centerController;
-    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+//    JDOCenterViewController *centerViewController = (JDOCenterViewController *)SharedAppDelegate.deckController.centerController;
+//    [centerViewController popToViewController:[centerViewController.viewControllers objectAtIndex:0] animated:true];
+    [self.stackContainer popViewController:0];
 }
 
 -(void)onRightBtnClick{

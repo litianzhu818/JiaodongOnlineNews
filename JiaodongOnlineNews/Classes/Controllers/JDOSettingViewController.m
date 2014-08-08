@@ -20,6 +20,7 @@
 #import "InsetsTextField.h"
 #import "UIDevice+IdentifierAddition.h"
 #import <AdSupport/AdSupport.h>
+#import "VMediaPlayer.h"
 
 @interface JDOSettingViewController ()
 
@@ -42,12 +43,13 @@ BOOL downloadItemClickable = TRUE;
     [super loadView];
     self.view.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, App_Height-44) style:UITableViewStylePlain];
-    self.tableView.rowHeight = MIN( (App_Height-44.0f)/JDOSettingItemCount, 72.0f);
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44)) style:UITableViewStylePlain];
+    self.tableView.rowHeight = MIN( (App_Height-(Is_iOS7?64:44))/JDOSettingItemCount, 72.0f);
     self.tableView.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.scrollEnabled = false;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
 
@@ -99,7 +101,7 @@ BOOL downloadItemClickable = TRUE;
 
 
 - (void) onBackBtnClick{
-    [(JDORightViewController *)self.stackViewController popViewController];
+    [self.stackContainer popViewController:0];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -118,6 +120,8 @@ BOOL downloadItemClickable = TRUE;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
         cell.selectionStyle = UITableViewCellAccessoryNone;
         cell.detailTextLabel.numberOfLines = 2;
+        cell.backgroundColor = [UIColor clearColor];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"news_content_background"]];
     }
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     switch (indexPath.row) {
@@ -231,6 +235,8 @@ BOOL downloadItemClickable = TRUE;
             [JDOCommonUtil deleteJDOCacheDirectory];    // 文件缓存
             [JDOCommonUtil createJDOCacheDirectory];
             [JDOCommonUtil deleteURLCacheDirectory];    // URL在sqlite的缓存(cache.db)
+            [JDOCommonUtil deleteMeidaCacheDirectory];
+            [[VMediaPlayer sharedInstance] clearCache]; // 清除视频缓存
             HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"status_icon_success"]];
             HUD.mode = MBProgressHUDModeCustomView;
             HUD.labelText = @"清除缓存完成";
@@ -258,7 +264,7 @@ BOOL downloadItemClickable = TRUE;
             break;
         case JDOSettingItemFeedback: {
             JDOFeedbackViewController *feedbackController = [[JDOFeedbackViewController alloc] init];
-            [(JDORightViewController *)self.stackViewController pushViewController:feedbackController];
+            [self.stackContainer pushViewController:feedbackController direction:0];
             break;
         }
         default:

@@ -55,7 +55,7 @@
     
     NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
     [self.ShareBtn setBackgroundImage:[UIImage imageNamed:btnBackground] forState:UIControlStateNormal];
-    [self.ShareBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    [self.ShareBtn.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.layer.masksToBounds = true;
     if( [self.model isKindOfClass:NSClassFromString(@"JDOImageModel")] ){
@@ -140,7 +140,7 @@
     self.remainWordLabel.text = [NSString stringWithFormat:@"还可以输入%d字",remaind];
     NSURL *url;
     if ([self.model imageurl]) {
-        if ([[self.model imageurl] hasPrefix:SERVER_RESOURCE_URL]) {
+        if ([[self.model imageurl] hasPrefix:@"http://"]) {
             url = [NSURL URLWithString:[self.model imageurl]];
         } else {
             url = [NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:[self.model imageurl]]];
@@ -185,8 +185,14 @@
 }
 
 - (void) backToParent{
+    if(self.stackContainer!=nil){ // 从"关于我们"进分享界面
+        [self.stackContainer popViewController:1];
+    }else{  // 从"新闻详情"进分享界面
         JDOCenterViewController *centerController = (JDOCenterViewController *)self.navigationController;
         [centerController popToViewController:[centerController.viewControllers objectAtIndex:centerController.viewControllers.count-2] orientation:JDOTransitionToBottom animated:true];
+    }
+    
+    
 }
 
 - (void)viewDidUnload {

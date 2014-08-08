@@ -17,7 +17,8 @@ typedef enum {
     ToolBarButtonFont,
     ToolBarButtonCollect,
     ToolBarButtonDownload,
-    ToolBarInputField
+    ToolBarInputField,
+    ToolBarButtonVideoEpg
 }ToolBarControlType;
 
 typedef enum {
@@ -55,6 +56,13 @@ typedef enum {
 
 @end
 
+@protocol JDOVideoTargetDelegate <NSObject>
+
+@required
+- (void) onEpgClicked;
+
+@end
+
 
 @interface JDOToolBar : UIView <JDOReviewTargetDelegate>
 
@@ -68,9 +76,12 @@ typedef enum {
 @property (strong,nonatomic) WebViewJavascriptBridge *bridge;
 @property (strong,nonatomic) id<JDOShareTargetDelegate> shareTarget;
 @property (strong,nonatomic) id<JDODownloadTargetDelegate> downloadTarget;
+@property (strong,nonatomic) id<JDOVideoTargetDelegate> videoTarget;
 
 @property (nonatomic,assign) JDOReviewType reviewType;
-@property (nonatomic,strong) JDOCollectDB* collectDB;
+@property (nonatomic,strong) JDOCollectDB *collectDB;
+
+@property (nonatomic,strong) NSMutableDictionary *btns;
 
 - (id)initWithModel:(id<JDOToolbarModel>)model parentController:(UIViewController *)parentController typeConfig:(NSArray *)typeConfig widthConfig:(NSArray *)widthConfig frame:(CGRect) frame theme:(ToolBarTheme)theme;
 
