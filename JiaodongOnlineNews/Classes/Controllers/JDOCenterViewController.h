@@ -17,6 +17,7 @@ typedef enum {
     MenuItemConvenience,
     MenuItemLivehood,
     MenuItemVideo,
+    MenuItemReport,
     MenuItemCount
 } MenuItem;
 
@@ -27,6 +28,7 @@ typedef enum {
 @class JDOLivehoodViewController;
 @class JDOPartyViewController;
 @class JDOVideoViewController;
+@class JDOReportViewController;
 
 @interface JDOCenterViewController : MLNavigationController <IIViewDeckControllerDelegate,UIGestureRecognizerDelegate>
 
@@ -37,6 +39,7 @@ typedef enum {
 + (JDOLivehoodViewController *) sharedLivehoodViewController;
 + (JDOPartyViewController *) sharedPartyViewController;
 + (JDOVideoViewController *) sharedVideoViewController;
++ (JDOReportViewController *) sharedReportViewController;
 
 - (void) setRootViewControllerType:(MenuItem) menuItem;
 

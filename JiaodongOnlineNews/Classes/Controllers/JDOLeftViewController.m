@@ -35,8 +35,8 @@
     if (self) {
         self.myDelegate = (JDOAppDelegate *)[[UIApplication sharedApplication] delegate];
         _lastSelectedRow = 0;
-        iconNames = @[@"menu_news",@"menu_party",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood",@"menu_video"];
-        iconSelectedNames = @[@"menu_news_selected",@"menu_party_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected",@"menu_video_selected"];
+        iconNames = @[@"menu_news",@"menu_party",@"menu_picture",@"menu_topic",@"menu_convenience",@"menu_livehood",@"menu_video",@"menu_report"];
+        iconSelectedNames = @[@"menu_news_selected",@"menu_party_selected",@"menu_picture_selected",@"menu_topic_selected",@"menu_convenience_selected",@"menu_livehood_selected",@"menu_video_selected",@"menu_report_selected"];
         //iconTitles = @[@"胶东在线",@"精选图片",@"每日一题",@"便民查询",@"网上民声"];
         
         hasNewView = [[UIImageView alloc] initWithFrame:CGRectMake(155.0, 8.0, 26.0, 19.0)];

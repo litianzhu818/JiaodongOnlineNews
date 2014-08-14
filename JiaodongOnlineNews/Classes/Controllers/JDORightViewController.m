@@ -234,7 +234,7 @@ typedef enum {
                 [self refreshWeather];
                 [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:Weather_Update_Time];
             }else{
-                NSLog(@"天气webservice超出访问次数限制,从本地缓存获取");
+                NSLog(@"天气webservice超出访问次数限制或返回数据格式错误,从本地缓存获取");
                 [self readWeatherFromLocalCache];
             }
         }else{

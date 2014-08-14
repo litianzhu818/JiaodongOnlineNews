@@ -1,26 +1,25 @@
 //
-//  JDOVideoViewController.m
+//  JDOReportViewController.m
 //  JiaodongOnlineNews
 //
-//  Created by zhang yi on 14-4-18.
+//  Created by zhang yi on 14-7-31.
 //  Copyright (c) 2014年 胶东在线. All rights reserved.
 //
 
-#import "JDOVideoViewController.h"
+#import "JDOReportViewController.h"
 #import "JDOPageControl.h"
-#import "JDOVideoLiveList.h"
-#import "JDOAudioLiveList.h"
-#import "JDOOnDemondList.h"
+#import "JDOReportNewsList.h"
+#import "JDOReportPhotoList.h"
 
 #define Navbar_Height (Is_iOS7?36.0f:34.5f)
 
-@interface JDOVideoViewController()
+@interface JDOReportViewController()
 
 @property (nonatomic,strong) NSArray *pageInfos; // 页面基本信息
 
 @end
 
-@implementation JDOVideoViewController{
+@implementation JDOReportViewController{
     BOOL pageControlUsed;
     int lastCenterPageIndex;
 }
@@ -32,9 +31,9 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]){
         _pageInfos = @[
-                       @{@"reuseId":@"AudioLive",@"title":@"电台广播"},
-                       @{@"reuseId":@"VideoLive",@"title":@"电视直播"},
-                       @{@"reuseId":@"VideoReplay",@"title":@"节目点播"}
+                       @{@"reuseId":@"1",@"title":@"爆料台"},
+                       @{@"reuseId":@"2",@"title":@"随手拍"},
+                       @{@"reuseId":@"3",@"title":@"活动派"}
                        ];
     }
     return self;
@@ -85,13 +84,14 @@
 - (void) setupNavigationView{
     [self.navigationView addLeftButtonImage:@"left_menu_btn" highlightImage:@"left_menu_btn" target:self.viewDeckController action:@selector(toggleLeftView)];
     [self.navigationView addRightButtonImage:@"right_menu_btn" highlightImage:@"right_menu_btn" target:self.viewDeckController action:@selector(toggleRightView)];
-    [self.navigationView setTitle:@"广播电视"];
+    [self.navigationView setTitle:@"抢鲜爆料"];
 }
 
 #pragma mark - PagingScrollView delegate
 
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {
-    return _pageInfos.count;
+//    return _pageInfos.count;
+    return 2;
 }
 
 - (UIView<NIPagingScrollViewPage> *)pagingScrollView:(NIPagingScrollView *)pagingScrollView
@@ -107,22 +107,16 @@
     
     switch (pageIndex) {
         case 0:{
-            JDOAudioLiveList *audio = [[JDOAudioLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            audio.tableView.scrollsToTop = true;
-            [audio loadDataFromNetwork];
-            return audio;
+            JDOReportNewsList *reportList = [[JDOReportNewsList alloc] initWithFrame:_scrollView.bounds reuseIdentifier:itemInfo[@"reuseId"]];
+            [reportList loadDataFromNetwork];
+            return reportList;
         }
         case 1:{
-            JDOVideoLiveList *video = [[JDOVideoLiveList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            video.tableView.scrollsToTop = true;
-            [video loadDataFromNetwork];
-            return video;
+            JDOReportPhotoList *reportList = [[JDOReportPhotoList alloc] initWithFrame:_scrollView.bounds reuseIdentifier:itemInfo[@"reuseId"]];
+            [reportList loadDataFromNetwork];
+            return reportList;
         }
         case 2:{
-            JDOOnDemondList *onDemand = [[JDOOnDemondList alloc] initWithFrame:_scrollView.bounds identifier:itemInfo[@"reuseId"]];
-            onDemand.tableView.scrollsToTop = false;
-            [onDemand loadDataFromNetwork];
-            return onDemand;
         }
         default:
             return nil;

@@ -21,6 +21,7 @@
 #import "JDONewsCategoryView.h"
 #import "JDOPageControl.h"
 #import "JDOVideoViewController.h"
+#import "JDOReportViewController.h"
 
 @interface JDOCenterViewController ()
 
@@ -109,6 +110,15 @@
     return _controller;
 }
 
++ (JDOReportViewController *) sharedReportViewController{
+    static JDOReportViewController *_controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _controller = [[JDOReportViewController alloc] init];
+    });
+    return _controller;
+}
+
 - (void) setRootViewControllerType:(MenuItem) menuItem{
     id<JDONavigationView> controller;
     switch (menuItem) {
@@ -132,6 +142,9 @@
             break;
         case MenuItemVideo:
             controller = [[self class] sharedVideoViewController];
+            break;
+        case MenuItemReport:
+            controller = [[self class] sharedReportViewController];
             break;
         default:
             break;

@@ -59,7 +59,7 @@
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
 
-    
+    // 以下部分是为了配合noImage的逻辑添加
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     UIImage *cachedImage = [imageCache imageFromKey:[url absoluteString] fromDisk:YES]; // 将需要缓存的图片加载进来
     if (cachedImage) {  //有缓存，就先使用缓存

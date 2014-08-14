@@ -215,8 +215,8 @@
     [self.listArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         JDOVideoModel *model = (JDOVideoModel *)obj;
         if (model.observer) {
-            [model removeObserver:model.observer forKeyPath:@"currentProgram"];
-            [model removeObserver:model.observer forKeyPath:@"currentFrame"];
+            [model removeObserver:model.observer forKeyPath:@"currentProgram" context:nil];
+            [model removeObserver:model.observer forKeyPath:@"currentFrame" context:nil];
             model.observer = nil;
         }
     }];

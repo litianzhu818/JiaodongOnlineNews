@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JDONewsCategoryInfo.h"
 
 @interface JDOLifeKnowledgeViewController : JDONavigationController <JDOStatusView,JDOStatusViewDelegate, UITableViewDelegate, UITableViewDataSource>
 

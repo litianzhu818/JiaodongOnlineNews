@@ -78,14 +78,14 @@
     if ([_provinceAndCity hasPrefix:@"查询结果为空"] || [_provinceAndCity hasPrefix:@"发现错误"] || [_provinceAndCity hasPrefix:@"系统维护"]) {
         self.success = false;
         return ;
+    }
+    
+    NSRange range = [_provinceAndCity rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]];
+    if(range.length > 0){
+        [self.province appendString:[_provinceAndCity substringToIndex:range.location]];
+        [self.city appendString:[_provinceAndCity substringFromIndex:range.location+1]];
     }else{
-        NSRange range = [_provinceAndCity rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]];
-        if(range.length > 0){
-            [self.province appendString:[_provinceAndCity substringToIndex:range.location]];
-            [self.city appendString:[_provinceAndCity substringFromIndex:range.location+1]];
-        }else{
-            [self.city appendString:_provinceAndCity];
-        }
+        [self.city appendString:_provinceAndCity];
     }
     
     // 解析天气温度湿度
@@ -116,10 +116,14 @@
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser{
-    [self.forecast enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(JDOWeatherForcast *)obj analysis];
-    }];
-    [self analysis];
+    @try{   // analysis方法中曾出现过数组越界
+        [self.forecast enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [(JDOWeatherForcast *)obj analysis];
+        }];
+        [self analysis];
+    }@catch(NSException *ex){
+        self.success = false;
+    }
     if(self.success){
         [JDOWeather saveToFile:self];
     }

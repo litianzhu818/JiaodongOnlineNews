@@ -591,7 +591,15 @@
                            appSecret:@"3373fc627de22237a075dd1a0b4757e2"
                    qqApiInterfaceCls:[QQApiInterface class]
                      tencentOAuthCls:[TencentOAuth class]];
+    
+    // http://dev.renren.com上注册人人网开放平台应用，并将相关信息填写到以下字段
+    // 应用管理账户383926109@qq.com / 111111
+    [ShareSDK connectRenRenWithAppId:@"237155"
+                              appKey:@"09e10e9f7d9e4ec39eff747ca04add2c"
+                           appSecret:@"3cafeac0896b4e8d908f885fbffc23a9"
+                   renrenClientClass:[RennClient class]];
 
+/**
     // http://open.t.163.com上注册网易微博开放平台应用，并将相关信息填写到以下字段
     // 应用管理账户intotherainzy@163.com
     [ShareSDK connect163WeiboWithAppKey:@"iNPifEGxC3GEBEgK"
@@ -610,18 +618,12 @@
                             appSecret:@"5621265ad509eed4"
                           redirectUri:@"http://m.jiaodong.net"];
     
-    // http://dev.renren.com上注册人人网开放平台应用，并将相关信息填写到以下字段
-    // 应用管理账户383926109@qq.com / 111111
-    [ShareSDK connectRenRenWithAppId:@"237155"
-                              appKey:@"09e10e9f7d9e4ec39eff747ca04add2c"
-                           appSecret:@"3cafeac0896b4e8d908f885fbffc23a9"
-                   renrenClientClass:[RennClient class]];
-    
     // http://open.kaixin001.com上注册开心网开放平台应用，并将相关信息填写到以下字段
     // 应用管理账户intotherainzy@gmail.com
     [ShareSDK connectKaiXinWithAppKey:@"380919449833d96449b93b99fd3803ba"
                             appSecret:@"e37006ef3218a97af164d6bc5aab67cd"
                           redirectUri:@"http://m.jiaodong.net/"];
+**/
     
     /**
      连接QQ应用以使用相关功能，此应用需要引用QQConnection.framework和QQApi.framework库

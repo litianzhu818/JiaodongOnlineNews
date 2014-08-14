@@ -16,8 +16,8 @@
 
 - (void) dealloc{
     if (self.observer) {
-        [self removeObserver:self.observer forKeyPath:@"currentProgram"];
-        [self removeObserver:self.observer forKeyPath:@"currentFrame"];
+        [self removeObserver:self.observer forKeyPath:@"currentProgram" context:nil];
+        [self removeObserver:self.observer forKeyPath:@"currentFrame" context:nil];
         self.observer = nil;
     }
 }
