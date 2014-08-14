@@ -13,7 +13,11 @@
     <script src="jquery.min.js"></script>
     <script src="common.js"></script>
     <script type="text/javascript">
-        
+        $(function($){
+          {% if relates %}
+          getRelative();
+          {% /if %}
+        });
         document.addEventListener('WebViewJavascriptBridgeReady', onBridgeReady, false);
         var bridge;
         function onBridgeReady(event) {
@@ -65,6 +69,16 @@
             bridge.callHandler('joinInParty',{'joinBtnStr':'{{joinBtnStr}}'},function(response){});
         }
         {% /if %}
+        function getRelative() {
+            $("#rel").css("display","block");
+            $(".rel_content a").click(function(){
+                        $(this).css({color:"#999999"});
+                });
+        }
+        function toRelative(id){
+            bridge.callHandler('toRelative',{'newsid':id},function(response){});
+        }
+        
         
         {% if hasVote %}
         function setProgress(id, value){
@@ -186,9 +200,17 @@
     
 
     <!-- 相关新闻 -->
-    {% for relate in relates %}
+    {% if relates.@count %}
+    <div id="rel" >
+        <div class='rel_title'>相关新闻</div>
+        {% for relate in relates %}
+        <div class="rel_content" id="{{relate.id}}">
+            <a href="javascript:toRelative('{{relate.id}}')" >{{relate.title}}</a>
+        </div>
+        {% /for %}
+    </div>
+    {% /if %}
     
-    {% /for %}
     <!-- 热门跟贴 -->
     {% if comments %}{{comments}}{% /if %}
 

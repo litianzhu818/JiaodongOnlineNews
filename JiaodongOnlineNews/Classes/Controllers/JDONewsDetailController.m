@@ -172,6 +172,19 @@ NSDate *modifyTime;
     }
 }
 
+- (void) buildWebViewJavascriptBridge{
+    [super buildWebViewJavascriptBridge];
+    [super.bridge registerHandler:@"toRelative" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *newsid = [(NSDictionary *)data valueForKey:@"newsid"];
+        JDONewsModel *newsModel = [[JDONewsModel alloc] init];
+        newsModel.id = newsid;
+        JDONewsDetailController *newsDetailController = [[JDONewsDetailController alloc] initWithNewsModel:newsModel];
+        JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+        [centerController pushViewController:newsDetailController animated:true];
+        responseCallback(@"joinin");
+    }];
+}
+
 - (void) introduceViewClicked:(UITapGestureRecognizer *)gesture{
     [UIView animateWithDuration:0.4 animations:^{
         gesture.view.alpha = 0;

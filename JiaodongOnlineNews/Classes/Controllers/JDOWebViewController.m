@@ -210,7 +210,6 @@ NSArray *imageUrls;
     [newsDetail setObject:html forKey:@"content"];
     if ([dictionary objectForKey:@"advs"] != nil && [dictionary objectForKey:@"advs"] != [NSNull null]) {
         NSString *adv_img = [SERVER_RESOURCE_URL stringByAppendingString:[(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"mpic"]];
-        // 该条广告本身的id没有意义，取murl中绑定的对应广告详情的id
         NSString *advid = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"murl"];
         NSString *advtitle = [(NSDictionary *)[(NSArray *)[dictionary objectForKey:@"advs"] objectAtIndex:0] objectForKey:@"title"];
         [newsDetail setObject:adv_img forKey:@"advimg"];
