@@ -89,6 +89,7 @@
     }
     
     // 解析天气温度湿度
+#warning 有可能返回的内容是"暂无实况",此时的数组取值会造成越界,在外层的调用中捕获异常处理
     NSArray *_ta = [[_tempWindAndHum substringFromIndex:7] componentsSeparatedByString:@"；"];
     [self.currentTemperature appendString:[[[_ta objectAtIndex:0] componentsSeparatedByString:@"："] lastObject]];
     [self.currentWind appendString: [[[_ta objectAtIndex:1] componentsSeparatedByString:@"："] lastObject]];

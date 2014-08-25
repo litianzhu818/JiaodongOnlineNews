@@ -246,6 +246,30 @@
     timer = [NSTimer scheduledTimerWithTimeInterval:Auto_Refresh_Interval target:self selector:@selector(autoRefresh:) userInfo:nil repeats:true];
 }
 
+//  ===============================中国手机电视===============================
+//  http://223.87.4.76:8112/channels/tvie/CCTV-1HD/m3u8:hd
+//  http://223.87.4.76:8112/channels/tvie/CCTV-2/m3u8:hd
+//  http://223.87.4.76:8112/channels/tvie/df-ws/m3u8:sd
+//  http://223.87.4.76:8112/channels/tvie/sd-ws/m3u8:sd
+
+
+//  ================================央视影音================================
+//  央视频道(1)
+//  http://serv.cbox.cntv.cn/json/zhibo/yangshipindao/ysmc/index.json
+//  卫视频道(2)
+//  http://serv.cbox.cntv.cn/json/zhibo/weishipindao/wsmc/index.json
+//  总配置文件
+//  http://serv.cbox.cntv.cn/json/qita/yidongzhupeizhi/index.json?rnd=1408409164.722166
+//  从总配置文件中获取直播url
+//  http://vdn.live.cntv.cn/api2/live.do
+//  获取某个台的直播地址集合，由直播url和(1)(2)处的liveUrl的参数合并而成
+//  http://vdn.live.cntv.cn/api2/live.do?channel=pa://cctv_p2p_hdcctv1&client=iosapp  cctv1
+//  http://vdn.live.cntv.cn/api2/live.do?channel=pa://cctv_p2p_hdcctv2&client=iosapp  cctv2
+//  http://vdn.live.cntv.cn/api2/live.do?channel=pa://cctv_p2p_hdshandong&client=iosapp  山东
+//  http://vdn.live.cntv.cn/api2/live.do?channel=pa://cctv_p2p_hddongfang&client=iosapp  东方
+
+//  http://vapptime.cntv.wscdns.com:8000/live/no/14_/seg0/index.m3u8?AUTH=jnOFLM8TkLnEtsUkvPaH1oxlsg/fc80Yefonx8shZfpthktJDMlE1SNBOCwydPwmbMtdpfYeqBoDAHW2HordmA==&start=1408334400&end=1408336440
+
 - (void) fetchContent:(JDOVideoModel *)model{
     // 烟台3、4套节目在3G下不可用，因为外地ip限制，可以先通过http请求判断返回结果是不是403来区分，在success的回调里面再获取关键帧
     [[JDOHttpClient sharedClient] requestURL:[model.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] success:^(AFHTTPRequestOperation *operation, id responseObject) {

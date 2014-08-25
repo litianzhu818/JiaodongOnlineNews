@@ -757,7 +757,12 @@
     if(epgModel.state == JDOVideoStatePlayback){
         long startTime = [NSNumber numberWithDouble:[epgModel.start_time timeIntervalSince1970]].longValue;
         long endTime = [NSNumber numberWithDouble:[epgModel.end_time timeIntervalSince1970]].longValue;
-        url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@/%ld000,%ld000,5000",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//        http://vapptime.cntv.wscdns.com:8000/live/no/204_/seg0/index.m3u8?AUTH=eyUBtY4Y9fEDe9atYXRj8QJc4RbS7FbQ47kD8WcZvlUuMHxNJ9xUj5X+SdAJvGrf97iKdRSieKYzm/B9cnx2aw==&start=1408402800&end=1408410000
+        if([self.videoModel.liveUrl hasPrefix:@"http://vapptime"]){ // 央视影音地址来源
+            url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@&start=%ld&end=%ld",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }else{
+            url = [NSURL URLWithString:[[NSString stringWithFormat:@"%@/%ld000,%ld000,5000",self.videoModel.liveUrl,startTime,endTime] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
     }else if(epgModel.state == JDOVideoStateLive){
         url = [NSURL URLWithString:[self.videoModel.liveUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }else if(epgModel.state == JDOVideoStateForecast){

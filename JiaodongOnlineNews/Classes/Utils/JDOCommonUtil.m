@@ -535,3 +535,16 @@ id<ISSAuthOptions> JDOGetOauthOptions(id<ISSViewDelegate> viewDelegate){
 //        SHARE_TYPE_NUMBER(ShareTypeTencentWeibo):[ShareSDK userFieldWithType:SSUserFieldTypeName value:@"jdnewsapp"]}];
     return authOptions;
 }
+
+// 增强日志
+/*
+__func__ %s
+__LINE__ %d
+__FILE__ %s
+__PRETTY_FUNCTION__ %s
+
+NSStringFromSelector(_cmd) %@
+NSStringFromClass([self class]) %@
+[[NSString stringWithUTF8String:__FILE__] lastPathComponent] %@
+[NSThread callStackSymbols] %@
+*/

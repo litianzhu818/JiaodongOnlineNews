@@ -16,6 +16,7 @@
 #import "DCArrayMapping.h"
 #import "JDOArrayModel.h"
 #import "ACTimeScroller.h"
+#import "JDOReportSubmitController.h"
 
 #define Finished_Label_Tag 111
 #define Page_Size 10
@@ -138,7 +139,9 @@
 }
 
 - (void)onPublish:(UIButton *)btn{
-    NSLog(@"跳转到发布页");
+    JDOReportSubmitController *submitController = [[JDOReportSubmitController alloc] init];
+    JDOCenterViewController *centerController = (JDOCenterViewController *)[[SharedAppDelegate deckController] centerController];
+    [centerController pushViewController:submitController orientation:JDOTransitionFromBottom  animated:true];
 }
 
 

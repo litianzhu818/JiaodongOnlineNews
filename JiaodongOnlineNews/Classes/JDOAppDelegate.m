@@ -93,9 +93,9 @@
         NSString *advLocalURL = [userDefault objectForKey:@"adv_url"];
         self.advTargetId = [jsonObject valueForKey:@"targetid"];
         
-        // 第一次加载或者NSUserDefault被清空，以及服务器地址与本地不一致时，从网络加载图片。
-        if(advLocalURL ==nil || ![advLocalURL isEqualToString:advServerURL]){
-            NSString *advImgUrl = [SERVER_RESOURCE_URL stringByAppendingString:[jsonObject valueForKey:@"path"]];
+        // 第一次加载或者NSUserDefault被清空，以及服务器地址与本地不一致时，从网络加载图片。同时需要保证服务器获得的advServerURL不是nil
+        if( (advLocalURL ==nil || ![advLocalURL isEqualToString:advServerURL]) && advServerURL!= nil ){
+            NSString *advImgUrl = [SERVER_RESOURCE_URL stringByAppendingString:advServerURL];
             // 同步方法不使用URLCache，若使用AFNetworking则无法禁用缓存
             NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:advImgUrl] options:NSDataReadingUncached error:&error];
             if(error != nil){
