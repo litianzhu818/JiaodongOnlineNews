@@ -160,7 +160,9 @@
 {
     // 只有一张图片
     if (_photos.count == 1) {
-        [self showPhotoViewAtIndex:0];
+        if (![self isShowingPhotoViewAtIndex:0]) {
+			[self showPhotoViewAtIndex:0];
+		}
         return;
     }
     
@@ -173,19 +175,19 @@
     if (lastIndex >= _photos.count) lastIndex = _photos.count - 1;
 	
 	// 回收不再显示的ImageView
-    NSInteger photoViewIndex;
-	for (MJPhotoView *photoView in _visiblePhotoViews) {
-        photoViewIndex = kPhotoViewIndex(photoView);
-		if (photoViewIndex < firstIndex || photoViewIndex > lastIndex) {
-			[_reusablePhotoViews addObject:photoView];
-			[photoView removeFromSuperview];
-		}
-	}
-    
-	[_visiblePhotoViews minusSet:_reusablePhotoViews];
-    while (_reusablePhotoViews.count > 2) {
-        [_reusablePhotoViews removeObject:[_reusablePhotoViews anyObject]];
-    }
+//    NSInteger photoViewIndex;
+//	for (MJPhotoView *photoView in _visiblePhotoViews) {
+//        photoViewIndex = kPhotoViewIndex(photoView);
+//		if (photoViewIndex < firstIndex || photoViewIndex > lastIndex) {
+//			[_reusablePhotoViews addObject:photoView];
+//			[photoView removeFromSuperview];
+//		}
+//	}
+//    
+//	[_visiblePhotoViews minusSet:_reusablePhotoViews];
+//    while (_reusablePhotoViews.count > 2) {
+//        [_reusablePhotoViews removeObject:[_reusablePhotoViews anyObject]];
+//    }
 	
 	for (NSUInteger index = firstIndex; index <= lastIndex; index++) {
 		if (![self isShowingPhotoViewAtIndex:index]) {
@@ -196,18 +198,39 @@
 
 - (void) photoViewBeforeHide:(MJPhotoView *)photoView{
     if ([self.delegate respondsToSelector:@selector(photoBrowserDidHidden:)]) {
-        [self.delegate photoBrowserDidHidden:self];
+        return [self.delegate photoBrowserDidHidden:self];
     }
 }
 
-- (BOOL)deletePhotoViewAtIndex:(int)index{
+- (BOOL)canDeletePhotoViewAtIndex:(int)index{
     if (_isScrollViewMoving) {
         return false;
     }
+    return true;
+}
+
+- (void)deletePhotoViewAtIndex:(int)index{
+    
+    _photoScrollView.scrollEnabled = false;
     MJPhotoView *deletedView = (MJPhotoView *)[_photoScrollView viewWithTag:kPhotoViewTagOffset +index ];
+    [_visiblePhotoViews removeObject:deletedView];
     
     if (_photos.count == 1) {  // 最后一个，删除以后返回
         [_photos removeObjectAtIndex:index];
+        
+        CGRect f0 = [_photoScrollView convertRect:deletedView.frame toView:self.view];
+        [deletedView removeFromSuperview];
+        deletedView.frame = f0;
+        [self.view addSubview:deletedView];
+        
+        _isScrollViewMoving = true;
+        CGRect destination = [_toolbar convertRect:_toolbar.deleteImageBtn.frame toView:self.view];
+        [deletedView genieInTransitionWithDuration:0.4f destinationRect:destination destinationEdge:BCRectEdgeTop completion: ^{
+            [deletedView removeFromSuperview];
+            _isScrollViewMoving = false;
+            _photoScrollView.scrollEnabled = true;
+            [deletedView hide];
+        }];
         
 //        CGRect f = deletedView.frame;
 //        f.origin.x -= CGRectGetWidth(_photoScrollView.bounds);
@@ -217,75 +240,79 @@
 //        } completion:^(BOOL finished) {
 //            [deletedView removeFromSuperview];
 //        }];
-        [deletedView hide];
-    }else if (index == _photos.count -1) {  // 删除最后一个，前面还有
-        [self showPhotoViewAtIndex:index-1];
+        
+    }else if (index == _photos.count -1) {  // 删除最后一个，前面还有，用前面的填补位置
+        if (![self isShowingPhotoViewAtIndex:index-1]) {
+			[self showPhotoViewAtIndex:index-1];
+		}
         
         [_photos removeObjectAtIndex:index];
-        MJPhotoView *beforeView = (MJPhotoView *)[_photoScrollView viewWithTag:kPhotoViewTagOffset +index-1 ];
         
-        CGRect f = deletedView.frame;
-        f.origin.x += CGRectGetWidth(_photoScrollView.bounds);
-        
-        CGRect f2o = beforeView.frame;
-        CGRect f2 = beforeView.frame;
-        f2.origin.x += CGRectGetWidth(_photoScrollView.bounds);
+        CGRect f0 = [_photoScrollView convertRect:deletedView.frame toView:self.view];
+        [deletedView removeFromSuperview];
+        deletedView.frame = f0;
+        [self.view addSubview:deletedView];
         
         _isScrollViewMoving = true;
-        [UIView animateWithDuration:0.3 animations:^{
-            deletedView.frame = f;
-            beforeView.frame = f2;
-        } completion:^(BOOL finished) {
+        CGRect destination = [_toolbar convertRect:_toolbar.deleteImageBtn.frame toView:self.view];
+        [deletedView genieInTransitionWithDuration:0.4f destinationRect:destination destinationEdge:BCRectEdgeTop completion: ^{
             [deletedView removeFromSuperview];
-            _photoScrollView.contentSize = CGSizeMake(_photoScrollView.contentSize.width-CGRectGetWidth(_photoScrollView.bounds), _photoScrollView.contentSize.height);
-            beforeView.frame = f2o;
-            _isScrollViewMoving = false;
+            [UIView animateWithDuration:0.2f animations:^{
+                _photoScrollView.contentSize = CGSizeMake(_photoScrollView.contentSize.width-CGRectGetWidth(_photoScrollView.bounds), _photoScrollView.contentSize.height);
+            } completion:^(BOOL finished) {
+                _isScrollViewMoving = false;
+                _photoScrollView.scrollEnabled = true;
+            }];
         }];
     }else{  // 删除中间的，用后面的填补位置
-        [self showPhotoViewAtIndex:index+1];
+        if (![self isShowingPhotoViewAtIndex:index+1]) {
+			[self showPhotoViewAtIndex:index+1];
+		}
         
         [_photos removeObjectAtIndex:index];
-        MJPhotoView *afterView = (MJPhotoView *)[_photoScrollView viewWithTag:kPhotoViewTagOffset +index+1 ];
-        afterView.tag -= 1;
         
-        [deletedView genieInTransitionWithDuration:0.4f destinationRect:CGRectMake(280, App_Height-40, 40, 40) destinationEdge:BCRectEdgeBottom completion:
-         ^{
-             
-         }];
-        
-//        CGRect f = deletedView.frame;
-//        f.origin.x -= CGRectGetWidth(_photoScrollView.bounds);
-        
-        CGRect f2 = afterView.frame;
-        f2.origin.x -= CGRectGetWidth(_photoScrollView.bounds);
+        CGRect f0 = [_photoScrollView convertRect:deletedView.frame toView:self.view];
+        [deletedView removeFromSuperview];
+        deletedView.frame = f0;
+        [self.view addSubview:deletedView];
         
         _isScrollViewMoving = true;
-        [UIView animateWithDuration:0.3 animations:^{
-//            deletedView.frame = f;
-            afterView.frame = f2;
-        } completion:^(BOOL finished) {
+        CGRect destination = [_toolbar convertRect:_toolbar.deleteImageBtn.frame toView:self.view];
+        [deletedView genieInTransitionWithDuration:0.4f destinationRect:destination destinationEdge:BCRectEdgeTop completion: ^{
             [deletedView removeFromSuperview];
-            _photoScrollView.contentSize = CGSizeMake(_photoScrollView.contentSize.width-CGRectGetWidth(_photoScrollView.bounds), _photoScrollView.contentSize.height);
-            _isScrollViewMoving = false;
+            [UIView animateWithDuration:0.2f animations:^{
+                for ( MJPhotoView *afterView in _visiblePhotoViews){
+                    if (kPhotoViewIndex(afterView) > index) {
+                        CGRect f2 = afterView.frame;
+                        f2.origin.x -= CGRectGetWidth(_photoScrollView.bounds);
+                        afterView.frame = f2;
+                        afterView.tag -= 1;
+                    }
+                }
+            } completion:^(BOOL finished) {
+                _photoScrollView.contentSize = CGSizeMake(_photoScrollView.contentSize.width-CGRectGetWidth(_photoScrollView.bounds), _photoScrollView.contentSize.height);
+                _isScrollViewMoving = false;
+                _photoScrollView.scrollEnabled = true;
+            }];
         }];
     }
     
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didDeleteAtIndex:)]) {
         [self.delegate photoBrowser:self didDeleteAtIndex:index];
     }
-    return  true;
 }
 
 #pragma mark 显示一个图片view
 - (void)showPhotoViewAtIndex:(int)index
 {
+    // 删除时的动画会对photoView属性造成很多改变，很难恢复回最初的状态再来重用，为方便起见，禁用掉重用机制，这里固定返回nil
     MJPhotoView *photoView = [self dequeueReusablePhotoView];
     if (!photoView) { // 添加新的图片view
         photoView = [[MJPhotoView alloc] init];
         photoView.photoViewDelegate = self;
     }
     
-    // 调整当期页的frame
+    // 调整当前页的frame
     CGRect bounds = _photoScrollView.bounds;
     CGRect photoViewFrame = bounds;
     photoViewFrame.size.width -= (2 * kPadding);
@@ -294,7 +321,7 @@
     
     MJPhoto *photo = _photos[index];
     photoView.frame = photoViewFrame;
-    photoView.photo = photo;
+    photoView.photo = photo; // 在这一步加载图片
     
     [_visiblePhotoViews addObject:photoView];
     [_photoScrollView addSubview:photoView];
@@ -329,11 +356,12 @@
 #pragma mark 循环利用某个view
 - (MJPhotoView *)dequeueReusablePhotoView
 {
-    MJPhotoView *photoView = [_reusablePhotoViews anyObject];
-	if (photoView) {
-		[_reusablePhotoViews removeObject:photoView];
-	}
-	return photoView;
+//    MJPhotoView *photoView = [_reusablePhotoViews anyObject];
+//	if (photoView) {
+//		[_reusablePhotoViews removeObject:photoView];
+//	}
+//	return photoView;
+    return nil;
 }
 
 #pragma mark 更新toolbar状态

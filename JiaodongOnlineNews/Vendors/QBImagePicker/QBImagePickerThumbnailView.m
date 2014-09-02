@@ -71,10 +71,11 @@
     _assetsGroup = assetsGroup;
     
     // Extract three thumbnail images
-    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, MIN(3, assetsGroup.numberOfAssets))];
+    // 取最新的3张照片
+    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(MAX(0,assetsGroup.numberOfAssets-3) ,MIN(3,assetsGroup.numberOfAssets))];
     NSMutableArray *thumbnailImages = [NSMutableArray array];
     [assetsGroup enumerateAssetsAtIndexes:indexes
-                                  options:0
+                                  options:NSEnumerationReverse
                                usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                                    if (result) {
                                        CGImageRef thumbnailImageRef = [result thumbnail];

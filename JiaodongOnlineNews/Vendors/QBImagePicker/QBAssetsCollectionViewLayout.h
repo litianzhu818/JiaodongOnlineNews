@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PSTCollectionView.h"
 
-@interface QBAssetsCollectionViewLayout : UICollectionViewFlowLayout
+@interface QBAssetsCollectionViewLayout : PSUICollectionViewFlowLayout
 
 + (instancetype)layout;
 

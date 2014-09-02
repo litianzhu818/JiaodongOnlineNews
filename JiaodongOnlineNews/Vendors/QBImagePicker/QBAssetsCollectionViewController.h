@@ -11,6 +11,7 @@
 
 // ViewControllers
 #import "QBImagePickerController.h"
+#import "PSTCollectionView.h"
 
 @class QBAssetsCollectionViewController;
 
@@ -23,7 +24,7 @@
 
 @end
 
-@interface QBAssetsCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
+@interface QBAssetsCollectionViewController : PSUICollectionViewController <PSUICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, unsafe_unretained) QBImagePickerController *imagePickerController;
 

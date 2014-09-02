@@ -40,3 +40,13 @@
 "iRateCancelButton" = "不了，谢谢";
 "iRateRateButton" = "现在去评分";
 "iRateRemindButton" = "稍后再说";
+
+"title" = "照片";
+"format_photo" = "%ld张照片";
+"format_photos" = "%ld张照片";
+"format_video" = "%ld段视频";
+"format_videos" = "%ld段视频";
+"format_photo_and_video" = "%ld张照片, %ld段视频";
+"format_photos_and_video" = "%ld张照片, %ld段视频";
+"format_photo_and_videos" = "%ld张照片, %ld段视频";
+"format_photos_and_videos" = "%ld张照片, %ld段视频";

@@ -2224,6 +2224,13 @@
 			path = UniqueIdentifier;
 			sourceTree = "<group>";
 		};
+		2D2C5AF319B03CF8004F7F83 /* User */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
 		2D3C03481794D8010050EA57 /* PopoverView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3457,6 +3464,7 @@
 		2D9BCEEB176D88580040DDA0 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2D2C5AF319B03CF8004F7F83 /* User */,
 				2D4C2FDC198A0106004AF61C /* Report */,
 				2D4C2FE5198A01F4004AF61C /* Setting */,
 				2D4C2FE3198A019E004AF61C /* Convenience */,

@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "MJPhotoBrowser.h"
 
-@interface MJPhotoToolbar : UIView
+@interface MJPhotoToolbar : UIView <UIActionSheetDelegate>
 // 所有的图片对象
 @property (nonatomic, strong) NSArray *photos;
 // 当前展示的图片索引
 @property (nonatomic, assign) NSUInteger currentPhotoIndex;
 
 @property (nonatomic, strong) MJPhotoBrowser *browser;
+
+@property (nonatomic, strong) UIButton *deleteImageBtn;
 
 @end

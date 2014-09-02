@@ -27,7 +27,8 @@
         self.clipsToBounds = YES;
 		// 图片
 		_imageView = [[UIImageView alloc] init];
-		_imageView.contentMode = UIViewContentModeScaleAspectFit;
+		_imageView.contentMode = UIViewContentModeScaleAspectFill;
+        _imageView.clipsToBounds = true;
 		[self addSubview:_imageView];
         
         // 进度条
@@ -72,7 +73,7 @@
     }
     if (_photo.firstShow) { // 首次显示
         _imageView.image = _photo.placeholder; // 占位图片
-        _photo.srcImageView.image = nil;
+//        _photo.srcImageView.image = nil;
         
         // 不是gif，就马上开始下载
         if (![_photo.url.absoluteString hasSuffix:@"gif"]) {
@@ -174,11 +175,12 @@
         _photo.firstShow = NO; // 已经显示过了
         _imageView.frame = [_photo.srcImageView convertRect:_photo.srcImageView.bounds toView:nil];
         
-        [UIView animateWithDuration:0.3 animations:^{
+#warning 拍摄的图片进行动画的时候过程中有偏移，未能解决
+        [UIView animateWithDuration:0.3 delay:0 options:0 animations:^{
             _imageView.frame = imageFrame;
         } completion:^(BOOL finished) {
             // 设置底部的小图片
-            _photo.srcImageView.image = _photo.placeholder;
+//            _photo.srcImageView.image = _photo.placeholder;
             [self photoStartLoad];
         }];
     } else {
@@ -205,19 +207,21 @@
     self.contentOffset = CGPointZero;
     
     // 清空底部的小图
-    _photo.srcImageView.image = nil;
+//    _photo.srcImageView.image = nil;
     
     CGFloat duration = 0.15;
-    if (_photo.srcImageView.clipsToBounds) {
-        [self performSelector:@selector(reset) withObject:nil afterDelay:duration];
+//    if (_photo.srcImageView.clipsToBounds) {
+//        [self performSelector:@selector(reset) withObject:nil afterDelay:duration];
+//    }
+    
+    if ([self.photoViewDelegate respondsToSelector:@selector(photoViewBeforeHide:)]) {
+        [self.photoViewDelegate photoViewBeforeHide:self];
     }
     
     [UIView animateWithDuration:duration + 0.1 animations:^{
         _imageView.frame = [_photo.srcImageView convertRect:_photo.srcImageView.bounds toView:nil];
+        
 //        NSLog(NSStringFromCGRect(_photo.srcImageView.bounds));
-        if ([self.photoViewDelegate respondsToSelector:@selector(photoViewBeforeHide:)]) {
-            [self.photoViewDelegate photoViewBeforeHide:self];
-        }
         
         // gif图片仅显示第0张
         if (_imageView.image.images) {
@@ -230,7 +234,7 @@
         }
     } completion:^(BOOL finished) {
         // 设置底部的小图片
-        _photo.srcImageView.image = _photo.placeholder;
+//        _photo.srcImageView.image = _photo.placeholder;
         
         // 通知代理
         if ([self.photoViewDelegate respondsToSelector:@selector(photoViewDidEndZoom:)]) {
@@ -239,11 +243,11 @@
     }];
 }
 
-- (void)reset
-{
-    _imageView.image = _photo.capture;
-    _imageView.contentMode = UIViewContentModeScaleToFill;
-}
+//- (void)reset
+//{
+//    _imageView.image = _photo.capture;
+//    _imageView.contentMode = UIViewContentModeScaleToFill;
+//}
 
 - (void)handleDoubleTap:(UITapGestureRecognizer *)tap {
     _doubleTap = YES;

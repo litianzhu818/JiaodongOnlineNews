@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PSTCollectionView.h"
 
-@interface QBAssetsCollectionFooterView : UICollectionReusableView
+@interface QBAssetsCollectionFooterView : PSUICollectionReusableView
 
 @property (nonatomic, strong, readonly) UILabel *textLabel;
 

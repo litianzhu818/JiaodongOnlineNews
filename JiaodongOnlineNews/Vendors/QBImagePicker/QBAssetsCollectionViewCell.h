@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "PSTCollectionView.h"
 
-@interface QBAssetsCollectionViewCell : UICollectionViewCell
+@interface QBAssetsCollectionViewCell : PSUICollectionViewCell
 
 @property (nonatomic, strong) ALAsset *asset;
 @property (nonatomic, assign) BOOL showsOverlayViewWhenSelected;

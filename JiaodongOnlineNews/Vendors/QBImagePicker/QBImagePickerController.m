@@ -95,7 +95,7 @@ ALAssetsFilter * ALAssetsFilterFromQBImagePickerControllerFilterType(QBImagePick
     [super viewDidLoad];
     
     // View controller settings
-    self.title = NSLocalizedStringFromTable(@"title", @"QBImagePickerController", nil);
+    self.title = NSLocalizedString(@"title", nil);
 }
 
 - (void)viewWillAppear:(BOOL)animated

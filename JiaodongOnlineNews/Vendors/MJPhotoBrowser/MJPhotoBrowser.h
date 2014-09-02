@@ -17,7 +17,8 @@
 
 // 显示
 - (void)show;
-- (BOOL)deletePhotoViewAtIndex:(int)index;
+- (void)deletePhotoViewAtIndex:(int)index;
+- (BOOL)canDeletePhotoViewAtIndex:(int)index;
 @end
 
 @protocol MJPhotoBrowserDelegate <NSObject>
