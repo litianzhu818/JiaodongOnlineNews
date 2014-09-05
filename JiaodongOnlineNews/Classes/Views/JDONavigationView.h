@@ -16,6 +16,8 @@
 @property (nonatomic,strong) UIButton *leftBtn;
 @property (nonatomic,strong) UIButton *rightBtn;
 
+-(void) setBackground:(NSString *)imageName;
+
 - (void) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage;
 - (void) addRightButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage;
 

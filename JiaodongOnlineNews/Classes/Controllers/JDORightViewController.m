@@ -6,10 +6,8 @@
 #import "UIView+Common.h"
 #import "JDORightViewController.h"
 #import "JDOLeftViewController.h"
-#import "JDONewsViewController.h"
 #import "IIViewDeckController.h"
 #import "JDOSettingViewController.h"
-#import "JDOPartyViewController.h"
 #import "JDOFeedbackViewController.h"
 #import "JDOAboutUsViewController.h"
 #import "JDOShareAuthController.h"
@@ -18,28 +16,31 @@
 #import "JDOWeather.h"
 #import "JDOWeatherForcast.h"
 #import "JDOConvenienceItemController.h"
+#import "JDOLoginController.h"
+#import "JDOUserController.h"
 
 #define Menu_Cell_Height 55.0f
 #define Menu_Image_Tag 101
 #define Right_Margin 40
-#define Left_Margin 160
 #define Padding 5.0f
 #define Menu_Item_Width 115
 #define Separator_Y 324.0
 #define Top_Margin 7.5f
 #define Weather_Icon_Height 56
 #define Weather_Icon_Width 180.0/130.0*56
+#define Weather_Left_Margin 70
+#define Left_Overlay 40
 
 typedef enum {
-    RightMenuItemSetting = 0,
+    RightMenuItemReview = 0,
     RightMenuItemCollection,
+    RightMenuItemShare,
     RightMenuItemBind,
-    RightMenuItemRate,
-//    RightMenuItemfeedback,
+    RightMenuItemFeedback,
     RightMenuItemAbout,
-    //RightMenuItemParty,
+    RightMenuItemRate,
+    RightMenuItemSetting,
     RightMenuItemCount
-    
 } RightMenuItem;
 
 @interface JDORightViewController ()
@@ -49,7 +50,8 @@ typedef enum {
 @property (nonatomic,strong) JDOAboutUsViewController *aboutUsController;
 @property (nonatomic,strong) JDOShareAuthController *shareAuthController;
 @property (nonatomic,strong) JDOCollectViewController *collectController;
-@property (nonatomic,strong) JDOPartyViewController *partyController;
+@property (nonatomic,strong) JDOLoginController *loginController;
+@property (nonatomic,strong) JDOUserController *userController;
 @property (strong) JDOWeather *weather;
 @property (strong) JDOWeatherForcast *forcast;
 
@@ -59,8 +61,6 @@ typedef enum {
 
 @implementation JDORightViewController{
     NSArray *iconNames;
-    NSArray *iconSelectedNames;
-    NSArray *iconTitles;
     
     UILabel *cityLabel;
     UIImageView *weatherIcon;
@@ -68,17 +68,118 @@ typedef enum {
     UILabel *weatherLabel;
     UILabel *dateLabel;
     NSArray *weekDayNames;
+    
+    UILabel *userLabel;
+    UIImageView *avatar;
 }
 
 - (id)init{
     self = [super init];
     if (self) {
-        iconNames = @[@"menu_setting",@"menu_collect",@"menu_bind",@"menu_rate",@"menu_about"];
-        iconSelectedNames = @[@"menu_setting_selected",@"menu_collect_selected",@"menu_bind_selected",@"menu_rate_selected",@"menu_about_selected"];
+        iconNames = @[@"menu_review",@"menu_collection",@"menu_share",@"menu_bind",@"menu_feedback",@"menu_about",@"menu_rate",@"menu_setting"];
         weekDayNames = @[@"周日",@"周一",@"周二",@"周三",@"周四",@"周五",@"周六"];
-//        iconTitles = @[@"设  置",@"我的收藏",@"分享绑定",@"评价一下",@"意见反馈",@"关于我们",@"检查更新"];
     }
     return self;
+}
+
+- (void)onBtnClicked:(UIButton *)btn{
+    switch (btn.tag-100) {
+        case RightMenuItemReview:
+            break;
+        case RightMenuItemCollection:
+            if( _collectController == nil){
+                _collectController = [[JDOCollectViewController alloc] init];
+            }
+            [self pushViewController:_collectController];
+            break;
+        case RightMenuItemShare:
+            break;
+        case RightMenuItemBind:
+            if( _shareAuthController == nil){
+                _shareAuthController = [[JDOShareAuthController alloc] init];
+            }
+            [self pushViewController:_shareAuthController];
+            [_shareAuthController updateAuth];
+            break;
+        case RightMenuItemFeedback:
+            if( _feedbackController == nil){
+                _feedbackController = [[JDOFeedbackViewController alloc] init];
+            }
+            [self pushViewController:_feedbackController];
+            break;
+        case RightMenuItemAbout:
+            if( _aboutUsController == nil){
+                _aboutUsController = [[JDOAboutUsViewController alloc] init];
+            }
+            [self pushViewController:_aboutUsController];
+            break;
+        case RightMenuItemRate:
+            [SharedAppDelegate promptForRating];
+            break;
+        case RightMenuItemSetting:
+            if( _settingContrller == nil){
+                _settingContrller = [[JDOSettingViewController alloc] init];
+            }
+            [self pushViewController:_settingContrller];
+            // 重载缓存部分的数据
+            [_settingContrller.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)showUserInfo:(UITapGestureRecognizer *)tap{
+    if (!_userController) {
+        _userController = [[JDOUserController alloc] init];
+    }
+    [self pushViewController:_userController direction:1];
+}
+
+- (void)navigateToLogin:(UITapGestureRecognizer *)tap{
+    if (_loginController == nil) {
+        _loginController = [[JDOLoginController alloc] init];
+    }
+    [self pushViewController:_loginController direction:1];
+}
+
+- (void)refreshUserInfo{
+    NSString *loginUserName = [[NSUserDefaults standardUserDefaults] stringForKey:@"JDO_User_Name"];
+    
+    if (!loginUserName) {   // 未登陆状态,点击后导航到登陆页面
+        userLabel.text = @"立即登录";
+        avatar.image = [UIImage imageNamed:@"menu_avatar"];
+        [avatar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToLogin:)]];
+    }else{  // 加载头像,点击后导航到个人资料页面
+        userLabel.text = loginUserName;
+//        NSString *avatarUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"JDO_User_Avatar"];
+//        if (avatarUrl) {
+//            [avatar setImageWithURL:[NSURL URLWithString:[SERVER_RESOURCE_URL stringByAppendingString:avatarUrl]] success:^(UIImage *image, BOOL cached) {
+//                
+//            } failure:^(NSError *error) {
+//            	
+//            }];
+//        }else{
+//            avatar.image = [UIImage imageNamed:@"menu_avatar"];
+//        }
+        //===============
+        NSFileManager * fm = [NSFileManager defaultManager];
+        NSData *imgData = [fm contentsAtPath:NIPathForDocumentsResource(@"demo_avatar")];
+        if(imgData){
+            UIImage *demoImage = [UIImage imageWithData:imgData];
+            avatar.image = demoImage;
+        }else{
+            avatar.image = [UIImage imageNamed:@"menu_avatar"];
+        }
+        //===============
+        [avatar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showUserInfo:)]];
+    }
+    [userLabel sizeToFit];
+    userLabel.frame = CGRectMake(Left_Overlay+(320-Left_Overlay-CGRectGetWidth(userLabel.bounds))/2, CGRectGetMinY(userLabel.frame), CGRectGetWidth(userLabel.bounds), CGRectGetHeight(userLabel.bounds));
+}
+
+- (void) setAvatarImage:(UIImage *)image{
+    avatar.image = image;
 }
 
 - (void)loadView{
@@ -87,23 +188,40 @@ typedef enum {
     self.view.bounds =CGRectMake(0, 0, 320, Is_iOS7?480:460);
     
     UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height) ];
-    backgroundView.image = [UIImage imageNamed:Is_iOS7?@"menu_background~iOS7":@"menu_background"];
+    backgroundView.image = [UIImage imageNamed:@"menu_background_right"];
     [self.view addSubview:backgroundView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, Menu_Cell_Height*iconNames.count) style:UITableViewStylePlain];
-    _tableView.dataSource = self;
-    _tableView.delegate = self;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = [UIColor clearColor];
-    _tableView.rowHeight = Menu_Cell_Height;
-    _tableView.scrollEnabled = false;
-    [self.view addSubview:_tableView];
+    float top = Is_iOS7?20:0;
+    avatar = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Overlay+(320-Left_Overlay-User_Avatar_Size)/2, top+20, User_Avatar_Size, User_Avatar_Size)];
+    avatar.userInteractionEnabled = true;
+    avatar.backgroundColor = [UIColor clearColor];
+    avatar.layer.masksToBounds = YES;
+    avatar.layer.cornerRadius = User_Avatar_Size / 2;
+    avatar.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:avatar];
+    
+    userLabel = [[UILabel alloc] init];
+    userLabel.font = [UIFont systemFontOfSize:18.0f];
+    userLabel.textColor = [UIColor whiteColor];
+    userLabel.frame = CGRectMake(Left_Overlay+(320-Left_Overlay-userLabel.bounds.size.width)/2, top+100, CGRectGetWidth(userLabel.bounds), CGRectGetHeight(userLabel.bounds));
+    [self.view addSubview:userLabel];
+    
+    [self refreshUserInfo];
+    
+    for (int i=0; i<8; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setBackgroundImage:[UIImage imageNamed:iconNames[i]] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(onBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        btn.tag = 100+i;
+        btn.frame = CGRectMake(Left_Overlay+30+i%4*(30+33.5), top+152+i/4*(47.5f+23), 30, 47.5f);
+        [self.view addSubview:btn];
+    }
     
 //    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Separator_Y/*Menu_Cell_Height*iconNames.count+1*/, 320, 1)];
 //    separateView.image = [UIImage imageNamed:@"menu_separator.png"];
 //    [self.view addSubview:separateView];
     
-//    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width-100, App_Height-25, 90, 15)];
+//    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width-120, App_Height-25, 90, 15)];
 //    versionLabel.font = [UIFont systemFontOfSize:14];
 //    // 从info.plist文件中获取版本号
 //    versionLabel.text = [NSString stringWithFormat:@"V%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]];
@@ -117,7 +235,7 @@ typedef enum {
     UITapGestureRecognizer *citySingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openWeather)];;
     
     float topMargin = Separator_Y+Top_Margin;
-    cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin, 0, 0)];
+    cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(Weather_Left_Margin, topMargin, 0, 0)];
     cityLabel.text = @"烟台";
     cityLabel.font = [UIFont boldSystemFontOfSize:18];
     cityLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
@@ -128,40 +246,35 @@ typedef enum {
     [cityLabel addGestureRecognizer:weatherSingleTap];
     [self.view addSubview:cityLabel];
     
-    //    UIView *underline = [[UIView alloc]initWithFrame:CGRectMake(Left_Margin,topMargin+20,cityLabel.width,1)];
-    //    underline.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    //    underline.backgroundColor = [UIColor whiteColor];
-    //    [self.view addSubview:underline];
-    
-    weatherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(Left_Margin+cityLabel.bounds.size.width+Padding, topMargin, Weather_Icon_Width, Weather_Icon_Height)];
+    weatherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(320-30-Weather_Icon_Width, topMargin, Weather_Icon_Width, Weather_Icon_Height)];
     weatherIcon.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     weatherIcon.image = [UIImage imageNamed:@"默认.png"];
     weatherIcon.userInteractionEnabled = YES;
     [weatherIcon addGestureRecognizer:citySingleTap];
     [self.view addSubview:weatherIcon];
     
-    temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height, 0, 0)];
+    temperatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(Weather_Left_Margin, topMargin+Weather_Icon_Height, 0, 0)];
     temperatureLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     temperatureLabel.text = @" ";
-    temperatureLabel.font = [UIFont boldSystemFontOfSize:14];
+    temperatureLabel.font = [UIFont boldSystemFontOfSize:15];
     temperatureLabel.textColor = [UIColor whiteColor];
     temperatureLabel.backgroundColor = [UIColor clearColor];
     [temperatureLabel sizeToFit];
     [self.view addSubview:temperatureLabel];
     
-    weatherLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin, topMargin+Weather_Icon_Height+temperatureLabel.height + Padding, 0, 0)];
+    weatherLabel = [[UILabel alloc] initWithFrame:CGRectMake(Weather_Left_Margin, topMargin+Weather_Icon_Height+temperatureLabel.height + Padding, 0, 0)];
     weatherLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     weatherLabel.text = @" ";
-    weatherLabel.font = [UIFont systemFontOfSize:12];
+    weatherLabel.font = [UIFont systemFontOfSize:13];
     weatherLabel.textColor = [UIColor whiteColor];
     weatherLabel.backgroundColor = [UIColor clearColor];
     [weatherLabel sizeToFit];
     [self.view addSubview:weatherLabel];
     
-    dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(Left_Margin,  topMargin+Weather_Icon_Height+temperatureLabel.height +weatherLabel.height+ 2*Padding, 0, 0)];
+    dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(Weather_Left_Margin,  topMargin+Weather_Icon_Height+temperatureLabel.height +weatherLabel.height+ 2*Padding, 0, 0)];
     dateLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     dateLabel.text = @" ";
-    dateLabel.font = [UIFont systemFontOfSize:12];
+    dateLabel.font = [UIFont systemFontOfSize:13];
     dateLabel.textColor = [UIColor whiteColor];
     dateLabel.backgroundColor = [UIColor clearColor];
     [dateLabel sizeToFit];
@@ -196,7 +309,6 @@ typedef enum {
 - (void)viewDidUnload{
     [super viewDidUnload];
     self.controllerStack = nil;
-    self.tableView = nil;
     self.weather = nil;
     self.forcast = nil;
     cityLabel = nil;
@@ -361,144 +473,5 @@ typedef enum {
         
     }];
 }
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return RightMenuItemCount;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return nil;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"MenuItem";
-    
-    
-    UIImageView *imageView;
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:Is_iOS7?@"menu_row_selected~iOS7":@"menu_row_selected"]];
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.width-Right_Margin-Menu_Item_Width, 0, Menu_Item_Width, Menu_Cell_Height)];
-        [imageView setTag:Menu_Image_Tag];
-        [cell.contentView addSubview:imageView];
-        
-        // 每个选项下方增加一条分割线
-        UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, Menu_Cell_Height-1, 320, 1)];
-        separateView.image = [UIImage imageNamed:@"menu_separator.png"];
-        [cell.contentView addSubview:separateView];
-    }
-    // 因为图片大小不一致,调整frame以对齐
-    switch (indexPath.row) {
-        case RightMenuItemCollection:
-            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-2, 0, Menu_Item_Width, Menu_Cell_Height);
-            break;
-        case RightMenuItemAbout:
-            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-1, 0, Menu_Item_Width, Menu_Cell_Height);
-            break;
-        case RightMenuItemBind:
-        case RightMenuItemRate:
-            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-3, 0, Menu_Item_Width, Menu_Cell_Height);
-            break;
-//        case RightMenuItemParty:
-//            imageView.frame = CGRectMake(cell.width-Right_Margin-Menu_Item_Width-3, 0, Menu_Item_Width, Menu_Cell_Height);
-//            break;
-        default:
-            break;
-    }
-    
-    imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
-    imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];
-    imageView.highlightedImage = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
-    
-//    cell.textLabel.textColor = [UIColor whiteColor];
-//    cell.textLabel.highlightedTextColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
-//    cell.textLabel.text = [iconTitles objectAtIndex:indexPath.row];
-    
-    return cell;
-}
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return 50.0;
-//}
-
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    switch (indexPath.row) {
-        case RightMenuItemSetting:
-            if( _settingContrller == nil){
-                _settingContrller = [[JDOSettingViewController alloc] init];
-            }
-            [self pushViewController:_settingContrller];
-            // 重载缓存部分的数据
-            [_settingContrller.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:JDOSettingItemClearCache inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-            break;
-        case RightMenuItemCollection:{
-            if( _collectController == nil){
-                _collectController = [[JDOCollectViewController alloc] init];
-            }
-//            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
-//                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_collectController orientation:JDOTransitionFromBottom animated:false];
-//            } completion:^(IIViewDeckController *controller, BOOL success) {
-//            }];
-            [self pushViewController:_collectController];
-            break;}
-//        case RightMenuItemfeedback:
-//            if( _feedbackController == nil){
-//                _feedbackController = [[JDOFeedbackViewController alloc] init];
-//            }
-//            [self pushViewController:_feedbackController];
-//            break;
-        case RightMenuItemAbout:{
-            // 测试自动收集崩溃日志是否起作用
-//            [[Crashlytics sharedInstance] crash];
-            if( _aboutUsController == nil){
-                _aboutUsController = [[JDOAboutUsViewController alloc] init];
-            }
-//            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
-//                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_aboutUsController orientation:JDOTransitionFromBottom animated:false];
-//            } completion:^(IIViewDeckController *controller, BOOL success) {
-//            }];
-            [self pushViewController:_aboutUsController];
-            break;}
-        case RightMenuItemBind:
-            if( _shareAuthController == nil){
-                _shareAuthController = [[JDOShareAuthController alloc] init];
-            }
-            [self pushViewController:_shareAuthController];
-            [_shareAuthController updateAuth];
-            break;
-        case RightMenuItemRate:
-            [SharedAppDelegate promptForRating];
-            break;
-//        case RightMenuItemParty:{
-//            if( _partyController == nil){
-//                _partyController = [[JDOPartyViewController alloc] init];
-//            }
-//            [self.viewDeckController closeSideView:IIViewDeckRightSide bounceOffset:self.viewDeckController.rightSize-320-30 bounced:^(IIViewDeckController *controller) {
-//                [(JDOCenterViewController *)SharedAppDelegate.deckController.centerController pushViewController:_partyController orientation:JDOTransitionFromBottom animated:false];
-//            } completion:^(IIViewDeckController *controller, BOOL success) {
-//            }];
-//            break;}
-        default:
-            break;
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:true];
-}
-
-
 
 @end

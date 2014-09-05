@@ -225,6 +225,7 @@
     
     UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     // 竖着拍：UIImageOrientationRight
+#warning scale只能改变image的尺寸，改变不了容量
     UIImage *thumbnail = [[UIImage alloc] initWithCGImage:originalImage.CGImage scale:5 orientation:originalImage.imageOrientation];
     UIImage *fullImage = [[UIImage alloc] initWithCGImage:originalImage.CGImage scale:2 orientation:originalImage.imageOrientation];
     [self addImageViewThumbnail:thumbnail fullImage:fullImage];

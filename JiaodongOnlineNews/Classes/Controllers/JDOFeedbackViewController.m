@@ -65,7 +65,7 @@
     }
     // 设备名称、系统版本、App版本
     UIDevice *device = [[UIDevice alloc] init];
-    [params setValue:device.platformString forKey:@"device"];
+    [params setValue:device.hardwareSimpleDescription forKey:@"device"];
     [params setValue:device.systemVersion forKey:@"sysVer"];
     [params setValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] forKey:@"appVer"];
     
@@ -102,6 +102,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHex:Main_Background_Color]];
     tpkey.backgroundColor = [UIColor colorWithHex:Main_Background_Color];
+    tpkey.frame = CGRectMake(0, Is_iOS7?64:44, 320, App_Height-(Is_iOS7?64:44));
     
     [contentback setImage:[[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3]];
     [contentback setFrame:content.frame];
@@ -117,14 +118,12 @@
     
     UIDevice *device = [[UIDevice alloc] init];
     NSMutableString *info = [[NSMutableString alloc] init];
-    if (![device.platformString isEqualToString:@"Unknown iOS device"]) {
+    if (device.hardwareSimpleDescription) {
         [info appendString:@"当前设备："];
-        [info appendString:device.platformString];
-        [info appendString:@"，系统版本：iOS "];
-    } else {
-        [info appendString:@"系统版本：iOS "];
+        [info appendString:device.hardwareSimpleDescription];
+        [info appendString:@"，"];
     }
-    
+    [info appendString:@"系统版本：iOS"];
     [info appendString:device.systemVersion];
     
     CGSize labelsize = [info sizeWithFont:font constrainedToSize:CGSizeMake(294-systeminfo.width, MAXFLOAT) lineBreakMode:UILineBreakModeWordWrap];

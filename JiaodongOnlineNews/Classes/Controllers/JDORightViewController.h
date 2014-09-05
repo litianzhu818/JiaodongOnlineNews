@@ -3,9 +3,8 @@
 //  ViewDeckExample
 //
 
-@interface JDORightViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,JDOHasControllerStack>
+@interface JDORightViewController : UIViewController <JDOHasControllerStack>
 
-@property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *controllerStack;
 
 - (void) transitionToAlpha:(float) alpha Scale:(float) scale;
@@ -17,4 +16,7 @@
 
 - (void) updateWeather;
 - (void) updateCalendar;
+
+- (void) refreshUserInfo;
+- (void) setAvatarImage:(UIImage *)image;
 @end

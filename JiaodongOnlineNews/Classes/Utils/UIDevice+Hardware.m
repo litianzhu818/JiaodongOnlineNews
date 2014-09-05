@@ -1,321 +1,317 @@
-/*
- Erica Sadun, http://ericasadun.com
- iPhone Developer's Cookbook, 6.x Edition
- BSD License, Use at your own risk
- */
-
-// Thanks to Emanuele Vulcano, Kevin Ballard/Eridius, Ryandjohnson, Matt Brown, Dustin Howett, etc.
-
-#include <sys/socket.h> // Per msqr
-#include <sys/sysctl.h>
-#include <net/if.h>
-#include <net/if_dl.h>
+//
+//  UIDevice+Hardware.m
+//  TestTable
+//
+//  Created by Inder Kumar Rathore on 19/01/13.
+//  Copyright (c) 2013 Rathore. All rights reserved.
+//
 
 #import "UIDevice+Hardware.h"
+#include <sys/types.h>
+#include <sys/sysctl.h>
 
 @implementation UIDevice (Hardware)
-/*
- Platforms
- 
- iFPGA ->        ??
- 
- iPhone1,1 ->    iPhone 1G, M68
- iPhone1,2 ->    iPhone 3G, N82
- 
- iPhone2,1 ->    iPhone 3GS, N89/N88?
- 
- iPhone3,1 ->    iPhone 4/AT&T, N90
- iPhone3,2 ->    iPhone 4/Other Carrier?, ??
- iPhone3,3 ->    iPhone 4/Verizon, N92
- 
- iPhone4,1 ->    iPhone 4S/GSM, N94
- iPhone4,2 ->    iPhone 4S/???, ???
- iPhone4,3 ->    iPhone 4S/???, ???
- 
- iPhone5,1 ->    iPhone Next Gen, TBD
- iPhone5,1 ->    iPhone Next Gen, TBD
- iPhone5,1 ->    iPhone Next Gen, TBD
- 
- iPod1,1   ->    iPod touch 1G, N45
- iPod2,1   ->    iPod touch 2G, N72
- iPod2,2   ->    Unknown, ??
- iPod3,1   ->    iPod touch 3G, N18
- iPod4,1   ->    iPod touch 4G, N80
- 
- // Thanks NSForge
- iPad1,1   ->    iPad 1G, WiFi and 3G, K48
- 
- iPad2,1   ->    iPad 2G, WiFi, K93
- iPad2,2   ->    iPad 2G, GSM 3G, K94
- iPad2,3   ->    iPad 2G, CDMA 3G, K95
- iPad2,4   ->    iPad 2G, (Smaller chip set) K93a
- 
- iPad3,1   ->    iPad 3G, WiFi J1
- iPad3,2   ->    iPad 3G, CDMA J2A, ?J2
- iPad3,3   ->    iPad 3G, GSM J33
- 
- iPad4,1   ->    (iPad 4G, WiFi)
- iPad4,2   ->    (iPad 4G, CDMA)
- iPad4,3   ->    (iPad 4G, GSM)
- 
- AppleTV2,1 ->   AppleTV 2, K66
- AppleTV3,1 ->   AppleTV 3, ??
- 
- i386, x86_64 -> iPhone Simulator
- 
- // Thank Dustin Howett
+- (NSString*)hardwareString {
+    int name[] = {CTL_HW,HW_MACHINE};
+    size_t size = 100;
+    sysctl(name, 2, NULL, &size, NULL, 0); // getting size of answer
+    char *hw_machine = malloc(size);
+    
+    sysctl(name, 2, hw_machine, &size, NULL, 0);
+    NSString *hardware = [NSString stringWithUTF8String:hw_machine];
+    free(hw_machine);
+    return hardware;
+}
+
+/* This is another way of gtting the system info
+ * For this you have to #import <sys/utsname.h>
  */
 
-
-#pragma mark sysctlbyname utils
-- (NSString *) getSysInfoByName:(char *)typeSpecifier
-{
-    size_t size;
-    sysctlbyname(typeSpecifier, NULL, &size, NULL, 0);
-    
-    char *answer = malloc(size);
-    sysctlbyname(typeSpecifier, answer, &size, NULL, 0);
-    
-    NSString *results = [NSString stringWithCString:answer encoding: NSUTF8StringEncoding];
-    
-    free(answer);
-    return results;
-}
-
-- (NSString *) platform
-{
-    return [self getSysInfoByName:"hw.machine"];
-}
-
-
-// Thanks, Tom Harrington (Atomicbird)
-- (NSString *) hwmodel
-{
-    return [self getSysInfoByName:"hw.model"];
-}
-
-#pragma mark sysctl utils
-- (NSUInteger) getSysInfo: (uint) typeSpecifier
-{
-    size_t size = sizeof(int);
-    int results;
-    int mib[2] = {CTL_HW, typeSpecifier};
-    sysctl(mib, 2, &results, &size, NULL, 0);
-    return (NSUInteger) results;
-}
-
-- (NSUInteger) cpuFrequency
-{
-    return [self getSysInfo:HW_CPU_FREQ];
-}
-
-- (NSUInteger) busFrequency
-{
-    return [self getSysInfo:HW_BUS_FREQ];
-}
-
-- (NSUInteger) cpuCount
-{
-    return [self getSysInfo:HW_NCPU];
-}
-
-- (NSUInteger) totalMemory
-{
-    return [self getSysInfo:HW_PHYSMEM];
-}
-
-- (NSUInteger) userMemory
-{
-    return [self getSysInfo:HW_USERMEM];
-}
-
-- (NSUInteger) maxSocketBufferSize
-{
-    return [self getSysInfo:KIPC_MAXSOCKBUF];
-}
-
-#pragma mark file system -- Thanks Joachim Bean!
-
 /*
- extern NSString *NSFileSystemSize;
- extern NSString *NSFileSystemFreeSize;
- extern NSString *NSFileSystemNodes;
- extern NSString *NSFileSystemFreeNodes;
- extern NSString *NSFileSystemNumber;
- */
-
-- (NSNumber *) totalDiskSpace
-{
-    NSDictionary *fattributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
-    return [fattributes objectForKey:NSFileSystemSize];
-}
-
-- (NSNumber *) freeDiskSpace
-{
-    NSDictionary *fattributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
-    return [fattributes objectForKey:NSFileSystemFreeSize];
-}
-
-#pragma mark platform type and name utils
-- (NSUInteger) platformType
-{
-    NSString *platform = [self platform];
-    
-    // The ever mysterious iFPGA
-    if ([platform isEqualToString:@"iFPGA"])        return UIDeviceIFPGA;
-    
-    // iPhone
-    if ([platform isEqualToString:@"iPhone1,1"])    return UIDevice1GiPhone;
-    if ([platform isEqualToString:@"iPhone1,2"])    return UIDevice3GiPhone;
-    if ([platform hasPrefix:@"iPhone2"])            return UIDevice3GSiPhone;
-    if ([platform hasPrefix:@"iPhone3"])            return UIDevice4iPhone;
-    if ([platform hasPrefix:@"iPhone4"])            return UIDevice4SiPhone;
-    if ([platform hasPrefix:@"iPhone5"])            return UIDevice5iPhone;
-    
-    // iPod
-    if ([platform hasPrefix:@"iPod1"])              return UIDevice1GiPod;
-    if ([platform hasPrefix:@"iPod2"])              return UIDevice2GiPod;
-    if ([platform hasPrefix:@"iPod3"])              return UIDevice3GiPod;
-    if ([platform hasPrefix:@"iPod4"])              return UIDevice4GiPod;
-    
-    // iPad
-    if ([platform hasPrefix:@"iPad1"])              return UIDevice1GiPad;
-    if ([platform hasPrefix:@"iPad2"])              return UIDevice2GiPad;
-    if ([platform hasPrefix:@"iPad3"])              return UIDevice3GiPad;
-    if ([platform hasPrefix:@"iPad4"])              return UIDevice4GiPad;
-    
-    // Apple TV
-    if ([platform hasPrefix:@"AppleTV2"])           return UIDeviceAppleTV2;
-    if ([platform hasPrefix:@"AppleTV3"])           return UIDeviceAppleTV3;
-    
-    if ([platform hasPrefix:@"iPhone"])             return UIDeviceUnknowniPhone;
-    if ([platform hasPrefix:@"iPod"])               return UIDeviceUnknowniPod;
-    if ([platform hasPrefix:@"iPad"])               return UIDeviceUnknowniPad;
-    if ([platform hasPrefix:@"AppleTV"])            return UIDeviceUnknownAppleTV;
-    
-    // Simulator thanks Jordan Breeding
-    if ([platform hasSuffix:@"86"] || [platform isEqual:@"x86_64"])
-    {
-        BOOL smallerScreen = [[UIScreen mainScreen] bounds].size.width < 768;
-        return smallerScreen ? UIDeviceSimulatoriPhone : UIDeviceSimulatoriPad;
-    }
-    
-    return UIDeviceUnknown;
-}
-
-- (NSString *) platformString
-{
-    switch ([self platformType])
-    {
-        case UIDevice1GiPhone: return IPHONE_1G_NAMESTRING;
-        case UIDevice3GiPhone: return IPHONE_3G_NAMESTRING;
-        case UIDevice3GSiPhone: return IPHONE_3GS_NAMESTRING;
-        case UIDevice4iPhone: return IPHONE_4_NAMESTRING;
-        case UIDevice4SiPhone: return IPHONE_4S_NAMESTRING;
-        case UIDevice5iPhone: return IPHONE_5_NAMESTRING;
-        case UIDeviceUnknowniPhone: return IPHONE_UNKNOWN_NAMESTRING;
-            
-        case UIDevice1GiPod: return IPOD_1G_NAMESTRING;
-        case UIDevice2GiPod: return IPOD_2G_NAMESTRING;
-        case UIDevice3GiPod: return IPOD_3G_NAMESTRING;
-        case UIDevice4GiPod: return IPOD_4G_NAMESTRING;
-        case UIDeviceUnknowniPod: return IPOD_UNKNOWN_NAMESTRING;
-            
-        case UIDevice1GiPad : return IPAD_1G_NAMESTRING;
-        case UIDevice2GiPad : return IPAD_2G_NAMESTRING;
-        case UIDevice3GiPad : return IPAD_3G_NAMESTRING;
-        case UIDevice4GiPad : return IPAD_4G_NAMESTRING;
-        case UIDeviceUnknowniPad : return IPAD_UNKNOWN_NAMESTRING;
-            
-        case UIDeviceAppleTV2 : return APPLETV_2G_NAMESTRING;
-        case UIDeviceAppleTV3 : return APPLETV_3G_NAMESTRING;
-        case UIDeviceAppleTV4 : return APPLETV_4G_NAMESTRING;
-        case UIDeviceUnknownAppleTV: return APPLETV_UNKNOWN_NAMESTRING;
-            
-        case UIDeviceSimulator: return SIMULATOR_NAMESTRING;
-        case UIDeviceSimulatoriPhone: return SIMULATOR_IPHONE_NAMESTRING;
-        case UIDeviceSimulatoriPad: return SIMULATOR_IPAD_NAMESTRING;
-        case UIDeviceSimulatorAppleTV: return SIMULATOR_APPLETV_NAMESTRING;
-            
-        case UIDeviceIFPGA: return IFPGA_NAMESTRING;
-            
-        default: return IOS_FAMILY_UNKNOWN_DEVICE;
-    }
-}
-
-- (BOOL) hasRetinaDisplay
-{
-    return ([UIScreen mainScreen].scale == 2.0f);
-}
-
-- (UIDeviceFamily) deviceFamily
-{
-    NSString *platform = [self platform];
-    if ([platform hasPrefix:@"iPhone"]) return UIDeviceFamilyiPhone;
-    if ([platform hasPrefix:@"iPod"]) return UIDeviceFamilyiPod;
-    if ([platform hasPrefix:@"iPad"]) return UIDeviceFamilyiPad;
-    if ([platform hasPrefix:@"AppleTV"]) return UIDeviceFamilyAppleTV;
-    
-    return UIDeviceFamilyUnknown;
-}
-
-#pragma mark MAC addy
-// Return the local MAC addy
-// Courtesy of FreeBSD hackers email list
-// Accidentally munged during previous update. Fixed thanks to mlamb.
-- (NSString *) macaddress
-{
-    int                 mib[6];
-    size_t              len;
-    char                *buf;
-    unsigned char       *ptr;
-    struct if_msghdr    *ifm;
-    struct sockaddr_dl  *sdl;
-    
-    mib[0] = CTL_NET;
-    mib[1] = AF_ROUTE;
-    mib[2] = 0;
-    mib[3] = AF_LINK;
-    mib[4] = NET_RT_IFLIST;
-    
-    if ((mib[5] = if_nametoindex("en0")) == 0) {
-        printf("Error: if_nametoindex error\n");
-        return NULL;
-    }
-    
-    if (sysctl(mib, 6, NULL, &len, NULL, 0) < 0) {
-        printf("Error: sysctl, take 1\n");
-        return NULL;
-    }
-    
-    if ((buf = malloc(len)) == NULL) {
-        printf("Error: Memory allocation error\n");
-        return NULL;
-    }
-    
-    if (sysctl(mib, 6, buf, &len, NULL, 0) < 0) {
-        printf("Error: sysctl, take 2\n");
-        free(buf); // Thanks, Remy "Psy" Demerest
-        return NULL;
-    }
-    
-    ifm = (struct if_msghdr *)buf;
-    sdl = (struct sockaddr_dl *)(ifm + 1);
-    ptr = (unsigned char *)LLADDR(sdl);
-    NSString *outstring = [NSString stringWithFormat:@"%02X:%02X:%02X:%02X:%02X:%02X", *ptr, *(ptr+1), *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5)];
-    
-    free(buf);
-    return outstring;
-}
-
-// Illicit Bluetooth check -- cannot be used in App Store
-/*
- Class  btclass = NSClassFromString(@"GKBluetoothSupport");
- if ([btclass respondsToSelector:@selector(bluetoothStatus)])
+ NSString* machineName
  {
- printf("BTStatus %d\n", ((int)[btclass performSelector:@selector(bluetoothStatus)] & 1) != 0);
- bluetooth = ((int)[btclass performSelector:@selector(bluetoothStatus)] & 1) != 0;
- printf("Bluetooth %s enabled\n", bluetooth ? "is" : "isn't");
+ struct utsname systemInfo;
+ uname(&systemInfo);
+ return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
  }
  */
+
+- (Hardware)hardware {
+    NSString *hardware = [self hardwareString];
+    if ([hardware isEqualToString:@"iPhone1,1"])    return IPHONE_2G;
+    if ([hardware isEqualToString:@"iPhone1,2"])    return IPHONE_3G;
+    if ([hardware isEqualToString:@"iPhone2,1"])    return IPHONE_3GS;
+    if ([hardware isEqualToString:@"iPhone3,1"])    return IPHONE_4;
+    if ([hardware isEqualToString:@"iPhone3,2"])    return IPHONE_4;
+    if ([hardware isEqualToString:@"iPhone3,3"])    return IPHONE_4_CDMA;
+    if ([hardware isEqualToString:@"iPhone4,1"])    return IPHONE_4S;
+    if ([hardware isEqualToString:@"iPhone5,1"])    return IPHONE_5;
+    if ([hardware isEqualToString:@"iPhone5,2"])    return IPHONE_5_CDMA_GSM;
+    if ([hardware isEqualToString:@"iPhone5,3"])    return IPHONE_5C;
+    if ([hardware isEqualToString:@"iPhone5,4"])    return IPHONE_5C_CDMA_GSM;
+    if ([hardware isEqualToString:@"iPhone6,1"])    return IPHONE_5S;
+    if ([hardware isEqualToString:@"iPhone6,2"])    return IPHONE_5S_CDMA_GSM;
+    
+    if ([hardware isEqualToString:@"iPod1,1"])      return IPOD_TOUCH_1G;
+    if ([hardware isEqualToString:@"iPod2,1"])      return IPOD_TOUCH_2G;
+    if ([hardware isEqualToString:@"iPod3,1"])      return IPOD_TOUCH_3G;
+    if ([hardware isEqualToString:@"iPod4,1"])      return IPOD_TOUCH_4G;
+    if ([hardware isEqualToString:@"iPod5,1"])      return IPOD_TOUCH_5G;
+    
+    if ([hardware isEqualToString:@"iPad1,1"])      return IPAD;
+    if ([hardware isEqualToString:@"iPad1,2"])      return IPAD_3G;
+    if ([hardware isEqualToString:@"iPad2,1"])      return IPAD_2_WIFI;
+    if ([hardware isEqualToString:@"iPad2,2"])      return IPAD_2;
+    if ([hardware isEqualToString:@"iPad2,3"])      return IPAD_2_CDMA;
+    if ([hardware isEqualToString:@"iPad2,4"])      return IPAD_2;
+    if ([hardware isEqualToString:@"iPad2,5"])      return IPAD_MINI_WIFI;
+    if ([hardware isEqualToString:@"iPad2,6"])      return IPAD_MINI;
+    if ([hardware isEqualToString:@"iPad2,7"])      return IPAD_MINI_WIFI_CDMA;
+    if ([hardware isEqualToString:@"iPad3,1"])      return IPAD_3_WIFI;
+    if ([hardware isEqualToString:@"iPad3,2"])      return IPAD_3_WIFI_CDMA;
+    if ([hardware isEqualToString:@"iPad3,3"])      return IPAD_3;
+    if ([hardware isEqualToString:@"iPad3,4"])      return IPAD_4_WIFI;
+    if ([hardware isEqualToString:@"iPad3,5"])      return IPAD_4;
+    if ([hardware isEqualToString:@"iPad3,6"])      return IPAD_4_GSM_CDMA;
+    if ([hardware isEqualToString:@"iPad4,1"])      return IPAD_AIR_WIFI;
+    if ([hardware isEqualToString:@"iPad4,2"])      return IPAD_AIR_WIFI_GSM;
+    if ([hardware isEqualToString:@"iPad4,3"])      return IPAD_AIR_WIFI_CDMA;
+    if ([hardware isEqualToString:@"iPad4,4"])      return IPAD_MINI_RETINA_WIFI;
+    if ([hardware isEqualToString:@"iPad4,5"])      return IPAD_MINI_RETINA_WIFI_CDMA;
+    
+    
+    if ([hardware isEqualToString:@"i386"])         return SIMULATOR;
+    if ([hardware isEqualToString:@"x86_64"])       return SIMULATOR;
+    return NOT_AVAILABLE;
+}
+
+- (NSString*)hardwareDescription {
+    NSString *hardware = [self hardwareString];
+    if ([hardware isEqualToString:@"iPhone1,1"])    return @"iPhone 2G";
+    if ([hardware isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
+    if ([hardware isEqualToString:@"iPhone2,1"])    return @"iPhone 3GS";
+    if ([hardware isEqualToString:@"iPhone3,1"])    return @"iPhone 4 (GSM)";
+    if ([hardware isEqualToString:@"iPhone3,2"])    return @"iPhone 4 (GSM Rev. A)";
+    if ([hardware isEqualToString:@"iPhone3,3"])    return @"iPhone 4 (CDMA)";
+    if ([hardware isEqualToString:@"iPhone4,1"])    return @"iPhone 4S";
+    if ([hardware isEqualToString:@"iPhone5,1"])    return @"iPhone 5 (GSM)";
+    if ([hardware isEqualToString:@"iPhone5,2"])    return @"iPhone 5 (Global)";
+    if ([hardware isEqualToString:@"iPhone5,3"])    return @"iPhone 5C (GSM)";
+    if ([hardware isEqualToString:@"iPhone5,4"])    return @"iPhone 5C (Global)";
+    if ([hardware isEqualToString:@"iPhone6,1"])    return @"iPhone 5S (GSM)";
+    if ([hardware isEqualToString:@"iPhone6,2"])    return @"iPhone 5S (Global)";
+    
+    if ([hardware isEqualToString:@"iPod1,1"])      return @"iPod Touch (1 Gen)";
+    if ([hardware isEqualToString:@"iPod2,1"])      return @"iPod Touch (2 Gen)";
+    if ([hardware isEqualToString:@"iPod3,1"])      return @"iPod Touch (3 Gen)";
+    if ([hardware isEqualToString:@"iPod4,1"])      return @"iPod Touch (4 Gen)";
+    if ([hardware isEqualToString:@"iPod5,1"])      return @"iPod Touch (5 Gen)";
+    
+    if ([hardware isEqualToString:@"iPad1,1"])      return @"iPad (WiFi)";
+    if ([hardware isEqualToString:@"iPad1,2"])      return @"iPad 3G";
+    if ([hardware isEqualToString:@"iPad2,1"])      return @"iPad 2 (WiFi)";
+    if ([hardware isEqualToString:@"iPad2,2"])      return @"iPad 2 (GSM)";
+    if ([hardware isEqualToString:@"iPad2,3"])      return @"iPad 2 (CDMA)";
+    if ([hardware isEqualToString:@"iPad2,4"])      return @"iPad 2 (WiFi Rev. A)";
+    if ([hardware isEqualToString:@"iPad2,5"])      return @"iPad Mini (WiFi)";
+    if ([hardware isEqualToString:@"iPad2,6"])      return @"iPad Mini (GSM)";
+    if ([hardware isEqualToString:@"iPad2,7"])      return @"iPad Mini (CDMA)";
+    if ([hardware isEqualToString:@"iPad3,1"])      return @"iPad 3 (WiFi)";
+    if ([hardware isEqualToString:@"iPad3,2"])      return @"iPad 3 (CDMA)";
+    if ([hardware isEqualToString:@"iPad3,3"])      return @"iPad 3 (Global)";
+    if ([hardware isEqualToString:@"iPad3,4"])      return @"iPad 4 (WiFi)";
+    if ([hardware isEqualToString:@"iPad3,5"])      return @"iPad 4 (CDMA)";
+    if ([hardware isEqualToString:@"iPad3,6"])      return @"iPad 4 (Global)";
+    if ([hardware isEqualToString:@"iPad4,1"])      return @"iPad Air (WiFi)";
+    if ([hardware isEqualToString:@"iPad4,2"])      return @"iPad Air (WiFi+GSM)";
+    if ([hardware isEqualToString:@"iPad4,3"])      return @"iPad Air (WiFi+CDMA)";
+    if ([hardware isEqualToString:@"iPad4,4"])      return @"iPad Mini Retina (WiFi)";
+    if ([hardware isEqualToString:@"iPad4,5"])      return @"iPad Mini Retina (WiFi+CDMA)";
+    if ([hardware isEqualToString:@"i386"])         return @"Simulator";
+    if ([hardware isEqualToString:@"x86_64"])       return @"Simulator";
+    
+    NSLog(@"This is a device which is not listed in this category. Please visit https://github.com/inderkumarrathore/UIDevice-Hardware and add a comment there.");
+    NSLog(@"Your device hardware string is: %@", hardware);
+    if ([hardware hasPrefix:@"iPhone"]) return @"iPhone";
+    if ([hardware hasPrefix:@"iPod"]) return @"iPod";
+    if ([hardware hasPrefix:@"iPad"]) return @"iPad";
+    return nil;
+}
+
+- (NSString*)hardwareSimpleDescription
+{
+    NSString *hardware = [self hardwareString];
+    if ([hardware isEqualToString:@"iPhone1,1"])    return @"iPhone 2G";
+    if ([hardware isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
+    if ([hardware isEqualToString:@"iPhone2,1"])    return @"iPhone 3GS";
+    if ([hardware isEqualToString:@"iPhone3,1"])    return @"iPhone 4";
+    if ([hardware isEqualToString:@"iPhone3,2"])    return @"iPhone 4";
+    if ([hardware isEqualToString:@"iPhone3,3"])    return @"iPhone 4";
+    if ([hardware isEqualToString:@"iPhone4,1"])    return @"iPhone 4S";
+    if ([hardware isEqualToString:@"iPhone5,1"])    return @"iPhone 5";
+    if ([hardware isEqualToString:@"iPhone5,2"])    return @"iPhone 5";
+    if ([hardware isEqualToString:@"iPhone5,3"])    return @"iPhone 5C";
+    if ([hardware isEqualToString:@"iPhone5,4"])    return @"iPhone 5C";
+    if ([hardware isEqualToString:@"iPhone6,1"])    return @"iPhone 5S";
+    if ([hardware isEqualToString:@"iPhone6,2"])    return @"iPhone 5S";
+    
+    if ([hardware isEqualToString:@"iPod1,1"])      return @"iPod Touch (1 Gen)";
+    if ([hardware isEqualToString:@"iPod2,1"])      return @"iPod Touch (2 Gen)";
+    if ([hardware isEqualToString:@"iPod3,1"])      return @"iPod Touch (3 Gen)";
+    if ([hardware isEqualToString:@"iPod4,1"])      return @"iPod Touch (4 Gen)";
+    if ([hardware isEqualToString:@"iPod5,1"])      return @"iPod Touch (5 Gen)";
+    
+    if ([hardware isEqualToString:@"iPad1,1"])      return @"iPad";
+    if ([hardware isEqualToString:@"iPad1,2"])      return @"iPad";
+    if ([hardware isEqualToString:@"iPad2,1"])      return @"iPad 2";
+    if ([hardware isEqualToString:@"iPad2,2"])      return @"iPad 2";
+    if ([hardware isEqualToString:@"iPad2,3"])      return @"iPad 2";
+    if ([hardware isEqualToString:@"iPad2,4"])      return @"iPad 2";
+    if ([hardware isEqualToString:@"iPad2,5"])      return @"iPad Mini";
+    if ([hardware isEqualToString:@"iPad2,6"])      return @"iPad Mini";
+    if ([hardware isEqualToString:@"iPad2,7"])      return @"iPad Mini";
+    if ([hardware isEqualToString:@"iPad3,1"])      return @"iPad 3";
+    if ([hardware isEqualToString:@"iPad3,2"])      return @"iPad 3";
+    if ([hardware isEqualToString:@"iPad3,3"])      return @"iPad 3";
+    if ([hardware isEqualToString:@"iPad3,4"])      return @"iPad 4";
+    if ([hardware isEqualToString:@"iPad3,5"])      return @"iPad 4";
+    if ([hardware isEqualToString:@"iPad3,6"])      return @"iPad 4";
+    if ([hardware isEqualToString:@"iPad4,1"])      return @"iPad Air";
+    if ([hardware isEqualToString:@"iPad4,2"])      return @"iPad Air";
+    if ([hardware isEqualToString:@"iPad4,3"])      return @"iPad Air";
+    if ([hardware isEqualToString:@"iPad4,4"])      return @"iPad Mini Retina";
+    if ([hardware isEqualToString:@"iPad4,5"])      return @"iPad Mini Retina";
+    
+    if ([hardware isEqualToString:@"i386"])         return @"Simulator";
+    if ([hardware isEqualToString:@"x86_64"])       return @"Simulator";
+    
+    NSLog(@"This is a device which is not listed in this category. Please visit https://github.com/inderkumarrathore/UIDevice-Hardware and add a comment there.");
+    NSLog(@"Your device hardware string is: %@", hardware);
+    
+    if ([hardware hasPrefix:@"iPhone"]) return @"iPhone";
+    if ([hardware hasPrefix:@"iPod"]) return @"iPod";
+    if ([hardware hasPrefix:@"iPad"]) return @"iPad";
+    
+    return nil;
+}
+
+
+- (float)hardwareNumber:(Hardware)hardware {
+    switch (hardware) {
+        case IPHONE_2G: return 1.1f;
+        case IPHONE_3G: return 1.2f;
+        case IPHONE_3GS: return 2.1f;
+        case IPHONE_4:    return 3.1f;
+        case IPHONE_4_CDMA:    return 3.3f;
+        case IPHONE_4S:    return 4.1f;
+        case IPHONE_5:    return 5.1f;
+        case IPHONE_5_CDMA_GSM:    return 5.2f;
+        case IPHONE_5C:    return 5.3f;
+        case IPHONE_5C_CDMA_GSM:    return 5.4f;
+        case IPHONE_5S:    return 6.1f;
+        case IPHONE_5S_CDMA_GSM:    return 6.2f;
+            
+        case IPOD_TOUCH_1G:    return 1.1f;
+        case IPOD_TOUCH_2G:    return 2.1f;
+        case IPOD_TOUCH_3G:    return 3.1f;
+        case IPOD_TOUCH_4G:    return 4.1f;
+        case IPOD_TOUCH_5G:    return 5.1f;
+            
+        case IPAD:    return 1.1f;
+        case IPAD_3G:    return 1.2f;
+        case IPAD_2_WIFI:    return 2.1f;
+        case IPAD_2:    return 2.2f;
+        case IPAD_2_CDMA:    return 2.3f;
+        case IPAD_MINI_WIFI:    return 2.5f;
+        case IPAD_MINI:    return 2.6f;
+        case IPAD_MINI_WIFI_CDMA:    return 2.7f;
+        case IPAD_3_WIFI:    return 3.1f;
+        case IPAD_3_WIFI_CDMA:    return 3.2f;
+        case IPAD_3:    return 3.3f;
+        case IPAD_4_WIFI:    return 3.4f;
+        case IPAD_4:    return 3.5f;
+        case IPAD_4_GSM_CDMA:    return 3.6f;
+        case IPAD_AIR_WIFI:    return 4.1f;
+        case IPAD_AIR_WIFI_GSM:    return 4.2f;
+        case IPAD_AIR_WIFI_CDMA:    return 4.3f;
+        case IPAD_MINI_RETINA_WIFI:    return 4.4f;
+        case IPAD_MINI_RETINA_WIFI_CDMA:    return 4.5f;
+            
+        case SIMULATOR:    return 100.0f;
+        case NOT_AVAILABLE:    return 200.0f;
+    }
+    return 200.0f; //Device is not available
+}
+
+- (BOOL)isCurrentDeviceHardwareBetterThan:(Hardware)hardware {
+    float otherHardware = [self hardwareNumber:hardware];
+    float currentHardware = [self hardwareNumber:[self hardware]];
+    return currentHardware >= otherHardware;
+}
+
+- (CGSize)backCameraStillImageResolutionInPixels
+{
+    switch ([self hardware]) {
+        case IPHONE_2G:
+        case IPHONE_3G:
+            return CGSizeMake(1600, 1200);
+            break;
+        case IPHONE_3GS:
+            return CGSizeMake(2048, 1536);
+            break;
+        case IPHONE_4:
+        case IPHONE_4_CDMA:
+        case IPAD_3_WIFI:
+        case IPAD_3_WIFI_CDMA:
+        case IPAD_3:
+        case IPAD_4_WIFI:
+        case IPAD_4:
+        case IPAD_4_GSM_CDMA:
+            return CGSizeMake(2592, 1936);
+            break;
+        case IPHONE_4S:
+        case IPHONE_5:
+        case IPHONE_5_CDMA_GSM:
+        case IPHONE_5C:
+        case IPHONE_5C_CDMA_GSM:
+            return CGSizeMake(3264, 2448);
+            break;
+            
+        case IPOD_TOUCH_4G:
+            return CGSizeMake(960, 720);
+            break;
+        case IPOD_TOUCH_5G:
+            return CGSizeMake(2440, 1605);
+            break;
+            
+        case IPAD_2_WIFI:
+        case IPAD_2:
+        case IPAD_2_CDMA:
+            return CGSizeMake(872, 720);
+            break;
+            
+        case IPAD_MINI_WIFI:
+        case IPAD_MINI:
+        case IPAD_MINI_WIFI_CDMA:
+            return CGSizeMake(1820, 1304);
+            break;
+        default:
+            NSLog(@"We have no resolution for your device's camera listed in this category. Please, make photo with back camera of your device, get its resolution in pixels (via Preview Cmd+I for example) and add a comment to this repository on GitHub.com in format Device = Hpx x Wpx.");
+            NSLog(@"Your device is: %@", [self hardwareDescription]);
+            break;
+    }
+    return CGSizeZero;
+}
+
+- (BOOL)isIphoneWith4inchDisplay
+{
+    if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPhone) {
+        double height = [[UIScreen mainScreen] bounds].size.height;
+        if (fabs(height-568.0f) < DBL_EPSILON) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end

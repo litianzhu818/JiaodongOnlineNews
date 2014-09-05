@@ -49,7 +49,7 @@
     [super loadView];
     
     UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, App_Height) ];
-    backgroundView.image = [UIImage imageNamed:Is_iOS7?@"menu_background~iOS7":@"menu_background"];
+    backgroundView.image = [UIImage imageNamed:@"menu_background_left"];
     [self.view addSubview:backgroundView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, Is_iOS7?20:0, 320, Menu_Cell_Height*MenuItemCount) style:UITableViewStylePlain];
@@ -165,7 +165,7 @@
     imageView = (UIImageView *)[cell viewWithTag:Menu_Image_Tag];
     if(indexPath.row == _lastSelectedRow){
         imageView.image = [UIImage imageNamed:[iconSelectedNames objectAtIndex:indexPath.row]];
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:Is_iOS7?@"menu_row_selected~iOS7": @"menu_row_selected"]];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_row_selected"]];
         //        cell.textLabel.textColor = [UIColor colorWithRed:87.0/255.0 green:169.0/255.0 blue:237.0/255.0 alpha:1.0];
     }else{
         imageView.image = [UIImage imageNamed:[iconNames objectAtIndex:indexPath.row]];

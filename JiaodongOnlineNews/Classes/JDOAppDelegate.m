@@ -276,7 +276,7 @@
 
     IIViewDeckController *deckController =  [[JDOMainViewController alloc] initWithCenterViewController:centerController leftViewController:leftController rightViewController:rightController];
     deckController.leftSize = 320-207;
-    deckController.rightSize = 320-207+10;
+    deckController.rightSize = 320-280;
     deckController.panningGestureDelegate = centerController;
     deckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
     deckController.delegate = centerController;

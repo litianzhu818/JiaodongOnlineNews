@@ -1,108 +1,93 @@
-/*
- Erica Sadun, http://ericasadun.com
- iPhone Developer's Cookbook, 6.x Edition
- BSD License, Use at your own risk
- */
+//
+//  UIDevice+Hardware.h
+//  TestTable
+//
+//  Created by Inder Kumar Rathore on 19/01/13.
+//  Copyright (c) 2013 Rathore. All rights reserved.
+//
 
 #import <UIKit/UIKit.h>
 
-#define IFPGA_NAMESTRING                @"iFPGA"
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
+#define DEVICE_IOS_VERSION [[UIDevice currentDevice].systemVersion floatValue]
+#define DEVICE_HARDWARE_BETTER_THAN(i) [[UIDevice currentDevice] isCurrentDeviceHardwareBetterThan:i]
 
-#define IPHONE_1G_NAMESTRING            @"iPhone 1G"
-#define IPHONE_3G_NAMESTRING            @"iPhone 3G"
-#define IPHONE_3GS_NAMESTRING           @"iPhone 3GS"
-#define IPHONE_4_NAMESTRING             @"iPhone 4"
-#define IPHONE_4S_NAMESTRING            @"iPhone 4S"
-#define IPHONE_5_NAMESTRING             @"iPhone 5"
-#define IPHONE_UNKNOWN_NAMESTRING       @"Unknown iPhone"
+#define DEVICE_HAS_RETINA_DISPLAY (fabs([UIScreen mainScreen].scale - 2.0) <= fabs([UIScreen mainScreen].scale - 2.0)*DBL_EPSILON)
+#define IS_IOS7_OR_LATER (((double)(DEVICE_IOS_VERSION)-7.0) > -((double)(DEVICE_IOS_VERSION)-7.0)*DBL_EPSILON)
+#define NSStringAdd568hIfIphone4inch(str) [NSString stringWithFormat:[UIDevice currentDevice].isIphoneWith4inchDisplay ? @"%@-568h" : @"%@", str]
 
-#define IPOD_1G_NAMESTRING              @"iPod touch 1G"
-#define IPOD_2G_NAMESTRING              @"iPod touch 2G"
-#define IPOD_3G_NAMESTRING              @"iPod touch 3G"
-#define IPOD_4G_NAMESTRING              @"iPod touch 4G"
-#define IPOD_UNKNOWN_NAMESTRING         @"Unknown iPod"
+#define IS_IPHONE_5 [[UIScreen mainScreen] applicationFrame].size.height == 568
 
-#define IPAD_1G_NAMESTRING              @"iPad 1G"
-#define IPAD_2G_NAMESTRING              @"iPad 2G"
-#define IPAD_3G_NAMESTRING              @"iPad 3G"
-#define IPAD_4G_NAMESTRING              @"iPad 4G"
-#define IPAD_UNKNOWN_NAMESTRING         @"Unknown iPad"
+typedef enum
+{
+    NOT_AVAILABLE,
+    
+    IPHONE_2G,
+    IPHONE_3G,
+    IPHONE_3GS,
+    IPHONE_4,
+    IPHONE_4_CDMA,
+    IPHONE_4S,
+    IPHONE_5,
+    IPHONE_5_CDMA_GSM,
+    IPHONE_5C,
+    IPHONE_5C_CDMA_GSM,
+    IPHONE_5S,
+    IPHONE_5S_CDMA_GSM,
+    
+    IPOD_TOUCH_1G,
+    IPOD_TOUCH_2G,
+    IPOD_TOUCH_3G,
+    IPOD_TOUCH_4G,
+    IPOD_TOUCH_5G,
+    
+    IPAD,
+    IPAD_2,
+    IPAD_2_WIFI,
+    IPAD_2_CDMA,
+    IPAD_3,
+    IPAD_3G,
+    IPAD_3_WIFI,
+    IPAD_3_WIFI_CDMA,
+    IPAD_4,
+    IPAD_4_WIFI,
+    IPAD_4_GSM_CDMA,
+    
+    IPAD_MINI,
+    IPAD_MINI_WIFI,
+    IPAD_MINI_WIFI_CDMA,
+    IPAD_MINI_RETINA_WIFI,
+    IPAD_MINI_RETINA_WIFI_CDMA,
+    
+    IPAD_AIR_WIFI,
+    IPAD_AIR_WIFI_GSM,
+    IPAD_AIR_WIFI_CDMA,
+    
+    SIMULATOR
+} Hardware;
 
-#define APPLETV_2G_NAMESTRING           @"Apple TV 2G"
-#define APPLETV_3G_NAMESTRING           @"Apple TV 3G"
-#define APPLETV_4G_NAMESTRING           @"Apple TV 4G"
-#define APPLETV_UNKNOWN_NAMESTRING      @"Unknown Apple TV"
-
-#define IOS_FAMILY_UNKNOWN_DEVICE       @"Unknown iOS device"
-
-#define SIMULATOR_NAMESTRING            @"iPhone Simulator"
-#define SIMULATOR_IPHONE_NAMESTRING     @"iPhone Simulator"
-#define SIMULATOR_IPAD_NAMESTRING       @"iPad Simulator"
-#define SIMULATOR_APPLETV_NAMESTRING    @"Apple TV Simulator" // :)
-
-typedef enum {
-    UIDeviceUnknown,
-    
-    UIDeviceSimulator,
-    UIDeviceSimulatoriPhone,
-    UIDeviceSimulatoriPad,
-    UIDeviceSimulatorAppleTV,
-    
-    UIDevice1GiPhone,
-    UIDevice3GiPhone,
-    UIDevice3GSiPhone,
-    UIDevice4iPhone,
-    UIDevice4SiPhone,
-    UIDevice5iPhone,
-    
-    UIDevice1GiPod,
-    UIDevice2GiPod,
-    UIDevice3GiPod,
-    UIDevice4GiPod,
-    
-    UIDevice1GiPad,
-    UIDevice2GiPad,
-    UIDevice3GiPad,
-    UIDevice4GiPad,
-    
-    UIDeviceAppleTV2,
-    UIDeviceAppleTV3,
-    UIDeviceAppleTV4,
-    
-    UIDeviceUnknowniPhone,
-    UIDeviceUnknowniPod,
-    UIDeviceUnknowniPad,
-    UIDeviceUnknownAppleTV,
-    UIDeviceIFPGA,
-    
-} UIDevicePlatform;
-
-typedef enum {
-    UIDeviceFamilyiPhone,
-    UIDeviceFamilyiPod,
-    UIDeviceFamilyiPad,
-    UIDeviceFamilyAppleTV,
-    UIDeviceFamilyUnknown,
-    
-} UIDeviceFamily;
 
 @interface UIDevice (Hardware)
-- (NSString *) platform;
-- (NSString *) hwmodel;
-- (NSUInteger) platformType;
-- (NSString *) platformString;
+/** This method retruns the hardware type */
+- (NSString*)hardwareString;
 
-- (NSUInteger) cpuFrequency;
-- (NSUInteger) busFrequency;
-- (NSUInteger) cpuCount;
-- (NSUInteger) totalMemory;
-- (NSUInteger) userMemory;
+/** This method returns the Hardware enum depending upon harware string */
+- (Hardware)hardware;
 
-- (NSNumber *) totalDiskSpace;
-- (NSNumber *) freeDiskSpace;
+/** This method returns the readable description of hardware string */
+- (NSString*)hardwareDescription;
 
-- (NSString *) macaddress;
+/** This method returs the readble description without identifier (GSM, CDMA, GLOBAL) */
+- (NSString *)hardwareSimpleDescription;
 
-- (BOOL) hasRetinaDisplay;
-- (UIDeviceFamily) deviceFamily;
+/** This method returns YES if the current device is better than the hardware passed */
+- (BOOL)isCurrentDeviceHardwareBetterThan:(Hardware)hardware;
+
+/** This method returns the resolution for still image that can be received
+ from back camera of the current device. Resolution returned for image oriented landscape right. **/
+- (CGSize)backCameraStillImageResolutionInPixels;
+
+/** This method returns YES if the currend device is iPhone and has 4" display **/
+- (BOOL)isIphoneWith4inchDisplay;
+
 @end

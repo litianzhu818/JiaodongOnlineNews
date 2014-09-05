@@ -14,11 +14,25 @@
 - (id)init
 {
     self = [self initWithFrame:CGRectMake(0, 0, 320, (Is_iOS7 ? 128.0f : 93.0f) /2)];
-    UIImageView *background = [[UIImageView alloc] initWithFrame:self.frame];
-    background.image = [UIImage imageNamed:Is_iOS7 ? @"top_navigation_background~iOS7" : @"top_navigation_background"];
-    [self addSubview:background];
+    [self setBackground:Is_iOS7 ? @"top_navigation_background~iOS7" : @"top_navigation_background"];
     return self;
 }
+
+- (void) setBackground:(NSString *)imageName{
+    UIImageView *background = (UIImageView *)[self viewWithTag:4321];
+    if ( background ) {
+        [background removeFromSuperview];
+    }
+    if (imageName == nil) {
+        self.backgroundColor = [UIColor clearColor];
+    }else{
+        background = [[UIImageView alloc] initWithFrame:self.frame];
+        background.tag = 4321;
+        background.image = [UIImage imageNamed:imageName];
+        [self addSubview:background];
+    }
+}
+
 
 - (void) addLeftButtonImage:(NSString *)image highlightImage:(NSString *)highlightImage{
     if(self.leftBtn ){

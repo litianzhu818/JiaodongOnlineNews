@@ -140,8 +140,8 @@
     }];
     self.titleLabel1.textColor = [UIColor colorWithHex:@"373737"];
     self.titleLabel2.textColor = [UIColor colorWithHex:@"373737"];
-    self.agreeNum.text = @"100";//[[NSNumber numberWithInt:model.agreeNum] stringValue];
-    self.reviewNum.text = @"100";//[[NSNumber numberWithInt:model.reviewNum] stringValue];
+    self.agreeNum.text = [@(arc4random() % 300) stringValue];//[[NSNumber numberWithInt:model.agreeNum] stringValue];
+    self.reviewNum.text = [@(arc4random() % 300) stringValue];//[[NSNumber numberWithInt:model.reviewNum] stringValue];
 }
 
 @end

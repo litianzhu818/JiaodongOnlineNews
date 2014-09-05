@@ -22,7 +22,6 @@ typedef enum {
 @interface JDOSettingViewController : JDONavigationController <UITableViewDelegate, UITableViewDataSource,UIAlertViewDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) JDORightViewController *rightController;
 
 - (void)onPopularizeButtonClick:(UIButton *)button;
 - (void)sendToServer:(NSDictionary *)params;

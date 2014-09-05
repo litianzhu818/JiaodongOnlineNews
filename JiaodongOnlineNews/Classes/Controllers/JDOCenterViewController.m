@@ -332,10 +332,6 @@
 
 #pragma mark - IIViewDeckControllerDelegate
 
-- (void)addLog:(NSString*)line {
-    NSLog(@"%@",line);
-}
-
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
     shadowLayer.masksToBounds = NO;
     shadowLayer.shadowRadius = 20;  //10
