@@ -11,6 +11,7 @@
 #import "JDORightViewController.h"
 #import "NIPaths.h"
 #import "SSLineView.h"
+#import "CustomIOS7AlertView.h"
 
 #define Font_Color @"b4b4b4"
 #define Modify_Width 40
@@ -25,7 +26,7 @@
     
     UILabel *userLabel;
     UIImageView *avatar;
-    
+    CustomIOS7AlertView *phoneAlertView;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -90,7 +91,7 @@
     
     // 个人信息
     UIImageView *userSectionIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_account_icon"]];
-    userSectionIcon.frame = CGRectMake(30, 180, 19, 19);
+    userSectionIcon.frame = CGRectMake(30, 160, 19, 19);
     [scrollView addSubview:userSectionIcon];
     
     UILabel *userSectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(userSectionIcon.frame)+10, CGRectGetMinY(userSectionIcon.frame), 160, 19)];
@@ -122,6 +123,7 @@
     [phoneBtn setTitleColor:[UIColor colorWithHex:Font_Color] forState:UIControlStateNormal];
     [phoneBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [phoneBtn.titleLabel setTextAlignment:NSTextAlignmentRight];
+    [phoneBtn addTarget:self action:@selector(changePhone:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:phoneBtn];
     
     SSLineView *line2 = [[SSLineView alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(phoneLabel.frame)+5, 320-30-30, 1)];
@@ -153,21 +155,21 @@
     line3.lineColor = [UIColor colorWithHex:Font_Color];
     [scrollView addSubview:line3];
     
-    UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(line3.frame)+5, 70, 25)];
-    sexLabel.font = [UIFont systemFontOfSize:16];
-    sexLabel.textColor = [UIColor colorWithHex:Font_Color];
-    sexLabel.text = @"性 别:";
-    [scrollView addSubview:sexLabel];
-    
-    UILabel *sexContent = [[UILabel alloc] initWithFrame:CGRectMake(30+70, CGRectGetMaxY(line3.frame)+5, 130, 25)];
-    sexContent.font = [UIFont systemFontOfSize:16];
-    sexContent.textColor = [UIColor colorWithHex:Font_Color];
-    sexContent.text = @"男";
-    [scrollView addSubview:sexContent];
+//    UILabel *sexLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(line3.frame)+5, 70, 25)];
+//    sexLabel.font = [UIFont systemFontOfSize:16];
+//    sexLabel.textColor = [UIColor colorWithHex:Font_Color];
+//    sexLabel.text = @"性 别:";
+//    [scrollView addSubview:sexLabel];
+//    
+//    UILabel *sexContent = [[UILabel alloc] initWithFrame:CGRectMake(30+70, CGRectGetMaxY(line3.frame)+5, 130, 25)];
+//    sexContent.font = [UIFont systemFontOfSize:16];
+//    sexContent.textColor = [UIColor colorWithHex:Font_Color];
+//    sexContent.text = @"男";
+//    [scrollView addSubview:sexContent];
     
     // 每日任务
     UIImageView *missionSectionIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_today_mission"]];
-    missionSectionIcon.frame = CGRectMake(30, CGRectGetMaxY(sexLabel.frame)+20, 19, 19);
+    missionSectionIcon.frame = CGRectMake(30, CGRectGetMaxY(line3.frame)+20, 19, 19);
     [scrollView addSubview:missionSectionIcon];
     
     UILabel *missionSectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(missionSectionIcon.frame)+10, CGRectGetMinY(missionSectionIcon.frame), 160, 19)];
@@ -227,6 +229,30 @@
     
     scrollView.contentSize = CGSizeMake(320, CGRectGetMaxY(quitBtn.frame)+20);
     
+}
+
+- (void)changePhone:(UIButton *)btn{
+    if(!phoneAlertView){
+        phoneAlertView = [[CustomIOS7AlertView alloc] initWithParentView:SharedAppDelegate.window];
+//        _iOS7AlertView.delegate = self;
+//        UIView *containView = [[UIView alloc] initWithFrame:CGRectMake(0,0, 260, 100)];
+//        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 15, 220, 20)];
+//        title.textAlignment = UITextAlignmentCenter;
+//        title.text = @"请输入查询密码";
+//        title.backgroundColor = [UIColor clearColor];
+//        [containView addSubview:title];
+//        InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(20,45, 220, 35)];
+//        secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+//        secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
+//        secretTextField.secureTextEntry = YES;
+//        secretTextField.placeholder = @"6位数字";
+//        secretTextField.keyboardType = UIKeyboardTypeNumberPad;
+//        secretTextField.tag = Secret_Field_Tag;
+//        [containView addSubview:secretTextField];
+//        _iOS7AlertView.containerView = containView;
+//        _iOS7AlertView.buttonTitles = @[@"取消",@"确认"];
+    }
+    [phoneAlertView show];
 }
 
 - (void)logout:(UIButton *)btn{

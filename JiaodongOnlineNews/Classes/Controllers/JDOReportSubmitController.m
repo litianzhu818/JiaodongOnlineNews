@@ -85,26 +85,54 @@
 //    tagLabel.textAlignment = NSTextAlignmentCenter;
 //    [self.view addSubview:tagLabel];
     
-    UIScrollView *tagScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10 /*CGRectGetMaxX(tagLabel.frame)+5*/, CGRectGetMaxY(addBtn.frame)+2*Line_Padding+Image_Width, 320-20/*320-10-CGRectGetMaxX(tagLabel.frame)-5*/, 35)];
+    float height = Is_iPhone4Inch?(35+88):35;
+    UIScrollView *tagScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10 /*CGRectGetMaxX(tagLabel.frame)+5*/, CGRectGetMaxY(addBtn.frame)+2*Line_Padding+Image_Width, 320-20/*320-10-CGRectGetMaxX(tagLabel.frame)-5*/, height)];
     tagScrollView.showsHorizontalScrollIndicator = false;
     tagScrollView.showsVerticalScrollIndicator = false;
     tagScrollView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tagScrollView];
-    NSArray *tags = @[@"突发事件",@"第一现场",@"新闻",@"自然灾害",@"其他"];
+    NSArray *tags = @[@"突发事件",@"第一现场",@"新闻爆料",@"自然灾害",@"其他",@"突发事件",@"第一现场",@"新闻爆料",@"自然灾害",@"其他",@"突发事件",@"第一现场",@"新闻爆料",@"自然灾害",@"其他"];
+    BOOL fixedWidth = true;
+    for (int i=0; i<tags.count; i++) {
+        float tagWidth = [tags[i] sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(999.0f, 35.0f)].width+10;
+        if (tagWidth>71) {
+            fixedWidth = false;
+            break;
+        }
+    }
     float totalWidth = 0.0f;
+    float totalHeight = 0.0f;
     for (int i=0; i<tags.count; i++) {
         UIButton *aTag = [UIButton buttonWithType:UIButtonTypeCustom];
-        aTag.frame = CGRectMake(totalWidth, 0, [tags[i] sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(999.0f, 35.0f)].width+10, 35);
+        float tagWidth = [tags[i] sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(999.0f, 35.0f)].width+10;
+        if (Is_iPhone4Inch) {   //4.0的iPhone显示多行，上下滑动
+            if(fixedWidth){
+               tagWidth = 71;
+            }
+            aTag.frame = CGRectMake(totalWidth, totalHeight, tagWidth, 35);
+            if ((totalWidth+tagWidth)>300 ) {
+                totalWidth = 0;
+                totalHeight += 40;
+                aTag.frame = CGRectMake(totalWidth, totalHeight, tagWidth, 35);
+            }
+            totalWidth = CGRectGetMaxX(aTag.frame)+ (i==tags.count-1?0:5);
+        }else{  // 3.5的iPhone显示一行，左右滑动
+            aTag.frame = CGRectMake(totalWidth, 0, tagWidth, 35);
+            totalWidth = CGRectGetMaxX(aTag.frame)+ (i==tags.count-1?0:5);
+        }
         [aTag setTitle:tags[i] forState:UIControlStateNormal];
         [aTag setTitleColor:[UIColor colorWithHex:@"646464"] forState:UIControlStateNormal];
         aTag.titleLabel.font = [UIFont systemFontOfSize:15.0f];
         aTag.titleLabel.textAlignment = NSTextAlignmentCenter;
         aTag.backgroundColor = [UIColor whiteColor];
         [aTag addTarget:self action:@selector(chooseTag:) forControlEvents:UIControlEventTouchUpInside];
-        totalWidth = CGRectGetMaxX(aTag.frame)+ (i==tags.count-1?0:5);
         [tagScrollView addSubview:aTag];
     }
-    tagScrollView.contentSize = CGSizeMake(totalWidth, 35);
+    if (Is_iPhone4Inch) {
+        tagScrollView.contentSize = CGSizeMake(300, totalHeight+35);
+    }else{
+        tagScrollView.contentSize = CGSizeMake(totalWidth, 35);
+    }
     
     UIButton *submit = [[UIButton alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(tagScrollView.frame)+10, 300, 50)];
     NSString *btnBackground = Is_iOS7?@"wide_btn~iOS7":@"wide_btn";
@@ -113,7 +141,7 @@
     submit.userInteractionEnabled = YES;
     [submit setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
     [submit.titleLabel setShadowOffset:Is_iOS7?CGSizeMake(0, 0):CGSizeMake(0, -1)];
-//    [submit addTarget:self action:@selector(submitClicked) forControlEvents:UIControlEventTouchUpInside];
+    [submit addTarget:self action:@selector(submitClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:submit];
     self.view.backgroundColor = [UIColor colorWithHex:@"dcdcdc"];
 }
@@ -193,7 +221,7 @@
         thumbnail = [UIImage imageWithData:UIImageJPEGRepresentation(thumbnail,1.0f)]; // 复制原图，防止选完图片后从照片库中删除原图导致黑屏
         UIImage *fullImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
         // 如果fullImage的宽度不够全屏宽度，则需要使用fullResolutionImage
-        if(fullImage.size.width<640){
+        if(fullImage.size.width<[UIScreen mainScreen].scale*320){
             fullImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullResolutionImage];
         }
         [self addImageViewThumbnail:thumbnail fullImage:fullImage];
@@ -224,10 +252,22 @@
     }
     
     UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    // 竖着拍：UIImageOrientationRight
-#warning scale只能改变image的尺寸，改变不了容量
-    UIImage *thumbnail = [[UIImage alloc] initWithCGImage:originalImage.CGImage scale:5 orientation:originalImage.imageOrientation];
-    UIImage *fullImage = [[UIImage alloc] initWithCGImage:originalImage.CGImage scale:2 orientation:originalImage.imageOrientation];
+    NSLog(@"拍摄图片原始:PNG格式尺寸%g*%g,容量%dk",originalImage.size.width,originalImage.size.height,[UIImagePNGRepresentation(originalImage) length]/1000);
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(Image_Width,Image_Width), NO, 0.0);
+    [originalImage drawInRect:CGRectMake(0, 0, Image_Width, Image_Width)];
+    UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSLog(@"拍摄图片缩略图:PNG格式尺寸%g*%g,容量%dk",thumbnail.size.width,thumbnail.size.height,[UIImagePNGRepresentation(thumbnail) length]/1000);
+    
+    float maxWidth = [UIScreen mainScreen].scale*320;
+    float maxHeight = maxWidth * originalImage.size.height / originalImage.size.width;
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(maxWidth,maxHeight), NO, 0.0);
+    [originalImage drawInRect:CGRectMake(0, 0, maxWidth, maxHeight)];
+    UIImage *fullImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSLog(@"拍摄图片缩放后:PNG格式尺寸%g*%g,容量%dk",fullImage.size.width,fullImage.size.height,[UIImagePNGRepresentation(fullImage) length]/1000);
+
     [self addImageViewThumbnail:thumbnail fullImage:fullImage];
     if (++numOfImage == Image_Max_Num) {
         addBtn.hidden = true;
@@ -257,7 +297,6 @@
 - (void)tapImage:(UITapGestureRecognizer *)tap{
     [titleInput resignFirstResponder];
     [contentInput resignFirstResponder];
-    NSArray *_urls = @[@"http://ww4.sinaimg.cn/thumbnail/7f8c1087gw1e9g06pc68ug20ag05y4qq.gif", @"http://ww3.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr0nly5j20pf0gygo6.jpg", @"http://ww4.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr1d0vyj20pf0gytcj.jpg", @"http://ww3.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr1xydcj20gy0o9q6s.jpg", @"http://ww2.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr2n1jjj20gy0o9tcc.jpg", @"http://ww2.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr39ht9j20gy0o6q74.jpg", @"http://ww3.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr3xvtlj20gy0obadv.jpg", @"http://ww4.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr4nndfj20gy0o9q6i.jpg", @"http://ww3.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr57tn9j20gy0obn0f.jpg"];
     NSMutableArray *photos = [NSMutableArray arrayWithCapacity:numOfImage];
     for (int i = 0; i<numOfImage; i++) {
         // 替换为中等尺寸图片
@@ -329,23 +368,67 @@
     addBtn.frame = frame;
 }
 
-- (void)upLoadImage:(UIImage *)image
-{
-    //  尺寸在显示的时候已经调整过了，这里只需要调整质量就可以了
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
-    UIImage *uploadImage = [UIImage imageWithData:imageData];
-    NSURL *url = [NSURL URLWithString:SERVER_QUERY_URL];
-    // 压缩图片
-//    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-//    
-//    [request setFile:[NSHomeDirectory() stringByAppendingString:@"Documents/temp_user_img.jpg"] forKey:@"image"];
-//    [request setValue:[[[NSUserDefaults standardUserDefaults] objectForKey:@"user_info"] objectForKey:@"tel"] forKeyPath:@"tel"];
-//    [request buildPostBody];
-//    [request setDelegate:self];
-//    [request setTimeOutSeconds:5.0];
-//    [request startAsynchronous];
-//    [request setDidFinishSelector:@selector(imagePostSuccess)];
-//    [request setDidFailSelector:@selector(imagePostFailed)];
+- (void)submitClicked:(UIButton *)btn{
+    btn.enabled = false;    // 防止重复提交
+    NSMutableArray *images = [NSMutableArray array];
+    for (int i=0; i<numOfImage; i++) {
+        JDOReportImageView *iv = (JDOReportImageView *)[self.view viewWithTag:Image_Base_Tag+i];
+        UIImage *image = iv.fullImage;
+        NSLog(@"图片%d原始:PNG格式尺寸%dk,0.5质量JPG格式尺寸:%dk",i,[UIImagePNGRepresentation(image) length]/1000,[UIImageJPEGRepresentation(image,0.5) length]/1000);
+    
+        // 从图集选择的图片有可能是长条或者窄条的fullResolutionImage图片，缩放到最大允许尺寸以内
+        UIImage *scaleImage;
+        float maxWidth = [UIScreen mainScreen].scale*568;
+        if (image.size.width > maxWidth) {
+            float maxHeight = maxWidth * image.size.height / image.size.width;
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(maxWidth,maxHeight), NO, 0.0);
+            [image drawInRect:CGRectMake(0, 0, maxWidth, maxHeight)];
+            scaleImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            // 缩放后容量反而增加的，则不使用缩放的结果
+            if ([UIImagePNGRepresentation(scaleImage) length] > [UIImagePNGRepresentation(image) length]) {
+                scaleImage = image;
+            }
+        }else{
+            scaleImage = image;
+        }
+        
+        //  调整质量
+        float jpgQuantity = 0.8f;
+        int jpgMaxSize = 200 *1024;
+        NSData *imageData = UIImageJPEGRepresentation(scaleImage,jpgQuantity);
+        while (jpgQuantity>0 && [imageData length]>jpgMaxSize) {
+            jpgQuantity -= 0.1f;
+            imageData = UIImageJPEGRepresentation(scaleImage,jpgQuantity);
+        }
+        if (jpgQuantity <= 0) { // 压缩到0.1质量也不符合容量要求
+            [JDOCommonUtil showHintHUD:[NSString stringWithFormat:@"第%d张图片过大，无法上传，请重新选择。",i+1] inView:self.view withSlidingMode:WBNoticeViewSlidingModeUp];
+            btn.enabled = true;
+            return;
+        }
+        [images addObject:imageData];
+    }
+    
+    // \u4e0a\u4f20\u6587\u4ef6\u7c7b\u578b\u4e0d\u5141\u8bb8 上传文件类型不允许
+    // \u4e0a\u4f20\u6587\u4ef6\u5927\u5c0f\u4e0d\u7b26\uff01 上传文件大小不符!
+    //  图片上传
+    AFHTTPClient *uploadFileClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://192.168.10.7/mobileQuery/V12"]];
+    NSDictionary *params = @{@"uid":@"1"};
+    NSMutableURLRequest *fileUpRequest = [uploadFileClient multipartFormRequestWithMethod:@"POST" path:@"User/uploadUpic" parameters:params constructingBodyWithBlock:^(id formData) {
+        for (NSData *imageData in images) {
+            [formData appendPartWithFileData:imageData name:@"file" fileName:@"pic.jpg" mimeType:@"image/jpeg"];
+        }
+    }];
+    
+    AFHTTPRequestOperation *fileUploadOp = [[AFHTTPRequestOperation alloc]initWithRequest:fileUpRequest];
+    
+    [fileUploadOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        btn.enabled = true;
+        NSLog(@"upload finish ---%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error %@",error);
+    }];
+    [uploadFileClient enqueueHTTPRequestOperation:fileUploadOp];
 }
 
 

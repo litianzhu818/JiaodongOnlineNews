@@ -10,6 +10,7 @@
 #import "JDOPageControl.h"
 #import "JDOReportNewsList.h"
 #import "JDOReportPhotoList.h"
+#import "JDOReportActivityList.h"
 
 #define Navbar_Height (Is_iOS7?36.0f:34.5f)
 
@@ -33,7 +34,7 @@
         _pageInfos = @[
                        @{@"reuseId":@"1",@"title":@"爆料台"},
                        @{@"reuseId":@"2",@"title":@"随手拍"},
-                       @{@"reuseId":@"3",@"title":@"活动派"}
+                       @{@"reuseId":@"3",@"title":@"活动圈"}
                        ];
     }
     return self;
@@ -90,8 +91,7 @@
 #pragma mark - PagingScrollView delegate
 
 - (NSInteger)numberOfPagesInPagingScrollView:(NIPagingScrollView *)pagingScrollView {
-//    return _pageInfos.count;
-    return 2;
+    return _pageInfos.count;
 }
 
 - (UIView<NIPagingScrollViewPage> *)pagingScrollView:(NIPagingScrollView *)pagingScrollView
@@ -117,6 +117,9 @@
             return reportList;
         }
         case 2:{
+            JDOReportActivityList *reportList = [[JDOReportActivityList alloc] initWithFrame:_scrollView.bounds reuseIdentifier:itemInfo[@"reuseId"]];
+            [reportList loadDataFromNetwork];
+            return reportList;
         }
         default:
             return nil;

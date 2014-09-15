@@ -165,6 +165,11 @@
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
         return;
     }
+    // 不是停留在视频页面不刷新
+    if([(JDOCenterViewController *)[[SharedAppDelegate deckController] centerController] rootViewControllerType] != MenuItemVideo){
+        return;
+    }
+    
     for (int i=0; i<self.listArray.count; i++) {
         JDOVideoModel *model = self.listArray[i];
         [self fetchContent:model];

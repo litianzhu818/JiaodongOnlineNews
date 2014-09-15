@@ -42,7 +42,7 @@
 		_agreeNum.backgroundColor = [UIColor clearColor];
 		_agreeNum.textColor = [UIColor colorWithWhite:0 alpha:0.3f];  // 30%透明度
         _agreeNum.textAlignment = NSTextAlignmentCenter;
-        _agreeNum.font = [UIFont boldSystemFontOfSize:13];
+        _agreeNum.font = [UIFont boldSystemFontOfSize:12];
 	}
 	return _agreeNum;
 }
@@ -53,7 +53,7 @@
 		_reviewNum.backgroundColor = [UIColor clearColor];
 		_reviewNum.textColor = [UIColor colorWithWhite:0 alpha:0.3f]; 
         _reviewNum.textAlignment = NSTextAlignmentCenter;
-        _reviewNum.font = [UIFont boldSystemFontOfSize:13];
+        _reviewNum.font = [UIFont boldSystemFontOfSize:12];
 	}
 	return _reviewNum;
 }
@@ -72,10 +72,10 @@
     self.imageView.frame = CGRectMake(0 , 0, CGRectGetWidth(self.bounds) , CGRectGetHeight(self.bounds)-Content_Height );
     self.titleLabel1.frame = CGRectMake(5, CGRectGetHeight(self.bounds)-Content_Height, CGRectGetWidth(self.bounds)-10, 18);
     self.titleLabel2.frame = CGRectMake(5, CGRectGetHeight(self.bounds)-Content_Height+18, CGRectGetWidth(self.bounds)-10,18);
-    self.agreeImg.frame = CGRectMake(5, CGRectGetHeight(self.bounds)-Content_Height+18+18-1, 16.5f, 16.5f);
-    self.agreeNum.frame = CGRectMake(5+16.5f, CGRectGetHeight(self.bounds)-Content_Height+18+18, 30, 16.5f);
-    self.reviewImg.frame = CGRectMake(5+16.5f+30, CGRectGetHeight(self.bounds)-Content_Height+18+18+1, 16.5f, 16.5f);
-    self.reviewNum.frame = CGRectMake(5+16.5f*2+30, CGRectGetHeight(self.bounds)-Content_Height+18+18, 30, 16.5f);
+    self.agreeImg.frame = CGRectMake(25, CGRectGetHeight(self.bounds)-Content_Height+18+18+1, 14, 14);
+    self.agreeNum.frame = CGRectMake(25+14, CGRectGetHeight(self.bounds)-Content_Height+18+18+2, 25, 14);
+    self.reviewImg.frame = CGRectMake(25+14+25, CGRectGetHeight(self.bounds)-Content_Height+18+18+3, 14, 14);
+    self.reviewNum.frame = CGRectMake(25+14*2+25, CGRectGetHeight(self.bounds)-Content_Height+18+18+2, 25, 14);
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -86,9 +86,9 @@
         [self.contentView addSubview:self.agreeNum];
         [self.contentView addSubview:self.reviewNum];
         
-        self.agreeImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"report_agree"]];
+        self.agreeImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"report_agree_14"]];
         [self.contentView addSubview:self.agreeImg];
-        self.reviewImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"report_review"]];
+        self.reviewImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"report_review_14"]];
         [self.contentView addSubview:self.reviewImg];
         
         self.backgroundColor = [UIColor whiteColor];

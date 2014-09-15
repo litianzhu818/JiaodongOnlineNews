@@ -30,8 +30,7 @@
 @end
 
 @implementation JDOReportPhotoList{
-    MBProgressHUD *HUD;
-    NSDate *HUDShowTime;
+
 }
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {

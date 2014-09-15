@@ -7,9 +7,9 @@
 //
 
 #import "NimbusPagingScrollView.h"
+#import "JDOVideoLiveCell.h"
 
 @protocol JDOStatusViewDelegate;
-@protocol JDOVideoLiveDelegate;
 
 @interface JDOVideoLiveList : NIPageView <JDOStatusView, UITableViewDelegate, UITableViewDataSource,JDOStatusViewDelegate,JDOVideoLiveDelegate>
 

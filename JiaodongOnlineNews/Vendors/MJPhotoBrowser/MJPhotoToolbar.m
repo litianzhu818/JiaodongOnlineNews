@@ -24,6 +24,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        [self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6f]];
     }
     return self;
 }
@@ -44,7 +45,7 @@
     }
     
     // 保存图片按钮
-    CGFloat btnWidth = self.bounds.size.height;
+    CGFloat barHeight = self.bounds.size.height;
 //    _saveImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    _saveImageBtn.frame = CGRectMake(20, 0, btnWidth, btnWidth);
 //    _saveImageBtn.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -54,10 +55,10 @@
 //    [self addSubview:_saveImageBtn];
     
     _deleteImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _deleteImageBtn.frame = CGRectMake(280, 0, btnWidth, btnWidth);
+    _deleteImageBtn.frame = CGRectMake(280, (barHeight-23.5f)/2, 19.5f, 23.5f);
     _deleteImageBtn.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    [_deleteImageBtn setImage:[UIImage imageNamed:@"report_image_loading"] forState:UIControlStateNormal];
-    [_deleteImageBtn setImage:[UIImage imageNamed:@"report_image_loading"] forState:UIControlStateHighlighted];
+    [_deleteImageBtn setImage:[UIImage imageNamed:@"report_delete_image1"] forState:UIControlStateNormal];
+    [_deleteImageBtn setImage:[UIImage imageNamed:@"report_delete_image2"] forState:UIControlStateHighlighted];
     [_deleteImageBtn addTarget:self action:@selector(deleteImage) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_deleteImageBtn];
 }

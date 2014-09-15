@@ -41,7 +41,7 @@ typedef enum {
 + (JDOVideoViewController *) sharedVideoViewController;
 + (JDOReportViewController *) sharedReportViewController;
 
-- (void) setRootViewControllerType:(MenuItem) menuItem;
+@property (nonatomic,assign) MenuItem rootViewControllerType;
 
 - (void)pushViewController:(UIViewController *)viewController orientation:(JDOTransitionOrientation) orientation animated:(BOOL)animated;
 

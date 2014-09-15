@@ -35,6 +35,8 @@ CGFloat buttonSpacerHeight = 0;
         delegate = self;
         useMotionEffects = false;
         buttonTitles = @[@"Close"];
+        _yMotion = 80;
+        _yMotionIPhone5 = 60;
     }
     return self;
 }
@@ -71,6 +73,14 @@ CGFloat buttonSpacerHeight = 0;
                          for(UIView *v in self.containerView.subviews){
                              if ([v isKindOfClass:[UITextField class]]) {
                                  [v becomeFirstResponder];
+                                 // 弹出键盘后，alert框上移
+                                 [UIView animateWithDuration:0.3f delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                                                  animations:^{
+                                                      CGRect f = dialogView.frame;
+                                                      f.origin.y -= ([UIScreen mainScreen].bounds.size.height<=480?_yMotion:_yMotionIPhone5);
+                                                      dialogView.frame = f;
+                                                  } completion:nil
+                                  ];
                              }
                          }
                      }
@@ -149,12 +159,7 @@ CGFloat buttonSpacerHeight = 0;
     [self setFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
 
     // This is the dialog's container; we attach the custom content and the buttons to this one
-    CGRect frame;
-    if(screenHeight <= 480){    // 3.5屏幕下居中显示的话，按钮会被键盘挡住
-        frame = CGRectMake((screenWidth - dialogWidth) / 2, 120, dialogWidth,dialogHeight);
-    }else{
-        frame = CGRectMake((screenWidth - dialogWidth) / 2, (screenHeight - dialogHeight) / 2, dialogWidth,dialogHeight);
-    }
+    CGRect frame = CGRectMake((screenWidth - dialogWidth) / 2, (screenHeight - dialogHeight) / 2, dialogWidth,dialogHeight);
     UIView *dialogContainer = [[UIView alloc] initWithFrame:frame];
 
     // First, we style the dialog to match the iOS7 UIAlertView >>>
@@ -209,7 +214,7 @@ CGFloat buttonSpacerHeight = 0;
         [closeButton setTitle:[buttonTitles objectAtIndex:i] forState:UIControlStateNormal];
         [closeButton setTitleColor:[UIColor colorWithRed:0.0f green:0.5f blue:1.0f alpha:1.0f] forState:UIControlStateNormal];
         [closeButton setTitleColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.5f] forState:UIControlStateHighlighted];
-        [closeButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
+        [closeButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
         [closeButton.layer setCornerRadius:kCustomIOS7AlertViewCornerRadius];
 
         [container addSubview:closeButton];

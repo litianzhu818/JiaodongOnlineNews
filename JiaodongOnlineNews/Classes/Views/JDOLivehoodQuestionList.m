@@ -512,12 +512,13 @@
             if(_iOS7AlertView == nil){
                 _iOS7AlertView = [[CustomIOS7AlertView alloc] initWithParentView:SharedAppDelegate.window];
                 _iOS7AlertView.delegate = self;
-                UIView *containView = [[UIView alloc] initWithFrame:CGRectMake(0,0, 280, 100)];
-                UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 240, 20)];
+                UIView *containView = [[UIView alloc] initWithFrame:CGRectMake(0,0, 260, 100)];
+                UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 15, 220, 20)];
+                title.textAlignment = UITextAlignmentCenter;
                 title.text = @"请输入查询密码";
                 title.backgroundColor = [UIColor clearColor];
                 [containView addSubview:title];
-                InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(20,45, 240, 35)];
+                InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(20,45, 220, 35)];
                 secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
                 secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
                 secretTextField.secureTextEntry = YES;

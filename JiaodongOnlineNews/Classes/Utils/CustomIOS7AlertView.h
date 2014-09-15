@@ -21,6 +21,8 @@
 @property (nonatomic, assign) id delegate;
 @property (nonatomic, retain) NSArray *buttonTitles;
 @property (nonatomic, assign) BOOL useMotionEffects;
+@property (nonatomic, assign) int yMotion;
+@property (nonatomic, assign) int yMotionIPhone5;
 
 - (id)initWithParentView: (UIView *)_parentView;
 

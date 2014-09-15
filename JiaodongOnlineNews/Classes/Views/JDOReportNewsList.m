@@ -31,8 +31,6 @@
 @end
 
 @implementation JDOReportNewsList{
-    MBProgressHUD *HUD;
-    NSDate *HUDShowTime;
     NSMutableArray *_datasource;
     ACTimeScroller *_timeScroller;
 }

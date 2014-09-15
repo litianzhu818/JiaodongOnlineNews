@@ -91,7 +91,7 @@ static const CGFloat kLandscapeCancelAndChooseButtonsVerticalMargin = 12.0f;
     
     [self.view addSubview:self.imageScrollView];
     [self.view addSubview:self.overlayView];
-    [self.view addSubview:self.moveAndScaleLabel];
+//    [self.view addSubview:self.moveAndScaleLabel];
     [self.view addSubview:self.cancelButton];
     [self.view addSubview:self.chooseButton];
     
@@ -143,23 +143,23 @@ static const CGFloat kLandscapeCancelAndChooseButtonsVerticalMargin = 12.0f;
         // The label "Move and Scale".
         // ---------------------------
         
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.moveAndScaleLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f
-                                                                       constant:0.0f];
-        [self.view addConstraint:constraint];
-        
-        CGFloat constant = kPortraitMoveAndScaleLabelVerticalMargin;
-        self.moveAndScaleLabelTopConstraint = [NSLayoutConstraint constraintWithItem:self.moveAndScaleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f
-                                                                            constant:constant];
-        [self.view addConstraint:self.moveAndScaleLabelTopConstraint];
+//        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.moveAndScaleLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual
+//                                                                         toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f
+//                                                                       constant:0.0f];
+//        [self.view addConstraint:constraint];
+//        
+//        CGFloat constant = kPortraitMoveAndScaleLabelVerticalMargin;
+//        self.moveAndScaleLabelTopConstraint = [NSLayoutConstraint constraintWithItem:self.moveAndScaleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual
+//                                                                              toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f
+//                                                                            constant:constant];
+//        [self.view addConstraint:self.moveAndScaleLabelTopConstraint];
         
         // --------------------
         // The button "Cancel".
         // --------------------
         
-        constant = kPortraitCancelAndChooseButtonsHorizontalMargin;
-        constraint = [NSLayoutConstraint constraintWithItem:self.cancelButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual
+        CGFloat constant = kPortraitCancelAndChooseButtonsHorizontalMargin;
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.cancelButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual
                                                      toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0f
                                                    constant:constant];
         [self.view addConstraint:constraint];
@@ -189,11 +189,11 @@ static const CGFloat kLandscapeCancelAndChooseButtonsVerticalMargin = 12.0f;
         self.didSetupConstraints = YES;
     } else {
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            self.moveAndScaleLabelTopConstraint.constant = kPortraitMoveAndScaleLabelVerticalMargin;
+//            self.moveAndScaleLabelTopConstraint.constant = kPortraitMoveAndScaleLabelVerticalMargin;
             self.cancelButtonBottomConstraint.constant = -kPortraitCancelAndChooseButtonsVerticalMargin;
             self.chooseButtonBottomConstraint.constant = -kPortraitCancelAndChooseButtonsVerticalMargin;
         } else {
-            self.moveAndScaleLabelTopConstraint.constant = kLandscapeMoveAndScaleLabelVerticalMargin;
+//            self.moveAndScaleLabelTopConstraint.constant = kLandscapeMoveAndScaleLabelVerticalMargin;
             self.cancelButtonBottomConstraint.constant = -kLandscapeCancelAndChooseButtonsVerticalMargin;
             self.chooseButtonBottomConstraint.constant = -kLandscapeCancelAndChooseButtonsVerticalMargin;
         }
@@ -249,7 +249,7 @@ static const CGFloat kLandscapeCancelAndChooseButtonsVerticalMargin = 12.0f;
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] init];
         _cancelButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(onCancelButtonTouch:) forControlEvents:UIControlEventTouchUpInside];
         _cancelButton.opaque = NO;
     }
@@ -261,7 +261,7 @@ static const CGFloat kLandscapeCancelAndChooseButtonsVerticalMargin = 12.0f;
     if (!_chooseButton) {
         _chooseButton = [[UIButton alloc] init];
         _chooseButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_chooseButton setTitle:@"Choose" forState:UIControlStateNormal];
+        [_chooseButton setTitle:@"完成" forState:UIControlStateNormal];
         [_chooseButton addTarget:self action:@selector(onChooseButtonTouch:) forControlEvents:UIControlEventTouchUpInside];
         _chooseButton.opaque = NO;
     }
@@ -287,6 +287,10 @@ static const CGFloat kLandscapeCancelAndChooseButtonsVerticalMargin = 12.0f;
 
 - (void)onChooseButtonTouch:(UIBarButtonItem *)sender
 {
+    // 进行缩放的时候不能完成裁剪，防止选择的区域小于目标区域
+    if (self.imageScrollView.isZooming || self.imageScrollView.isZoomBouncing || self.imageScrollView.isDragging) {
+        return;
+    }
     [self cropImage];
 }
 

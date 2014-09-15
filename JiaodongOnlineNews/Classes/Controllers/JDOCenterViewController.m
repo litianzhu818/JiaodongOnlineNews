@@ -120,6 +120,7 @@
 }
 
 - (void) setRootViewControllerType:(MenuItem) menuItem{
+    _rootViewControllerType = menuItem;
     id<JDONavigationView> controller;
     switch (menuItem) {
         case MenuItemNews:

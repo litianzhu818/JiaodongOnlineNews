@@ -160,24 +160,25 @@
     // calculate min/max zoomscale
     CGFloat xScale = boundsSize.width  / _imageSize.width;    // the scale needed to perfectly fit the image width-wise
     CGFloat yScale = boundsSize.height / _imageSize.height;   // the scale needed to perfectly fit the image height-wise
-    CGFloat minScale = MIN(xScale, yScale);                   // use minimum of these to allow the image to become fully visible
+//    CGFloat minScale = MIN(xScale, yScale);                   // use minimum of these to allow the image to become fully visible
     CGFloat maxScale = MAX(xScale, yScale);
+    self.minimumZoomScale = maxScale;
     
     // Image must fit the screen, even if its size is smaller.
     CGFloat xImageScale = maxScale*_imageSize.width / boundsSize.width;
     CGFloat yImageScale = maxScale*_imageSize.height / boundsSize.width;
     CGFloat maxImageScale = MAX(xImageScale, yImageScale);
     
-    maxImageScale = MAX(minScale, maxImageScale);
+//    maxImageScale = MAX(minScale, maxImageScale);
     maxScale = MAX(maxScale, maxImageScale);
 
     // don't let minScale exceed maxScale. (If the image is smaller than the screen, we don't want to force it to be zoomed.)
-    if (minScale > maxScale) {
-        minScale = maxScale;
-    }
-        
+//    if (minScale > maxScale) {
+//        minScale = maxScale;
+//    }
+    
     self.maximumZoomScale = maxScale;
-    self.minimumZoomScale = minScale;
+//    self.minimumZoomScale = minScale;
 }
 
 - (void)setInitialZoomScale

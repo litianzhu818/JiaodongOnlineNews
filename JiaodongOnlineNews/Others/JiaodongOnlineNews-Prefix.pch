@@ -40,6 +40,7 @@
 #define Is_iOS7 [[[UIDevice currentDevice] systemVersion] floatValue]>=7.0
 // iOS7以下,状态栏依然隐藏时App_Height=480，状态栏显示时App_Height=460;iOS7以上状态栏为独立的浮动层，App_Height固定为480
 #define App_Height ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0 ? [UIScreen mainScreen].bounds.size.height :[UIScreen mainScreen].applicationFrame.size.height)
+#define Is_iPhone4Inch [UIScreen mainScreen].bounds.size.height>480
 
 // 视图转换
 #define Min_Scale 0.96f
