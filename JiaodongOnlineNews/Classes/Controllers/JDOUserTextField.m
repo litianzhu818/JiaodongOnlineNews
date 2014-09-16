@@ -29,14 +29,15 @@
     float rightWidth = 0;
     if (self.leftView) {
         leftWidth = _leftViewPadding+CGRectGetWidth(self.leftView.bounds)+_leftTextPadding;
+    }else{
+        leftWidth = _leftTextPadding;
     }
     if (self.rightView) {
         rightWidth = _rightViewPadding+CGRectGetWidth(self.rightView.bounds)+_rightTextPadding;
+    }else{
+        rightWidth = _rightTextPadding;
     }
-    if (leftWidth!=0 || rightWidth!=0) {
-        return CGRectMake(leftWidth, CGRectGetMinY(bounds), CGRectGetWidth(bounds)-leftWidth-rightWidth, CGRectGetHeight(bounds));
-    }
-    return bounds;
+    return CGRectMake(leftWidth, CGRectGetMinY(bounds), CGRectGetWidth(bounds)-leftWidth-rightWidth, CGRectGetHeight(bounds));
 }
 - (CGRect)placeholderRectForBounds:(CGRect)bounds{
     return [self textRectForBounds:bounds];

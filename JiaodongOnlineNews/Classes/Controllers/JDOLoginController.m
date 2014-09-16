@@ -65,7 +65,7 @@
     [forgetPwd setBackgroundImage:[UIImage imageNamed:@"user_validate_code"] forState:UIControlStateNormal];
     [forgetPwd setTitle:@"忘记密码?" forState:UIControlStateNormal];
     [forgetPwd setTitleColor:[UIColor colorWithHex:@"323232"] forState:UIControlStateNormal];
-    forgetPwd.titleLabel.font = [UIFont systemFontOfSize:13];
+    forgetPwd.titleLabel.font = [UIFont systemFontOfSize:14];
     [forgetPwd addTarget:self action:@selector(findPassword:) forControlEvents:UIControlEventTouchUpInside];
     _password.rightView = forgetPwd;
     _password.rightViewPadding = 2;
@@ -76,7 +76,7 @@
     [_loginBtn setTitle:@"登 录" forState:UIControlStateNormal];
     [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _loginBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    [_loginBtn setBackgroundImage:[UIImage imageNamed:@"user_type_selected"] forState:UIControlStateNormal];
+    [_loginBtn setBackgroundImage:[UIImage imageNamed:@"user_blue_btn"] forState:UIControlStateNormal];
     [_loginBtn addTarget:self action:@selector(doLogin:) forControlEvents:UIControlEventTouchUpInside];
     [_loginBtn setSelected:true];
     [self.view addSubview:_loginBtn];
@@ -86,7 +86,7 @@
     [_registBtn setTitle:@"注 册" forState:UIControlStateNormal];
     [_registBtn setTitleColor:[UIColor colorWithHex:@"6e6e6e"] forState:UIControlStateNormal];
     _registBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    [_registBtn setBackgroundImage:[UIImage imageNamed:@"user_type_unselected"] forState:UIControlStateNormal];
+    [_registBtn setBackgroundImage:[UIImage imageNamed:@"user_white_btn"] forState:UIControlStateNormal];
     [_registBtn addTarget:self action:@selector(goToRegist:) forControlEvents:UIControlEventTouchUpInside];
     [_registBtn setSelected:false];
     [self.view addSubview:_registBtn];
@@ -154,7 +154,7 @@
 - (void)setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [self.navigationView setBackground:nil];
-    [self.navigationView setTitle:@"登录胶东在线客户端"];
+    [self.navigationView setTitle:@"用户登录"];
 }
 
 - (void)onBackBtnClick{

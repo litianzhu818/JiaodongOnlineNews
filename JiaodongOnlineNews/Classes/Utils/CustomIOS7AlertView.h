@@ -23,6 +23,7 @@
 @property (nonatomic, assign) BOOL useMotionEffects;
 @property (nonatomic, assign) int yMotion;
 @property (nonatomic, assign) int yMotionIPhone5;
+@property (nonatomic, retain) NSString *background;
 
 - (id)initWithParentView: (UIView *)_parentView;
 

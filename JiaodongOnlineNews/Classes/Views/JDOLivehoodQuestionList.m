@@ -512,13 +512,14 @@
             if(_iOS7AlertView == nil){
                 _iOS7AlertView = [[CustomIOS7AlertView alloc] initWithParentView:SharedAppDelegate.window];
                 _iOS7AlertView.delegate = self;
-                UIView *containView = [[UIView alloc] initWithFrame:CGRectMake(0,0, 260, 100)];
-                UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 15, 220, 20)];
+                UIView *containView = [[UIView alloc] initWithFrame:CGRectMake(0,0, 260, 90)];
+                UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 240, 25)];
                 title.textAlignment = UITextAlignmentCenter;
                 title.text = @"请输入查询密码";
+                title.font = [UIFont boldSystemFontOfSize:18];
                 title.backgroundColor = [UIColor clearColor];
                 [containView addSubview:title];
-                InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(20,45, 220, 35)];
+                InsetsTextField *secretTextField = [[InsetsTextField alloc] initWithFrame:CGRectMake(10,50, 240, 35)];
                 secretTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
                 secretTextField.background = [[UIImage imageNamed:@"inputFieldBorder"] stretchableImageWithLeftCapWidth:3 topCapHeight:3];
                 secretTextField.secureTextEntry = YES;
@@ -527,7 +528,7 @@
                 secretTextField.tag = Secret_Field_Tag;
                 [containView addSubview:secretTextField];
                 _iOS7AlertView.containerView = containView;
-                _iOS7AlertView.buttonTitles = @[@"取消",@"确认"];
+                _iOS7AlertView.buttonTitles = @[@"确认",@"取消"];
             }
             [_iOS7AlertView show];
         }else{
@@ -559,7 +560,7 @@
 
 - (void)customIOS7dialogButtonTouchUpInside: (CustomIOS7AlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0){
+    if(buttonIndex == 1){   // 取消
         [(UITextField *)[alertView.containerView viewWithTag:Secret_Field_Tag] setText:nil];
         [alertView close];
     }else{

@@ -39,18 +39,18 @@
     _existAccountBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _existAccountBtn.frame = CGRectMake(30, (Is_iOS7?64:44)+20, (320-30-30-10)/2, 40);
     [_existAccountBtn setTitle:@"已有17路论坛账号" forState:UIControlStateNormal];
-    _existAccountBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [_existAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_type_selected"] forState:UIControlStateSelected];
-    [_existAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_type_unselected"] forState:UIControlStateNormal];
+    _existAccountBtn.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    [_existAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_blue_btn"] forState:UIControlStateSelected];
+    [_existAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_white_btn"] forState:UIControlStateNormal];
     [_existAccountBtn addTarget:self action:@selector(changeBtnState:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_existAccountBtn];
     
     _createAccountBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _createAccountBtn.frame = CGRectMake(30+CGRectGetWidth(_existAccountBtn.bounds)+10, (Is_iOS7?64:44)+20, CGRectGetWidth(_existAccountBtn.bounds),40);
     [_createAccountBtn setTitle:@"创建新账号" forState:UIControlStateNormal];
-    _createAccountBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [_createAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_type_selected"] forState:UIControlStateSelected];
-    [_createAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_type_unselected"] forState:UIControlStateNormal];
+    _createAccountBtn.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    [_createAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_blue_btn"] forState:UIControlStateSelected];
+    [_createAccountBtn setBackgroundImage:[UIImage imageNamed:@"user_white_btn"] forState:UIControlStateNormal];
     [_createAccountBtn addTarget:self action:@selector(changeBtnState:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_createAccountBtn];
     
@@ -80,16 +80,16 @@
     _password.secureTextEntry = true;
     [self.view addSubview:_password];
     
-//    UIButton *confirmCode = [UIButton buttonWithType:UIButtonTypeCustom];
-//    confirmCode.frame = CGRectMake(0, 0, 70, 36);
-//    [confirmCode setBackgroundImage:[UIImage imageNamed:@"user_validate_code"] forState:UIControlStateNormal];
-//    [confirmCode setTitle:@"获取验证码" forState:UIControlStateNormal];
-//    [confirmCode setTitleColor:[UIColor colorWithHex:@"323232"] forState:UIControlStateNormal];
-//    confirmCode.titleLabel.font = [UIFont systemFontOfSize:13];
-//    [confirmCode addTarget:self action:@selector(sendConfirmCode:) forControlEvents:UIControlEventTouchUpInside];
-//    _password.rightView = confirmCode;
-//    _password.rightViewPadding = 2;
-//    _password.rightViewMode = UITextFieldViewModeAlways;
+    UIButton *confirmCode = [UIButton buttonWithType:UIButtonTypeCustom];
+    confirmCode.frame = CGRectMake(0, 0, 70, 36);
+    [confirmCode setBackgroundImage:[UIImage imageNamed:@"user_validate_code"] forState:UIControlStateNormal];
+    [confirmCode setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [confirmCode setTitleColor:[UIColor colorWithHex:@"323232"] forState:UIControlStateNormal];
+    confirmCode.titleLabel.font = [UIFont systemFontOfSize:14];
+    [confirmCode addTarget:self action:@selector(sendConfirmCode:) forControlEvents:UIControlEventTouchUpInside];
+    _password.rightView = confirmCode;
+    _password.rightViewPadding = 2;
+    _password.rightViewMode = UITextFieldViewModeAlways;
     
     UIButton *completeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     completeBtn.frame = CGRectMake(30, CGRectGetMaxY(_password.frame)+20, 320-30-30,40);
@@ -167,7 +167,7 @@
 - (void)setupNavigationView{
     [self.navigationView addBackButtonWithTarget:self action:@selector(onBackBtnClick)];
     [self.navigationView setBackground:nil];
-    [self.navigationView setTitle:@"注册胶东在线客户端"];
+    [self.navigationView setTitle:@"用户注册"];
 }
 
 - (void) onBackBtnClick{
